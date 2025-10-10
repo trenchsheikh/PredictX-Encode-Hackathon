@@ -28,12 +28,12 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 bg-gradient-to-b from-black/70 to-transparent">
-      <nav className="mx-auto mt-3 mb-3 flex max-w-7xl items-center justify-between p-2 lg:px-4 rounded-full bg-black/40 backdrop-blur supports-[backdrop-filter]:bg-black/40" aria-label="Global">
+      <nav className="mx-auto mt-3 mb-3 flex max-w-7xl items-center justify-between p-2 lg:px-4 rounded-full bg-black/60 backdrop-blur supports-[backdrop-filter]:bg-black/60" aria-label="Global">
         <div className="flex lg:flex-1">
           <Link href="/" className="-m-1.5 p-1.5 flex items-center space-x-2">
-            <div className="w-9 h-9 rounded-full overflow-hidden flex items-center justify-center">
-              <Image src="/binanceeye.jpg" alt="DarkBet" width={36} height={36} className="object-cover" />
-            </div>
+                   <div className="w-14 h-14 rounded-full overflow-hidden flex items-center justify-center">
+                     <Image src="/binanceeye.jpg" alt="DarkBet" width={56} height={56} className="object-cover scale-75" />
+                   </div>
             <span className="text-xl font-bold text-gradient">DarkBet</span>
           </Link>
         </div>
@@ -113,9 +113,9 @@ export function Header() {
         <div className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-black px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-yellow-500/10">
           <div className="flex items-center justify-between">
             <Link href="/" className="-m-1.5 p-1.5 flex items-center space-x-2">
-              <div className="w-9 h-9 rounded-full overflow-hidden flex items-center justify-center">
-                <Image src="/binanceeye.jpg" alt="DarkBet" width={36} height={36} className="object-cover" />
-              </div>
+                   <div className="w-14 h-14 rounded-full overflow-hidden flex items-center justify-center">
+                     <Image src="/binanceeye.jpg" alt="DarkBet" width={56} height={56} className="object-cover scale-75" />
+                   </div>
               <span className="text-xl font-bold text-gradient">DarkBet</span>
             </Link>
             <button
