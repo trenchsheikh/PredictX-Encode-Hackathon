@@ -27,24 +27,24 @@
   }
 
   .dark {
-    --background: 210 11% 15%;
+    --background: 0 0% 0%;
     --foreground: 0 0% 98%;
-    --card: 210 11% 15%;
+    --card: 0 0% 7%;
     --card-foreground: 0 0% 98%;
-    --popover: 210 11% 15%;
+    --popover: 0 0% 7%;
     --popover-foreground: 0 0% 98%;
     --primary: 45 100% 49%;
     --primary-foreground: 0 0% 0%;
-    --secondary: 210 11% 25%;
+    --secondary: 0 0% 10%;
     --secondary-foreground: 0 0% 98%;
-    --muted: 210 11% 25%;
-    --muted-foreground: 210 11% 65%;
-    --accent: 170 100% 42%;
-    --accent-foreground: 0 0% 98%;
+    --muted: 0 0% 12%;
+    --muted-foreground: 0 0% 80%;
+    --accent: 45 100% 49%;
+    --accent-foreground: 0 0% 0%;
     --destructive: 0 62% 50%;
     --destructive-foreground: 0 0% 98%;
-    --border: 210 11% 25%;
-    --input: 210 11% 25%;
+    --border: 0 0% 12%;
+    --input: 0 0% 12%;
     --ring: 45 100% 49%;
   }
 }
@@ -54,7 +54,7 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-black text-foreground;
   }
 }
 
@@ -72,11 +72,11 @@
   }
   
   .card-gradient {
-    @apply bg-gradient-to-br from-primary/5 via-accent/5 to-primary/10;
+    @apply bg-gradient-to-br from-black via-[#0b0b0b] to-black border border-yellow-500/10;
   }
   
   .text-gradient {
-    @apply bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent;
   }
   
   .glow-effect {
@@ -85,8 +85,8 @@
   
   .bnb-pattern {
     background-image: 
-      radial-gradient(circle at 25% 25%, #F0B90B 0%, transparent 50%),
-      radial-gradient(circle at 75% 75%, #00D4AA 0%, transparent 50%);
+      radial-gradient(circle at 25% 25%, rgba(240,185,11,0.15) 0%, transparent 50%),
+      radial-gradient(circle at 75% 75%, rgba(240,185,11,0.1) 0%, transparent 50%);
   }
 }
 

@@ -20,6 +20,7 @@ import {
   ExternalLink
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useI18n } from '@/components/providers/privy-provider';
 
 interface LeaderboardEntry {
   rank: number;
@@ -120,6 +121,7 @@ const categories = [
 ];
 
 export default function LeaderboardPage() {
+  const { t } = useI18n();
   const [selectedTimeframe, setSelectedTimeframe] = useState('all');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [sortBy, setSortBy] = useState<'winnings' | 'winrate' | 'volume' | 'bets'>('winnings');
@@ -179,15 +181,15 @@ export default function LeaderboardPage() {
   });
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary/5 via-accent/5 to-primary/10">
+    <div className="min-h-screen">
       <div className="mx-auto max-w-7xl px-6 py-16 lg:px-8">
         {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-6xl mb-4">
-            Leaderboard
+            {t('leaderboard')}
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Top performers on BNBPredict prediction markets
+            {t('top_performers')}
           </p>
         </div>
 
@@ -202,7 +204,7 @@ export default function LeaderboardPage() {
                 <div className="ml-5 w-0 flex-1">
                   <dl>
                     <dt className="text-sm font-medium text-muted-foreground truncate">
-                      Total Players
+                      {t('total_players')}
                     </dt>
                     <dd className="text-lg font-medium text-foreground">
                       {mockLeaderboard.length}
@@ -222,7 +224,7 @@ export default function LeaderboardPage() {
                 <div className="ml-5 w-0 flex-1">
                   <dl>
                     <dt className="text-sm font-medium text-muted-foreground truncate">
-                      Total Winnings
+                      {t('total_winnings')}
                     </dt>
                     <dd className="text-lg font-medium text-foreground">
                       {formatBNB(mockLeaderboard.reduce((sum, entry) => sum + entry.totalWinnings, 0))}
@@ -242,7 +244,7 @@ export default function LeaderboardPage() {
                 <div className="ml-5 w-0 flex-1">
                   <dl>
                     <dt className="text-sm font-medium text-muted-foreground truncate">
-                      Total Bets
+                      {t('total_bets_sort')}
                     </dt>
                     <dd className="text-lg font-medium text-foreground">
                       {mockLeaderboard.reduce((sum, entry) => sum + entry.totalBets, 0)}
@@ -314,17 +316,17 @@ export default function LeaderboardPage() {
               
               <div className="flex-1">
                 <label className="text-sm font-medium text-muted-foreground mb-2 block">
-                  Sort By
+                  {t('sort_by')}
                 </label>
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value as any)}
                   className="w-full p-2 border rounded-md bg-background"
                 >
-                  <option value="winnings">Total Winnings</option>
-                  <option value="winrate">Win Rate</option>
-                  <option value="volume">Total Volume</option>
-                  <option value="bets">Total Bets</option>
+                  <option value="winnings">{t('total_winnings_sort')}</option>
+                  <option value="winrate">{t('win_rate_sort')}</option>
+                  <option value="volume">{t('total_volume_sort')}</option>
+                  <option value="bets">{t('total_bets_sort')}</option>
                 </select>
               </div>
             </div>
@@ -389,28 +391,28 @@ export default function LeaderboardPage() {
                   
                   <div className="flex items-center gap-8">
                     <div className="text-center">
-                      <div className="text-sm text-muted-foreground">Winnings</div>
+                      <div className="text-sm text-muted-foreground">{t('winnings')}</div>
                       <div className="text-lg font-semibold text-foreground">
                         {formatBNB(entry.totalWinnings)}
                       </div>
                     </div>
                     
                     <div className="text-center">
-                      <div className="text-sm text-muted-foreground">Win Rate</div>
+                      <div className="text-sm text-muted-foreground">{t('win_rate')}</div>
                       <div className="text-lg font-semibold text-foreground">
                         {Math.round(entry.winRate * 100)}%
                       </div>
                     </div>
                     
                     <div className="text-center">
-                      <div className="text-sm text-muted-foreground">Bets</div>
+                      <div className="text-sm text-muted-foreground">{t('bets')}</div>
                       <div className="text-lg font-semibold text-foreground">
                         {entry.totalBets}
                       </div>
                     </div>
                     
                     <div className="text-center">
-                      <div className="text-sm text-muted-foreground">Volume</div>
+                      <div className="text-sm text-muted-foreground">{t('volume')}</div>
                       <div className="text-lg font-semibold text-foreground">
                         {formatBNB(entry.totalVolume)}
                       </div>
@@ -418,7 +420,7 @@ export default function LeaderboardPage() {
                     
                     <Button variant="outline" size="sm">
                       <ExternalLink className="h-4 w-4 mr-2" />
-                      View
+                      {t('view')}
                     </Button>
                   </div>
                 </div>
@@ -434,16 +436,16 @@ export default function LeaderboardPage() {
               <Trophy className="h-8 w-8 text-muted-foreground" />
             </div>
             <h3 className="text-lg font-medium text-foreground mb-2">
-              More Features Coming Soon
+              {t('more_features_coming')}
             </h3>
             <p className="text-muted-foreground mb-4">
-              We're working on adding more detailed analytics, historical data, and advanced filtering options.
+              {t('working_on_features')}
             </p>
             <div className="flex flex-wrap justify-center gap-2">
-              <Badge variant="outline">Historical Charts</Badge>
-              <Badge variant="outline">Advanced Filters</Badge>
-              <Badge variant="outline">Portfolio Tracking</Badge>
-              <Badge variant="outline">Achievement System</Badge>
+              <Badge variant="outline">{t('historical_charts')}</Badge>
+              <Badge variant="outline">{t('advanced_filters')}</Badge>
+              <Badge variant="outline">{t('portfolio_tracking')}</Badge>
+              <Badge variant="outline">{t('achievement_system')}</Badge>
             </div>
           </CardContent>
         </Card>

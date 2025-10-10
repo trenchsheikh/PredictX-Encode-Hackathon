@@ -1,19 +1,15 @@
 import { PrivyClientConfig } from '@privy-io/react-auth';
 
-// Privy configuration following the documentation
-export const privyConfig: PrivyClientConfig = {
-  appId: process.env.NEXT_PUBLIC_PRIVY_APP_ID || '',
-  config: {
-    // Customize the appearance of the login modal
-    appearance: {
-      theme: 'light',
-      accentColor: '#F0B90B',
-    },
-    // Configure which login methods to show
-    loginMethods: ['wallet', 'email', 'sms', 'google', 'twitter', 'discord'],
-    // Configure which wallets to show
-    embeddedWallets: {
-      createOnLogin: 'users-without-wallets',
-    },
+// Export separate APP ID and client config for the real Privy Provider
+export const PRIVY_APP_ID = process.env.NEXT_PUBLIC_PRIVY_APP_ID || '';
+
+export const privyClientConfig: PrivyClientConfig = {
+  appearance: {
+    theme: 'light',
+    accentColor: '#F0B90B',
+  },
+  loginMethods: ['wallet', 'email', 'sms', 'google', 'twitter', 'discord'],
+  embeddedWallets: {
+    createOnLogin: 'users-without-wallets',
   },
 };

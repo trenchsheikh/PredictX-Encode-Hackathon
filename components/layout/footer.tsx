@@ -1,14 +1,18 @@
+'use client';
 import Link from 'next/link';
 import { ExternalLink, Twitter, MessageCircle } from 'lucide-react';
 
+import { useI18n } from '@/components/providers/privy-provider';
+
 export function Footer() {
+  const { t } = useI18n();
   return (
-    <footer className="bg-secondary text-secondary-foreground">
+    <footer className="bg-gradient-to-t from-black to-black/60 border-t border-yellow-500/10 text-secondary-foreground">
       <div className="mx-auto max-w-7xl px-6 py-12 md:flex md:items-center md:justify-between lg:px-8">
         <div className="flex justify-center space-x-6 md:order-2">
           <Link
             href="https://dexscreener.com/bsc/your-contract-address"
-            className="text-muted-foreground hover:text-primary transition-colors"
+            className="text-muted-foreground hover:text-yellow-400 transition-colors"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -17,7 +21,7 @@ export function Footer() {
           </Link>
           <Link
             href="https://x.com/bnbpredict"
-            className="text-muted-foreground hover:text-primary transition-colors"
+            className="text-muted-foreground hover:text-yellow-400 transition-colors"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -26,7 +30,7 @@ export function Footer() {
           </Link>
           <Link
             href="https://t.me/bnbpredict"
-            className="text-muted-foreground hover:text-primary transition-colors"
+            className="text-muted-foreground hover:text-yellow-400 transition-colors"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -35,12 +39,9 @@ export function Footer() {
           </Link>
         </div>
         <div className="mt-8 md:order-1 md:mt-0">
-          <p className="text-center text-xs leading-5 text-muted-foreground">
-            &copy; 2025 BNBPredict. All Rights Reserved.
-          </p>
-          <p className="mt-2 text-center text-xs text-muted-foreground">
-            Contract: 0xcfafecd0b8e866a0626166667bb652bec9d14444
-          </p>
+                 <p className="text-center text-xs leading-5 text-muted-foreground">
+                   &copy; 2025 DarkBet. {t('all_rights_reserved')}
+                 </p>
         </div>
       </div>
     </footer>

@@ -21,9 +21,11 @@ import {
   Lock,
   Eye
 } from 'lucide-react';
+import { useI18n } from '@/components/providers/privy-provider';
 import { cn } from '@/lib/utils';
 
 export default function HowItWorksPage() {
+  const { t } = useI18n();
   const steps = [
     {
       number: 1,
@@ -209,15 +211,15 @@ export default function HowItWorksPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary/5 via-accent/5 to-primary/10">
+    <div className="min-h-screen">
       <div className="mx-auto max-w-7xl px-6 py-16 lg:px-8">
         {/* Header */}
         <div className="text-center mb-16">
-          <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-6xl mb-6">
-            How BNBPredict Works
-          </h1>
+                 <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-6xl mb-6">
+                   {t('how_darkbet_works')}
+                 </h1>
           <p className="text-lg leading-8 text-muted-foreground max-w-3xl mx-auto">
-            A transparent, AI-powered prediction market platform built on BNB Smart Chain
+            {t('platform_description')}
           </p>
         </div>
 
@@ -230,7 +232,7 @@ export default function HowItWorksPage() {
               </div>
               <h2 className="text-2xl font-bold text-foreground mb-2">Platform Overview</h2>
               <p className="text-muted-foreground">
-                BNBPredict is a decentralized prediction market where you can create and participate in bets on real-world events
+                DarkBet is a decentralized prediction market where you can create and participate in bets on real-world events
               </p>
             </div>
             
@@ -239,9 +241,9 @@ export default function HowItWorksPage() {
                 <div className="mx-auto w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-3">
                   <Database className="h-6 w-6 text-primary" />
                 </div>
-                <h3 className="text-lg font-semibold text-foreground mb-2">🔗 Blockchain-Based</h3>
+                <h3 className="text-lg font-semibold text-foreground mb-2">🔗 {t('blockchain_based')}</h3>
                 <p className="text-sm text-muted-foreground">
-                  All transactions happen on BNB Smart Chain with native BNB tokens for maximum transparency
+                  {t('blockchain_description')}
                 </p>
               </div>
               
@@ -249,9 +251,9 @@ export default function HowItWorksPage() {
                 <div className="mx-auto w-12 h-12 bg-accent/10 rounded-full flex items-center justify-center mb-3">
                   <Bot className="h-6 w-6 text-accent" />
                 </div>
-                <h3 className="text-lg font-semibold text-foreground mb-2">🤖 AI-Powered</h3>
+                <h3 className="text-lg font-semibold text-foreground mb-2">🤖 {t('ai_powered')}</h3>
                 <p className="text-sm text-muted-foreground">
-                  Advanced AI generates bet titles, suggests deadlines, and resolves outcomes using real-world data
+                  {t('ai_description')}
                 </p>
               </div>
               
@@ -259,9 +261,9 @@ export default function HowItWorksPage() {
                 <div className="mx-auto w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-3">
                   <Zap className="h-6 w-6 text-primary" />
                 </div>
-                <h3 className="text-lg font-semibold text-foreground mb-2">⚡ Real-Time</h3>
+                <h3 className="text-lg font-semibold text-foreground mb-2">⚡ {t('real_time')}</h3>
                 <p className="text-sm text-muted-foreground">
-                  Live activity feed and instant updates when bets are created, joined, or resolved
+                  {t('real_time_description')}
                 </p>
               </div>
             </div>

@@ -118,11 +118,11 @@ export function usePrivy(): PrivyAuthState {
 
 // Mock PrivyProvider component
 export function PrivyProvider({ children, appId, config }: { 
-  children: React.ReactNode; 
+  children: any; 
   appId: string; 
   config: any; 
 }) {
-  return <>{children}</>;
+  return children as any;
 }
 
 // Mock useLoginWithEmail hook

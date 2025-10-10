@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { usePrivy } from '@/lib/mock-privy';
+import { usePrivy } from '@privy-io/react-auth';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -9,6 +9,7 @@ import { UserBet, Prediction } from '@/types/prediction';
 import { formatBNB, formatTimeRemaining, calculatePayout, formatAddress } from '@/lib/utils';
 import { Wallet, TrendingUp, TrendingDown, Clock, DollarSign, ExternalLink } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useI18n } from '@/components/providers/privy-provider';
 
 // Mock data for demonstration
 const mockUserBets: UserBet[] = [
@@ -88,6 +89,7 @@ const mockPredictions: { [id: string]: Prediction } = {
 };
 
 export default function MyBetsPage() {
+  const { t } = useI18n();
   const { authenticated, user } = usePrivy();
   const [userBets, setUserBets] = useState<UserBet[]>([]);
   const [predictions, setPredictions] = useState<{ [id: string]: Prediction }>({});
@@ -141,21 +143,21 @@ export default function MyBetsPage() {
 
   if (!authenticated) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-primary/5 via-accent/5 to-primary/10 flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center">
         <Card className="w-full max-w-md text-center">
           <CardContent className="p-8">
             <div className="mx-auto w-16 h-16 bg-muted rounded-full flex items-center justify-center mb-4">
               <Wallet className="h-8 w-8 text-muted-foreground" />
             </div>
             <h2 className="text-2xl font-bold text-foreground mb-2">
-              Connect Your Wallet
+              {t('connect_wallet')}
             </h2>
             <p className="text-muted-foreground mb-6">
-              Please connect your wallet to view your bets
+              {t('connect_wallet_to_create')}
             </p>
             <Button className="btn-primary">
               <Wallet className="h-4 w-4 mr-2" />
-              Connect Wallet
+              {t('connect_wallet')}
             </Button>
           </CardContent>
         </Card>
@@ -169,13 +171,13 @@ export default function MyBetsPage() {
   const resolvedBets = userBets.filter(bet => predictions[bet.predictionId]?.status === 'resolved').length;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary/5 via-accent/5 to-primary/10">
+    <div className="min-h-screen">
       <div className="mx-auto max-w-7xl px-6 py-16 lg:px-8">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-foreground mb-2">My Bets</h1>
+          <h1 className="text-3xl font-bold text-foreground mb-2">{t('my_bets')}</h1>
           <p className="text-muted-foreground">
-            Track your prediction market investments and winnings
+            {t('track_investments')}
           </p>
         </div>
 
@@ -190,7 +192,7 @@ export default function MyBetsPage() {
                 <div className="ml-5 w-0 flex-1">
                   <dl>
                     <dt className="text-sm font-medium text-muted-foreground truncate">
-                      Total Invested
+                      {t('total_invested')}
                     </dt>
                     <dd className="text-lg font-medium text-foreground">
                       {formatBNB(totalInvested)}
@@ -210,7 +212,7 @@ export default function MyBetsPage() {
                 <div className="ml-5 w-0 flex-1">
                   <dl>
                     <dt className="text-sm font-medium text-muted-foreground truncate">
-                      Total Payout
+                      {t('total_payout')}
                     </dt>
                     <dd className="text-lg font-medium text-foreground">
                       {formatBNB(totalPayout)}
@@ -230,7 +232,7 @@ export default function MyBetsPage() {
                 <div className="ml-5 w-0 flex-1">
                   <dl>
                     <dt className="text-sm font-medium text-muted-foreground truncate">
-                      Active Bets
+                      {t('active_bets')}
                     </dt>
                     <dd className="text-lg font-medium text-foreground">
                       {activeBets}
@@ -250,7 +252,7 @@ export default function MyBetsPage() {
                 <div className="ml-5 w-0 flex-1">
                   <dl>
                     <dt className="text-sm font-medium text-muted-foreground truncate">
-                      Resolved Bets
+                      {t('resolved_bets')}
                     </dt>
                     <dd className="text-lg font-medium text-foreground">
                       {resolvedBets}
@@ -267,9 +269,9 @@ export default function MyBetsPage() {
           <div className="border-b border-border">
             <nav className="-mb-px flex space-x-8">
               {[
-                { key: 'all', label: 'All Bets', count: userBets.length },
-                { key: 'active', label: 'Active', count: activeBets },
-                { key: 'resolved', label: 'Resolved', count: resolvedBets },
+                { key: 'all', label: t('all_bets'), count: userBets.length },
+                { key: 'active', label: t('active'), count: activeBets },
+                { key: 'resolved', label: t('resolved'), count: resolvedBets },
               ].map((tab) => (
                 <button
                   key={tab.key}
@@ -299,16 +301,18 @@ export default function MyBetsPage() {
                 <TrendingUp className="h-12 w-12 text-muted-foreground" />
               </div>
               <h3 className="text-lg font-medium text-foreground mb-2">
-                No bets found
+                {t('no_bets_found')}
               </h3>
               <p className="text-muted-foreground mb-4">
                 {activeTab === 'all' 
-                  ? "You haven't placed any bets yet. Start by exploring the prediction markets!"
-                  : `You don't have any ${activeTab} bets.`
+                  ? t('no_bets_yet')
+                  : activeTab === 'active' 
+                    ? t('no_active_bets')
+                    : t('no_resolved_bets')
                 }
               </p>
               <Button className="btn-primary">
-                Explore Markets
+                {t('explore_markets')}
               </Button>
             </CardContent>
           </Card>
@@ -348,8 +352,8 @@ export default function MyBetsPage() {
                             <Clock className="h-4 w-4" />
                             <span>
                               {prediction.status === 'active' 
-                                ? `Expires in ${formatTimeRemaining(prediction.expiresAt)}`
-                                : `Resolved ${new Date(prediction.resolution?.resolvedAt || prediction.expiresAt).toLocaleDateString()}`
+                                ? `${t('expires_in')} ${formatTimeRemaining(prediction.expiresAt)}`
+                                : `${t('resolved_on')} ${new Date(prediction.resolution?.resolvedAt || prediction.expiresAt).toLocaleDateString()}`
                               }
                             </span>
                           </div>
@@ -364,19 +368,19 @@ export default function MyBetsPage() {
                         {/* Bet Details */}
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                           <div>
-                            <div className="text-xs text-muted-foreground">Shares</div>
+                            <div className="text-xs text-muted-foreground">{t('shares')}</div>
                             <div className="text-sm font-medium">{bet.shares.toFixed(2)}</div>
                           </div>
                           <div>
-                            <div className="text-xs text-muted-foreground">Amount</div>
+                            <div className="text-xs text-muted-foreground">{t('amount')}</div>
                             <div className="text-sm font-medium">{formatBNB(bet.amount)}</div>
                           </div>
                           <div>
-                            <div className="text-xs text-muted-foreground">Price</div>
+                            <div className="text-xs text-muted-foreground">{t('price')}</div>
                             <div className="text-sm font-medium">{bet.price.toFixed(4)}</div>
                           </div>
                           <div>
-                            <div className="text-xs text-muted-foreground">Potential Payout</div>
+                            <div className="text-xs text-muted-foreground">{t('potential_payout')}</div>
                             <div className="text-sm font-medium">
                               {formatBNB(calculatePayout(bet.shares, 
                                 bet.outcome === 'yes' ? prediction.yesShares : prediction.noShares, 
@@ -390,7 +394,7 @@ export default function MyBetsPage() {
                         {prediction.resolution && (
                           <div className="mt-4 p-3 rounded-lg bg-muted">
                             <div className="text-sm font-medium mb-1">
-                              Resolution: {prediction.resolution.outcome.toUpperCase()}
+                              {t('resolution')}: {prediction.resolution.outcome.toUpperCase()}
                             </div>
                             <div className="text-xs text-muted-foreground">
                               {prediction.resolution.reasoning}
@@ -408,16 +412,16 @@ export default function MyBetsPage() {
                             size="sm"
                           >
                             <DollarSign className="h-4 w-4 mr-2" />
-                            Claim
+                            {t('claim')}
                           </Button>
                         ) : bet.claimed ? (
-                          <Badge variant="success">Claimed</Badge>
+                          <Badge variant="success">{t('claimed')}</Badge>
                         ) : prediction.status === 'active' ? (
-                          <Badge variant="secondary">Active</Badge>
+                          <Badge variant="secondary">{t('active')}</Badge>
                         ) : isWinning ? (
-                          <Badge variant="success">Won</Badge>
+                          <Badge variant="success">{t('won')}</Badge>
                         ) : (
-                          <Badge variant="destructive">Lost</Badge>
+                          <Badge variant="destructive">{t('lost')}</Badge>
                         )}
                       </div>
                     </div>

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { usePrivy } from '@/lib/mock-privy';
+import { usePrivy, useSendTransaction } from '@privy-io/react-auth';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { PredictionCard } from '@/components/prediction/prediction-card';
@@ -13,6 +13,7 @@ import { AppleHelloEffect } from '@/components/ui/apple-hello-effect';
 import { InteractiveGridPattern } from '@/components/ui/interactive-grid-pattern';
 import { Prediction, FilterOptions, CreatePredictionData } from '@/types/prediction';
 import { Plus, TrendingUp, Users, Clock, Zap } from 'lucide-react';
+import { useI18n } from '@/components/providers/privy-provider';
 import { cn } from '@/lib/utils';
 
 // Mock data for demonstration
@@ -86,7 +87,9 @@ const mockPredictions: Prediction[] = [
 ];
 
 export default function HomePage() {
-  const { authenticated, user } = usePrivy();
+  const { t } = useI18n();
+  const { authenticated } = usePrivy();
+  const { sendTransaction } = useSendTransaction();
   const [predictions, setPredictions] = useState<Prediction[]>(mockPredictions);
   const [filters, setFilters] = useState<FilterOptions>({});
   const [showCreateModal, setShowCreateModal] = useState(false);
@@ -156,7 +159,23 @@ export default function HomePage() {
       return;
     }
 
-    // Mock prediction creation
+    // If a vault is configured and a wallet client is available, attempt to send value
+    try {
+      const vault = process.env.NEXT_PUBLIC_VAULT_CONTRACT_ADDRESS;
+      if (vault && sendTransaction) {
+        const wei = BigInt(Math.round(data.bnbAmount * 1e18));
+        await sendTransaction({
+          to: vault as `0x${string}`,
+          value: wei,
+        });
+      }
+    } catch (err: any) {
+      console.error('Create bet transaction failed', err);
+      alert('Transaction failed. Please try again.');
+      return;
+    }
+
+    // Add mock prediction locally
     const newPrediction: Prediction = {
       id: Date.now().toString(),
       title: data.title,
@@ -190,24 +209,7 @@ export default function HomePage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary/5 via-accent/5 to-primary/10 relative overflow-hidden">
-      {/* Background Effects */}
-      <Particles 
-        className="absolute inset-0 z-0" 
-        quantity={50} 
-        color="#F0B90B" 
-        size={0.5}
-        staticity={30}
-      />
-      <InteractiveGridPattern 
-        className="absolute inset-0 z-0 opacity-10" 
-        width={40} 
-        height={40}
-        size={4}
-        gap={1}
-        strokeColor="#F0B90B"
-      />
-      
+    <div className="min-h-screen relative overflow-hidden">
       {/* Hero Section */}
       <div className="relative overflow-hidden z-10">
         <div className="absolute inset-0 bnb-pattern opacity-10" />
@@ -215,27 +217,26 @@ export default function HomePage() {
           <div className="text-center">
             <AppleHelloEffect delay={500} duration={1500}>
               <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-6xl">
-                <ShimmeringText shimmerColor="#F0B90B" duration={3000}>
-                  Live Bet Markets
+                <ShimmeringText shimmerColor="#F0B90B" duration={2500}>
+                  {t('live_markets')}
                 </ShimmeringText>
               </h1>
             </AppleHelloEffect>
-            <p className="mt-6 text-lg leading-8 text-muted-foreground max-w-2xl mx-auto animate-fade-in">
-              Fully On-Chain Live Betting Market with AI-Driven Results. Built on BNB Smart Chain.
-            </p>
+                   <p className="mt-6 text-lg leading-8 text-muted-foreground max-w-2xl mx-auto animate-fade-in">
+                     {t('hero_subtitle')}
+                   </p>
             <div className="mt-10 flex items-center justify-center gap-x-6 animate-fade-in">
               <Button
                 size="lg"
                 onClick={() => setShowCreateModal(true)}
                 className="btn-primary glow-effect animate-glow"
-                disabled={!authenticated}
               >
                 <Plus className="h-5 w-5 mr-2" />
-                Create Bet
+                {t('create_bet')}
               </Button>
               {!authenticated && (
                 <p className="text-sm text-muted-foreground">
-                  Connect wallet to create predictions
+                  {t('connect_to_create')}
                 </p>
               )}
             </div>
@@ -255,7 +256,7 @@ export default function HomePage() {
                 <div className="ml-5 w-0 flex-1">
                   <dl>
                     <dt className="text-sm font-medium text-muted-foreground truncate">
-                      Active Predictions
+                      {t('active_predictions')}
                     </dt>
                     <dd className="text-lg font-medium text-foreground">
                       {stats.activePredictions}
@@ -275,7 +276,7 @@ export default function HomePage() {
                 <div className="ml-5 w-0 flex-1">
                   <dl>
                     <dt className="text-sm font-medium text-muted-foreground truncate">
-                      Total Participants
+                      {t('total_participants')}
                     </dt>
                     <dd className="text-lg font-medium text-foreground">
                       {stats.totalParticipants}
@@ -295,7 +296,7 @@ export default function HomePage() {
                 <div className="ml-5 w-0 flex-1">
                   <dl>
                     <dt className="text-sm font-medium text-muted-foreground truncate">
-                      Total Volume
+                      {t('total_volume')}
                     </dt>
                     <dd className="text-lg font-medium text-foreground">
                       {stats.totalVolume.toFixed(2)} BNB
@@ -315,7 +316,7 @@ export default function HomePage() {
                 <div className="ml-5 w-0 flex-1">
                   <dl>
                     <dt className="text-sm font-medium text-muted-foreground truncate">
-                      Total Predictions
+                      {t('total_predictions')}
                     </dt>
                     <dd className="text-lg font-medium text-foreground">
                       {stats.totalPredictions}
@@ -346,18 +347,17 @@ export default function HomePage() {
                   <TrendingUp className="h-12 w-12 text-muted-foreground" />
                 </div>
                 <h3 className="text-lg font-medium text-foreground mb-2">
-                  No predictions found
+                  {t('no_predictions_found')}
                 </h3>
                 <p className="text-muted-foreground mb-4">
-                  Try adjusting your filters or create the first prediction!
+                  {t('try_adjusting_filters')}
                 </p>
                 <Button
                   onClick={() => setShowCreateModal(true)}
-                  disabled={!authenticated}
                   className="btn-primary"
                 >
                   <Plus className="h-4 w-4 mr-2" />
-                  Create First Prediction
+                  {t('create_first_prediction')}
                 </Button>
               </CardContent>
             </Card>

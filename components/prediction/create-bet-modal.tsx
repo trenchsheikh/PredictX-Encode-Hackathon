@@ -15,6 +15,7 @@ import { CreatePredictionData, PredictionCategory } from '@/types/prediction';
 import { formatBNB } from '@/lib/utils';
 import { Bot, Plus, X, Calendar, DollarSign, Target, Sparkles } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useI18n } from '@/components/providers/privy-provider';
 
 const createPredictionSchema = z.object({
   description: z.string().min(10, 'Description must be at least 10 characters'),
@@ -44,6 +45,7 @@ const categories: { value: PredictionCategory; label: string; icon: string }[] =
 ];
 
 export function CreateBetModal({ open, onOpenChange, onSubmit }: CreateBetModalProps) {
+  const { t } = useI18n();
   const [aiGenerated, setAiGenerated] = useState<{
     title: string;
     category: PredictionCategory;
@@ -139,10 +141,10 @@ export function CreateBetModal({ open, onOpenChange, onSubmit }: CreateBetModalP
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Target className="h-5 w-5 text-primary" />
-            Create Prediction Market
+            {t('create_prediction_market')}
           </DialogTitle>
           <DialogDescription>
-            Create a prediction market with automated or manual resolution
+            {t('create_prediction_description')}
           </DialogDescription>
         </DialogHeader>
 
@@ -152,17 +154,17 @@ export function CreateBetModal({ open, onOpenChange, onSubmit }: CreateBetModalP
             <CardContent className="p-4">
               <div className="flex items-center gap-2 text-sm">
                 <DollarSign className="h-4 w-4 text-primary" />
-                <span className="font-medium">Wallet Required</span>
+                <span className="font-medium">{t('wallet_required')}</span>
               </div>
               <p className="text-xs text-muted-foreground mt-1">
-                Connect your wallet to create predictions
+                {t('connect_wallet_to_create')}
               </p>
             </CardContent>
           </Card>
 
           {/* Bet Type Selection */}
           <div className="space-y-2">
-            <label className="text-sm font-medium">Bet Type *</label>
+            <label className="text-sm font-medium">{t('bet_type')} *</label>
             <div className="grid grid-cols-2 gap-4">
               <Card 
                 className={cn(
@@ -172,8 +174,8 @@ export function CreateBetModal({ open, onOpenChange, onSubmit }: CreateBetModalP
                 onClick={() => setValue('betType', 'custom')}
               >
                 <CardContent className="p-4">
-                  <div className="text-sm font-medium">Custom Bet</div>
-                  <div className="text-xs text-muted-foreground">Manual resolution</div>
+                  <div className="text-sm font-medium">{t('custom_bet')}</div>
+                  <div className="text-xs text-muted-foreground">{t('manual_resolution')}</div>
                 </CardContent>
               </Card>
               <Card 
@@ -184,8 +186,8 @@ export function CreateBetModal({ open, onOpenChange, onSubmit }: CreateBetModalP
                 onClick={() => setValue('betType', 'auto-verified')}
               >
                 <CardContent className="p-4">
-                  <div className="text-sm font-medium">Auto-verified outcome</div>
-                  <div className="text-xs text-muted-foreground">Price Oracle</div>
+                  <div className="text-sm font-medium">{t('auto_verified_outcome')}</div>
+                  <div className="text-xs text-muted-foreground">{t('price_oracle')}</div>
                 </CardContent>
               </Card>
             </div>
@@ -193,10 +195,10 @@ export function CreateBetModal({ open, onOpenChange, onSubmit }: CreateBetModalP
 
           {/* Bet Description */}
           <div className="space-y-2">
-            <label className="text-sm font-medium">Bet Description *</label>
+            <label className="text-sm font-medium">{t('bet_description')} *</label>
             <Textarea
               {...register('description')}
-              placeholder="Describe your prediction. AI will auto-generate the bet title."
+              placeholder={t('describe_prediction')}
               className="min-h-[100px]"
             />
             {errors.description && (
@@ -296,16 +298,16 @@ export function CreateBetModal({ open, onOpenChange, onSubmit }: CreateBetModalP
             <CardHeader className="pb-2">
               <CardTitle className="text-sm flex items-center gap-2">
                 <Target className="h-4 w-4 text-primary" />
-                Place Your Initial Bet (Required)
+                {t('place_initial_bet')}
               </CardTitle>
               <p className="text-xs text-muted-foreground">
-                To prevent spam, creators must participate in their own prediction
+                {t('prevent_spam')}
               </p>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <label className="text-sm font-medium">Your Prediction *</label>
+                  <label className="text-sm font-medium">{t('your_prediction')} *</label>
                   <Select
                     value={watch('userPrediction')}
                     onValueChange={(value: 'yes' | 'no') => setValue('userPrediction', value)}
@@ -320,7 +322,7 @@ export function CreateBetModal({ open, onOpenChange, onSubmit }: CreateBetModalP
                   </Select>
                 </div>
                 <div className="space-y-2">
-                  <label className="text-sm font-medium">BNB Amount *</label>
+                  <label className="text-sm font-medium">{t('bnb_amount')} *</label>
                   <Input
                     type="number"
                     step="0.001"
@@ -334,7 +336,7 @@ export function CreateBetModal({ open, onOpenChange, onSubmit }: CreateBetModalP
                 </div>
               </div>
               <div className="text-center text-sm text-muted-foreground">
-                Clicking "Create Bet" will prompt your wallet to send {formatBNB(watch('bnbAmount'))} to the vault
+                {t('click_create_will_prompt').replace('{amount}', formatBNB(watch('bnbAmount')))}
               </div>
             </CardContent>
           </Card>
@@ -346,14 +348,14 @@ export function CreateBetModal({ open, onOpenChange, onSubmit }: CreateBetModalP
               variant="outline"
               onClick={handleClose}
             >
-              Cancel
+              {t('cancel')}
             </Button>
             <Button
               type="submit"
               disabled={isSubmitting}
               className="btn-primary"
             >
-              {isSubmitting ? 'Creating...' : 'Create Bet'}
+              {isSubmitting ? t('creating') : t('create_bet')}
             </Button>
           </div>
         </form>
