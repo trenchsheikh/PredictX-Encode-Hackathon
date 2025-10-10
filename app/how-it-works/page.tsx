@@ -218,7 +218,7 @@ export default function HowItWorksPage() {
                  <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-6xl mb-6">
                    {t('how_darkbet_works')}
                  </h1>
-          <p className="text-lg leading-8 text-muted-foreground max-w-3xl mx-auto">
+          <p className="text-lg leading-8 text-yellow-200 max-w-3xl mx-auto">
             {t('platform_description')}
           </p>
         </div>
@@ -231,7 +231,7 @@ export default function HowItWorksPage() {
                 <Target className="h-8 w-8 text-primary" />
               </div>
               <h2 className="text-2xl font-bold text-foreground mb-2">Platform Overview</h2>
-              <p className="text-muted-foreground">
+              <p className="text-yellow-200">
                 DarkBet is a decentralized prediction market where you can create and participate in bets on real-world events
               </p>
             </div>
@@ -242,7 +242,7 @@ export default function HowItWorksPage() {
                   <Database className="h-6 w-6 text-primary" />
                 </div>
                 <h3 className="text-lg font-semibold text-foreground mb-2">🔗 {t('blockchain_based')}</h3>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-yellow-200">
                   {t('blockchain_description')}
                 </p>
               </div>
@@ -252,7 +252,7 @@ export default function HowItWorksPage() {
                   <Bot className="h-6 w-6 text-accent" />
                 </div>
                 <h3 className="text-lg font-semibold text-foreground mb-2">🤖 {t('ai_powered')}</h3>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-yellow-200">
                   {t('ai_description')}
                 </p>
               </div>
@@ -262,7 +262,7 @@ export default function HowItWorksPage() {
                   <Zap className="h-6 w-6 text-primary" />
                 </div>
                 <h3 className="text-lg font-semibold text-foreground mb-2">⚡ {t('real_time')}</h3>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-yellow-200">
                   {t('real_time_description')}
                 </p>
               </div>
@@ -278,7 +278,7 @@ export default function HowItWorksPage() {
                 <Eye className="h-8 w-8 text-yellow-400" />
               </div>
               <h2 className="text-2xl font-bold text-yellow-400 mb-2">{t('dark_pools_title')}</h2>
-              <p className="text-muted-foreground max-w-4xl mx-auto">
+              <p className="text-yellow-200 max-w-4xl mx-auto">
                 {t('dark_pools_description')}
               </p>
             </div>
@@ -289,7 +289,7 @@ export default function HowItWorksPage() {
                   <Lock className="h-6 w-6 text-yellow-400" />
                 </div>
                 <h3 className="text-lg font-semibold text-yellow-400 mb-2">{t('privacy')}</h3>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-yellow-200">
                   {t('privacy_description')}
                 </p>
               </div>
@@ -299,7 +299,7 @@ export default function HowItWorksPage() {
                   <Shield className="h-6 w-6 text-yellow-400" />
                 </div>
                 <h3 className="text-lg font-semibold text-yellow-400 mb-2">{t('anti_manipulation')}</h3>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-yellow-200">
                   {t('anti_manipulation_description')}
                 </p>
               </div>
@@ -309,7 +309,7 @@ export default function HowItWorksPage() {
                   <Users className="h-6 w-6 text-yellow-400" />
                 </div>
                 <h3 className="text-lg font-semibold text-yellow-400 mb-2">{t('clean_slate')}</h3>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-yellow-200">
                   {t('clean_slate_description')}
                 </p>
               </div>
@@ -322,7 +322,7 @@ export default function HowItWorksPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <h4 className="text-md font-medium text-red-400 mb-2">❌ {t('traditional_markets_title')}</h4>
-                  <ul className="space-y-1 text-sm text-muted-foreground">
+                  <ul className="space-y-1 text-sm text-yellow-200">
                     {t('traditional_markets_points').split('|').map((point, index) => (
                       <li key={index}>• {point}</li>
                     ))}
@@ -330,7 +330,7 @@ export default function HowItWorksPage() {
                 </div>
                 <div>
                   <h4 className="text-md font-medium text-green-400 mb-2">✅ {t('darkbet_dark_pools_title')}</h4>
-                  <ul className="space-y-1 text-sm text-muted-foreground">
+                  <ul className="space-y-1 text-sm text-yellow-200">
                     {t('darkbet_dark_pools_points').split('|').map((point, index) => (
                       <li key={index}>• {point}</li>
                     ))}
@@ -356,7 +356,7 @@ export default function HowItWorksPage() {
                     <h2 className="text-3xl font-bold text-foreground">{step.title}</h2>
                   </div>
                   
-                  <p className="text-lg text-muted-foreground mb-6">{step.description}</p>
+                  <p className="text-lg text-yellow-200 mb-6">{step.description}</p>
                   
                   {/* Step-specific content */}
                   {step.details && (
@@ -374,13 +374,13 @@ export default function HowItWorksPage() {
                                 <h3 className="text-lg font-semibold text-foreground mb-2">
                                   {detail.title}
                                 </h3>
-                                <p className="text-muted-foreground mb-3">
+                                <p className="text-yellow-200 mb-3">
                                   {'description' in detail ? detail.description : ''}
                                 </p>
                                 {'items' in detail && detail.items && (
                                   <ul className="space-y-1">
                                     {detail.items.map((item, itemIndex) => (
-                                      <li key={itemIndex} className="flex items-start gap-2 text-sm text-muted-foreground">
+                                      <li key={itemIndex} className="flex items-start gap-2 text-sm text-yellow-200">
                                         <CheckCircle className="h-4 w-4 text-accent mt-0.5 flex-shrink-0" />
                                         <span>{item}</span>
                                       </li>
@@ -423,7 +423,7 @@ export default function HowItWorksPage() {
                               <h3 className="text-lg font-semibold text-foreground mb-2">
                                 {layer.title}
                               </h3>
-                              <p className="text-sm text-muted-foreground">
+                              <p className="text-sm text-yellow-200">
                                 {layer.description}
                               </p>
                             </CardContent>
@@ -439,7 +439,7 @@ export default function HowItWorksPage() {
                       <h3 className="text-lg font-semibold text-foreground mb-4">
                         🔍 Verification Sources (Masked)
                       </h3>
-                      <p className="text-sm text-muted-foreground mb-4">
+                      <p className="text-sm text-yellow-200 mb-4">
                         We use industry-leading APIs for verification (sources masked for security):
                       </p>
                       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -447,7 +447,7 @@ export default function HowItWorksPage() {
                           <div key={sourceIndex} className="flex items-center justify-between p-3 rounded-lg bg-muted/50">
                             <span className="text-sm font-medium">{source.category}</span>
                             <div className="flex items-center gap-1">
-                              <span className="text-xs text-muted-foreground">
+                              <span className="text-xs text-yellow-200">
                                 {source.count} {source.premium ? 'Premium' : source.optional ? 'Optional' : 'sources'}
                               </span>
                               {source.premium && <Badge variant="warning" className="text-xs">Premium</Badge>}
@@ -464,7 +464,7 @@ export default function HowItWorksPage() {
                       <h3 className="text-lg font-semibold text-foreground mb-4">Example:</h3>
                       <Card className="bg-accent/5 border-accent/20">
                         <CardContent className="p-4">
-                          <p className="text-sm text-muted-foreground">
+                          <p className="text-sm text-yellow-200">
                             {step.example.description}
                           </p>
                         </CardContent>
@@ -478,7 +478,7 @@ export default function HowItWorksPage() {
                       <h3 className="text-lg font-semibold text-foreground mb-4">Platform Fee Structure</h3>
                       <Card className="bg-primary/5 border-primary/20">
                         <CardContent className="p-4">
-                          <p className="text-sm text-muted-foreground mb-3">
+                          <p className="text-sm text-yellow-200 mb-3">
                             10% platform fee applies to both prize claims AND bet cancellations
                           </p>
                           <div className="space-y-1 text-sm">
@@ -486,7 +486,7 @@ export default function HowItWorksPage() {
                               <span>Gross Winnings:</span>
                               <span className="font-medium">{step.feeExample.gross}</span>
                             </div>
-                            <div className="flex justify-between text-muted-foreground">
+                            <div className="flex justify-between text-yellow-200">
                               <span>Platform Fee (10%):</span>
                               <span>-{step.feeExample.fee}</span>
                             </div>
@@ -523,7 +523,7 @@ export default function HowItWorksPage() {
                   </div>
                   <ul className="space-y-2">
                     {feature.items.map((item, itemIndex) => (
-                      <li key={itemIndex} className="flex items-start gap-2 text-sm text-muted-foreground">
+                      <li key={itemIndex} className="flex items-start gap-2 text-sm text-yellow-200">
                         <CheckCircle className="h-4 w-4 text-accent mt-0.5 flex-shrink-0" />
                         <span>{item}</span>
                       </li>
@@ -540,7 +540,7 @@ export default function HowItWorksPage() {
                   <p className="text-sm font-medium text-foreground mb-1">
                     All API keys and sensitive data are masked
                   </p>
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-xs text-yellow-200">
                     We never expose internal credentials, vault wallet addresses, or verification source endpoints to protect platform integrity.
                   </p>
                 </div>
@@ -552,7 +552,7 @@ export default function HowItWorksPage() {
         {/* Call to Action */}
         <div className="text-center mt-16">
           <h2 className="text-2xl font-bold text-foreground mb-4">Ready to Start Predicting?</h2>
-          <p className="text-muted-foreground mb-6">
+          <p className="text-yellow-200 mb-6">
             Connect your wallet and create your first prediction market today
           </p>
           <Button size="lg" className="btn-primary glow-effect">
