@@ -215,7 +215,7 @@ export default function HowItWorksPage() {
       <div className="mx-auto max-w-7xl px-6 py-16 lg:px-8">
         {/* Header */}
         <div className="text-center mb-16">
-                 <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-6xl mb-6">
+                 <h1 className="text-4xl font-bold tracking-tight text-yellow-300 sm:text-6xl mb-6">
                    {t('how_darkbet_works')}
                  </h1>
           <p className="text-lg leading-8 text-yellow-200 max-w-3xl mx-auto">
@@ -224,13 +224,13 @@ export default function HowItWorksPage() {
         </div>
 
         {/* Platform Overview */}
-        <Card className="mb-16 card-gradient">
+        <Card className="mb-16 card-gradient border-yellow-500/20 bg-black/50">
           <CardContent className="p-8">
             <div className="text-center mb-8">
               <div className="mx-auto w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4">
                 <Target className="h-8 w-8 text-primary" />
               </div>
-              <h2 className="text-2xl font-bold text-foreground mb-2">Platform Overview</h2>
+              <h2 className="text-2xl font-bold text-yellow-300 mb-2">Platform Overview</h2>
               <p className="text-yellow-200">
                 DarkBet is a decentralized prediction market where you can create and participate in bets on real-world events
               </p>
@@ -241,7 +241,7 @@ export default function HowItWorksPage() {
                 <div className="mx-auto w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-3">
                   <Database className="h-6 w-6 text-primary" />
                 </div>
-                <h3 className="text-lg font-semibold text-foreground mb-2">🔗 {t('blockchain_based')}</h3>
+                <h3 className="text-lg font-semibold text-yellow-300 mb-2">🔗 {t('blockchain_based')}</h3>
                 <p className="text-sm text-yellow-200">
                   {t('blockchain_description')}
                 </p>
@@ -251,7 +251,7 @@ export default function HowItWorksPage() {
                 <div className="mx-auto w-12 h-12 bg-accent/10 rounded-full flex items-center justify-center mb-3">
                   <Bot className="h-6 w-6 text-accent" />
                 </div>
-                <h3 className="text-lg font-semibold text-foreground mb-2">🤖 {t('ai_powered')}</h3>
+                <h3 className="text-lg font-semibold text-yellow-300 mb-2">🤖 {t('ai_powered')}</h3>
                 <p className="text-sm text-yellow-200">
                   {t('ai_description')}
                 </p>
@@ -261,7 +261,7 @@ export default function HowItWorksPage() {
                 <div className="mx-auto w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-3">
                   <Zap className="h-6 w-6 text-primary" />
                 </div>
-                <h3 className="text-lg font-semibold text-foreground mb-2">⚡ {t('real_time')}</h3>
+                <h3 className="text-lg font-semibold text-yellow-300 mb-2">⚡ {t('real_time')}</h3>
                 <p className="text-sm text-yellow-200">
                   {t('real_time_description')}
                 </p>
@@ -271,7 +271,7 @@ export default function HowItWorksPage() {
         </Card>
 
         {/* Dark Pools Section */}
-        <Card className="mb-16 card-gradient border-yellow-500/20">
+        <Card className="mb-16 card-gradient border-yellow-500/20 bg-black/50">
           <CardContent className="p-8">
             <div className="text-center mb-8">
               <div className="mx-auto w-16 h-16 bg-yellow-500/10 rounded-full flex items-center justify-center mb-4">
@@ -353,7 +353,7 @@ export default function HowItWorksPage() {
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-4">
                     <step.icon className="h-8 w-8 text-primary" />
-                    <h2 className="text-3xl font-bold text-foreground">{step.title}</h2>
+                    <h2 className="text-3xl font-bold text-yellow-300">{step.title}</h2>
                   </div>
                   
                   <p className="text-lg text-yellow-200 mb-6">{step.description}</p>
@@ -362,7 +362,7 @@ export default function HowItWorksPage() {
                   {step.details && (
                     <div className="space-y-6">
                       {step.details.map((detail, detailIndex) => (
-                        <Card key={detailIndex} className="border-l-4 border-l-primary">
+                        <Card key={detailIndex} className="border-l-4 border-l-primary bg-black/30 border-yellow-500/10">
                           <CardContent className="p-6">
                             <div className="flex items-start gap-4">
                               <div className="flex-shrink-0">
@@ -371,7 +371,7 @@ export default function HowItWorksPage() {
                                 </Badge>
                               </div>
                               <div className="flex-1">
-                                <h3 className="text-lg font-semibold text-foreground mb-2">
+                                <h3 className="text-lg font-semibold text-yellow-300 mb-2">
                                   {detail.title}
                                 </h3>
                                 <p className="text-yellow-200 mb-3">
@@ -398,12 +398,12 @@ export default function HowItWorksPage() {
                   {/* Categories for step 1 */}
                   {step.categories && (
                     <div className="mt-6">
-                      <h3 className="text-lg font-semibold text-foreground mb-4">Supported Categories</h3>
+                      <h3 className="text-lg font-semibold text-yellow-300 mb-4">Supported Categories</h3>
                       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                         {step.categories.map((category, catIndex) => (
-                          <div key={catIndex} className="flex items-center gap-2 p-3 rounded-lg bg-muted/50">
+                          <div key={catIndex} className="flex items-center gap-2 p-3 rounded-lg bg-yellow-950/20 border border-yellow-500/10">
                             <span className="text-lg">{category.icon}</span>
-                            <span className="text-sm font-medium">{category.name}</span>
+                            <span className="text-sm font-medium text-yellow-200">{category.name}</span>
                           </div>
                         ))}
                       </div>
@@ -415,12 +415,12 @@ export default function HowItWorksPage() {
                     <div className="mt-6">
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                         {step.layers.map((layer, layerIndex) => (
-                          <Card key={layerIndex} className="text-center">
+                          <Card key={layerIndex} className="text-center bg-black/30 border-yellow-500/10">
                             <CardContent className="p-6">
                               <div className="mx-auto w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-4">
                                 <layer.icon className="h-6 w-6 text-primary" />
                               </div>
-                              <h3 className="text-lg font-semibold text-foreground mb-2">
+                              <h3 className="text-lg font-semibold text-yellow-300 mb-2">
                                 {layer.title}
                               </h3>
                               <p className="text-sm text-yellow-200">
@@ -436,7 +436,7 @@ export default function HowItWorksPage() {
                   {/* Sources for step 3 */}
                   {step.sources && (
                     <div className="mt-6">
-                      <h3 className="text-lg font-semibold text-foreground mb-4">
+                      <h3 className="text-lg font-semibold text-yellow-300 mb-4">
                         🔍 Verification Sources (Masked)
                       </h3>
                       <p className="text-sm text-yellow-200 mb-4">
@@ -444,8 +444,8 @@ export default function HowItWorksPage() {
                       </p>
                       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                         {step.sources.map((source, sourceIndex) => (
-                          <div key={sourceIndex} className="flex items-center justify-between p-3 rounded-lg bg-muted/50">
-                            <span className="text-sm font-medium">{source.category}</span>
+                          <div key={sourceIndex} className="flex items-center justify-between p-3 rounded-lg bg-yellow-950/20 border border-yellow-500/10">
+                            <span className="text-sm font-medium text-yellow-200">{source.category}</span>
                             <div className="flex items-center gap-1">
                               <span className="text-xs text-yellow-200">
                                 {source.count} {source.premium ? 'Premium' : source.optional ? 'Optional' : 'sources'}
@@ -461,8 +461,8 @@ export default function HowItWorksPage() {
                   {/* Example for step 2 */}
                   {step.example && (
                     <div className="mt-6">
-                      <h3 className="text-lg font-semibold text-foreground mb-4">Example:</h3>
-                      <Card className="bg-accent/5 border-accent/20">
+                      <h3 className="text-lg font-semibold text-yellow-300 mb-4">Example:</h3>
+                      <Card className="bg-black/30 border-yellow-500/20">
                         <CardContent className="p-4">
                           <p className="text-sm text-yellow-200">
                             {step.example.description}
@@ -475,8 +475,8 @@ export default function HowItWorksPage() {
                   {/* Fee example for step 4 */}
                   {step.feeExample && (
                     <div className="mt-6">
-                      <h3 className="text-lg font-semibold text-foreground mb-4">Platform Fee Structure</h3>
-                      <Card className="bg-primary/5 border-primary/20">
+                      <h3 className="text-lg font-semibold text-yellow-300 mb-4">Platform Fee Structure</h3>
+                      <Card className="bg-black/30 border-yellow-500/20">
                         <CardContent className="p-4">
                           <p className="text-sm text-yellow-200 mb-3">
                             10% platform fee applies to both prize claims AND bet cancellations
@@ -506,7 +506,7 @@ export default function HowItWorksPage() {
         </div>
 
         {/* Security & Transparency */}
-        <Card className="mt-16 card-gradient">
+        <Card className="mt-16 card-gradient border-yellow-500/20 bg-black/50">
           <CardHeader>
             <CardTitle className="text-2xl font-bold text-center flex items-center justify-center gap-2">
               <Shield className="h-6 w-6 text-primary" />
@@ -519,7 +519,7 @@ export default function HowItWorksPage() {
                 <div key={index}>
                   <div className="flex items-center gap-3 mb-4">
                     <feature.icon className="h-6 w-6 text-primary" />
-                    <h3 className="text-lg font-semibold text-foreground">{feature.title}</h3>
+                    <h3 className="text-lg font-semibold text-yellow-300">{feature.title}</h3>
                   </div>
                   <ul className="space-y-2">
                     {feature.items.map((item, itemIndex) => (
@@ -533,11 +533,11 @@ export default function HowItWorksPage() {
               ))}
             </div>
             
-            <div className="mt-8 p-4 rounded-lg bg-muted/50 border-l-4 border-l-accent">
+            <div className="mt-8 p-4 rounded-lg bg-yellow-950/20 border-l-4 border-l-accent">
               <div className="flex items-start gap-3">
                 <Eye className="h-5 w-5 text-accent mt-0.5 flex-shrink-0" />
                 <div>
-                  <p className="text-sm font-medium text-foreground mb-1">
+                  <p className="text-sm font-medium text-yellow-300 mb-1">
                     All API keys and sensitive data are masked
                   </p>
                   <p className="text-xs text-yellow-200">
@@ -551,7 +551,7 @@ export default function HowItWorksPage() {
 
         {/* Call to Action */}
         <div className="text-center mt-16">
-          <h2 className="text-2xl font-bold text-foreground mb-4">Ready to Start Predicting?</h2>
+          <h2 className="text-2xl font-bold text-yellow-300 mb-4">Ready to Start Predicting?</h2>
           <p className="text-yellow-200 mb-6">
             Connect your wallet and create your first prediction market today
           </p>
