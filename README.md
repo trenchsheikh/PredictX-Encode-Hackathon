@@ -1,4 +1,4 @@
-# BNBPredict - BNB Chain Prediction Markets
+# DarkBet - BNB Chain Prediction Markets
 
 A fully on-chain prediction market platform built on BNB Smart Chain with AI-driven results and Privy wallet integration.
 
@@ -16,7 +16,7 @@ A fully on-chain prediction market platform built on BNB Smart Chain with AI-dri
 ## Tech Stack
 
 - **Frontend**: Next.js 14, React 18, TypeScript
-- **Styling**: Tailwind CSS with custom BNB theme
+- **Styling**: Tailwind CSS with custom DarkBet theme
 - **Wallet**: Privy for wallet integration
 - **Blockchain**: BNB Smart Chain (BSC)
 - **UI Components**: Radix UI primitives
@@ -36,7 +36,7 @@ A fully on-chain prediction market platform built on BNB Smart Chain with AI-dri
 1. Clone the repository:
 ```bash
 git clone <repository-url>
-cd bnb-predict
+cd darkbet
 ```
 
 2. Install dependencies:
@@ -78,6 +78,39 @@ yarn dev
 
 6. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
+## Vercel Deployment
+
+### Prerequisites for Deployment
+
+1. **Vercel Account**: Sign up at [vercel.com](https://vercel.com)
+2. **GitHub Repository**: Push your code to GitHub
+3. **Environment Variables**: Set up required environment variables
+
+### Deployment Steps
+
+1. **Connect to Vercel**:
+   - Go to [vercel.com/dashboard](https://vercel.com/dashboard)
+   - Click "New Project"
+   - Import your GitHub repository
+
+2. **Configure Environment Variables**:
+   ```env
+   NEXT_PUBLIC_PRIVY_APP_ID=your_privy_app_id_here
+   NEXT_PUBLIC_VAULT_CONTRACT_ADDRESS=your_contract_address
+   ```
+
+3. **Deploy**:
+   - Click "Deploy" and Vercel will automatically build and deploy your app
+   - Your app will be available at `https://your-project-name.vercel.app`
+
+### Environment Variables for Production
+
+Set these in your Vercel dashboard under Project Settings > Environment Variables:
+
+- `NEXT_PUBLIC_PRIVY_APP_ID` - Your Privy application ID
+- `NEXT_PUBLIC_VAULT_CONTRACT_ADDRESS` - Your deployed vault contract address
+- `NEXT_PUBLIC_CHAIN_ID` - BNB Chain ID (56 for mainnet, 97 for testnet)
+
 ## Project Structure
 
 ```
@@ -115,14 +148,14 @@ yarn dev
 - **How it Works**: Detailed explanation of the platform
 - **Leaderboard**: Top performers and rankings
 
-## BNB Theme
+## DarkBet Theme
 
-The platform uses a custom BNB-themed design system:
+The platform uses a custom DarkBet-themed design system:
 
 - **Primary**: BNB Yellow (#F0B90B)
-- **Secondary**: BNB Dark (#1E2329)
+- **Background**: Black (#000000)
 - **Accent**: BNB Green (#00D4AA)
-- **Gradients**: Primary to accent color combinations
+- **Gradients**: Black to yellow combinations
 - **Animations**: Glow effects and smooth transitions
 
 ## Smart Contract Integration
@@ -156,7 +189,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## Support
 
-For support, email support@bnbpredict.com or join our Telegram community.
+For support, email support@darkbet.com or join our Telegram community.
 
 ## Roadmap
 
@@ -171,5 +204,3 @@ For support, email support@bnbpredict.com or join our Telegram community.
 ---
 
 Built with ❤️ for the BNB Chain ecosystem
-
-

@@ -10,6 +10,7 @@ import { Particles } from '@/components/ui/particles';
 const spaceGrotesk = Space_Grotesk({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://darkbet.vercel.app'),
   title: 'DarkBet - BNB Chain Prediction Markets',
   description: 'Fully On-Chain Live Betting Market with AI-Driven Results. Built on BNB Smart Chain.',
   keywords: ['prediction markets', 'BNB Chain', 'blockchain', 'betting', 'crypto', 'DeFi'],

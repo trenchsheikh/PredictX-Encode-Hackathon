@@ -298,7 +298,7 @@ export default function HowItWorksPage() {
                             <div className="flex items-start gap-4">
                               <div className="flex-shrink-0">
                                 <Badge variant="outline" className="text-xs">
-                                  {detail.step || 'Detail'}
+                                  {'step' in detail ? detail.step : 'Detail'}
                                 </Badge>
                               </div>
                               <div className="flex-1">
@@ -306,9 +306,9 @@ export default function HowItWorksPage() {
                                   {detail.title}
                                 </h3>
                                 <p className="text-muted-foreground mb-3">
-                                  {detail.description}
+                                  {'description' in detail ? detail.description : ''}
                                 </p>
-                                {detail.items && (
+                                {'items' in detail && detail.items && (
                                   <ul className="space-y-1">
                                     {detail.items.map((item, itemIndex) => (
                                       <li key={itemIndex} className="flex items-start gap-2 text-sm text-muted-foreground">
