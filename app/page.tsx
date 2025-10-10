@@ -225,6 +225,32 @@ export default function HomePage() {
                    <p className="mt-6 text-lg leading-8 text-muted-foreground max-w-2xl mx-auto animate-fade-in">
                      {t('hero_subtitle')}
                    </p>
+                   <div className="mt-8 max-w-4xl mx-auto">
+                     <Card className="card-gradient border-yellow-500/20 bg-black/30 backdrop-blur">
+                       <CardContent className="p-6">
+                         <h2 className="text-xl font-semibold text-yellow-400 mb-4 text-center">
+                           {t('dark_pools_title')}
+                         </h2>
+                         <p className="text-muted-foreground leading-relaxed text-center">
+                           {t('dark_pools_description')}
+                         </p>
+                         <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+                           <div className="p-3 rounded-lg bg-yellow-950/20 border border-yellow-500/10">
+                             <div className="text-sm font-medium text-yellow-400 mb-1">{t('privacy')}</div>
+                             <div className="text-xs text-muted-foreground">{t('privacy_description')}</div>
+                           </div>
+                           <div className="p-3 rounded-lg bg-yellow-950/20 border border-yellow-500/10">
+                             <div className="text-sm font-medium text-yellow-400 mb-1">{t('anti_manipulation')}</div>
+                             <div className="text-xs text-muted-foreground">{t('anti_manipulation_description')}</div>
+                           </div>
+                           <div className="p-3 rounded-lg bg-yellow-950/20 border border-yellow-500/10">
+                             <div className="text-sm font-medium text-yellow-400 mb-1">{t('clean_slate')}</div>
+                             <div className="text-xs text-muted-foreground">{t('clean_slate_description')}</div>
+                           </div>
+                         </div>
+                       </CardContent>
+                     </Card>
+                   </div>
             <div className="mt-10 flex items-center justify-center gap-x-6 animate-fade-in">
               <Button
                 size="lg"

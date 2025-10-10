@@ -32,7 +32,7 @@ export function Header() {
         <div className="flex lg:flex-1">
           <Link href="/" className="-m-1.5 p-1.5 flex items-center space-x-2">
             <div className="w-9 h-9 rounded-full overflow-hidden flex items-center justify-center">
-              <Image src="/darkbet.jpg" alt="DarkBet" width={36} height={36} className="object-cover" />
+              <Image src="/binanceeye.jpg" alt="DarkBet" width={36} height={36} className="object-cover" />
             </div>
             <span className="text-xl font-bold text-gradient">DarkBet</span>
           </Link>
@@ -114,7 +114,7 @@ export function Header() {
           <div className="flex items-center justify-between">
             <Link href="/" className="-m-1.5 p-1.5 flex items-center space-x-2">
               <div className="w-9 h-9 rounded-full overflow-hidden flex items-center justify-center">
-                <Image src="/darkbet.jpg" alt="DarkBet" width={36} height={36} className="object-cover" />
+                <Image src="/binanceeye.jpg" alt="DarkBet" width={36} height={36} className="object-cover" />
               </div>
               <span className="text-xl font-bold text-gradient">DarkBet</span>
             </Link>

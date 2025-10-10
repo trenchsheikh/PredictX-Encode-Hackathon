@@ -270,7 +270,76 @@ export default function HowItWorksPage() {
           </CardContent>
         </Card>
 
-        {/* Steps */}
+        {/* Dark Pools Section */}
+        <Card className="mb-16 card-gradient border-yellow-500/20">
+          <CardContent className="p-8">
+            <div className="text-center mb-8">
+              <div className="mx-auto w-16 h-16 bg-yellow-500/10 rounded-full flex items-center justify-center mb-4">
+                <Eye className="h-8 w-8 text-yellow-400" />
+              </div>
+              <h2 className="text-2xl font-bold text-yellow-400 mb-2">{t('dark_pools_title')}</h2>
+              <p className="text-muted-foreground max-w-4xl mx-auto">
+                {t('dark_pools_description')}
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+              <div className="text-center p-6 rounded-lg bg-yellow-950/20 border border-yellow-500/10">
+                <div className="mx-auto w-12 h-12 bg-yellow-500/10 rounded-full flex items-center justify-center mb-4">
+                  <Lock className="h-6 w-6 text-yellow-400" />
+                </div>
+                <h3 className="text-lg font-semibold text-yellow-400 mb-2">{t('privacy')}</h3>
+                <p className="text-sm text-muted-foreground">
+                  {t('privacy_description')}
+                </p>
+              </div>
+              
+              <div className="text-center p-6 rounded-lg bg-yellow-950/20 border border-yellow-500/10">
+                <div className="mx-auto w-12 h-12 bg-yellow-500/10 rounded-full flex items-center justify-center mb-4">
+                  <Shield className="h-6 w-6 text-yellow-400" />
+                </div>
+                <h3 className="text-lg font-semibold text-yellow-400 mb-2">{t('anti_manipulation')}</h3>
+                <p className="text-sm text-muted-foreground">
+                  {t('anti_manipulation_description')}
+                </p>
+              </div>
+              
+              <div className="text-center p-6 rounded-lg bg-yellow-950/20 border border-yellow-500/10">
+                <div className="mx-auto w-12 h-12 bg-yellow-500/10 rounded-full flex items-center justify-center mb-4">
+                  <Users className="h-6 w-6 text-yellow-400" />
+                </div>
+                <h3 className="text-lg font-semibold text-yellow-400 mb-2">{t('clean_slate')}</h3>
+                <p className="text-sm text-muted-foreground">
+                  {t('clean_slate_description')}
+                </p>
+              </div>
+            </div>
+
+            <div className="bg-black/50 rounded-lg p-6 border border-yellow-500/10">
+              <h3 className="text-lg font-semibold text-yellow-400 mb-4 text-center">
+                {t('dark_pools_comparison_title')}
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <h4 className="text-md font-medium text-red-400 mb-2">❌ {t('traditional_markets_title')}</h4>
+                  <ul className="space-y-1 text-sm text-muted-foreground">
+                    {t('traditional_markets_points').split('|').map((point, index) => (
+                      <li key={index}>• {point}</li>
+                    ))}
+                  </ul>
+                </div>
+                <div>
+                  <h4 className="text-md font-medium text-green-400 mb-2">✅ {t('darkbet_dark_pools_title')}</h4>
+                  <ul className="space-y-1 text-sm text-muted-foreground">
+                    {t('darkbet_dark_pools_points').split('|').map((point, index) => (
+                      <li key={index}>• {point}</li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
         <div className="space-y-16">
           {steps.map((step, index) => (
             <div key={step.number} className="relative">
