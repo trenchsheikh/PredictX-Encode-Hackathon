@@ -10,7 +10,7 @@ export interface AIAnalysisResult {
 }
 
 export interface AIConfig {
-  provider: 'openai' | 'anthropic' | 'custom';
+  provider: 'gemini' | 'openai' | 'anthropic' | 'custom';
   apiKey: string;
   baseUrl?: string;
   model?: string;
@@ -63,6 +63,8 @@ Make the title specific, measurable, and time-bound. The resolution instructions
     const { provider, apiKey, baseUrl, model } = this.config;
 
     switch (provider) {
+      case 'gemini':
+        return this.callGemini(prompt, apiKey, model);
       case 'openai':
         return this.callOpenAI(prompt, apiKey, baseUrl, model);
       case 'anthropic':
@@ -73,6 +75,35 @@ Make the title specific, measurable, and time-bound. The resolution instructions
       default:
         throw new Error(`Unsupported AI provider: ${provider}`);
     }
+  }
+
+  private async callGemini(prompt: string, apiKey: string, model?: string): Promise<string> {
+    const modelName = model || 'gemini-1.5-flash';
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        contents: [{
+          parts: [{
+            text: prompt
+          }]
+        }],
+        generationConfig: {
+          temperature: 0.7,
+          maxOutputTokens: 1000,
+        },
+      }),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(`Gemini API error: ${response.status} ${response.statusText} - ${JSON.stringify(errorData)}`);
+    }
+
+    const data = await response.json();
+    return data.candidates[0].content.parts[0].text;
   }
 
   private async callOpenAI(prompt: string, apiKey: string, baseUrl?: string, model?: string): Promise<string> {
@@ -204,13 +235,36 @@ export function getAIService(): AIService {
 
 // Default configuration from environment variables
 export function getDefaultAIConfig(): AIConfig {
-  const provider = (process.env.NEXT_PUBLIC_AI_PROVIDER as 'openai' | 'anthropic' | 'custom') || 'openai';
-  const apiKey = process.env.NEXT_PUBLIC_AI_API_KEY || '';
+  const provider = (process.env.NEXT_PUBLIC_AI_PROVIDER as 'gemini' | 'openai' | 'anthropic' | 'custom') || 'gemini';
+  
+  // Try to get provider-specific API key first, then fall back to generic key
+  let apiKey = '';
+  if (provider === 'gemini') {
+    apiKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY || process.env.NEXT_PUBLIC_AI_API_KEY || '';
+  } else if (provider === 'openai') {
+    apiKey = process.env.NEXT_PUBLIC_OPENAI_API_KEY || process.env.NEXT_PUBLIC_AI_API_KEY || '';
+  } else if (provider === 'anthropic') {
+    apiKey = process.env.NEXT_PUBLIC_ANTHROPIC_API_KEY || process.env.NEXT_PUBLIC_AI_API_KEY || '';
+  } else {
+    apiKey = process.env.NEXT_PUBLIC_AI_API_KEY || '';
+  }
+
   const baseUrl = process.env.NEXT_PUBLIC_AI_BASE_URL;
-  const model = process.env.NEXT_PUBLIC_AI_MODEL;
+  
+  // Model selection based on provider
+  let model = process.env.NEXT_PUBLIC_AI_MODEL;
+  if (!model) {
+    if (provider === 'gemini') {
+      model = process.env.NEXT_PUBLIC_GEMINI_MODEL || 'gemini-1.5-flash';
+    } else if (provider === 'openai') {
+      model = 'gpt-3.5-turbo';
+    } else if (provider === 'anthropic') {
+      model = 'claude-3-sonnet-20240229';
+    }
+  }
 
   if (!apiKey) {
-    throw new Error('AI API key not found. Please set NEXT_PUBLIC_AI_API_KEY environment variable.');
+    throw new Error(`AI API key not found. Please set NEXT_PUBLIC_${provider.toUpperCase()}_API_KEY or NEXT_PUBLIC_AI_API_KEY environment variable.`);
   }
 
   return {

@@ -7,12 +7,12 @@ import { useI18n } from '@/components/providers/privy-provider';
 export function Footer() {
   const { t } = useI18n();
   return (
-    <footer className="bg-gradient-to-t from-black to-black/60 border-t border-yellow-500/10 text-secondary-foreground">
+    <footer className="bg-black/90 border-t border-black backdrop-blur-sm">
       <div className="mx-auto max-w-7xl px-6 py-12 md:flex md:items-center md:justify-between lg:px-8">
         <div className="flex justify-center space-x-6 md:order-2">
           <Link
             href="https://dexscreener.com/bsc/your-contract-address"
-            className="text-muted-foreground hover:text-yellow-400 transition-colors"
+            className="text-gray-300 hover:text-white transition-colors"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -21,7 +21,7 @@ export function Footer() {
           </Link>
           <Link
             href="https://x.com/bnbpredict"
-            className="text-muted-foreground hover:text-yellow-400 transition-colors"
+            className="text-gray-300 hover:text-white transition-colors"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -30,7 +30,7 @@ export function Footer() {
           </Link>
           <Link
             href="https://t.me/bnbpredict"
-            className="text-muted-foreground hover:text-yellow-400 transition-colors"
+            className="text-gray-300 hover:text-white transition-colors"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -39,7 +39,7 @@ export function Footer() {
           </Link>
         </div>
         <div className="mt-8 md:order-1 md:mt-0">
-                 <p className="text-center text-xs leading-5 text-muted-foreground">
+                 <p className="text-center text-xs leading-5 text-gray-300">
                    &copy; 2025 DarkBet. {t('all_rights_reserved')}
                  </p>
         </div>

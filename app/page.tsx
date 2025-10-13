@@ -210,93 +210,179 @@ export default function HomePage() {
   };
 
   return (
-    <div className="min-h-screen relative overflow-hidden">
+    <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-yellow-400 via-yellow-500 to-yellow-600">
+      <style jsx>{`
+        @keyframes riseUp {
+          0% {
+            transform: translateY(100vh);
+            opacity: 0;
+          }
+          10% {
+            opacity: 0.8;
+          }
+          90% {
+            opacity: 0.8;
+          }
+          100% {
+            transform: translateY(-100vh);
+            opacity: 0;
+          }
+        }
+        .dust-particle {
+          position: absolute;
+          background-color: #000000;
+          border-radius: 50%;
+          animation: riseUp linear infinite;
+        }
+        
+        @keyframes boldPulse {
+          0%, 100% {
+            transform: scale(1);
+            text-shadow: 0 0 20px rgba(0, 0, 0, 0.3),
+                         0 0 40px rgba(0, 0, 0, 0.2);
+          }
+          50% {
+            transform: scale(1.05);
+            text-shadow: 0 0 30px rgba(0, 0, 0, 0.5),
+                         0 0 60px rgba(0, 0, 0, 0.3),
+                         0 0 80px rgba(0, 0, 0, 0.2);
+          }
+        }
+        
+        @keyframes slideInScale {
+          0% {
+            transform: translateY(-20px) scale(0.9);
+            opacity: 0;
+          }
+          100% {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+          }
+        }
+        
+        .bold-title {
+          animation: slideInScale 0.8s ease-out, boldPulse 3s ease-in-out infinite;
+          font-weight: 900;
+          letter-spacing: -0.02em;
+        }
+      `}</style>
+      
+      {/* Rising dust on left side */}
+      <div className="fixed left-0 top-0 bottom-0 w-64 pointer-events-none z-[1] overflow-hidden">
+        {Array.from({ length: 50 }).map((_, i) => (
+          <div
+            key={`left-${i}`}
+            className="dust-particle"
+            style={{
+              left: `${Math.random() * 100}%`,
+              width: `${Math.random() * 4 + 2}px`,
+              height: `${Math.random() * 4 + 2}px`,
+              animationDuration: `${Math.random() * 10 + 15}s`,
+              animationDelay: `${Math.random() * 20}s`,
+            }}
+          />
+        ))}
+      </div>
+      
+      {/* Rising dust on right side */}
+      <div className="fixed right-0 top-0 bottom-0 w-64 pointer-events-none z-[1] overflow-hidden">
+        {Array.from({ length: 50 }).map((_, i) => (
+          <div
+            key={`right-${i}`}
+            className="dust-particle"
+            style={{
+              left: `${Math.random() * 100}%`,
+              width: `${Math.random() * 4 + 2}px`,
+              height: `${Math.random() * 4 + 2}px`,
+              animationDuration: `${Math.random() * 10 + 15}s`,
+              animationDelay: `${Math.random() * 20}s`,
+            }}
+          />
+        ))}
+      </div>
+      
       {/* Hero Section - Betting Style */}
       <div className="relative overflow-hidden z-10">
         <div className="absolute inset-0 bnb-pattern opacity-10" />
         <div className="relative mx-auto max-w-7xl px-6 py-8 sm:py-12 lg:px-8">
           <div className="text-center">
-            <AppleHelloEffect delay={500} duration={1500}>
-              <h1 className="text-3xl font-bold tracking-tight text-yellow-300 sm:text-5xl">
-                <ShimmeringText shimmerColor="#F0B90B" duration={2500}>
-                  {t('live_markets')}
-                </ShimmeringText>
-              </h1>
-            </AppleHelloEffect>
-            <p className="mt-4 text-lg leading-8 text-yellow-200 max-w-2xl mx-auto animate-fade-in">
+            <h1 className="text-5xl sm:text-7xl bold-title text-black">
+              {t('live_markets')}
+            </h1>
+            <p className="mt-4 text-lg leading-8 text-black max-w-2xl mx-auto animate-fade-in">
               {t('hero_subtitle')}
             </p>
             
-            {/* Quick Stats Bar */}
-            <div className="mt-8 flex flex-wrap justify-center gap-4 text-sm">
-              <div className="flex items-center gap-2 bg-yellow-500/10 px-4 py-2 rounded-full border border-yellow-500/20">
-                <Flame className="h-4 w-4 text-yellow-400" />
-                <span className="text-yellow-200 font-medium">{stats.activePredictions} Live Markets</span>
-              </div>
-              <div className="flex items-center gap-2 bg-green-500/10 px-4 py-2 rounded-full border border-green-500/20">
-                <TrendingUp className="h-4 w-4 text-green-400" />
-                <span className="text-green-200 font-medium">{stats.totalVolume.toFixed(2)} BNB Volume</span>
-              </div>
-              <div className="flex items-center gap-2 bg-blue-500/10 px-4 py-2 rounded-full border border-blue-500/20">
-                <Users className="h-4 w-4 text-blue-400" />
-                <span className="text-blue-200 font-medium">{stats.totalParticipants} Players</span>
-              </div>
-            </div>
+             {/* Quick Stats Bar */}
+             <div className="mt-8 flex flex-wrap justify-center gap-4 text-sm">
+               <div className="flex items-center gap-2 bg-black/80 px-4 py-2 rounded-full border border-black">
+                 <Flame className="h-4 w-4 text-yellow-400" />
+                 <span className="text-white font-medium">{stats.activePredictions} Live Markets</span>
+               </div>
+               <div className="flex items-center gap-2 bg-black/80 px-4 py-2 rounded-full border border-black">
+                 <TrendingUp className="h-4 w-4 text-green-400" />
+                 <span className="text-white font-medium">{stats.totalVolume.toFixed(2)} BNB Volume</span>
+               </div>
+               <div className="flex items-center gap-2 bg-black/80 px-4 py-2 rounded-full border border-black">
+                 <Users className="h-4 w-4 text-blue-400" />
+                 <span className="text-white font-medium">{stats.totalParticipants} Players</span>
+               </div>
+             </div>
 
             {/* Dark Pools Feature Card */}
             <div className="mt-8 max-w-4xl mx-auto">
-              <Card className="card-gradient border-yellow-500/20 bg-black/30 backdrop-blur">
+              <Card className="border-black bg-black/80 backdrop-blur">
                 <CardContent className="p-6">
                   <div className="flex items-center justify-center gap-2 mb-4">
                     <Eye className="h-6 w-6 text-yellow-400" />
-                    <h2 className="text-xl font-semibold text-yellow-400">
+                    <h2 className="text-xl font-semibold text-white">
                       {t('dark_pools_title')}
                     </h2>
                   </div>
-                  <p className="text-yellow-200 leading-relaxed text-center mb-6">
+                  <p className="text-gray-200 leading-relaxed text-center mb-6">
                     {t('dark_pools_description')}
                   </p>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
-                    <div className="p-4 rounded-lg bg-yellow-950/20 border border-yellow-500/10">
+                    <div className="p-4 rounded-lg bg-yellow-400/20 border border-yellow-400/30">
                       <Lock className="h-6 w-6 text-yellow-400 mx-auto mb-2" />
-                      <div className="text-sm font-medium text-yellow-400 mb-1">{t('privacy')}</div>
-                      <div className="text-xs text-yellow-200">{t('privacy_description')}</div>
+                      <div className="text-sm font-medium text-white mb-1">{t('privacy')}</div>
+                      <div className="text-xs text-gray-200">{t('privacy_description')}</div>
                     </div>
-                    <div className="p-4 rounded-lg bg-yellow-950/20 border border-yellow-500/10">
+                    <div className="p-4 rounded-lg bg-yellow-400/20 border border-yellow-400/30">
                       <Shield className="h-6 w-6 text-yellow-400 mx-auto mb-2" />
-                      <div className="text-sm font-medium text-yellow-400 mb-1">{t('anti_manipulation')}</div>
-                      <div className="text-xs text-yellow-200">{t('anti_manipulation_description')}</div>
+                      <div className="text-sm font-medium text-white mb-1">{t('anti_manipulation')}</div>
+                      <div className="text-xs text-gray-200">{t('anti_manipulation_description')}</div>
                     </div>
-                    <div className="p-4 rounded-lg bg-yellow-950/20 border border-yellow-500/10">
+                    <div className="p-4 rounded-lg bg-yellow-400/20 border border-yellow-400/30">
                       <Users className="h-6 w-6 text-yellow-400 mx-auto mb-2" />
-                      <div className="text-sm font-medium text-yellow-400 mb-1">{t('clean_slate')}</div>
-                      <div className="text-xs text-yellow-200">{t('clean_slate_description')}</div>
+                      <div className="text-sm font-medium text-white mb-1">{t('clean_slate')}</div>
+                      <div className="text-xs text-gray-200">{t('clean_slate_description')}</div>
                     </div>
                   </div>
                 </CardContent>
               </Card>
             </div>
 
-            {/* CTA Buttons */}
-            <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in">
-              <Button
-                size="lg"
-                onClick={() => setShowCreateModal(true)}
-                className="btn-primary glow-effect animate-glow text-lg px-8 py-3"
-              >
-                <Plus className="h-5 w-5 mr-2" />
-                {t('create_bet')}
-              </Button>
-              <Button
-                variant="outline"
-                size="lg"
-                className="border-yellow-500/30 text-yellow-300 hover:bg-yellow-500/10 text-lg px-8 py-3"
-              >
-                <BarChart3 className="h-5 w-5 mr-2" />
-                View Markets
-              </Button>
+             {/* CTA Buttons */}
+             <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in">
+               <Button
+                 size="lg"
+                 onClick={() => setShowCreateModal(true)}
+                 className="bg-black hover:bg-black/90 text-white text-lg px-8 py-3 shadow-lg"
+               >
+                 <Plus className="h-5 w-5 mr-2" />
+                 {t('create_bet')}
+               </Button>
+               <Button
+                 variant="outline"
+                 size="lg"
+                 className="border-black bg-black/90 text-white hover:bg-black text-lg px-8 py-3"
+               >
+                 <BarChart3 className="h-5 w-5 mr-2" />
+                 View Markets
+               </Button>
               {!authenticated && (
-                <p className="text-sm text-yellow-200 mt-2">
+                <p className="text-sm text-black font-medium mt-2">
                   {t('connect_to_create')}
                 </p>
               )}
@@ -307,33 +393,33 @@ export default function HomePage() {
 
       {/* Promotional Banner */}
       <div className="mx-auto max-w-7xl px-6 lg:px-8 mb-6 relative z-10">
-        <Card className="bg-gradient-to-r from-yellow-500/10 via-yellow-600/5 to-yellow-500/10 border-yellow-500/30">
+        <Card className="bg-black/90 border-black">
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-yellow-500/20 rounded-full flex items-center justify-center">
-                  <Star className="h-6 w-6 text-yellow-400" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-bold text-yellow-300">New to DarkBet?</h3>
-                  <p className="text-yellow-200 text-sm">Get started with our AI-powered prediction markets</p>
-                </div>
-              </div>
+               <div className="flex items-center gap-4">
+                 <div className="w-12 h-12 bg-yellow-500 rounded-full flex items-center justify-center">
+                   <Star className="h-6 w-6 text-black" />
+                 </div>
+                 <div>
+                   <h3 className="text-lg font-bold text-white">New to DarkBet?</h3>
+                   <p className="text-gray-200 text-sm">Get started with our AI-powered prediction markets</p>
+                 </div>
+               </div>
               <div className="flex items-center gap-3">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="border-yellow-500/30 text-yellow-300 hover:bg-yellow-500/10"
-                >
-                  Learn More
-                </Button>
-                <Button
-                  size="sm"
-                  className="bg-yellow-600 hover:bg-yellow-700 text-white"
-                  onClick={() => setShowCreateModal(true)}
-                >
-                  Start Betting
-                </Button>
+                 <Button
+                   variant="outline"
+                   size="sm"
+                   className="border-white bg-white/10 text-white hover:bg-white hover:text-black"
+                 >
+                   Learn More
+                 </Button>
+                 <Button
+                   size="sm"
+                   className="bg-white hover:bg-gray-200 text-black"
+                   onClick={() => setShowCreateModal(true)}
+                 >
+                   Start Betting
+                 </Button>
               </div>
             </div>
           </CardContent>
@@ -343,119 +429,119 @@ export default function HomePage() {
       {/* Quick Stats Bar */}
       <div className="mx-auto max-w-7xl px-6 lg:px-8 mb-6 relative z-10">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <Card className="border-yellow-500/20 bg-black/50">
-            <CardContent className="p-4 text-center">
-              <div className="text-2xl font-bold text-yellow-400">{stats.activePredictions}</div>
-              <div className="text-sm text-yellow-200">Live Markets</div>
-            </CardContent>
-          </Card>
-          <Card className="border-green-500/20 bg-black/50">
-            <CardContent className="p-4 text-center">
-              <div className="text-2xl font-bold text-green-400">{stats.totalVolume.toFixed(1)}</div>
-              <div className="text-sm text-green-200">BNB Volume</div>
-            </CardContent>
-          </Card>
-          <Card className="border-blue-500/20 bg-black/50">
-            <CardContent className="p-4 text-center">
-              <div className="text-2xl font-bold text-blue-400">{stats.totalParticipants}</div>
-              <div className="text-sm text-blue-200">Active Players</div>
-            </CardContent>
-          </Card>
-          <Card className="border-purple-500/20 bg-black/50">
-            <CardContent className="p-4 text-center">
-              <div className="text-2xl font-bold text-purple-400">{stats.totalPredictions}</div>
-              <div className="text-sm text-purple-200">Total Markets</div>
-            </CardContent>
-          </Card>
+           <Card className="border-black bg-black/90">
+             <CardContent className="p-4 text-center">
+               <div className="text-2xl font-bold text-white">{stats.activePredictions}</div>
+               <div className="text-sm text-gray-200">Live Markets</div>
+             </CardContent>
+           </Card>
+           <Card className="border-black bg-black/90">
+             <CardContent className="p-4 text-center">
+               <div className="text-2xl font-bold text-white">{stats.totalVolume.toFixed(1)}</div>
+               <div className="text-sm text-gray-200">BNB Volume</div>
+             </CardContent>
+           </Card>
+           <Card className="border-black bg-black/90">
+             <CardContent className="p-4 text-center">
+               <div className="text-2xl font-bold text-white">{stats.totalParticipants}</div>
+               <div className="text-sm text-gray-200">Active Players</div>
+             </CardContent>
+           </Card>
+           <Card className="border-black bg-black/90">
+             <CardContent className="p-4 text-center">
+               <div className="text-2xl font-bold text-white">{stats.totalPredictions}</div>
+               <div className="text-sm text-gray-200">Total Markets</div>
+             </CardContent>
+           </Card>
         </div>
       </div>
 
       {/* Featured Markets Section - Betting Style */}
       <div className="mx-auto max-w-7xl px-6 lg:px-8 mb-8 relative z-10">
         <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center gap-3">
-            <Trophy className="h-6 w-6 text-yellow-400" />
-            <h2 className="text-2xl font-bold text-yellow-300">Featured Markets</h2>
-            <div className="flex items-center gap-1 bg-red-500/20 px-2 py-1 rounded-full">
-              <Flame className="h-3 w-3 text-red-400" />
-              <span className="text-xs text-red-400 font-medium">HOT</span>
-            </div>
-          </div>
-          <Button
-            variant="outline"
-            size="sm"
-            className="border-yellow-500/20 text-yellow-200 hover:bg-yellow-500/10"
-          >
-            View All
-          </Button>
+           <div className="flex items-center gap-3">
+             <Trophy className="h-6 w-6 text-black" />
+             <h2 className="text-2xl font-bold text-black">Featured Markets</h2>
+             <div className="flex items-center gap-1 bg-red-600 px-2 py-1 rounded-full">
+               <Flame className="h-3 w-3 text-white" />
+               <span className="text-xs text-white font-medium">HOT</span>
+             </div>
+           </div>
+           <Button
+             variant="outline"
+             size="sm"
+             className="border-black bg-black/90 text-white hover:bg-black"
+           >
+             View All
+           </Button>
         </div>
 
         {/* Featured Markets Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
           {filteredPredictions.slice(0, 3).map((prediction, index) => (
-            <Card 
-              key={prediction.id} 
-              className={cn(
-                "relative overflow-hidden border-yellow-500/20 bg-black/50 hover:bg-black/60 transition-all duration-300",
-                prediction.isHot && "ring-2 ring-yellow-500/30 bg-gradient-to-br from-yellow-500/5 to-transparent"
-              )}
-            >
+             <Card 
+               key={prediction.id} 
+               className={cn(
+                 "relative overflow-hidden border-black bg-black/90 hover:bg-black transition-all duration-300",
+                 prediction.isHot && "ring-2 ring-yellow-400"
+               )}
+             >
               <CardContent className="p-4">
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-2">
-                      <Badge 
-                        variant="outline" 
-                        className="text-xs border-yellow-500/20 text-yellow-200"
-                      >
-                        {prediction.category}
-                      </Badge>
-                      {prediction.isHot && (
-                        <Badge variant="warning" className="text-xs animate-pulse">
-                          <Flame className="h-3 w-3 mr-1" />
-                          HOT
-                        </Badge>
-                      )}
-                    </div>
-                    <h3 className="text-sm font-semibold text-yellow-300 line-clamp-2 mb-2">
-                      {prediction.title}
-                    </h3>
-                  </div>
-                  <div className="text-right">
-                    <div className="text-xs text-yellow-200">Pool</div>
-                    <div className="text-sm font-bold text-yellow-400">
-                      {prediction.totalPool.toFixed(2)} BNB
-                    </div>
-                  </div>
+                       <Badge 
+                         variant="outline" 
+                         className="text-xs border-white text-white"
+                       >
+                         {prediction.category}
+                       </Badge>
+                       {prediction.isHot && (
+                         <Badge variant="warning" className="text-xs animate-pulse">
+                           <Flame className="h-3 w-3 mr-1" />
+                           HOT
+                         </Badge>
+                       )}
+                     </div>
+                     <h3 className="text-sm font-semibold text-white line-clamp-2 mb-2">
+                       {prediction.title}
+                     </h3>
+                   </div>
+                   <div className="text-right">
+                     <div className="text-xs text-gray-300">Pool</div>
+                     <div className="text-sm font-bold text-white">
+                       {prediction.totalPool.toFixed(2)} BNB
+                     </div>
+                   </div>
                 </div>
 
-                {/* Odds Display - Betting Style */}
-                <div className="grid grid-cols-2 gap-2 mb-3">
-                  <div className="bg-green-500/10 border border-green-500/20 rounded-lg p-3 text-center">
-                    <div className="text-xs text-green-200 mb-1">YES</div>
-                    <div className="text-lg font-bold text-green-400">
-                      {prediction.yesPrice.toFixed(3)}
-                    </div>
-                    <div className="text-xs text-green-300">
-                      {prediction.yesPool.toFixed(2)} BNB
-                    </div>
-                  </div>
-                  <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-3 text-center">
-                    <div className="text-xs text-red-200 mb-1">NO</div>
-                    <div className="text-lg font-bold text-red-400">
-                      {prediction.noPrice.toFixed(3)}
-                    </div>
-                    <div className="text-xs text-red-300">
-                      {prediction.noPool.toFixed(2)} BNB
-                    </div>
-                  </div>
-                </div>
+                 {/* Odds Display - Betting Style */}
+                 <div className="grid grid-cols-2 gap-2 mb-3">
+                   <div className="bg-green-600 border border-green-700 rounded-lg p-3 text-center">
+                     <div className="text-xs text-white mb-1">YES</div>
+                     <div className="text-lg font-bold text-white">
+                       {prediction.yesPrice.toFixed(3)}
+                     </div>
+                     <div className="text-xs text-gray-200">
+                       {prediction.yesPool.toFixed(2)} BNB
+                     </div>
+                   </div>
+                   <div className="bg-red-600 border border-red-700 rounded-lg p-3 text-center">
+                     <div className="text-xs text-white mb-1">NO</div>
+                     <div className="text-lg font-bold text-white">
+                       {prediction.noPrice.toFixed(3)}
+                     </div>
+                     <div className="text-xs text-gray-200">
+                       {prediction.noPool.toFixed(2)} BNB
+                     </div>
+                   </div>
+                 </div>
 
                 {/* Action Buttons */}
                 <div className="grid grid-cols-2 gap-2">
                   <Button
                     size="sm"
-                    className="bg-green-600 hover:bg-green-700 text-white font-semibold"
+                    className="bg-white hover:bg-gray-200 text-black font-semibold"
                     onClick={() => handleBet(prediction.id, 'yes')}
                   >
                     <ArrowUp className="h-3 w-3 mr-1" />
@@ -463,7 +549,7 @@ export default function HomePage() {
                   </Button>
                   <Button
                     size="sm"
-                    className="bg-red-600 hover:bg-red-700 text-white font-semibold"
+                    className="bg-white hover:bg-gray-200 text-black font-semibold"
                     onClick={() => handleBet(prediction.id, 'no')}
                   >
                     <ArrowDown className="h-3 w-3 mr-1" />
@@ -471,17 +557,17 @@ export default function HomePage() {
                   </Button>
                 </div>
 
-                {/* Market Info */}
-                <div className="flex items-center justify-between mt-3 text-xs text-yellow-200">
-                  <div className="flex items-center gap-1">
-                    <Users className="h-3 w-3" />
-                    <span>{prediction.participants}</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <Clock className="h-3 w-3" />
-                    <span>30d left</span>
-                  </div>
-                </div>
+                 {/* Market Info */}
+                 <div className="flex items-center justify-between mt-3 text-xs text-gray-300">
+                   <div className="flex items-center gap-1">
+                     <Users className="h-3 w-3" />
+                     <span>{prediction.participants}</span>
+                   </div>
+                   <div className="flex items-center gap-1">
+                     <Clock className="h-3 w-3" />
+                     <span>30d left</span>
+                   </div>
+                 </div>
               </CardContent>
             </Card>
           ))}
@@ -494,9 +580,9 @@ export default function HomePage() {
           {/* Section Header */}
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <BarChart3 className="h-6 w-6 text-yellow-400" />
-              <h2 className="text-2xl font-bold text-yellow-300">All Markets</h2>
-              <Badge variant="outline" className="border-yellow-500/20 text-yellow-200">
+              <BarChart3 className="h-6 w-6 text-black" />
+              <h2 className="text-2xl font-bold text-black">All Markets</h2>
+              <Badge variant="outline" className="border-black text-black">
                 {filteredPredictions.length} markets
               </Badge>
             </div>
@@ -504,7 +590,7 @@ export default function HomePage() {
               <Button
                 variant="outline"
                 size="sm"
-                className="border-yellow-500/20 text-yellow-200 hover:bg-yellow-500/10"
+                className="border-black bg-black/90 text-white hover:bg-black"
               >
                 <TrendingUp className="h-4 w-4 mr-1" />
                 Trending
@@ -512,7 +598,7 @@ export default function HomePage() {
               <Button
                 variant="outline"
                 size="sm"
-                className="border-yellow-500/20 text-yellow-200 hover:bg-yellow-500/10"
+                className="border-black bg-black/90 text-white hover:bg-black"
               >
                 <Clock className="h-4 w-4 mr-1" />
                 Ending Soon
@@ -527,40 +613,40 @@ export default function HomePage() {
             totalCount={filteredPredictions.length}
           />
 
-          {/* Markets Grid */}
-          {filteredPredictions.length === 0 ? (
-            <Card className="text-center py-12 border-yellow-500/20 bg-black/50">
-              <CardContent>
-                <div className="mx-auto w-24 h-24 bg-yellow-500/10 rounded-full flex items-center justify-center mb-4">
-                  <TrendingUp className="h-12 w-12 text-yellow-400" />
-                </div>
-                <h3 className="text-lg font-medium text-yellow-300 mb-2">
-                  {t('no_predictions_found')}
-                </h3>
-                <p className="text-yellow-200 mb-4">
-                  {t('try_adjusting_filters')}
-                </p>
-                <Button
-                  onClick={() => setShowCreateModal(true)}
-                  className="btn-primary"
-                >
-                  <Plus className="h-4 w-4 mr-2" />
-                  {t('create_first_prediction')}
-                </Button>
-              </CardContent>
-            </Card>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {filteredPredictions.map((prediction) => (
-                <PredictionCard
-                  key={prediction.id}
-                  prediction={prediction}
-                  onBet={handleBet}
-                  userBets={userBets}
-                />
-              ))}
-            </div>
-          )}
+           {/* Markets Grid */}
+           {filteredPredictions.length === 0 ? (
+             <Card className="text-center py-12 border-black bg-black/90">
+               <CardContent>
+                 <div className="mx-auto w-24 h-24 bg-yellow-500 rounded-full flex items-center justify-center mb-4">
+                   <TrendingUp className="h-12 w-12 text-black" />
+                 </div>
+                 <h3 className="text-lg font-medium text-white mb-2">
+                   {t('no_predictions_found')}
+                 </h3>
+                 <p className="text-gray-200 mb-4">
+                   {t('try_adjusting_filters')}
+                 </p>
+                 <Button
+                   onClick={() => setShowCreateModal(true)}
+                   className="bg-white hover:bg-gray-200 text-black"
+                 >
+                   <Plus className="h-4 w-4 mr-2" />
+                   {t('create_first_prediction')}
+                 </Button>
+               </CardContent>
+             </Card>
+           ) : (
+             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+               {filteredPredictions.map((prediction) => (
+                 <PredictionCard
+                   key={prediction.id}
+                   prediction={prediction}
+                   onBet={handleBet}
+                   userBets={userBets}
+                 />
+               ))}
+             </div>
+           )}
         </div>
       </div>
 

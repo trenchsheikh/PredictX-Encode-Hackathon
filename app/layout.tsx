@@ -50,29 +50,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={spaceGrotesk.className + ' dark bg-black'}>
+      <body className={spaceGrotesk.className}>
         <PrivyProviderWrapper>
-          <div className="min-h-screen bg-transparent flex flex-col">
-            {/* Global background behind header to match page theme */}
-            <div className="fixed inset-0 -z-10">
-              <div className="absolute inset-0 bg-gradient-to-br from-black via-[#0a0a0a] to-black" />
-              {/* Subtle yellow radial glows to achieve black→yellow theme */}
-              <div className="absolute inset-0 pointer-events-none [background:radial-gradient(60%_40%_at_0%_0%,rgba(240,185,11,0.12)_0%,transparent_60%),radial-gradient(50%_35%_at_100%_100%,rgba(240,185,11,0.08)_0%,transparent_60%)]" />
-              <Particles 
-                className="absolute inset-0" 
-                quantity={50} 
-                color="#F0B90B" 
-                size={0.5}
-                staticity={30}
-              />
-              <InteractiveGridPattern 
-                className="absolute inset-0 opacity-20" 
-                width={40} 
-                height={40}
-                size={4}
-                gap={1}
-                strokeColor="#3a3a3a"
-              />
+          <div className="min-h-screen flex flex-col relative">
+            {/* Global Yellow Background - Clean, no dust */}
+            <div className="fixed inset-0 -z-50">
+              {/* Base yellow gradient */}
+              <div className="absolute inset-0 bg-gradient-to-br from-yellow-400 via-yellow-500 to-yellow-600" />
             </div>
             <Header />
             <main className="flex-1">
