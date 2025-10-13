@@ -135,7 +135,7 @@ export default function LeaderboardPage() {
       case 3:
         return <Award className="h-6 w-6 text-amber-600" />;
       default:
-        return <span className="text-lg font-bold text-muted-foreground">#{rank}</span>;
+        return <span className="text-lg font-bold text-black/80">#{rank}</span>;
     }
   };
 
@@ -181,32 +181,32 @@ export default function LeaderboardPage() {
   });
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-gradient-to-br from-yellow-400 via-yellow-500 to-yellow-600">
       <div className="mx-auto max-w-7xl px-6 py-16 lg:px-8">
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold tracking-tight text-yellow-300 sm:text-6xl mb-4">
+          <h1 className="text-4xl font-bold tracking-tight text-white sm:text-6xl mb-4">
             {t('leaderboard')}
           </h1>
-          <p className="text-lg text-yellow-200 max-w-2xl mx-auto">
+          <p className="text-lg text-gray-200 max-w-2xl mx-auto">
             {t('top_performers')}
           </p>
         </div>
 
         {/* Stats Overview */}
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 mb-12">
-          <Card className="card-gradient border-yellow-500/20 bg-black/50">
+          <Card className="bg-black/90 border-black">
             <CardContent className="p-6">
               <div className="flex items-center">
                 <div className="flex-shrink-0">
-                  <Trophy className="h-8 w-8 text-primary" />
+                  <Trophy className="h-8 w-8 text-yellow-400" />
                 </div>
                 <div className="ml-5 w-0 flex-1">
                   <dl>
-                    <dt className="text-sm font-medium text-yellow-200 truncate">
+                    <dt className="text-sm font-medium text-gray-200 truncate">
                       {t('total_players')}
                     </dt>
-                    <dd className="text-lg font-medium text-yellow-300">
+                    <dd className="text-lg font-medium text-white">
                       {mockLeaderboard.length}
                     </dd>
                   </dl>
@@ -215,18 +215,18 @@ export default function LeaderboardPage() {
             </CardContent>
           </Card>
 
-          <Card className="card-gradient border-yellow-500/20 bg-black/50">
+          <Card className="bg-black/90 border-black">
             <CardContent className="p-6">
               <div className="flex items-center">
                 <div className="flex-shrink-0">
-                  <DollarSign className="h-8 w-8 text-accent" />
+                  <DollarSign className="h-8 w-8 text-green-400" />
                 </div>
                 <div className="ml-5 w-0 flex-1">
                   <dl>
-                    <dt className="text-sm font-medium text-yellow-200 truncate">
+                    <dt className="text-sm font-medium text-gray-200 truncate">
                       {t('total_winnings')}
                     </dt>
-                    <dd className="text-lg font-medium text-yellow-300">
+                    <dd className="text-lg font-medium text-white">
                       {formatBNB(mockLeaderboard.reduce((sum, entry) => sum + entry.totalWinnings, 0))}
                     </dd>
                   </dl>
@@ -235,18 +235,18 @@ export default function LeaderboardPage() {
             </CardContent>
           </Card>
 
-          <Card className="card-gradient border-yellow-500/20 bg-black/50">
+          <Card className="bg-black/90 border-black">
             <CardContent className="p-6">
               <div className="flex items-center">
                 <div className="flex-shrink-0">
-                  <Target className="h-8 w-8 text-primary" />
+                  <Target className="h-8 w-8 text-yellow-400" />
                 </div>
                 <div className="ml-5 w-0 flex-1">
                   <dl>
-                    <dt className="text-sm font-medium text-yellow-200 truncate">
+                    <dt className="text-sm font-medium text-gray-200 truncate">
                       {t('total_bets_sort')}
                     </dt>
-                    <dd className="text-lg font-medium text-yellow-300">
+                    <dd className="text-lg font-medium text-white">
                       {mockLeaderboard.reduce((sum, entry) => sum + entry.totalBets, 0)}
                     </dd>
                   </dl>
@@ -255,18 +255,18 @@ export default function LeaderboardPage() {
             </CardContent>
           </Card>
 
-          <Card className="card-gradient border-yellow-500/20 bg-black/50">
+          <Card className="bg-black/90 border-black">
             <CardContent className="p-6">
               <div className="flex items-center">
                 <div className="flex-shrink-0">
-                  <TrendingUp className="h-8 w-8 text-accent" />
+                  <TrendingUp className="h-8 w-8 text-green-400" />
                 </div>
                 <div className="ml-5 w-0 flex-1">
                   <dl>
-                    <dt className="text-sm font-medium text-yellow-200 truncate">
+                    <dt className="text-sm font-medium text-gray-200 truncate">
                       Avg Win Rate
                     </dt>
-                    <dd className="text-lg font-medium text-yellow-300">
+                    <dd className="text-lg font-medium text-white">
                       {Math.round(mockLeaderboard.reduce((sum, entry) => sum + entry.winRate, 0) / mockLeaderboard.length * 100)}%
                     </dd>
                   </dl>
@@ -281,13 +281,13 @@ export default function LeaderboardPage() {
           <CardContent className="p-6">
             <div className="flex flex-col sm:flex-row gap-4">
               <div className="flex-1">
-                <label className="text-sm font-medium text-yellow-200 mb-2 block">
+                <label className="text-sm font-medium text-gray-200 mb-2 block">
                   Timeframe
                 </label>
                 <select
                   value={selectedTimeframe}
                   onChange={(e) => setSelectedTimeframe(e.target.value)}
-                  className="w-full p-2 border border-yellow-500/20 rounded-md bg-black/30 text-yellow-200"
+                  className="w-full p-2 border border-yellow-500/20 rounded-md bg-black/30 text-gray-200"
                 >
                   {timeframes.map((timeframe) => (
                     <option key={timeframe.value} value={timeframe.value}>
@@ -298,13 +298,13 @@ export default function LeaderboardPage() {
               </div>
               
               <div className="flex-1">
-                <label className="text-sm font-medium text-yellow-200 mb-2 block">
+                <label className="text-sm font-medium text-gray-200 mb-2 block">
                   Category
                 </label>
                 <select
                   value={selectedCategory}
                   onChange={(e) => setSelectedCategory(e.target.value)}
-                  className="w-full p-2 border border-yellow-500/20 rounded-md bg-black/30 text-yellow-200"
+                  className="w-full p-2 border border-yellow-500/20 rounded-md bg-black/30 text-gray-200"
                 >
                   {categories.map((category) => (
                     <option key={category.value} value={category.value}>
@@ -315,13 +315,13 @@ export default function LeaderboardPage() {
               </div>
               
               <div className="flex-1">
-                <label className="text-sm font-medium text-yellow-200 mb-2 block">
+                <label className="text-sm font-medium text-gray-200 mb-2 block">
                   {t('sort_by')}
                 </label>
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value as any)}
-                  className="w-full p-2 border border-yellow-500/20 rounded-md bg-black/30 text-yellow-200"
+                  className="w-full p-2 border border-yellow-500/20 rounded-md bg-black/30 text-gray-200"
                 >
                   <option value="winnings">{t('total_winnings_sort')}</option>
                   <option value="winrate">{t('win_rate_sort')}</option>
@@ -352,7 +352,7 @@ export default function LeaderboardPage() {
                     
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-1">
-                        <h3 className="text-lg font-semibold text-yellow-300 truncate">
+                        <h3 className="text-lg font-semibold text-white truncate">
                           {entry.username || formatAddress(entry.address)}
                         </h3>
                         {entry.isVerified && (
@@ -369,7 +369,7 @@ export default function LeaderboardPage() {
                         )}
                       </div>
                       
-                      <div className="flex items-center gap-4 text-sm text-yellow-200 mb-3">
+                      <div className="flex items-center gap-4 text-sm text-gray-200 mb-3">
                         <span>{formatAddress(entry.address)}</span>
                         <span>•</span>
                         <span>Last active {formatLastActive(entry.lastActive)}</span>
@@ -391,29 +391,29 @@ export default function LeaderboardPage() {
                   
                   <div className="flex items-center gap-8">
                     <div className="text-center">
-                      <div className="text-sm text-yellow-200">{t('winnings')}</div>
-                      <div className="text-lg font-semibold text-yellow-300">
+                      <div className="text-sm text-gray-200">{t('winnings')}</div>
+                      <div className="text-lg font-semibold text-white">
                         {formatBNB(entry.totalWinnings)}
                       </div>
                     </div>
                     
                     <div className="text-center">
-                      <div className="text-sm text-yellow-200">{t('win_rate')}</div>
-                      <div className="text-lg font-semibold text-yellow-300">
+                      <div className="text-sm text-gray-200">{t('win_rate')}</div>
+                      <div className="text-lg font-semibold text-white">
                         {Math.round(entry.winRate * 100)}%
                       </div>
                     </div>
                     
                     <div className="text-center">
-                      <div className="text-sm text-yellow-200">{t('bets')}</div>
-                      <div className="text-lg font-semibold text-yellow-300">
+                      <div className="text-sm text-gray-200">{t('bets')}</div>
+                      <div className="text-lg font-semibold text-white">
                         {entry.totalBets}
                       </div>
                     </div>
                     
                     <div className="text-center">
-                      <div className="text-sm text-yellow-200">{t('volume')}</div>
-                      <div className="text-lg font-semibold text-yellow-300">
+                      <div className="text-sm text-gray-200">{t('volume')}</div>
+                      <div className="text-lg font-semibold text-white">
                         {formatBNB(entry.totalVolume)}
                       </div>
                     </div>
@@ -433,19 +433,19 @@ export default function LeaderboardPage() {
         <Card className="mt-12 text-center border-yellow-500/20 bg-black/50">
           <CardContent className="p-8">
             <div className="mx-auto w-16 h-16 bg-yellow-500/10 rounded-full flex items-center justify-center mb-4">
-              <Trophy className="h-8 w-8 text-yellow-400" />
+              <Trophy className="h-8 w-8 text-white" />
             </div>
-            <h3 className="text-lg font-medium text-yellow-300 mb-2">
+            <h3 className="text-lg font-medium text-white mb-2">
               {t('more_features_coming')}
             </h3>
-            <p className="text-yellow-200 mb-4">
+            <p className="text-gray-200 mb-4">
               {t('working_on_features')}
             </p>
             <div className="flex flex-wrap justify-center gap-2">
-              <Badge variant="outline" className="border-yellow-500/20 text-yellow-200">{t('historical_charts')}</Badge>
-              <Badge variant="outline" className="border-yellow-500/20 text-yellow-200">{t('advanced_filters')}</Badge>
-              <Badge variant="outline" className="border-yellow-500/20 text-yellow-200">{t('portfolio_tracking')}</Badge>
-              <Badge variant="outline" className="border-yellow-500/20 text-yellow-200">{t('achievement_system')}</Badge>
+              <Badge variant="outline" className="border-yellow-500/20 text-gray-200">{t('historical_charts')}</Badge>
+              <Badge variant="outline" className="border-yellow-500/20 text-gray-200">{t('advanced_filters')}</Badge>
+              <Badge variant="outline" className="border-yellow-500/20 text-gray-200">{t('portfolio_tracking')}</Badge>
+              <Badge variant="outline" className="border-yellow-500/20 text-gray-200">{t('achievement_system')}</Badge>
             </div>
           </CardContent>
         </Card>

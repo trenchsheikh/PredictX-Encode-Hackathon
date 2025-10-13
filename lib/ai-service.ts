@@ -3,6 +3,8 @@
 
 export interface AIAnalysisResult {
   title: string;
+  description: string; // 3-line concise description
+  summary: string; // Detailed unbiased summary
   category: string;
   expiresAt: number;
   resolutionInstructions: string;
@@ -39,10 +41,12 @@ class AIService {
     return `You are an expert prediction market analyst. Analyze the following prediction description and generate:
 
 1. A clear, concise title (max 60 characters)
-2. The most appropriate category from: sports, crypto, politics, entertainment, weather, finance, technology, custom
-3. A reasonable expiration date (in days from now, max 365)
-4. Detailed resolution instructions for how to determine the outcome
-5. Optional: 2-4 suggested betting options (default: YES/NO)
+2. A 3-line concise description (max 150 characters total, 3 sentences)
+3. A detailed, unbiased summary (200-300 words) explaining what could happen if YES wins and what could happen if NO wins. Present both scenarios equally without favoring either outcome.
+4. The most appropriate category from: sports, crypto, politics, entertainment, weather, finance, technology, custom
+5. A reasonable expiration date (in days from now, max 365)
+6. Detailed resolution instructions for how to determine the outcome
+7. Optional: 2-4 suggested betting options (default: YES/NO)
 
 Prediction Description: "${description}"
 Current Category: "${category}"
@@ -50,13 +54,15 @@ Current Category: "${category}"
 Please respond in JSON format:
 {
   "title": "Will [specific event] happen?",
+  "description": "Brief 3-line description. Max 150 chars. Concise overview.",
+  "summary": "A detailed, balanced summary explaining the prediction context. If YES wins: [explain what this means and potential implications]. If NO wins: [explain what this means and potential implications]. Present both scenarios objectively without bias, highlighting key factors that could influence the outcome.",
   "category": "sports",
   "expiresInDays": 7,
   "resolutionInstructions": "Determine the outcome based on [specific criteria]...",
   "suggestedOptions": ["YES", "NO"]
 }
 
-Make the title specific, measurable, and time-bound. The resolution instructions should be clear about what data sources to use and how to verify the outcome.`;
+Make the title specific, measurable, and time-bound. The 3-line description should be very concise. The summary should be detailed and present both YES and NO outcomes equally without bias. The resolution instructions should be clear about what data sources to use and how to verify the outcome.`;
   }
 
   private async callAI(prompt: string): Promise<string> {
@@ -200,6 +206,8 @@ Make the title specific, measurable, and time-bound. The resolution instructions
 
       return {
         title: parsed.title || 'AI Generated Prediction',
+        description: parsed.description || 'AI-generated prediction market.',
+        summary: parsed.summary || 'This prediction market allows participants to bet on the outcome of a future event.',
         category: parsed.category || 'custom',
         expiresAt,
         resolutionInstructions: parsed.resolutionInstructions || 'AI will determine the outcome based on available data.',
@@ -210,6 +218,8 @@ Make the title specific, measurable, and time-bound. The resolution instructions
       // Fallback response
       return {
         title: 'AI Generated Prediction',
+        description: 'AI-generated prediction market.',
+        summary: 'This prediction market allows participants to bet on the outcome of a future event.',
         category: 'custom',
         expiresAt: Date.now() + (7 * 24 * 60 * 60 * 1000),
         resolutionInstructions: 'AI will determine the outcome based on available data.',

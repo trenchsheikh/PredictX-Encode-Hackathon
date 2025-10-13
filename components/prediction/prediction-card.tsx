@@ -6,7 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Prediction } from '@/types/prediction';
 import { formatBNB, formatTimeRemaining } from '@/lib/utils';
-import { Clock, Users, ArrowUp, ArrowDown, Flame } from 'lucide-react';
+import { Clock, Users, ArrowUp, ArrowDown, Flame, ChevronDown, ChevronUp, Info } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useI18n } from '@/components/providers/privy-provider';
 
@@ -19,6 +19,7 @@ interface PredictionCardProps {
 export function PredictionCard({ prediction, onBet, userBets }: PredictionCardProps) {
   const { t } = useI18n();
   const [isLoading, setIsLoading] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
   const userBet = userBets?.[prediction.id];
 
   const handleBet = async (outcome: 'yes' | 'no') => {
@@ -74,6 +75,35 @@ export function PredictionCard({ prediction, onBet, userBets }: PredictionCardPr
         <p className="text-xs text-gray-200 mb-3 line-clamp-2">
           {prediction.description}
         </p>
+
+        {/* Expandable Summary Section */}
+        {prediction.summary && (
+          <div className="mb-3">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setIsExpanded(!isExpanded)}
+              className="w-full flex items-center justify-between text-xs text-gray-300 hover:text-white hover:bg-white/10 p-2"
+            >
+              <span className="flex items-center gap-1">
+                <Info className="h-3 w-3" />
+                {isExpanded ? 'Hide Analysis' : 'View Detailed Analysis'}
+              </span>
+              {isExpanded ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />}
+            </Button>
+            {isExpanded && (
+              <div className="mt-2 p-3 rounded-lg bg-yellow-500/10 border border-yellow-500/30">
+                <div className="text-xs font-medium text-yellow-400 mb-2 flex items-center gap-1">
+                  <Info className="h-3 w-3" />
+                  Unbiased Market Analysis
+                </div>
+                <p className="text-xs text-gray-200 leading-relaxed whitespace-pre-wrap">
+                  {prediction.summary}
+                </p>
+              </div>
+            )}
+          </div>
+        )}
 
         {/* Odds Display - Betting Style */}
         <div className="grid grid-cols-2 gap-2 mb-3">

@@ -49,12 +49,15 @@ export function CreateBetModal({ open, onOpenChange, onSubmit }: CreateBetModalP
   const { t } = useI18n();
   const [aiGenerated, setAiGenerated] = useState<{
     title: string;
+    description: string;
+    summary: string;
     category: PredictionCategory;
     expiresAt: number;
     resolutionInstructions: string;
   } | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [options, setOptions] = useState<string[]>(['YES', 'NO']);
+  const [generateAnalysis, setGenerateAnalysis] = useState(true);
 
   const {
     register,
@@ -98,12 +101,15 @@ export function CreateBetModal({ open, onOpenChange, onSubmit }: CreateBetModalP
       
       const aiGeneratedData = {
         title: analysis.title,
+        description: analysis.description,
+        summary: analysis.summary,
         category: analysis.category as PredictionCategory,
         expiresAt: analysis.expiresAt,
         resolutionInstructions: analysis.resolutionInstructions,
       };
       
       setAiGenerated(aiGeneratedData);
+      setValue('description', analysis.description);
       setValue('expiresAt', analysis.expiresAt);
       setValue('resolutionInstructions', analysis.resolutionInstructions);
       setValue('category', analysis.category as PredictionCategory);
@@ -117,12 +123,15 @@ export function CreateBetModal({ open, onOpenChange, onSubmit }: CreateBetModalP
       // Fallback to mock analysis if AI fails
       const fallbackAnalysis = {
         title: `Will ${watchedDescription.split(' ').slice(0, 3).join(' ')} happen?`,
+        description: watchedDescription.slice(0, 150),
+        summary: `This prediction market allows participants to bet on whether ${watchedDescription}. If YES wins, the stated outcome will have occurred. If NO wins, the stated outcome will not have occurred.`,
         category: watchedCategory,
         expiresAt: Date.now() + 86400000 * 30, // 30 days from now
         resolutionInstructions: `Determine if ${watchedDescription} based on verifiable data sources and official records.`,
       };
       
       setAiGenerated(fallbackAnalysis);
+      setValue('description', fallbackAnalysis.description);
       setValue('expiresAt', fallbackAnalysis.expiresAt);
       setValue('resolutionInstructions', fallbackAnalysis.resolutionInstructions);
     } finally {
@@ -147,12 +156,14 @@ export function CreateBetModal({ open, onOpenChange, onSubmit }: CreateBetModalP
     const predictionData: CreatePredictionData = {
       ...data,
       title: aiGenerated?.title || `Will ${data.description.split(' ').slice(0, 3).join(' ')} happen?`,
+      summary: generateAnalysis ? aiGenerated?.summary : undefined,
       options,
     };
     onSubmit(predictionData);
     reset();
     setAiGenerated(null);
     setOptions(['YES', 'NO']);
+    setGenerateAnalysis(true);
   };
 
   const handleClose = () => {
@@ -160,6 +171,7 @@ export function CreateBetModal({ open, onOpenChange, onSubmit }: CreateBetModalP
     reset();
     setAiGenerated(null);
     setOptions(['YES', 'NO']);
+    setGenerateAnalysis(true);
   };
 
   return (
@@ -251,6 +263,20 @@ export function CreateBetModal({ open, onOpenChange, onSubmit }: CreateBetModalP
                 </Button>
               </div>
               
+              {/* Generate Analysis Checkbox */}
+              <div className="flex items-center gap-2 p-3 rounded-lg bg-black/80 border border-black">
+                <input
+                  type="checkbox"
+                  id="generateAnalysis"
+                  checked={generateAnalysis}
+                  onChange={(e) => setGenerateAnalysis(e.target.checked)}
+                  className="w-4 h-4 rounded border-white/20 bg-black/50 text-yellow-400 focus:ring-yellow-400"
+                />
+                <label htmlFor="generateAnalysis" className="text-sm text-white cursor-pointer flex-1">
+                  Generate detailed analysis (unbiased summary for card)
+                </label>
+              </div>
+
               {aiGenerated && (
                 <Card className="border-black bg-black/80">
                   <CardHeader className="pb-2">
@@ -264,6 +290,18 @@ export function CreateBetModal({ open, onOpenChange, onSubmit }: CreateBetModalP
                       <div className="text-xs text-gray-300">{t('title')}</div>
                       <div className="text-sm font-medium text-white">{aiGenerated.title}</div>
                     </div>
+                    <div>
+                      <div className="text-xs text-gray-300">Description</div>
+                      <div className="text-sm text-gray-200">{aiGenerated.description}</div>
+                    </div>
+                    {generateAnalysis && aiGenerated.summary && (
+                      <div>
+                        <div className="text-xs text-gray-300">Detailed Analysis</div>
+                        <div className="text-sm text-gray-200 whitespace-pre-wrap max-h-40 overflow-y-auto">
+                          {aiGenerated.summary}
+                        </div>
+                      </div>
+                    )}
                     <div>
                       <div className="text-xs text-gray-300">{t('resolution_instructions')}</div>
                       <div className="text-sm text-gray-200">{aiGenerated.resolutionInstructions}</div>
@@ -327,6 +365,30 @@ export function CreateBetModal({ open, onOpenChange, onSubmit }: CreateBetModalP
                 {t('add_option')}
               </Button>
             </div>
+          </div>
+
+          {/* Expiration Date */}
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-black flex items-center gap-2">
+              <Calendar className="h-4 w-4" />
+              Bet Expiration Date *
+            </label>
+            <Input
+              type="datetime-local"
+              {...register('expiresAt', { 
+                valueAsNumber: false,
+                setValueAs: (value) => new Date(value).getTime()
+              })}
+              min={new Date(Date.now() + 3600000).toISOString().slice(0, 16)}
+              defaultValue={new Date(Date.now() + 86400000 * 7).toISOString().slice(0, 16)}
+              className="bg-black/90 border-black text-white"
+            />
+            {errors.expiresAt && (
+              <p className="text-sm text-red-600 font-semibold">{errors.expiresAt.message}</p>
+            )}
+            <p className="text-xs text-black">
+              Set when this prediction market will close and be resolved
+            </p>
           </div>
 
           {/* Place Initial Bet */}

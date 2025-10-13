@@ -2,6 +2,7 @@ export interface Prediction {
   id: string;
   title: string;
   description: string;
+  summary?: string; // AI-generated unbiased summary
   category: PredictionCategory;
   status: PredictionStatus;
   createdAt: number;
@@ -59,6 +60,7 @@ export interface UserBet {
 export interface CreatePredictionData {
   title: string;
   description: string;
+  summary?: string; // AI-generated unbiased summary
   category: PredictionCategory;
   betType: 'custom' | 'auto-verified';
   resolutionInstructions?: string;

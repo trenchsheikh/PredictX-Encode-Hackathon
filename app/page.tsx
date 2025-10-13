@@ -23,6 +23,7 @@ const mockPredictions: Prediction[] = [
     id: '1',
     title: 'Will BNB reach $1,000 by end of 2025?',
     description: 'BNB price prediction for Q4 2025 based on BSC ecosystem growth, BNB Chain developments, and increasing DeFi adoption.',
+    summary: 'This prediction market focuses on whether BNB will reach $1,000 by December 31, 2025.\n\nIf YES wins: BNB would need to increase approximately 70% from current levels. This could happen if the BNB Chain ecosystem experiences significant growth in DeFi TVL, new dApp launches increase substantially, BNB burn mechanisms accelerate deflation, and institutional adoption of BSC increases. Major developments like new partnerships, exchange integrations, or regulatory clarity could also drive this outcome.\n\nIf NO wins: BNB would remain below $1,000 through year-end 2025. This could occur if crypto market conditions remain bearish, BNB Chain faces increased competition from other L1s, DeFi activity on BSC stagnates or declines, or macro-economic factors limit crypto investment. Regulatory challenges or technical issues could also prevent the price target from being reached.',
     category: 'crypto',
     status: 'active',
     createdAt: Date.now() - 86400000 * 2,
@@ -43,6 +44,7 @@ const mockPredictions: Prediction[] = [
     id: '2',
     title: 'Will Bitcoin reach $200,000 in 2026?',
     description: 'Bitcoin price prediction for 2026 considering post-halving bull cycle, institutional adoption, and spot ETF inflows.',
+    summary: 'This market predicts whether Bitcoin will reach $200,000 at any point during 2026.\n\nIf YES wins: Bitcoin would more than double from current levels. The 2024 halving event historically triggers bull cycles 12-18 months later, potentially driving this outcome. Continued Bitcoin ETF adoption, increased institutional treasury allocations (following MicroStrategy\'s model), nation-state adoption, and global macroeconomic instability could push BTC to this level. Additionally, supply shock from halving combined with sustained demand would support this scenario.\n\nIf NO wins: Bitcoin would remain below $200,000 throughout 2026. This could result from regulatory crackdowns in major markets, reduced institutional interest, extended crypto winter conditions, or the post-halving rally failing to materialize as expected. Competition from other cryptocurrencies, macroeconomic factors favoring traditional assets, or technical resistance levels could also prevent Bitcoin from reaching this price target.',
     category: 'crypto',
     status: 'active',
     createdAt: Date.now() - 86400000,
@@ -63,6 +65,7 @@ const mockPredictions: Prediction[] = [
     id: '3',
     title: 'Will Inter Miami win MLS Cup 2025?',
     description: 'MLS Championship prediction with Lionel Messi leading Inter Miami in the 2025 season playoffs.',
+    summary: 'This prediction market determines whether Inter Miami CF will win the 2025 MLS Cup Championship.\n\nIf YES wins: Inter Miami would capture their first MLS Cup title. With Lionel Messi anchoring the attack, Luis Suárez providing experience, and Sergio Busquets controlling midfield, the team has world-class talent. Success would require staying healthy through the playoffs, maintaining strong regular season form to secure home-field advantage, and the supporting cast stepping up in crucial moments. Messi\'s playoff experience and ability to perform in high-pressure situations would be critical factors.\n\nIf NO wins: Inter Miami would fall short of the championship. This could happen due to playoff injuries to key players, defensive vulnerabilities being exposed by elite MLS teams, inconsistent performances in knockout games, or simply being outplayed by stronger opposition. Other competitive Eastern Conference teams with deeper rosters, better team chemistry, or tactical advantages could eliminate Miami before the final. Single-elimination playoff format also increases variance and upset potential.',
     category: 'sports',
     status: 'active',
     createdAt: Date.now() - 86400000 * 3,
@@ -83,6 +86,7 @@ const mockPredictions: Prediction[] = [
     id: '4',
     title: 'Will Ethereum reach $8,000 by Q2 2026?',
     description: 'Ethereum price prediction following staking yield growth, L2 scaling improvements, and institutional DeFi adoption.',
+    summary: 'This market predicts whether Ethereum will reach $8,000 by the end of Q2 2026 (June 30, 2026).\n\nIf YES wins: Ethereum would need to more than double from current levels. This could be driven by explosive growth in Layer 2 solutions (Arbitrum, Optimism, Base) increasing network usage while reducing fees, rising staking yields attracting institutional capital, successful implementation of future upgrades improving scalability, and major institutions building DeFi applications on Ethereum. The transition to proof-of-stake and deflationary tokenomics could also support this price level if demand remains strong.\n\nIf NO wins: Ethereum would remain below $8,000 through June 2026. This could result from Layer 1 competition intensifying (Solana, Avalanche capturing market share), L2 solutions cannibalizing mainnet value, regulatory uncertainty around DeFi and staking, macroeconomic headwinds limiting risk asset appreciation, or technical challenges delaying planned upgrades. Gas fees remaining high despite L2 growth could also limit adoption and price appreciation.',
     category: 'crypto',
     status: 'active',
     createdAt: Date.now() - 86400000 * 4,
@@ -103,6 +107,7 @@ const mockPredictions: Prediction[] = [
     id: '5',
     title: 'Will Manchester City win Premier League 2025-2026?',
     description: 'English Premier League title prediction for the 2025-2026 season with Pep Guardiola\'s Manchester City.',
+    summary: 'This prediction determines whether Manchester City will win the 2025-2026 Premier League title.\n\nIf YES wins: Manchester City would secure another Premier League championship under Pep Guardiola. Their success would likely stem from tactical superiority, squad depth allowing rotation without quality drop-off, dominant home form at the Etihad, and consistency across the 38-game season. Key factors would include Erling Haaland maintaining elite goal-scoring form, midfield control from Rodri and De Bruyne, and the defensive solidity that has characterized their recent dominance. Their financial resources and elite academy also support sustained success.\n\nIf NO wins: Manchester City would fail to win the title, potentially ending their recent dynasty. This could happen if key injuries impact squad depth (particularly Rodri or Haaland), Arsenal or Liverpool mount stronger sustained challenges, tactical evolution from rivals neutralizes City\'s style, or off-field issues (financial investigations, management changes) create instability. New ownership at other clubs, increased competition intensity, or simply regression to the mean after sustained excellence could also prevent another title.',
     category: 'sports',
     status: 'active',
     createdAt: Date.now() - 86400000 * 5,
@@ -123,6 +128,7 @@ const mockPredictions: Prediction[] = [
     id: '6',
     title: 'Will Solana flip BNB by market cap in 2026?',
     description: 'Solana vs BNB market cap prediction based on ecosystem growth, DeFi TVL, and institutional adoption trends.',
+    summary: 'This market predicts whether Solana will surpass BNB in total market capitalization at any point during 2026.\n\nIf YES wins: Solana would overtake BNB to become a top-3 cryptocurrency by market cap. This could be driven by Solana\'s superior transaction speed and lower fees attracting more developers and users, explosive growth in Solana DeFi and NFT ecosystems, institutional adoption through products like Solana ETFs or corporate integrations, and successful resolution of past network stability issues. Major DApp migrations to Solana, mobile phone adoption (Saga), and improved validator decentralization could accelerate this flip.\n\nIf NO wins: BNB would maintain its market cap advantage over Solana throughout 2026. This could result from Binance exchange continuing to drive BNB utility and burn mechanisms, BNB Chain (BSC) maintaining its DeFi dominance in emerging markets, Solana experiencing network outages or technical setbacks, regulatory advantages favoring Binance\'s established ecosystem, or broader crypto market conditions favoring established chains. BNB\'s deflationary tokenomics and exchange integration provide structural advantages that could prove difficult to overcome.',
     category: 'crypto',
     status: 'active',
     createdAt: Date.now() - 86400000 * 1,
@@ -143,6 +149,7 @@ const mockPredictions: Prediction[] = [
     id: '7',
     title: 'Will Lakers win NBA Championship 2025-2026?',
     description: 'NBA Finals prediction for the 2025-2026 season with LeBron James and Anthony Davis leading the Lakers.',
+    summary: 'This prediction market focuses on whether the Los Angeles Lakers will win the 2025-2026 NBA Championship.\n\nIf YES wins: The Lakers would capture their 18th NBA championship. Success would require Anthony Davis staying healthy and playing at an MVP level throughout the playoffs, LeBron James (age 41) maintaining effectiveness in a reduced role, and the supporting cast (Austin Reaves, Rui Hachimura, etc.) elevating their play in crucial moments. The Lakers would need to navigate a tough Western Conference, potentially facing teams like Denver, Phoenix, or Dallas, then defeat an elite Eastern Conference champion. Strong coaching, playoff experience, and clutch performances would be essential.\n\nIf NO wins: The Lakers would fall short of a championship. This could result from age-related decline in LeBron\'s performance, Anthony Davis suffering playoff injuries (recurring issue), insufficient roster depth to compete with younger, deeper teams, or simply being outmatched by superior opponents like defending champions or emerging contenders. The Western Conference gauntlet, inconsistent three-point shooting, or defensive vulnerabilities could also derail a championship run. Roster construction gaps and competitive balance in the NBA make championships extremely difficult to win.',
     category: 'sports',
     status: 'active',
     createdAt: Date.now() - 86400000 * 6,
@@ -163,6 +170,7 @@ const mockPredictions: Prediction[] = [
     id: '8',
     title: 'Will AI tokens reach $200B market cap by end of 2026?',
     description: 'AI cryptocurrency sector growth prediction including major AI tokens and emerging projects in the AI x Crypto space.',
+    summary: 'This market predicts whether the combined market capitalization of AI-focused cryptocurrency tokens will exceed $200 billion by December 31, 2026.\n\nIf YES wins: The AI crypto sector would need to grow substantially from current levels. This could be driven by breakthroughs in decentralized AI compute networks (Render, Akash), successful AI agent ecosystems built on blockchain, major tech companies integrating AI tokens for compute payments, and speculation around AI narrative driving retail and institutional investment. Projects combining AI training, inference, and data marketplaces on-chain could see explosive adoption. Real-world AI applications generating revenue and token utility would be critical drivers.\n\nIf NO wins: AI crypto tokens would remain below $200B combined market cap through 2026. This could result from AI hype cycle cooling after initial speculation, centralized AI solutions (OpenAI, Google, Anthropic) maintaining dominance without blockchain integration, technical limitations preventing practical decentralized AI applications, regulatory scrutiny around AI token offerings, or broader crypto market downturn limiting capital inflows. Many AI tokens could prove to be speculative with limited real-world utility, leading to valuation corrections.',
     category: 'technology',
     status: 'active',
     createdAt: Date.now() - 86400000 * 3,
@@ -183,6 +191,7 @@ const mockPredictions: Prediction[] = [
     id: '9',
     title: 'Will US approve Bitcoin Reserve Act by mid-2026?',
     description: 'Political prediction on US Bitcoin Strategic Reserve legislation following the 2024 election and pro-crypto policies.',
+    summary: 'This prediction market focuses on whether the United States will pass legislation creating a Bitcoin Strategic Reserve by June 30, 2026.\n\nIf YES wins: The US would officially hold Bitcoin as a strategic reserve asset alongside gold and foreign currencies. This could happen if pro-crypto elected officials successfully pass legislation, growing concerns about dollar dominance drive diversification strategies, other nations adopting Bitcoin reserves creates competitive pressure, and lobbying from crypto industry and Bitcoin advocates gains political traction. Bipartisan support could emerge around financial innovation and maintaining US competitiveness in digital assets. The bill could include provisions for Treasury to acquire and hold Bitcoin long-term.\n\nIf NO wins: No Bitcoin Reserve Act would be passed by mid-2026. This could result from political gridlock and partisan divisions preventing passage, Federal Reserve and Treasury opposition citing volatility and monetary policy concerns, traditional finance lobby resistance, competing legislative priorities taking precedence, or insufficient Congressional support despite vocal advocacy. Constitutional questions about reserve asset selection, concerns about legitimizing cryptocurrency, or macroeconomic stability concerns could derail the legislation. The political will and consensus necessary for such significant policy change may simply not materialize in this timeframe.',
     category: 'politics',
     status: 'active',
     createdAt: Date.now() - 86400000 * 7,
@@ -203,6 +212,7 @@ const mockPredictions: Prediction[] = [
     id: '10',
     title: 'Will tokenized RWAs exceed $2T market cap by 2026?',
     description: 'Real-world asset tokenization prediction including real estate, bonds, stocks, and commodities on blockchain rails.',
+    summary: 'This market predicts whether tokenized real-world assets (RWAs) will exceed $2 trillion in total value by December 31, 2026.\n\nIf YES wins: Tokenized RWAs would experience explosive growth from current levels under $50B. This could be driven by major financial institutions (BlackRock, Fidelity, JPMorgan) massively scaling tokenized treasury and bond offerings, real estate tokenization platforms achieving mainstream adoption enabling fractional property ownership, regulatory clarity providing legal framework for tokenized securities, and efficiency gains and 24/7 settlement attracting traditional finance migration. Corporate bonds, private equity, commodities, and alternative assets moving on-chain would accelerate this growth. Institutional demand for yield-bearing on-chain assets could be the primary driver.\n\nIf NO wins: Tokenized RWAs would remain below $2T through 2026. This could result from regulatory uncertainty and compliance challenges slowing institutional adoption, technical and custody infrastructure remaining immature, limited investor demand outside crypto-native participants, traditional finance systems proving sufficient for current needs without blockchain disruption, or liquidity fragmentation across chains limiting network effects. Legal complexity around asset ownership, jurisdiction, and enforcement could also slow adoption. The $2T target may simply be too ambitious for the timeline given conservative institutional adoption patterns.',
     category: 'finance',
     status: 'active',
     createdAt: Date.now() - 86400000 * 8,
@@ -315,6 +325,7 @@ export default function HomePage() {
       id: Date.now().toString(),
       title: data.title,
       description: data.description,
+      summary: data.summary, // Include the AI-generated summary
       category: data.category,
       status: 'active',
       createdAt: Date.now(),
@@ -334,6 +345,7 @@ export default function HomePage() {
 
     setPredictions(prev => [newPrediction, ...prev]);
     setShowCreateModal(false);
+    alert('Prediction created successfully!');
   };
 
   const stats = {
@@ -442,7 +454,7 @@ export default function HomePage() {
           <div className="text-center">
             <h1 className="text-5xl sm:text-7xl bold-title text-black">
               {t('live_markets')}
-            </h1>
+              </h1>
             <p className="mt-4 text-lg leading-8 text-black max-w-2xl mx-auto animate-fade-in">
               {t('hero_subtitle')}
             </p>
@@ -499,12 +511,12 @@ export default function HomePage() {
 
              {/* CTA Buttons */}
              <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in">
-               <Button
-                 size="lg"
-                 onClick={() => setShowCreateModal(true)}
+              <Button
+                size="lg"
+                onClick={() => setShowCreateModal(true)}
                  className="bg-black hover:bg-black/90 text-white text-lg px-8 py-3 shadow-lg"
-               >
-                 <Plus className="h-5 w-5 mr-2" />
+              >
+                <Plus className="h-5 w-5 mr-2" />
                  {t('create_bet')}
                </Button>
                <Button
@@ -514,7 +526,7 @@ export default function HomePage() {
                >
                  <BarChart3 className="h-5 w-5 mr-2" />
                  View Markets
-               </Button>
+              </Button>
               {!authenticated && (
                 <p className="text-sm text-black font-medium mt-2">
                   {t('connect_to_create')}
@@ -528,7 +540,7 @@ export default function HomePage() {
       {/* Promotional Banner */}
       <div className="mx-auto max-w-7xl px-6 lg:px-8 mb-6 relative z-10">
         <Card className="bg-black/90 border-black">
-          <CardContent className="p-6">
+            <CardContent className="p-6">
             <div className="flex items-center justify-between">
                <div className="flex items-center gap-4">
                  <div className="w-12 h-12 bg-yellow-500 rounded-full flex items-center justify-center">
@@ -538,7 +550,7 @@ export default function HomePage() {
                    <h3 className="text-lg font-bold text-white">New to DarkBet?</h3>
                    <p className="text-gray-200 text-sm">Get started with our AI-powered prediction markets</p>
                  </div>
-               </div>
+                </div>
               <div className="flex items-center gap-3">
                  <Button
                    variant="outline"
@@ -554,10 +566,10 @@ export default function HomePage() {
                  >
                    Start Betting
                  </Button>
+                </div>
               </div>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
       </div>
 
       {/* Quick Stats Bar */}
@@ -645,9 +657,9 @@ export default function HomePage() {
                      <div className="text-xs text-gray-300">Pool</div>
                      <div className="text-sm font-bold text-white">
                        {prediction.totalPool.toFixed(2)} BNB
-                     </div>
-                   </div>
                 </div>
+                </div>
+              </div>
 
                  {/* Odds Display - Betting Style */}
                  <div className="grid grid-cols-2 gap-2 mb-3">
@@ -667,9 +679,9 @@ export default function HomePage() {
                      </div>
                      <div className="text-xs text-gray-200">
                        {prediction.noPool.toFixed(2)} BNB
-                     </div>
-                   </div>
-                 </div>
+                </div>
+                </div>
+              </div>
 
                 {/* Action Buttons */}
                 <div className="grid grid-cols-2 gap-2">
@@ -696,14 +708,14 @@ export default function HomePage() {
                    <div className="flex items-center gap-1">
                      <Users className="h-3 w-3" />
                      <span>{prediction.participants}</span>
-                   </div>
+                </div>
                    <div className="flex items-center gap-1">
                      <Clock className="h-3 w-3" />
                      <span>30d left</span>
-                   </div>
-                 </div>
-              </CardContent>
-            </Card>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
           ))}
         </div>
       </div>
@@ -748,39 +760,39 @@ export default function HomePage() {
           />
 
            {/* Markets Grid */}
-           {filteredPredictions.length === 0 ? (
+          {filteredPredictions.length === 0 ? (
              <Card className="text-center py-12 border-black bg-black/90">
-               <CardContent>
+              <CardContent>
                  <div className="mx-auto w-24 h-24 bg-yellow-500 rounded-full flex items-center justify-center mb-4">
                    <TrendingUp className="h-12 w-12 text-black" />
-                 </div>
+                </div>
                  <h3 className="text-lg font-medium text-white mb-2">
                    {t('no_predictions_found')}
-                 </h3>
+                </h3>
                  <p className="text-gray-200 mb-4">
                    {t('try_adjusting_filters')}
-                 </p>
-                 <Button
-                   onClick={() => setShowCreateModal(true)}
+                </p>
+                <Button
+                  onClick={() => setShowCreateModal(true)}
                    className="bg-white hover:bg-gray-200 text-black"
-                 >
-                   <Plus className="h-4 w-4 mr-2" />
+                >
+                  <Plus className="h-4 w-4 mr-2" />
                    {t('create_first_prediction')}
-                 </Button>
-               </CardContent>
-             </Card>
-           ) : (
+                </Button>
+              </CardContent>
+            </Card>
+          ) : (
              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-               {filteredPredictions.map((prediction) => (
-                 <PredictionCard
-                   key={prediction.id}
-                   prediction={prediction}
-                   onBet={handleBet}
-                   userBets={userBets}
-                 />
-               ))}
-             </div>
-           )}
+              {filteredPredictions.map((prediction) => (
+                <PredictionCard
+                  key={prediction.id}
+                  prediction={prediction}
+                  onBet={handleBet}
+                  userBets={userBets}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </div>
 

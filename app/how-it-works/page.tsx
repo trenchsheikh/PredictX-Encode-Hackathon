@@ -211,58 +211,58 @@ export default function HowItWorksPage() {
   ];
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-gradient-to-br from-yellow-400 via-yellow-500 to-yellow-600">
       <div className="mx-auto max-w-7xl px-6 py-16 lg:px-8">
         {/* Header */}
         <div className="text-center mb-16">
-                 <h1 className="text-4xl font-bold tracking-tight text-yellow-300 sm:text-6xl mb-6">
+                 <h1 className="text-4xl font-bold tracking-tight text-black sm:text-6xl mb-6">
                    {t('how_darkbet_works')}
                  </h1>
-          <p className="text-lg leading-8 text-yellow-200 max-w-3xl mx-auto">
+          <p className="text-lg leading-8 text-black/80 max-w-3xl mx-auto">
             {t('platform_description')}
           </p>
         </div>
 
         {/* Platform Overview */}
-        <Card className="mb-16 card-gradient border-yellow-500/20 bg-black/50">
+        <Card className="mb-16 bg-black/90 border-black">
           <CardContent className="p-8">
             <div className="text-center mb-8">
-              <div className="mx-auto w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4">
-                <Target className="h-8 w-8 text-primary" />
+              <div className="mx-auto w-16 h-16 bg-yellow-500 rounded-full flex items-center justify-center mb-4">
+                <Target className="h-8 w-8 text-black" />
               </div>
-              <h2 className="text-2xl font-bold text-yellow-300 mb-2">Platform Overview</h2>
-              <p className="text-yellow-200">
+              <h2 className="text-2xl font-bold text-white mb-2">Platform Overview</h2>
+              <p className="text-gray-200">
                 DarkBet is a decentralized prediction market where you can create and participate in bets on real-world events
               </p>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="text-center">
-                <div className="mx-auto w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-3">
-                  <Database className="h-6 w-6 text-primary" />
+                <div className="mx-auto w-12 h-12 bg-yellow-500 rounded-full flex items-center justify-center mb-3">
+                  <Database className="h-6 w-6 text-black" />
                 </div>
-                <h3 className="text-lg font-semibold text-yellow-300 mb-2">🔗 {t('blockchain_based')}</h3>
-                <p className="text-sm text-yellow-200">
+                <h3 className="text-lg font-semibold text-white mb-2">🔗 {t('blockchain_based')}</h3>
+                <p className="text-sm text-gray-200">
                   {t('blockchain_description')}
                 </p>
               </div>
-              
+
               <div className="text-center">
-                <div className="mx-auto w-12 h-12 bg-accent/10 rounded-full flex items-center justify-center mb-3">
-                  <Bot className="h-6 w-6 text-accent" />
+                <div className="mx-auto w-12 h-12 bg-yellow-500 rounded-full flex items-center justify-center mb-3">
+                  <Bot className="h-6 w-6 text-black" />
                 </div>
-                <h3 className="text-lg font-semibold text-yellow-300 mb-2">🤖 {t('ai_powered')}</h3>
-                <p className="text-sm text-yellow-200">
+                <h3 className="text-lg font-semibold text-white mb-2">🤖 {t('ai_powered')}</h3>
+                <p className="text-sm text-gray-200">
                   {t('ai_description')}
                 </p>
               </div>
-              
+
               <div className="text-center">
-                <div className="mx-auto w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-3">
-                  <Zap className="h-6 w-6 text-primary" />
+                <div className="mx-auto w-12 h-12 bg-yellow-500 rounded-full flex items-center justify-center mb-3">
+                  <Zap className="h-6 w-6 text-black" />
                 </div>
-                <h3 className="text-lg font-semibold text-yellow-300 mb-2">⚡ {t('real_time')}</h3>
-                <p className="text-sm text-yellow-200">
+                <h3 className="text-lg font-semibold text-white mb-2">⚡ {t('real_time')}</h3>
+                <p className="text-sm text-gray-200">
                   {t('real_time_description')}
                 </p>
               </div>
@@ -271,58 +271,58 @@ export default function HowItWorksPage() {
         </Card>
 
         {/* Dark Pools Section */}
-        <Card className="mb-16 card-gradient border-yellow-500/20 bg-black/50">
+        <Card className="mb-16 bg-black/90 border-black">
           <CardContent className="p-8">
             <div className="text-center mb-8">
-              <div className="mx-auto w-16 h-16 bg-yellow-500/10 rounded-full flex items-center justify-center mb-4">
-                <Eye className="h-8 w-8 text-yellow-400" />
+              <div className="mx-auto w-16 h-16 bg-yellow-500 rounded-full flex items-center justify-center mb-4">
+                <Eye className="h-8 w-8 text-black" />
               </div>
-              <h2 className="text-2xl font-bold text-yellow-400 mb-2">{t('dark_pools_title')}</h2>
-              <p className="text-yellow-200 max-w-4xl mx-auto">
+              <h2 className="text-2xl font-bold text-white mb-2">{t('dark_pools_title')}</h2>
+              <p className="text-gray-200 max-w-4xl mx-auto">
                 {t('dark_pools_description')}
               </p>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-              <div className="text-center p-6 rounded-lg bg-yellow-950/20 border border-yellow-500/10">
-                <div className="mx-auto w-12 h-12 bg-yellow-500/10 rounded-full flex items-center justify-center mb-4">
-                  <Lock className="h-6 w-6 text-yellow-400" />
+              <div className="text-center p-6 rounded-lg bg-yellow-500/20 border border-yellow-500/30">
+                <div className="mx-auto w-12 h-12 bg-yellow-500 rounded-full flex items-center justify-center mb-4">
+                  <Lock className="h-6 w-6 text-white" />
                 </div>
-                <h3 className="text-lg font-semibold text-yellow-400 mb-2">{t('privacy')}</h3>
-                <p className="text-sm text-yellow-200">
+                <h3 className="text-lg font-semibold text-white mb-2">{t('privacy')}</h3>
+                <p className="text-sm text-gray-200">
                   {t('privacy_description')}
                 </p>
               </div>
               
-              <div className="text-center p-6 rounded-lg bg-yellow-950/20 border border-yellow-500/10">
-                <div className="mx-auto w-12 h-12 bg-yellow-500/10 rounded-full flex items-center justify-center mb-4">
-                  <Shield className="h-6 w-6 text-yellow-400" />
+              <div className="text-center p-6 rounded-lg bg-yellow-500/20 border border-yellow-500/30">
+                <div className="mx-auto w-12 h-12 bg-yellow-500 rounded-full flex items-center justify-center mb-4">
+                  <Shield className="h-6 w-6 text-white" />
                 </div>
-                <h3 className="text-lg font-semibold text-yellow-400 mb-2">{t('anti_manipulation')}</h3>
-                <p className="text-sm text-yellow-200">
+                <h3 className="text-lg font-semibold text-white mb-2">{t('anti_manipulation')}</h3>
+                <p className="text-sm text-gray-200">
                   {t('anti_manipulation_description')}
                 </p>
               </div>
               
-              <div className="text-center p-6 rounded-lg bg-yellow-950/20 border border-yellow-500/10">
-                <div className="mx-auto w-12 h-12 bg-yellow-500/10 rounded-full flex items-center justify-center mb-4">
-                  <Users className="h-6 w-6 text-yellow-400" />
+              <div className="text-center p-6 rounded-lg bg-yellow-500/20 border border-yellow-500/30">
+                <div className="mx-auto w-12 h-12 bg-yellow-500 rounded-full flex items-center justify-center mb-4">
+                  <Users className="h-6 w-6 text-white" />
                 </div>
-                <h3 className="text-lg font-semibold text-yellow-400 mb-2">{t('clean_slate')}</h3>
-                <p className="text-sm text-yellow-200">
+                <h3 className="text-lg font-semibold text-white mb-2">{t('clean_slate')}</h3>
+                <p className="text-sm text-gray-200">
                   {t('clean_slate_description')}
                 </p>
               </div>
             </div>
 
-            <div className="bg-black/50 rounded-lg p-6 border border-yellow-500/10">
-              <h3 className="text-lg font-semibold text-yellow-400 mb-4 text-center">
+            <div className="bg-black/50 rounded-lg p-6 border border-yellow-500/30">
+              <h3 className="text-lg font-semibold text-white mb-4 text-center">
                 {t('dark_pools_comparison_title')}
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <h4 className="text-md font-medium text-red-400 mb-2">❌ {t('traditional_markets_title')}</h4>
-                  <ul className="space-y-1 text-sm text-yellow-200">
+                  <ul className="space-y-1 text-sm text-gray-200">
                     {t('traditional_markets_points').split('|').map((point, index) => (
                       <li key={index}>• {point}</li>
                     ))}
@@ -330,7 +330,7 @@ export default function HowItWorksPage() {
                 </div>
                 <div>
                   <h4 className="text-md font-medium text-green-400 mb-2">✅ {t('darkbet_dark_pools_title')}</h4>
-                  <ul className="space-y-1 text-sm text-yellow-200">
+                  <ul className="space-y-1 text-sm text-gray-200">
                     {t('darkbet_dark_pools_points').split('|').map((point, index) => (
                       <li key={index}>• {point}</li>
                     ))}
@@ -350,217 +350,217 @@ export default function HowItWorksPage() {
                   </div>
                 </div>
                 
-                <div className="flex-1">
-                  <div className="flex items-center gap-3 mb-4">
-                    <step.icon className="h-8 w-8 text-primary" />
-                    <h2 className="text-3xl font-bold text-yellow-300">{step.title}</h2>
-                  </div>
+                 <div className="flex-1">
+                   <div className="flex items-center gap-3 mb-4">
+                     <step.icon className="h-8 w-8 text-primary" />
+                     <h2 className="text-3xl font-bold text-black">{step.title}</h2>
+                   </div>
+                   
+                   <p className="text-lg text-black mb-6">{step.description}</p>
                   
-                  <p className="text-lg text-yellow-200 mb-6">{step.description}</p>
+                   {/* Step-specific content */}
+                   {step.details && (
+                     <div className="space-y-6">
+                       {step.details.map((detail, detailIndex) => (
+                         <Card key={detailIndex} className="border-l-4 border-l-primary bg-black/90 border-black">
+                           <CardContent className="p-6">
+                             <div className="flex items-start gap-4">
+                               <div className="flex-shrink-0">
+                                 <Badge variant="outline" className="text-xs border-white text-white">
+                                   {'step' in detail ? detail.step : 'Detail'}
+                                 </Badge>
+                               </div>
+                               <div className="flex-1">
+                                 <h3 className="text-lg font-semibold text-white mb-2">
+                                   {detail.title}
+                                 </h3>
+                                 <p className="text-gray-200 mb-3">
+                                   {'description' in detail ? detail.description : ''}
+                                 </p>
+                                 {'items' in detail && detail.items && (
+                                   <ul className="space-y-1">
+                                     {detail.items.map((item, itemIndex) => (
+                                       <li key={itemIndex} className="flex items-start gap-2 text-sm text-gray-200">
+                                         <CheckCircle className="h-4 w-4 text-green-400 mt-0.5 flex-shrink-0" />
+                                         <span>{item}</span>
+                                       </li>
+                                     ))}
+                                   </ul>
+                                 )}
+                               </div>
+                             </div>
+                           </CardContent>
+                         </Card>
+                       ))}
+                     </div>
+                   )}
                   
-                  {/* Step-specific content */}
-                  {step.details && (
-                    <div className="space-y-6">
-                      {step.details.map((detail, detailIndex) => (
-                        <Card key={detailIndex} className="border-l-4 border-l-primary bg-black/30 border-yellow-500/10">
-                          <CardContent className="p-6">
-                            <div className="flex items-start gap-4">
-                              <div className="flex-shrink-0">
-                                <Badge variant="outline" className="text-xs">
-                                  {'step' in detail ? detail.step : 'Detail'}
-                                </Badge>
-                              </div>
-                              <div className="flex-1">
-                                <h3 className="text-lg font-semibold text-yellow-300 mb-2">
-                                  {detail.title}
-                                </h3>
-                                <p className="text-yellow-200 mb-3">
-                                  {'description' in detail ? detail.description : ''}
-                                </p>
-                                {'items' in detail && detail.items && (
-                                  <ul className="space-y-1">
-                                    {detail.items.map((item, itemIndex) => (
-                                      <li key={itemIndex} className="flex items-start gap-2 text-sm text-yellow-200">
-                                        <CheckCircle className="h-4 w-4 text-accent mt-0.5 flex-shrink-0" />
-                                        <span>{item}</span>
-                                      </li>
-                                    ))}
-                                  </ul>
-                                )}
-                              </div>
-                            </div>
-                          </CardContent>
-                        </Card>
-                      ))}
-                    </div>
-                  )}
+                   {/* Categories for step 1 */}
+                   {step.categories && (
+                     <div className="mt-6">
+                       <h3 className="text-lg font-semibold text-black mb-4">Supported Categories</h3>
+                       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                         {step.categories.map((category, catIndex) => (
+                           <div key={catIndex} className="flex items-center gap-2 p-3 rounded-lg bg-black/90 border border-black">
+                             <span className="text-lg">{category.icon}</span>
+                             <span className="text-sm font-medium text-white">{category.name}</span>
+                           </div>
+                         ))}
+                       </div>
+                     </div>
+                   )}
                   
-                  {/* Categories for step 1 */}
-                  {step.categories && (
-                    <div className="mt-6">
-                      <h3 className="text-lg font-semibold text-yellow-300 mb-4">Supported Categories</h3>
-                      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                        {step.categories.map((category, catIndex) => (
-                          <div key={catIndex} className="flex items-center gap-2 p-3 rounded-lg bg-yellow-950/20 border border-yellow-500/10">
-                            <span className="text-lg">{category.icon}</span>
-                            <span className="text-sm font-medium text-yellow-200">{category.name}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
+                   {/* Layers for step 3 */}
+                   {step.layers && (
+                     <div className="mt-6">
+                       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                         {step.layers.map((layer, layerIndex) => (
+                           <Card key={layerIndex} className="text-center bg-black/90 border-black">
+                             <CardContent className="p-6">
+                               <div className="mx-auto w-12 h-12 bg-yellow-500 rounded-full flex items-center justify-center mb-4">
+                                 <layer.icon className="h-6 w-6 text-black" />
+                               </div>
+                               <h3 className="text-lg font-semibold text-white mb-2">
+                                 {layer.title}
+                               </h3>
+                               <p className="text-sm text-gray-200">
+                                 {layer.description}
+                               </p>
+                             </CardContent>
+                           </Card>
+                         ))}
+                       </div>
+                     </div>
+                   )}
                   
-                  {/* Layers for step 3 */}
-                  {step.layers && (
-                    <div className="mt-6">
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        {step.layers.map((layer, layerIndex) => (
-                          <Card key={layerIndex} className="text-center bg-black/30 border-yellow-500/10">
-                            <CardContent className="p-6">
-                              <div className="mx-auto w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-4">
-                                <layer.icon className="h-6 w-6 text-primary" />
-                              </div>
-                              <h3 className="text-lg font-semibold text-yellow-300 mb-2">
-                                {layer.title}
-                              </h3>
-                              <p className="text-sm text-yellow-200">
-                                {layer.description}
-                              </p>
-                            </CardContent>
-                          </Card>
-                        ))}
-                      </div>
-                    </div>
-                  )}
+                   {/* Sources for step 3 */}
+                   {step.sources && (
+                     <div className="mt-6">
+                       <h3 className="text-lg font-semibold text-black mb-4">
+                         🔍 Verification Sources (Masked)
+                       </h3>
+                       <p className="text-sm text-black mb-4">
+                         We use industry-leading APIs for verification (sources masked for security):
+                       </p>
+                       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                         {step.sources.map((source, sourceIndex) => (
+                           <div key={sourceIndex} className="flex items-center justify-between p-3 rounded-lg bg-black/90 border border-black">
+                             <span className="text-sm font-medium text-white">{source.category}</span>
+                             <div className="flex items-center gap-1">
+                               <span className="text-xs text-gray-200">
+                                 {source.count} {source.premium ? 'Premium' : source.optional ? 'Optional' : 'sources'}
+                               </span>
+                               {source.premium && <Badge variant="warning" className="text-xs">Premium</Badge>}
+                             </div>
+                           </div>
+                         ))}
+                       </div>
+                     </div>
+                   )}
                   
-                  {/* Sources for step 3 */}
-                  {step.sources && (
-                    <div className="mt-6">
-                      <h3 className="text-lg font-semibold text-yellow-300 mb-4">
-                        🔍 Verification Sources (Masked)
-                      </h3>
-                      <p className="text-sm text-yellow-200 mb-4">
-                        We use industry-leading APIs for verification (sources masked for security):
-                      </p>
-                      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                        {step.sources.map((source, sourceIndex) => (
-                          <div key={sourceIndex} className="flex items-center justify-between p-3 rounded-lg bg-yellow-950/20 border border-yellow-500/10">
-                            <span className="text-sm font-medium text-yellow-200">{source.category}</span>
-                            <div className="flex items-center gap-1">
-                              <span className="text-xs text-yellow-200">
-                                {source.count} {source.premium ? 'Premium' : source.optional ? 'Optional' : 'sources'}
-                              </span>
-                              {source.premium && <Badge variant="warning" className="text-xs">Premium</Badge>}
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
+                   {/* Example for step 2 */}
+                   {step.example && (
+                     <div className="mt-6">
+                       <h3 className="text-lg font-semibold text-black mb-4">Example:</h3>
+                       <Card className="bg-black/90 border-black">
+                         <CardContent className="p-4">
+                           <p className="text-sm text-gray-200">
+                             {step.example.description}
+                           </p>
+                         </CardContent>
+                       </Card>
+                     </div>
+                   )}
                   
-                  {/* Example for step 2 */}
-                  {step.example && (
-                    <div className="mt-6">
-                      <h3 className="text-lg font-semibold text-yellow-300 mb-4">Example:</h3>
-                      <Card className="bg-black/30 border-yellow-500/20">
-                        <CardContent className="p-4">
-                          <p className="text-sm text-yellow-200">
-                            {step.example.description}
-                          </p>
-                        </CardContent>
-                      </Card>
-                    </div>
-                  )}
-                  
-                  {/* Fee example for step 4 */}
-                  {step.feeExample && (
-                    <div className="mt-6">
-                      <h3 className="text-lg font-semibold text-yellow-300 mb-4">Platform Fee Structure</h3>
-                      <Card className="bg-black/30 border-yellow-500/20">
-                        <CardContent className="p-4">
-                          <p className="text-sm text-yellow-200 mb-3">
-                            10% platform fee applies to both prize claims AND bet cancellations
-                          </p>
-                          <div className="space-y-1 text-sm">
-                            <div className="flex justify-between">
-                              <span>Gross Winnings:</span>
-                              <span className="font-medium">{step.feeExample.gross}</span>
-                            </div>
-                            <div className="flex justify-between text-yellow-200">
-                              <span>Platform Fee (10%):</span>
-                              <span>-{step.feeExample.fee}</span>
-                            </div>
-                            <div className="flex justify-between text-accent font-semibold border-t pt-1">
-                              <span>Net Payout:</span>
-                              <span>{step.feeExample.net} ✨</span>
-                            </div>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    </div>
-                  )}
+                   {/* Fee example for step 4 */}
+                   {step.feeExample && (
+                     <div className="mt-6">
+                       <h3 className="text-lg font-semibold text-black mb-4">Platform Fee Structure</h3>
+                       <Card className="bg-black/90 border-black">
+                         <CardContent className="p-4">
+                           <p className="text-sm text-gray-200 mb-3">
+                             10% platform fee applies to both prize claims AND bet cancellations
+                           </p>
+                           <div className="space-y-1 text-sm text-white">
+                             <div className="flex justify-between">
+                               <span>Gross Winnings:</span>
+                               <span className="font-medium">{step.feeExample.gross}</span>
+                             </div>
+                             <div className="flex justify-between text-gray-200">
+                               <span>Platform Fee (10%):</span>
+                               <span>-{step.feeExample.fee}</span>
+                             </div>
+                             <div className="flex justify-between text-green-400 font-semibold border-t border-white/20 pt-1">
+                               <span>Net Payout:</span>
+                               <span>{step.feeExample.net} ✨</span>
+                             </div>
+                           </div>
+                         </CardContent>
+                       </Card>
+                     </div>
+                   )}
                 </div>
               </div>
             </div>
           ))}
         </div>
 
-        {/* Security & Transparency */}
-        <Card className="mt-16 card-gradient border-yellow-500/20 bg-black/50">
-          <CardHeader>
-            <CardTitle className="text-2xl font-bold text-center flex items-center justify-center gap-2">
-              <Shield className="h-6 w-6 text-primary" />
-              Security & Transparency
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="p-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {securityFeatures.map((feature, index) => (
-                <div key={index}>
-                  <div className="flex items-center gap-3 mb-4">
-                    <feature.icon className="h-6 w-6 text-primary" />
-                    <h3 className="text-lg font-semibold text-yellow-300">{feature.title}</h3>
-                  </div>
-                  <ul className="space-y-2">
-                    {feature.items.map((item, itemIndex) => (
-                      <li key={itemIndex} className="flex items-start gap-2 text-sm text-yellow-200">
-                        <CheckCircle className="h-4 w-4 text-accent mt-0.5 flex-shrink-0" />
-                        <span>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </div>
-            
-            <div className="mt-8 p-4 rounded-lg bg-yellow-950/20 border-l-4 border-l-accent">
-              <div className="flex items-start gap-3">
-                <Eye className="h-5 w-5 text-accent mt-0.5 flex-shrink-0" />
-                <div>
-                  <p className="text-sm font-medium text-yellow-300 mb-1">
-                    All API keys and sensitive data are masked
-                  </p>
-                  <p className="text-xs text-yellow-200">
-                    We never expose internal credentials, vault wallet addresses, or verification source endpoints to protect platform integrity.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+         {/* Security & Transparency */}
+         <Card className="mt-16 bg-black/90 border-black">
+           <CardHeader>
+             <CardTitle className="text-2xl font-bold text-center flex items-center justify-center gap-2 text-white">
+               <Shield className="h-6 w-6 text-yellow-400" />
+               Security & Transparency
+             </CardTitle>
+           </CardHeader>
+           <CardContent className="p-8">
+             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+               {securityFeatures.map((feature, index) => (
+                 <div key={index}>
+                   <div className="flex items-center gap-3 mb-4">
+                     <feature.icon className="h-6 w-6 text-yellow-400" />
+                     <h3 className="text-lg font-semibold text-white">{feature.title}</h3>
+                   </div>
+                   <ul className="space-y-2">
+                     {feature.items.map((item, itemIndex) => (
+                       <li key={itemIndex} className="flex items-start gap-2 text-sm text-gray-200">
+                         <CheckCircle className="h-4 w-4 text-green-400 mt-0.5 flex-shrink-0" />
+                         <span>{item}</span>
+                       </li>
+                     ))}
+                   </ul>
+                 </div>
+               ))}
+             </div>
+             
+             <div className="mt-8 p-4 rounded-lg bg-yellow-500/20 border-l-4 border-l-yellow-400">
+               <div className="flex items-start gap-3">
+                 <Eye className="h-5 w-5 text-yellow-400 mt-0.5 flex-shrink-0" />
+                 <div>
+                   <p className="text-sm font-medium text-white mb-1">
+                     All API keys and sensitive data are masked
+                   </p>
+                   <p className="text-xs text-gray-200">
+                     We never expose internal credentials, vault wallet addresses, or verification source endpoints to protect platform integrity.
+                   </p>
+                 </div>
+               </div>
+             </div>
+           </CardContent>
+         </Card>
 
-        {/* Call to Action */}
-        <div className="text-center mt-16">
-          <h2 className="text-2xl font-bold text-yellow-300 mb-4">Ready to Start Predicting?</h2>
-          <p className="text-yellow-200 mb-6">
-            Connect your wallet and create your first prediction market today
-          </p>
-          <Button size="lg" className="btn-primary glow-effect">
-            <Target className="h-5 w-5 mr-2" />
-            Explore Markets
-            <ArrowRight className="h-4 w-4 ml-2" />
-          </Button>
-        </div>
+         {/* Call to Action */}
+         <div className="text-center mt-16">
+           <h2 className="text-2xl font-bold text-black mb-4">Ready to Start Predicting?</h2>
+           <p className="text-black mb-6">
+             Connect your wallet and create your first prediction market today
+           </p>
+           <Button size="lg" className="bg-black hover:bg-black/90 text-white">
+             <Target className="h-5 w-5 mr-2" />
+             Explore Markets
+             <ArrowRight className="h-4 w-4 ml-2" />
+           </Button>
+         </div>
       </div>
     </div>
   );

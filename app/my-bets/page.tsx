@@ -143,19 +143,19 @@ export default function MyBetsPage() {
 
   if (!authenticated) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Card className="w-full max-w-md text-center">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-yellow-400 via-yellow-500 to-yellow-600">
+        <Card className="w-full max-w-md text-center bg-black/90 border-black">
           <CardContent className="p-8">
-            <div className="mx-auto w-16 h-16 bg-muted rounded-full flex items-center justify-center mb-4">
-              <Wallet className="h-8 w-8 text-muted-foreground" />
+            <div className="mx-auto w-16 h-16 bg-yellow-500 rounded-full flex items-center justify-center mb-4">
+              <Wallet className="h-8 w-8 text-black" />
             </div>
-            <h2 className="text-2xl font-bold text-foreground mb-2">
+            <h2 className="text-2xl font-bold text-white mb-2">
               {t('connect_wallet')}
             </h2>
-            <p className="text-muted-foreground mb-6">
+            <p className="text-gray-200 mb-6">
               {t('connect_wallet_to_create')}
             </p>
-            <Button className="btn-primary">
+            <Button className="bg-white hover:bg-gray-200 text-black">
               <Wallet className="h-4 w-4 mr-2" />
               {t('connect_wallet')}
             </Button>
@@ -171,30 +171,30 @@ export default function MyBetsPage() {
   const resolvedBets = userBets.filter(bet => predictions[bet.predictionId]?.status === 'resolved').length;
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-gradient-to-br from-yellow-400 via-yellow-500 to-yellow-600">
       <div className="mx-auto max-w-7xl px-6 py-16 lg:px-8">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-foreground mb-2">{t('my_bets')}</h1>
-          <p className="text-muted-foreground">
+          <h1 className="text-3xl font-bold text-black mb-2">{t('my_bets')}</h1>
+          <p className="text-black/80">
             {t('track_investments')}
           </p>
         </div>
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 mb-8">
-          <Card className="card-gradient">
+          <Card className="bg-black/90 border-black">
             <CardContent className="p-6">
               <div className="flex items-center">
                 <div className="flex-shrink-0">
-                  <DollarSign className="h-8 w-8 text-primary" />
+                  <DollarSign className="h-8 w-8 text-yellow-400" />
                 </div>
                 <div className="ml-5 w-0 flex-1">
                   <dl>
-                    <dt className="text-sm font-medium text-muted-foreground truncate">
+                    <dt className="text-sm font-medium text-gray-300 truncate">
                       {t('total_invested')}
                     </dt>
-                    <dd className="text-lg font-medium text-foreground">
+                    <dd className="text-lg font-medium text-white">
                       {formatBNB(totalInvested)}
                     </dd>
                   </dl>
@@ -203,18 +203,18 @@ export default function MyBetsPage() {
             </CardContent>
           </Card>
 
-          <Card className="card-gradient">
+          <Card className="bg-black/90 border-black">
             <CardContent className="p-6">
               <div className="flex items-center">
                 <div className="flex-shrink-0">
-                  <TrendingUp className="h-8 w-8 text-accent" />
+                  <TrendingUp className="h-8 w-8 text-green-400" />
                 </div>
                 <div className="ml-5 w-0 flex-1">
                   <dl>
-                    <dt className="text-sm font-medium text-muted-foreground truncate">
+                    <dt className="text-sm font-medium text-gray-300 truncate">
                       {t('total_payout')}
                     </dt>
-                    <dd className="text-lg font-medium text-foreground">
+                    <dd className="text-lg font-medium text-white">
                       {formatBNB(totalPayout)}
                     </dd>
                   </dl>
@@ -223,18 +223,18 @@ export default function MyBetsPage() {
             </CardContent>
           </Card>
 
-          <Card className="card-gradient">
+          <Card className="bg-black/90 border-black">
             <CardContent className="p-6">
               <div className="flex items-center">
                 <div className="flex-shrink-0">
-                  <Clock className="h-8 w-8 text-primary" />
+                  <Clock className="h-8 w-8 text-blue-400" />
                 </div>
                 <div className="ml-5 w-0 flex-1">
                   <dl>
-                    <dt className="text-sm font-medium text-muted-foreground truncate">
+                    <dt className="text-sm font-medium text-gray-300 truncate">
                       {t('active_bets')}
                     </dt>
-                    <dd className="text-lg font-medium text-foreground">
+                    <dd className="text-lg font-medium text-white">
                       {activeBets}
                     </dd>
                   </dl>
@@ -243,18 +243,18 @@ export default function MyBetsPage() {
             </CardContent>
           </Card>
 
-          <Card className="card-gradient">
+          <Card className="bg-black/90 border-black">
             <CardContent className="p-6">
               <div className="flex items-center">
                 <div className="flex-shrink-0">
-                  <ExternalLink className="h-8 w-8 text-accent" />
+                  <ExternalLink className="h-8 w-8 text-purple-400" />
                 </div>
                 <div className="ml-5 w-0 flex-1">
                   <dl>
-                    <dt className="text-sm font-medium text-muted-foreground truncate">
+                    <dt className="text-sm font-medium text-gray-300 truncate">
                       {t('resolved_bets')}
                     </dt>
-                    <dd className="text-lg font-medium text-foreground">
+                    <dd className="text-lg font-medium text-white">
                       {resolvedBets}
                     </dd>
                   </dl>
@@ -266,7 +266,7 @@ export default function MyBetsPage() {
 
         {/* Tabs */}
         <div className="mb-6">
-          <div className="border-b border-border">
+          <div className="border-b border-black">
             <nav className="-mb-px flex space-x-8">
               {[
                 { key: 'all', label: t('all_bets'), count: userBets.length },
@@ -279,12 +279,12 @@ export default function MyBetsPage() {
                   className={cn(
                     'whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm',
                     activeTab === tab.key
-                      ? 'border-primary text-primary'
-                      : 'border-transparent text-muted-foreground hover:text-foreground hover:border-border'
+                      ? 'border-black text-black'
+                      : 'border-transparent text-black/60 hover:text-black hover:border-black/30'
                   )}
                 >
                   {tab.label}
-                  <Badge variant="secondary" className="ml-2">
+                  <Badge variant="secondary" className="ml-2 bg-black/90 text-white">
                     {tab.count}
                   </Badge>
                 </button>
@@ -295,15 +295,15 @@ export default function MyBetsPage() {
 
         {/* Bets List */}
         {filteredBets.length === 0 ? (
-          <Card className="text-center py-12">
+          <Card className="text-center py-12 bg-black/90 border-black">
             <CardContent>
-              <div className="mx-auto w-24 h-24 bg-muted rounded-full flex items-center justify-center mb-4">
-                <TrendingUp className="h-12 w-12 text-muted-foreground" />
+              <div className="mx-auto w-24 h-24 bg-yellow-500 rounded-full flex items-center justify-center mb-4">
+                <TrendingUp className="h-12 w-12 text-black" />
               </div>
-              <h3 className="text-lg font-medium text-foreground mb-2">
+              <h3 className="text-lg font-medium text-white mb-2">
                 {t('no_bets_found')}
               </h3>
-              <p className="text-muted-foreground mb-4">
+              <p className="text-gray-200 mb-4">
                 {activeTab === 'all' 
                   ? t('no_bets_yet')
                   : activeTab === 'active' 
@@ -311,7 +311,7 @@ export default function MyBetsPage() {
                     : t('no_resolved_bets')
                 }
               </p>
-              <Button className="btn-primary">
+              <Button className="bg-white hover:bg-gray-200 text-black">
                 {t('explore_markets')}
               </Button>
             </CardContent>
@@ -327,15 +327,15 @@ export default function MyBetsPage() {
               const canClaim = prediction.status === 'resolved' && isWinning && !bet.claimed;
 
               return (
-                <Card key={bet.id} className="hover:shadow-lg transition-shadow">
+                <Card key={bet.id} className="hover:shadow-lg transition-shadow bg-black/90 border-black">
                   <CardContent className="p-6">
                     <div className="flex items-start justify-between">
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-2">
-                          <Badge variant="outline">
+                          <Badge variant="outline" className="border-white text-white">
                             {prediction.category}
                           </Badge>
-                          <Badge variant={getStatusColor(prediction.status) as any}>
+                          <Badge variant={getStatusColor(prediction.status) as any} className="bg-yellow-500 text-black">
                             {prediction.status}
                           </Badge>
                           {prediction.isHot && (
@@ -343,11 +343,11 @@ export default function MyBetsPage() {
                           )}
                         </div>
                         
-                        <h3 className="text-lg font-semibold text-foreground mb-2 line-clamp-2">
+                        <h3 className="text-lg font-semibold text-white mb-2 line-clamp-2">
                           {prediction.title}
                         </h3>
                         
-                        <div className="flex items-center gap-4 text-sm text-muted-foreground mb-4">
+                        <div className="flex items-center gap-4 text-sm text-gray-300 mb-4">
                           <div className="flex items-center gap-1">
                             <Clock className="h-4 w-4" />
                             <span>
@@ -358,8 +358,8 @@ export default function MyBetsPage() {
                             </span>
                           </div>
                           <div className="flex items-center gap-1">
-                            <OutcomeIcon className={cn("h-4 w-4", getOutcomeColor(bet.outcome))} />
-                            <span className={getOutcomeColor(bet.outcome)}>
+                            <OutcomeIcon className={cn("h-4 w-4", bet.outcome === 'yes' ? 'text-green-400' : 'text-red-400')} />
+                            <span className={bet.outcome === 'yes' ? 'text-green-400' : 'text-red-400'}>
                               {bet.outcome.toUpperCase()}
                             </span>
                           </div>
@@ -368,20 +368,20 @@ export default function MyBetsPage() {
                         {/* Bet Details */}
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                           <div>
-                            <div className="text-xs text-muted-foreground">{t('shares')}</div>
-                            <div className="text-sm font-medium">{bet.shares.toFixed(2)}</div>
+                            <div className="text-xs text-gray-400">{t('shares')}</div>
+                            <div className="text-sm font-medium text-white">{bet.shares.toFixed(2)}</div>
                           </div>
                           <div>
-                            <div className="text-xs text-muted-foreground">{t('amount')}</div>
-                            <div className="text-sm font-medium">{formatBNB(bet.amount)}</div>
+                            <div className="text-xs text-gray-400">{t('amount')}</div>
+                            <div className="text-sm font-medium text-white">{formatBNB(bet.amount)}</div>
                           </div>
                           <div>
-                            <div className="text-xs text-muted-foreground">{t('price')}</div>
-                            <div className="text-sm font-medium">{bet.price.toFixed(4)}</div>
+                            <div className="text-xs text-gray-400">{t('price')}</div>
+                            <div className="text-sm font-medium text-white">{bet.price.toFixed(4)}</div>
                           </div>
                           <div>
-                            <div className="text-xs text-muted-foreground">{t('potential_payout')}</div>
-                            <div className="text-sm font-medium">
+                            <div className="text-xs text-gray-400">{t('potential_payout')}</div>
+                            <div className="text-sm font-medium text-white">
                               {formatBNB(calculatePayout(bet.shares, 
                                 bet.outcome === 'yes' ? prediction.yesShares : prediction.noShares, 
                                 prediction.totalPool
@@ -392,11 +392,11 @@ export default function MyBetsPage() {
 
                         {/* Resolution Info */}
                         {prediction.resolution && (
-                          <div className="mt-4 p-3 rounded-lg bg-muted">
-                            <div className="text-sm font-medium mb-1">
+                          <div className="mt-4 p-3 rounded-lg bg-yellow-500/20 border border-yellow-500/30">
+                            <div className="text-sm font-medium mb-1 text-white">
                               {t('resolution')}: {prediction.resolution.outcome.toUpperCase()}
                             </div>
-                            <div className="text-xs text-muted-foreground">
+                            <div className="text-xs text-gray-200">
                               {prediction.resolution.reasoning}
                             </div>
                           </div>
@@ -408,20 +408,20 @@ export default function MyBetsPage() {
                         {canClaim ? (
                           <Button
                             onClick={() => handleClaim(bet.id)}
-                            className="btn-accent"
+                            className="bg-green-600 hover:bg-green-700 text-white"
                             size="sm"
                           >
                             <DollarSign className="h-4 w-4 mr-2" />
                             {t('claim')}
                           </Button>
                         ) : bet.claimed ? (
-                          <Badge variant="success">{t('claimed')}</Badge>
+                          <Badge variant="success" className="bg-green-600 text-white">{t('claimed')}</Badge>
                         ) : prediction.status === 'active' ? (
-                          <Badge variant="secondary">{t('active')}</Badge>
+                          <Badge variant="secondary" className="bg-blue-600 text-white">{t('active')}</Badge>
                         ) : isWinning ? (
-                          <Badge variant="success">{t('won')}</Badge>
+                          <Badge variant="success" className="bg-green-600 text-white">{t('won')}</Badge>
                         ) : (
-                          <Badge variant="destructive">{t('lost')}</Badge>
+                          <Badge variant="destructive" className="bg-red-600 text-white">{t('lost')}</Badge>
                         )}
                       </div>
                     </div>
