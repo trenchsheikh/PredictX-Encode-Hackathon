@@ -201,9 +201,8 @@ export function PredictionCard({ prediction, onBet, userBets }: PredictionCardPr
           )}
         </div>
       </CardContent>
-          </Card>
-        </div>
-      </MotionHighlight>
-    </Card3D>
+    </Card>
+    </MotionHighlight>
+  </Card3D>
   );
 }

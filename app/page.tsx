@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { usePrivy, useSendTransaction } from '@privy-io/react-auth';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 import { PredictionCard } from '@/components/prediction/prediction-card';
 import { Filters } from '@/components/prediction/filters';
 import { CreateBetModal } from '@/components/prediction/create-bet-modal';
@@ -12,7 +13,7 @@ import { ShimmeringText } from '@/components/ui/shimmering-text';
 import { AppleHelloEffect } from '@/components/ui/apple-hello-effect';
 import { InteractiveGridPattern } from '@/components/ui/interactive-grid-pattern';
 import { Prediction, FilterOptions, CreatePredictionData } from '@/types/prediction';
-import { Plus, TrendingUp, Users, Clock, Zap } from 'lucide-react';
+import { Plus, TrendingUp, Users, Clock, Zap, Star, Trophy, Fire, Target, BarChart3, TrendingDown, ArrowUp, ArrowDown, Eye, Shield, Lock } from 'lucide-react';
 import { useI18n } from '@/components/providers/privy-provider';
 import { cn } from '@/lib/utils';
 
@@ -210,58 +211,92 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen relative overflow-hidden">
-      {/* Hero Section */}
+      {/* Hero Section - Betting Style */}
       <div className="relative overflow-hidden z-10">
         <div className="absolute inset-0 bnb-pattern opacity-10" />
-        <div className="relative mx-auto max-w-7xl px-6 py-16 sm:py-24 lg:px-8">
+        <div className="relative mx-auto max-w-7xl px-6 py-8 sm:py-12 lg:px-8">
           <div className="text-center">
             <AppleHelloEffect delay={500} duration={1500}>
-              <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-6xl">
+              <h1 className="text-3xl font-bold tracking-tight text-yellow-300 sm:text-5xl">
                 <ShimmeringText shimmerColor="#F0B90B" duration={2500}>
                   {t('live_markets')}
                 </ShimmeringText>
               </h1>
             </AppleHelloEffect>
-                   <p className="mt-6 text-lg leading-8 text-muted-foreground max-w-2xl mx-auto animate-fade-in">
-                     {t('hero_subtitle')}
-                   </p>
-                   <div className="mt-8 max-w-4xl mx-auto">
-                     <Card className="card-gradient border-yellow-500/20 bg-black/30 backdrop-blur">
-                       <CardContent className="p-6">
-                         <h2 className="text-xl font-semibold text-yellow-400 mb-4 text-center">
-                           {t('dark_pools_title')}
-                         </h2>
-                         <p className="text-muted-foreground leading-relaxed text-center">
-                           {t('dark_pools_description')}
-                         </p>
-                         <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
-                           <div className="p-3 rounded-lg bg-yellow-950/20 border border-yellow-500/10">
-                             <div className="text-sm font-medium text-yellow-400 mb-1">{t('privacy')}</div>
-                             <div className="text-xs text-muted-foreground">{t('privacy_description')}</div>
-                           </div>
-                           <div className="p-3 rounded-lg bg-yellow-950/20 border border-yellow-500/10">
-                             <div className="text-sm font-medium text-yellow-400 mb-1">{t('anti_manipulation')}</div>
-                             <div className="text-xs text-muted-foreground">{t('anti_manipulation_description')}</div>
-                           </div>
-                           <div className="p-3 rounded-lg bg-yellow-950/20 border border-yellow-500/10">
-                             <div className="text-sm font-medium text-yellow-400 mb-1">{t('clean_slate')}</div>
-                             <div className="text-xs text-muted-foreground">{t('clean_slate_description')}</div>
-                           </div>
-                         </div>
-                       </CardContent>
-                     </Card>
-                   </div>
-            <div className="mt-10 flex items-center justify-center gap-x-6 animate-fade-in">
+            <p className="mt-4 text-lg leading-8 text-yellow-200 max-w-2xl mx-auto animate-fade-in">
+              {t('hero_subtitle')}
+            </p>
+            
+            {/* Quick Stats Bar */}
+            <div className="mt-8 flex flex-wrap justify-center gap-4 text-sm">
+              <div className="flex items-center gap-2 bg-yellow-500/10 px-4 py-2 rounded-full border border-yellow-500/20">
+                <Fire className="h-4 w-4 text-yellow-400" />
+                <span className="text-yellow-200 font-medium">{stats.activePredictions} Live Markets</span>
+              </div>
+              <div className="flex items-center gap-2 bg-green-500/10 px-4 py-2 rounded-full border border-green-500/20">
+                <TrendingUp className="h-4 w-4 text-green-400" />
+                <span className="text-green-200 font-medium">{stats.totalVolume.toFixed(2)} BNB Volume</span>
+              </div>
+              <div className="flex items-center gap-2 bg-blue-500/10 px-4 py-2 rounded-full border border-blue-500/20">
+                <Users className="h-4 w-4 text-blue-400" />
+                <span className="text-blue-200 font-medium">{stats.totalParticipants} Players</span>
+              </div>
+            </div>
+
+            {/* Dark Pools Feature Card */}
+            <div className="mt-8 max-w-4xl mx-auto">
+              <Card className="card-gradient border-yellow-500/20 bg-black/30 backdrop-blur">
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-center gap-2 mb-4">
+                    <Eye className="h-6 w-6 text-yellow-400" />
+                    <h2 className="text-xl font-semibold text-yellow-400">
+                      {t('dark_pools_title')}
+                    </h2>
+                  </div>
+                  <p className="text-yellow-200 leading-relaxed text-center mb-6">
+                    {t('dark_pools_description')}
+                  </p>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+                    <div className="p-4 rounded-lg bg-yellow-950/20 border border-yellow-500/10">
+                      <Lock className="h-6 w-6 text-yellow-400 mx-auto mb-2" />
+                      <div className="text-sm font-medium text-yellow-400 mb-1">{t('privacy')}</div>
+                      <div className="text-xs text-yellow-200">{t('privacy_description')}</div>
+                    </div>
+                    <div className="p-4 rounded-lg bg-yellow-950/20 border border-yellow-500/10">
+                      <Shield className="h-6 w-6 text-yellow-400 mx-auto mb-2" />
+                      <div className="text-sm font-medium text-yellow-400 mb-1">{t('anti_manipulation')}</div>
+                      <div className="text-xs text-yellow-200">{t('anti_manipulation_description')}</div>
+                    </div>
+                    <div className="p-4 rounded-lg bg-yellow-950/20 border border-yellow-500/10">
+                      <Users className="h-6 w-6 text-yellow-400 mx-auto mb-2" />
+                      <div className="text-sm font-medium text-yellow-400 mb-1">{t('clean_slate')}</div>
+                      <div className="text-xs text-yellow-200">{t('clean_slate_description')}</div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* CTA Buttons */}
+            <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in">
               <Button
                 size="lg"
                 onClick={() => setShowCreateModal(true)}
-                className="btn-primary glow-effect animate-glow"
+                className="btn-primary glow-effect animate-glow text-lg px-8 py-3"
               >
                 <Plus className="h-5 w-5 mr-2" />
                 {t('create_bet')}
               </Button>
+              <Button
+                variant="outline"
+                size="lg"
+                className="border-yellow-500/30 text-yellow-300 hover:bg-yellow-500/10 text-lg px-8 py-3"
+              >
+                <BarChart3 className="h-5 w-5 mr-2" />
+                View Markets
+              </Button>
               {!authenticated && (
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-yellow-200 mt-2">
                   {t('connect_to_create')}
                 </p>
               )}
@@ -270,94 +305,221 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* Stats Section */}
-      <div className="mx-auto max-w-7xl px-6 lg:px-8 mb-12 relative z-10">
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          <Card className="card-gradient animate-float">
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <div className="flex-shrink-0">
-                  <TrendingUp className="h-8 w-8 text-primary" />
+      {/* Promotional Banner */}
+      <div className="mx-auto max-w-7xl px-6 lg:px-8 mb-6 relative z-10">
+        <Card className="bg-gradient-to-r from-yellow-500/10 via-yellow-600/5 to-yellow-500/10 border-yellow-500/30">
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 bg-yellow-500/20 rounded-full flex items-center justify-center">
+                  <Star className="h-6 w-6 text-yellow-400" />
                 </div>
-                <div className="ml-5 w-0 flex-1">
-                  <dl>
-                    <dt className="text-sm font-medium text-muted-foreground truncate">
-                      {t('active_predictions')}
-                    </dt>
-                    <dd className="text-lg font-medium text-foreground">
-                      {stats.activePredictions}
-                    </dd>
-                  </dl>
+                <div>
+                  <h3 className="text-lg font-bold text-yellow-300">New to DarkBet?</h3>
+                  <p className="text-yellow-200 text-sm">Get started with our AI-powered prediction markets</p>
                 </div>
               </div>
+              <div className="flex items-center gap-3">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="border-yellow-500/30 text-yellow-300 hover:bg-yellow-500/10"
+                >
+                  Learn More
+                </Button>
+                <Button
+                  size="sm"
+                  className="bg-yellow-600 hover:bg-yellow-700 text-white"
+                  onClick={() => setShowCreateModal(true)}
+                >
+                  Start Betting
+                </Button>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Quick Stats Bar */}
+      <div className="mx-auto max-w-7xl px-6 lg:px-8 mb-6 relative z-10">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <Card className="border-yellow-500/20 bg-black/50">
+            <CardContent className="p-4 text-center">
+              <div className="text-2xl font-bold text-yellow-400">{stats.activePredictions}</div>
+              <div className="text-sm text-yellow-200">Live Markets</div>
             </CardContent>
           </Card>
-
-          <Card className="card-gradient animate-float" style={{ animationDelay: '0.5s' }}>
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <div className="flex-shrink-0">
-                  <Users className="h-8 w-8 text-accent" />
-                </div>
-                <div className="ml-5 w-0 flex-1">
-                  <dl>
-                    <dt className="text-sm font-medium text-muted-foreground truncate">
-                      {t('total_participants')}
-                    </dt>
-                    <dd className="text-lg font-medium text-foreground">
-                      {stats.totalParticipants}
-                    </dd>
-                  </dl>
-                </div>
-              </div>
+          <Card className="border-green-500/20 bg-black/50">
+            <CardContent className="p-4 text-center">
+              <div className="text-2xl font-bold text-green-400">{stats.totalVolume.toFixed(1)}</div>
+              <div className="text-sm text-green-200">BNB Volume</div>
             </CardContent>
           </Card>
-
-          <Card className="card-gradient animate-float" style={{ animationDelay: '1s' }}>
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <div className="flex-shrink-0">
-                  <Zap className="h-8 w-8 text-primary" />
-                </div>
-                <div className="ml-5 w-0 flex-1">
-                  <dl>
-                    <dt className="text-sm font-medium text-muted-foreground truncate">
-                      {t('total_volume')}
-                    </dt>
-                    <dd className="text-lg font-medium text-foreground">
-                      {stats.totalVolume.toFixed(2)} BNB
-                    </dd>
-                  </dl>
-                </div>
-              </div>
+          <Card className="border-blue-500/20 bg-black/50">
+            <CardContent className="p-4 text-center">
+              <div className="text-2xl font-bold text-blue-400">{stats.totalParticipants}</div>
+              <div className="text-sm text-blue-200">Active Players</div>
             </CardContent>
           </Card>
-
-          <Card className="card-gradient animate-float" style={{ animationDelay: '1.5s' }}>
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <div className="flex-shrink-0">
-                  <Clock className="h-8 w-8 text-accent" />
-                </div>
-                <div className="ml-5 w-0 flex-1">
-                  <dl>
-                    <dt className="text-sm font-medium text-muted-foreground truncate">
-                      {t('total_predictions')}
-                    </dt>
-                    <dd className="text-lg font-medium text-foreground">
-                      {stats.totalPredictions}
-                    </dd>
-                  </dl>
-                </div>
-              </div>
+          <Card className="border-purple-500/20 bg-black/50">
+            <CardContent className="p-4 text-center">
+              <div className="text-2xl font-bold text-purple-400">{stats.totalPredictions}</div>
+              <div className="text-sm text-purple-200">Total Markets</div>
             </CardContent>
           </Card>
         </div>
       </div>
 
-      {/* Main Content */}
+      {/* Featured Markets Section - Betting Style */}
+      <div className="mx-auto max-w-7xl px-6 lg:px-8 mb-8 relative z-10">
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center gap-3">
+            <Trophy className="h-6 w-6 text-yellow-400" />
+            <h2 className="text-2xl font-bold text-yellow-300">Featured Markets</h2>
+            <div className="flex items-center gap-1 bg-red-500/20 px-2 py-1 rounded-full">
+              <Fire className="h-3 w-3 text-red-400" />
+              <span className="text-xs text-red-400 font-medium">HOT</span>
+            </div>
+          </div>
+          <Button
+            variant="outline"
+            size="sm"
+            className="border-yellow-500/20 text-yellow-200 hover:bg-yellow-500/10"
+          >
+            View All
+          </Button>
+        </div>
+
+        {/* Featured Markets Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+          {filteredPredictions.slice(0, 3).map((prediction, index) => (
+            <Card 
+              key={prediction.id} 
+              className={cn(
+                "relative overflow-hidden border-yellow-500/20 bg-black/50 hover:bg-black/60 transition-all duration-300",
+                prediction.isHot && "ring-2 ring-yellow-500/30 bg-gradient-to-br from-yellow-500/5 to-transparent"
+              )}
+            >
+              <CardContent className="p-4">
+                <div className="flex items-start justify-between mb-3">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Badge 
+                        variant="outline" 
+                        className="text-xs border-yellow-500/20 text-yellow-200"
+                      >
+                        {prediction.category}
+                      </Badge>
+                      {prediction.isHot && (
+                        <Badge variant="warning" className="text-xs animate-pulse">
+                          <Fire className="h-3 w-3 mr-1" />
+                          HOT
+                        </Badge>
+                      )}
+                    </div>
+                    <h3 className="text-sm font-semibold text-yellow-300 line-clamp-2 mb-2">
+                      {prediction.title}
+                    </h3>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-xs text-yellow-200">Pool</div>
+                    <div className="text-sm font-bold text-yellow-400">
+                      {prediction.totalPool.toFixed(2)} BNB
+                    </div>
+                  </div>
+                </div>
+
+                {/* Odds Display - Betting Style */}
+                <div className="grid grid-cols-2 gap-2 mb-3">
+                  <div className="bg-green-500/10 border border-green-500/20 rounded-lg p-3 text-center">
+                    <div className="text-xs text-green-200 mb-1">YES</div>
+                    <div className="text-lg font-bold text-green-400">
+                      {prediction.yesPrice.toFixed(3)}
+                    </div>
+                    <div className="text-xs text-green-300">
+                      {prediction.yesPool.toFixed(2)} BNB
+                    </div>
+                  </div>
+                  <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-3 text-center">
+                    <div className="text-xs text-red-200 mb-1">NO</div>
+                    <div className="text-lg font-bold text-red-400">
+                      {prediction.noPrice.toFixed(3)}
+                    </div>
+                    <div className="text-xs text-red-300">
+                      {prediction.noPool.toFixed(2)} BNB
+                    </div>
+                  </div>
+                </div>
+
+                {/* Action Buttons */}
+                <div className="grid grid-cols-2 gap-2">
+                  <Button
+                    size="sm"
+                    className="bg-green-600 hover:bg-green-700 text-white font-semibold"
+                    onClick={() => handleBet(prediction.id, 'yes')}
+                  >
+                    <ArrowUp className="h-3 w-3 mr-1" />
+                    YES
+                  </Button>
+                  <Button
+                    size="sm"
+                    className="bg-red-600 hover:bg-red-700 text-white font-semibold"
+                    onClick={() => handleBet(prediction.id, 'no')}
+                  >
+                    <ArrowDown className="h-3 w-3 mr-1" />
+                    NO
+                  </Button>
+                </div>
+
+                {/* Market Info */}
+                <div className="flex items-center justify-between mt-3 text-xs text-yellow-200">
+                  <div className="flex items-center gap-1">
+                    <Users className="h-3 w-3" />
+                    <span>{prediction.participants}</span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <Clock className="h-3 w-3" />
+                    <span>30d left</span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </div>
+
+      {/* All Markets Section */}
       <div className="mx-auto max-w-7xl px-6 lg:px-8 pb-16 relative z-10">
-        <div className="space-y-8">
+        <div className="space-y-6">
+          {/* Section Header */}
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <BarChart3 className="h-6 w-6 text-yellow-400" />
+              <h2 className="text-2xl font-bold text-yellow-300">All Markets</h2>
+              <Badge variant="outline" className="border-yellow-500/20 text-yellow-200">
+                {filteredPredictions.length} markets
+              </Badge>
+            </div>
+            <div className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                className="border-yellow-500/20 text-yellow-200 hover:bg-yellow-500/10"
+              >
+                <TrendingUp className="h-4 w-4 mr-1" />
+                Trending
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                className="border-yellow-500/20 text-yellow-200 hover:bg-yellow-500/10"
+              >
+                <Clock className="h-4 w-4 mr-1" />
+                Ending Soon
+              </Button>
+            </div>
+          </div>
+
           {/* Filters */}
           <Filters
             filters={filters}
@@ -365,17 +527,17 @@ export default function HomePage() {
             totalCount={filteredPredictions.length}
           />
 
-          {/* Predictions Grid */}
+          {/* Markets Grid */}
           {filteredPredictions.length === 0 ? (
-            <Card className="text-center py-12">
+            <Card className="text-center py-12 border-yellow-500/20 bg-black/50">
               <CardContent>
-                <div className="mx-auto w-24 h-24 bg-muted rounded-full flex items-center justify-center mb-4">
-                  <TrendingUp className="h-12 w-12 text-muted-foreground" />
+                <div className="mx-auto w-24 h-24 bg-yellow-500/10 rounded-full flex items-center justify-center mb-4">
+                  <TrendingUp className="h-12 w-12 text-yellow-400" />
                 </div>
-                <h3 className="text-lg font-medium text-foreground mb-2">
+                <h3 className="text-lg font-medium text-yellow-300 mb-2">
                   {t('no_predictions_found')}
                 </h3>
-                <p className="text-muted-foreground mb-4">
+                <p className="text-yellow-200 mb-4">
                   {t('try_adjusting_filters')}
                 </p>
                 <Button
@@ -388,7 +550,7 @@ export default function HomePage() {
               </CardContent>
             </Card>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {filteredPredictions.map((prediction) => (
                 <PredictionCard
                   key={prediction.id}
