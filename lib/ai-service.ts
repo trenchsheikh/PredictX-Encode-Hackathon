@@ -68,6 +68,7 @@ Make the title specific, measurable, and time-bound. The resolution instructions
       case 'anthropic':
         return this.callAnthropic(prompt, apiKey, baseUrl, model);
       case 'custom':
+        if (!baseUrl) throw new Error('Base URL is required for custom API');
         return this.callCustomAPI(prompt, apiKey, baseUrl);
       default:
         throw new Error(`Unsupported AI provider: ${provider}`);

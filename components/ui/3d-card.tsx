@@ -64,4 +64,3 @@ export function Card3D({ children, className, intensity = 0.1 }: Card3DProps) {
   );
 }
 
-

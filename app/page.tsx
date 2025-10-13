@@ -13,7 +13,7 @@ import { ShimmeringText } from '@/components/ui/shimmering-text';
 import { AppleHelloEffect } from '@/components/ui/apple-hello-effect';
 import { InteractiveGridPattern } from '@/components/ui/interactive-grid-pattern';
 import { Prediction, FilterOptions, CreatePredictionData } from '@/types/prediction';
-import { Plus, TrendingUp, Users, Clock, Zap, Star, Trophy, Fire, Target, BarChart3, TrendingDown, ArrowUp, ArrowDown, Eye, Shield, Lock } from 'lucide-react';
+import { Plus, TrendingUp, Users, Clock, Zap, Star, Trophy, Flame, Target, BarChart3, TrendingDown, ArrowUp, ArrowDown, Eye, Shield, Lock } from 'lucide-react';
 import { useI18n } from '@/components/providers/privy-provider';
 import { cn } from '@/lib/utils';
 
@@ -230,7 +230,7 @@ export default function HomePage() {
             {/* Quick Stats Bar */}
             <div className="mt-8 flex flex-wrap justify-center gap-4 text-sm">
               <div className="flex items-center gap-2 bg-yellow-500/10 px-4 py-2 rounded-full border border-yellow-500/20">
-                <Fire className="h-4 w-4 text-yellow-400" />
+                <Flame className="h-4 w-4 text-yellow-400" />
                 <span className="text-yellow-200 font-medium">{stats.activePredictions} Live Markets</span>
               </div>
               <div className="flex items-center gap-2 bg-green-500/10 px-4 py-2 rounded-full border border-green-500/20">
@@ -377,7 +377,7 @@ export default function HomePage() {
             <Trophy className="h-6 w-6 text-yellow-400" />
             <h2 className="text-2xl font-bold text-yellow-300">Featured Markets</h2>
             <div className="flex items-center gap-1 bg-red-500/20 px-2 py-1 rounded-full">
-              <Fire className="h-3 w-3 text-red-400" />
+              <Flame className="h-3 w-3 text-red-400" />
               <span className="text-xs text-red-400 font-medium">HOT</span>
             </div>
           </div>
@@ -412,7 +412,7 @@ export default function HomePage() {
                       </Badge>
                       {prediction.isHot && (
                         <Badge variant="warning" className="text-xs animate-pulse">
-                          <Fire className="h-3 w-3 mr-1" />
+                          <Flame className="h-3 w-3 mr-1" />
                           HOT
                         </Badge>
                       )}
