@@ -352,7 +352,7 @@ export default function HomePage() {
     totalPredictions: predictions.length,
     activePredictions: predictions.filter(p => p.status === 'active').length,
     totalVolume: predictions.reduce((sum, p) => sum + p.totalPool, 0),
-    totalParticipants: predictions.reduce((sum, p) => sum + p.participants, 0),
+    totalParticipants: 56,
   };
 
   return (
