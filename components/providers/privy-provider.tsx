@@ -29,7 +29,7 @@ const defaultMessages: Record<Locale, Messages> = {
     nav_leaderboard: 'Leaderboard',
     connect_wallet: 'Connect Wallet',
     disconnect: 'Disconnect',
-    create_bet: 'Create Bet',
+    create_bet: 'Make a Prediction',
     live_markets: 'Live Bet Markets',
     // Home page
            hero_subtitle: 'Private Dark Pool Prediction Markets with AI-Driven Results. Built on BNB Smart Chain.',
@@ -54,8 +54,8 @@ const defaultMessages: Record<Locale, Messages> = {
     no_predictions_found: 'No predictions found',
     try_adjusting_filters: 'Try adjusting your filters or create the first prediction!',
     create_first_prediction: 'Create First Prediction',
-    // Create Bet Modal
-    create_prediction_market: 'Create Prediction Market',
+    // Make a Prediction Modal
+    create_prediction_market: 'Make a Prediction',
     create_prediction_description: 'Create a prediction market with automated or manual resolution',
     wallet_required: 'Wallet Required',
     connect_wallet_to_create: 'Connect your wallet to create predictions',
@@ -78,7 +78,7 @@ const defaultMessages: Record<Locale, Messages> = {
     prevent_spam: 'To prevent spam, creators must participate in their own prediction',
     your_prediction: 'Your Prediction',
     bnb_amount: 'BNB Amount',
-    click_create_will_prompt: 'Clicking "Create Bet" will prompt your wallet to send {amount} to the vault',
+    click_create_will_prompt: 'Clicking "Make a Prediction" will prompt your wallet to send {amount} to the vault',
     cancel: 'Cancel',
     creating: 'Creating...',
     // Prediction Card
@@ -168,7 +168,7 @@ const defaultMessages: Record<Locale, Messages> = {
     nav_leaderboard: '排行榜',
     connect_wallet: '连接钱包',
     disconnect: '断开连接',
-    create_bet: '创建投注',
+    create_bet: '做出预测',
     live_markets: '实时投注市场',
     // Home page
            hero_subtitle: '私有暗池预测市场，AI驱动结果。基于BNB智能链构建。',
@@ -193,8 +193,8 @@ const defaultMessages: Record<Locale, Messages> = {
     no_predictions_found: '未找到预测',
     try_adjusting_filters: '尝试调整筛选条件或创建第一个预测！',
     create_first_prediction: '创建第一个预测',
-    // Create Bet Modal
-    create_prediction_market: '创建预测市场',
+    // Make a Prediction Modal
+    create_prediction_market: '做出预测',
     create_prediction_description: '创建具有自动或手动解析的预测市场',
     wallet_required: '需要钱包',
     connect_wallet_to_create: '连接您的钱包以创建预测',

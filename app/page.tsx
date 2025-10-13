@@ -406,10 +406,66 @@ export default function HomePage() {
           }
         }
         
+        @keyframes greenGlow {
+          0%, 100% {
+            box-shadow: 0 0 10px 3px #00FF00, 0 0 20px 5px #00FF00, inset 0 0 10px rgba(0, 255, 0, 0.3);
+          }
+          50% {
+            box-shadow: 0 0 20px 5px #00FF00, 0 0 40px 10px #00FF00, inset 0 0 20px rgba(0, 255, 0, 0.5);
+          }
+        }
+        
+        .rotating-border-btn,
+        button.rotating-border-btn {
+          border: 5px solid #00FF00 !important;
+          outline: 3px solid #00FF00 !important;
+          outline-offset: 3px !important;
+          animation: greenGlow 1.5s ease-in-out infinite !important;
+          transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease !important;
+        }
+        
+        .rotating-border-btn:hover,
+        button.rotating-border-btn:hover {
+          transform: scale(1.06) !important;
+          background: #111111 !important;
+          box-shadow: 0 0 35px 10px #00FF00, 0 0 70px 18px #00FF00, inset 0 0 35px rgba(0, 255, 0, 0.65) !important;
+        }
+        
         .bold-title {
           animation: slideInScale 0.8s ease-out, boldPulse 3s ease-in-out infinite;
           font-weight: 900;
           letter-spacing: -0.02em;
+        }
+
+        /* Neon green (brighter) border wrapper */
+        @keyframes neonPulse {
+          0%, 100% {
+            box-shadow: 0 0 10px #39FF14, 0 0 22px rgba(57,255,20,0.5);
+          }
+          50% {
+            box-shadow: 0 0 16px #39FF14, 0 0 30px rgba(57,255,20,0.65);
+          }
+        }
+        .neon-border {
+          position: relative;
+          display: inline-block;
+        }
+        .neon-border::before {
+          content: '';
+          position: absolute;
+          top: -6px;
+          left: -6px;
+          right: -6px;
+          bottom: -6px;
+          border-radius: 0.75rem; /* match/extend button rounding */
+          border: 3px solid #39FF14; /* toned-down neon green */
+          box-shadow: 0 0 12px #39FF14, 0 0 24px rgba(57,255,20,0.55);
+          pointer-events: none;
+          animation: neonPulse 2.2s ease-in-out infinite;
+          transition: box-shadow 160ms ease;
+        }
+        .neon-border:hover::before {
+          box-shadow: 0 0 18px #39FF14, 0 0 36px rgba(57,255,20,0.75);
         }
       `}</style>
       
@@ -510,15 +566,17 @@ export default function HomePage() {
             </div>
 
              {/* CTA Buttons */}
-             <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in">
+            <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in">
+              <div className="neon-border">
               <Button
                 size="lg"
                 onClick={() => setShowCreateModal(true)}
-                 className="bg-black hover:bg-black/90 text-white text-lg px-8 py-3 shadow-lg"
+                  className="bg-black hover:bg-black/90 text-white text-lg px-8 py-3"
               >
                 <Plus className="h-5 w-5 mr-2" />
-                 {t('create_bet')}
-               </Button>
+                  Make a Prediction
+                </Button>
+              </div>
                <Button
                  variant="outline"
                  size="lg"
@@ -796,7 +854,7 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* Create Bet Modal */}
+      {/* Make a Prediction Modal */}
       <CreateBetModal
         open={showCreateModal}
         onOpenChange={setShowCreateModal}
