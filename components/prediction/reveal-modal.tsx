@@ -97,13 +97,13 @@ export function RevealModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[550px]">
+      <DialogContent className="border-gray-800 bg-black sm:max-w-[550px]">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <Eye className="h-5 w-5 text-primary" />
+          <DialogTitle className="flex items-center gap-2 text-white">
+            <Eye className="h-5 w-5 text-yellow-500" />
             Reveal Your Bet
           </DialogTitle>
-          <DialogDescription className="pt-2 text-left">
+          <DialogDescription className="pt-2 text-left text-gray-300">
             {prediction.title}
           </DialogDescription>
         </DialogHeader>
@@ -113,59 +113,93 @@ export function RevealModal({
           <div
             className={`flex items-center justify-between rounded-lg p-3 ${
               canRevealNow
-                ? 'border border-green-500/20 bg-green-500/10'
-                : 'border border-red-500/20 bg-red-500/10'
+                ? 'border border-green-500/30 bg-green-500/20'
+                : 'border border-red-500/30 bg-red-500/20'
             }`}
           >
             <div className="flex items-center gap-2">
               <Clock
                 className={`h-4 w-4 ${canRevealNow ? 'text-green-500' : 'text-red-500'}`}
               />
-              <span className="text-sm font-medium">
+              <span className="text-sm font-medium text-white">
                 {canRevealNow ? 'Reveal window open' : 'Reveal window closed'}
               </span>
             </div>
             <span
-              className={`text-sm font-semibold ${canRevealNow ? 'text-green-500' : 'text-red-500'}`}
+              className={`text-sm font-semibold text-white ${
+                canRevealNow ? 'bg-green-500/20' : 'bg-red-500/20'
+              } rounded px-2 py-1`}
             >
               {canRevealNow ? timeRemaining : 'Expired'}
             </span>
           </div>
 
           {/* Bet Details */}
-          <div className="space-y-3 rounded-lg border border-border bg-secondary/30 p-4">
+          <div className="space-y-2 rounded-lg border border-gray-700 bg-gray-900/50 p-3">
             <div className="flex items-center justify-between">
-              <span className="text-sm text-muted-foreground">Your Bet</span>
+              <span className="text-sm text-gray-400">Your Bet</span>
               <Badge
-                variant={isYes ? 'default' : 'destructive'}
-                className="text-sm"
+                className={`${
+                  isYes
+                    ? 'bg-yellow-500 text-black hover:bg-yellow-600'
+                    : 'bg-red-500 text-white hover:bg-red-600'
+                }`}
               >
                 {isYes ? 'YES' : 'NO'}
               </Badge>
             </div>
 
             <div className="flex justify-between text-sm">
-              <span className="text-muted-foreground">Amount</span>
-              <span className="font-medium">
+              <span className="text-gray-400">Amount Committed</span>
+              <span className="font-medium text-white">
                 {formatBNB(parseFloat(ethers.formatEther(commitData.amount)))}
               </span>
             </div>
 
             <div className="flex justify-between text-sm">
-              <span className="text-muted-foreground">Committed</span>
-              <span className="font-medium">
+              <span className="text-gray-400">Date and Time</span>
+              <span className="font-medium text-white">
                 {new Date(commitData.timestamp).toLocaleString()}
               </span>
             </div>
 
-            <div className="border-t border-border pt-2">
+            <div className="flex justify-between text-sm">
+              <span className="text-gray-400">Market Status</span>
+              <div className="flex items-center gap-2">
+                <Badge className="border-gray-600 bg-gray-700 text-white">
+                  {prediction.status}
+                </Badge>
+                {prediction.status === 'resolved' && (
+                  <>
+                    <span className="text-gray-400">Outcome:</span>
+                    <Badge
+                      className={
+                        prediction.resolution?.outcome === 'yes'
+                          ? 'bg-yellow-500 text-black hover:bg-yellow-600'
+                          : 'bg-red-500 text-white hover:bg-red-600'
+                      }
+                    >
+                      {prediction.resolution?.outcome?.toUpperCase()}
+                    </Badge>
+                    {prediction.resolution?.outcome === commitData.outcome ? (
+                      <span className="flex items-center gap-1 text-green-500">
+                        <CheckCircle2 className="h-4 w-4" />
+                        Won
+                      </span>
+                    ) : (
+                      <span className="text-gray-400">Lost</span>
+                    )}
+                  </>
+                )}
+              </div>
+            </div>
+
+            <div className="border-t border-gray-700 pt-2">
               <div className="mb-2 flex items-start justify-between gap-2">
-                <span className="text-xs text-muted-foreground">
-                  Commit Hash
-                </span>
+                <span className="text-xs text-gray-400">Commit Hash</span>
                 <button
                   onClick={() => copyToClipboard(commitData.commitHash)}
-                  className="flex items-center gap-1 text-xs text-primary hover:text-primary/80"
+                  className="flex items-center gap-1 rounded bg-gray-800 px-2 py-1 text-xs text-gray-400 hover:text-white"
                 >
                   {copied ? (
                     <CheckCircle2 className="h-3 w-3" />
@@ -175,48 +209,18 @@ export function RevealModal({
                   {copied ? 'Copied!' : 'Copy'}
                 </button>
               </div>
-              <code className="block break-all rounded bg-secondary px-2 py-1 text-xs">
+              <code className="block break-all rounded bg-gray-800 px-2 py-1 text-xs text-gray-300">
                 {commitData.commitHash}
               </code>
             </div>
           </div>
 
-          {/* Market Status */}
-          <div className="rounded-lg border border-blue-500/20 bg-blue-500/10 p-4">
-            <div className="mb-2 flex justify-between">
-              <span className="text-sm font-medium">Market Status</span>
-              <Badge variant="outline">{prediction.status}</Badge>
-            </div>
-            {prediction.status === 'resolved' && (
-              <div className="flex items-center gap-2 text-sm">
-                <span className="text-muted-foreground">Outcome:</span>
-                <Badge
-                  variant={
-                    prediction.resolution?.outcome === 'yes'
-                      ? 'default'
-                      : 'destructive'
-                  }
-                >
-                  {prediction.resolution?.outcome?.toUpperCase()}
-                </Badge>
-                {prediction.resolution?.outcome === commitData.outcome ? (
-                  <span className="flex items-center gap-1 text-green-500">
-                    <CheckCircle2 className="h-4 w-4" />
-                    You won!
-                  </span>
-                ) : (
-                  <span className="text-muted-foreground">You lost</span>
-                )}
-              </div>
-            )}
-          </div>
-
           {/* Warning/Info */}
           {!canRevealNow ? (
-            <div className="flex items-start gap-2 rounded-lg border border-red-500/20 bg-red-500/10 p-3">
+            <div className="flex items-start gap-2 rounded-lg border border-red-500/30 bg-red-500/20 p-3">
               <AlertCircle className="mt-0.5 h-4 w-4 flex-shrink-0 text-red-500" />
-              <div className="text-xs text-muted-foreground">
-                <p className="mb-1 font-semibold text-foreground">
+              <div className="space-y-2 text-xs text-gray-300">
+                <p className="font-semibold text-white">
                   Reveal window has closed
                 </p>
                 <p>
@@ -227,15 +231,14 @@ export function RevealModal({
               </div>
             </div>
           ) : (
-            <div className="flex items-start gap-2 rounded-lg border border-blue-500/20 bg-blue-500/10 p-3">
-              <AlertCircle className="mt-0.5 h-4 w-4 flex-shrink-0 text-blue-500" />
-              <div className="space-y-1 text-xs text-muted-foreground">
+            <div className="flex items-start gap-2 rounded-lg border border-blue-500/30 bg-blue-500/20 p-3">
+              <div className="space-y-2 text-xs text-gray-300">
                 <p>
-                  <strong className="text-foreground">
+                  <strong className="text-white">
                     What happens when you reveal:
                   </strong>
                 </p>
-                <ul className="ml-2 list-inside list-disc space-y-0.5">
+                <ul className="ml-2 list-inside list-disc space-y-1">
                   <li>Your bet outcome and amount will be publicly visible</li>
                   <li>Your bet will be verified against your commit hash</li>
                   <li>
@@ -253,9 +256,9 @@ export function RevealModal({
 
           {/* Error Message */}
           {error && (
-            <div className="bg-destructive/10 border-destructive/20 flex items-center gap-2 rounded-lg border p-3">
-              <AlertCircle className="text-destructive h-4 w-4" />
-              <span className="text-destructive text-sm">{error}</span>
+            <div className="flex items-center gap-2 rounded-lg border border-red-500/30 bg-red-500/20 p-3">
+              <AlertCircle className="h-4 w-4 text-red-500" />
+              <span className="text-sm text-red-500">{error}</span>
             </div>
           )}
         </div>
@@ -265,7 +268,7 @@ export function RevealModal({
             type="button"
             variant="outline"
             onClick={exportRevealData}
-            className="w-full sm:w-auto"
+            className="w-full border-gray-700 bg-gray-800 text-white hover:bg-gray-700 sm:w-auto"
           >
             <ExternalLink className="mr-2 h-4 w-4" />
             Export Data
@@ -276,6 +279,7 @@ export function RevealModal({
               variant="outline"
               onClick={() => onOpenChange(false)}
               disabled={loading}
+              className="border-gray-700 bg-gray-800 text-white hover:bg-gray-700"
             >
               Cancel
             </Button>
@@ -283,6 +287,7 @@ export function RevealModal({
               type="button"
               onClick={handleConfirm}
               disabled={loading || !canRevealNow}
+              className="bg-yellow-500 text-black hover:bg-yellow-600 disabled:bg-gray-600 disabled:text-gray-400"
             >
               {loading ? 'Revealing...' : 'Reveal Bet'}
             </Button>

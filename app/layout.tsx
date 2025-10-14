@@ -3,7 +3,6 @@ import { GeistSans } from 'geist/font/sans';
 import './globals.css';
 import { PrivyProviderWrapper } from '@/components/providers/privy-provider';
 import { AnimatedHeader } from '@/components/layout/animated-header';
-import { AnimatedFooter } from '@/components/layout/animated-footer';
 import { AnimatedBackground } from '@/components/ui/animated-background';
 import { PageTransition } from '@/components/ui/page-transition';
 import { IntroProvider } from '@/components/providers/intro-provider';
@@ -74,7 +73,6 @@ export default function RootLayout({
                   <PageTransition>{children}</PageTransition>
                 </ErrorBoundary>
               </main>
-              <AnimatedFooter />
             </div>
           </IntroProvider>
         </PrivyProviderWrapper>
