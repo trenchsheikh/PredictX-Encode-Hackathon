@@ -7,100 +7,120 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { UserBet, Prediction } from '@/types/prediction';
 import { formatBNB, formatTimeRemaining, calculatePayout, formatAddress } from '@/lib/utils';
-import { Wallet, TrendingUp, TrendingDown, Clock, DollarSign, ExternalLink } from 'lucide-react';
+import { Wallet, TrendingUp, TrendingDown, Clock, DollarSign, ExternalLink, Eye, Loader2, AlertCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useI18n } from '@/components/providers/privy-provider';
-
-// Mock data for demonstration
-const mockUserBets: UserBet[] = [
-  {
-    id: '1',
-    predictionId: '1',
-    user: '0x1234...5678',
-    outcome: 'yes',
-    shares: 1.67,
-    amount: 0.01,
-    price: 0.006,
-    createdAt: Date.now() - 86400000,
-    claimed: false,
-    payout: 0.0167,
-  },
-  {
-    id: '2',
-    predictionId: '2',
-    user: '0x1234...5678',
-    outcome: 'no',
-    shares: 2.0,
-    amount: 0.01,
-    price: 0.005,
-    createdAt: Date.now() - 172800000,
-    claimed: true,
-    payout: 0.02,
-  },
-];
-
-const mockPredictions: { [id: string]: Prediction } = {
-  '1': {
-    id: '1',
-    title: 'Will Bitcoin reach $100,000 by end of 2024?',
-    description: 'Bitcoin price prediction based on current market trends and institutional adoption.',
-    category: 'crypto',
-    status: 'active',
-    createdAt: Date.now() - 86400000,
-    expiresAt: Date.now() + 86400000 * 30,
-    creator: '0x1234...5678',
-    totalPool: 0.5,
-    yesPool: 0.3,
-    noPool: 0.2,
-    yesPrice: 0.006,
-    noPrice: 0.004,
-    totalShares: 50,
-    yesShares: 30,
-    noShares: 20,
-    participants: 15,
-    isHot: true,
-  },
-  '2': {
-    id: '2',
-    title: 'Will the Lakers win the NBA Championship 2024?',
-    description: 'NBA Championship prediction for the 2023-2024 season.',
-    category: 'sports',
-    status: 'resolved',
-    createdAt: Date.now() - 172800000,
-    expiresAt: Date.now() - 86400000,
-    creator: '0x2345...6789',
-    totalPool: 0.8,
-    yesPool: 0.4,
-    noPool: 0.4,
-    yesPrice: 0.005,
-    noPrice: 0.005,
-    totalShares: 80,
-    yesShares: 40,
-    noShares: 40,
-    participants: 25,
-    isHot: false,
-    resolution: {
-      outcome: 'no',
-      resolvedAt: Date.now() - 86400000,
-      reasoning: 'Lakers eliminated in playoffs',
-      evidence: ['NBA official results', 'Sports news'],
-    },
-  },
-};
+import { api, getErrorMessage } from '@/lib/api-client';
+import { usePredictionContract } from '@/lib/hooks/use-prediction-contract';
+import { getCommitSecret, hasUnrevealedCommit, canReveal, clearCommitSecret } from '@/lib/commit-reveal';
+import { RevealModal } from '@/components/prediction/reveal-modal';
+import { TransactionStatus } from '@/components/ui/transaction-status';
+import { mapCategory, mapStatus, calculatePrice } from '@/lib/blockchain-utils';
+import { ethers } from 'ethers';
 
 export default function MyBetsPage() {
   const { t } = useI18n();
   const { authenticated, user } = usePrivy();
+  const contract = usePredictionContract();
+  
+  // Data state
   const [userBets, setUserBets] = useState<UserBet[]>([]);
   const [predictions, setPredictions] = useState<{ [id: string]: Prediction }>({});
   const [activeTab, setActiveTab] = useState<'active' | 'resolved' | 'all'>('all');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string>();
+  
+  // Reveal modal state
+  const [showRevealModal, setShowRevealModal] = useState(false);
+  const [selectedBet, setSelectedBet] = useState<{
+    prediction: Prediction;
+    commitData: any;
+  } | null>(null);
+
+  /**
+   * Fetch user's bets from backend
+   */
+  const fetchUserBets = async () => {
+    if (!user?.wallet?.address) return;
+
+    setLoading(true);
+    setError(undefined);
+
+    try {
+      const response = await api.users.getUserBets(user.wallet.address);
+
+      if (!response.success || !response.data) {
+        throw new Error(response.error || 'Failed to fetch bets');
+      }
+
+      // Map backend data to frontend UserBet format
+      const bets: UserBet[] = (response.data.bets || []).map((bet: any) => {
+        const isRevealed = bet.type === 'bet';
+        return {
+          id: bet.txHash || `${bet.marketId}-${Date.now()}`,
+          predictionId: bet.marketId.toString(),
+          user: response.data.address,
+          outcome: isRevealed ? (bet.outcome ? 'yes' : 'no') : 'unknown',
+          shares: bet.shares ? parseFloat(ethers.formatEther(bet.shares)) : 0,
+          amount: parseFloat(ethers.formatEther(bet.amount)),
+          price: 0, // Would calculate from market data
+          createdAt: new Date(isRevealed ? bet.revealedAt : bet.timestamp).getTime(),
+          claimed: bet.claimed || false,
+          payout: undefined, // Calculate from market if claimed
+          revealed: isRevealed,
+        };
+      });
+
+      setUserBets(bets);
+
+      // Fetch associated market data
+      const marketIds = [...new Set(bets.map(b => b.predictionId))];
+      const marketData: { [id: string]: Prediction } = {};
+
+      for (const marketId of marketIds) {
+        const marketResponse = await api.markets.getMarket(marketId);
+        if (marketResponse.success && marketResponse.data) {
+          const market = marketResponse.data;
+          marketData[marketId] = {
+            id: marketId,
+            title: market.title,
+            description: market.description,
+            summary: market.summary || market.description,
+            category: mapCategory(market.category),
+            status: mapStatus(market.status),
+            createdAt: new Date(market.createdAt).getTime(),
+            expiresAt: new Date(market.expiresAt).getTime(),
+            creator: market.creator,
+            totalPool: parseFloat(ethers.formatEther(market.totalPool || '0')),
+            yesPool: parseFloat(ethers.formatEther(market.yesPool || '0')),
+            noPool: parseFloat(ethers.formatEther(market.noPool || '0')),
+            yesPrice: calculatePrice(market.yesPool || '0', market.totalPool || '1'),
+            noPrice: calculatePrice(market.noPool || '0', market.totalPool || '1'),
+            totalShares: parseFloat(ethers.formatEther(market.yesShares || '0')) + parseFloat(ethers.formatEther(market.noShares || '0')),
+            yesShares: parseFloat(ethers.formatEther(market.yesShares || '0')),
+            noShares: parseFloat(ethers.formatEther(market.noShares || '0')),
+            participants: market.participants || 0,
+            isHot: false,
+            outcome: market.outcome === true ? 'yes' : market.outcome === false ? 'no' : undefined,
+            resolutionReasoning: market.resolutionReasoning,
+          };
+        }
+      }
+
+      setPredictions(marketData);
+    } catch (err: any) {
+      console.error('Failed to fetch user bets:', err);
+      setError(getErrorMessage(err));
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    if (authenticated) {
-      setUserBets(mockUserBets);
-      setPredictions(mockPredictions);
+    if (authenticated && user?.wallet?.address) {
+      fetchUserBets();
     }
-  }, [authenticated]);
+  }, [authenticated, user?.wallet?.address]);
 
   const filteredBets = userBets.filter(bet => {
     const prediction = predictions[bet.predictionId];
@@ -116,11 +136,91 @@ export default function MyBetsPage() {
     }
   });
 
+  /**
+   * Handle reveal bet
+   */
+  const handleRevealClick = (predictionId: string) => {
+    const prediction = predictions[predictionId];
+    const commitData = getCommitSecret(predictionId);
+
+    if (!prediction || !commitData) {
+      alert('Reveal data not found. Make sure you placed this bet on this device.');
+      return;
+    }
+
+    setSelectedBet({ prediction, commitData });
+    setShowRevealModal(true);
+  };
+
+  /**
+   * Confirm reveal bet
+   */
+  const handleRevealConfirm = async () => {
+    if (!selectedBet || !user?.wallet?.address) return;
+
+    try {
+      const marketId = parseInt(selectedBet.prediction.id);
+      const isYes = selectedBet.commitData.outcome === 'yes';
+
+      // Call smart contract
+      const result = await contract.revealBet(
+        marketId,
+        isYes,
+        selectedBet.commitData.salt
+      );
+
+      if (!result.success || !result.txHash) {
+        throw new Error('Transaction failed');
+      }
+
+      // Call backend API
+      await api.markets.revealBet(selectedBet.prediction.id, {
+        userAddress: user.wallet.address,
+        outcome: selectedBet.commitData.outcome,
+        salt: selectedBet.commitData.salt,
+        amount: selectedBet.commitData.amount,
+        txHash: result.txHash,
+      });
+
+      // Clear local commit data
+      clearCommitSecret(selectedBet.prediction.id);
+
+      // Refresh bets
+      await fetchUserBets();
+
+      setShowRevealModal(false);
+      alert('Bet revealed successfully!');
+    } catch (err: any) {
+      console.error('Reveal failed:', err);
+      alert(getErrorMessage(err));
+    }
+  };
+
+  /**
+   * Handle claim winnings
+   */
   const handleClaim = async (betId: string) => {
-    // Mock claim functionality
-    setUserBets(prev => prev.map(bet => 
-      bet.id === betId ? { ...bet, claimed: true } : bet
-    ));
+    const bet = userBets.find(b => b.id === betId);
+    if (!bet) return;
+
+    try {
+      const marketId = parseInt(bet.predictionId);
+
+      // Call smart contract
+      const result = await contract.claimWinnings(marketId);
+
+      if (!result.success || !result.txHash) {
+        throw new Error('Transaction failed');
+      }
+
+      // Refresh bets
+      await fetchUserBets();
+
+      alert(`Winnings claimed! Amount: ${result.amount} BNB`);
+    } catch (err: any) {
+      console.error('Claim failed:', err);
+      alert(getErrorMessage(err));
+    }
   };
 
   const getOutcomeColor = (outcome: 'yes' | 'no') => {
@@ -403,19 +503,36 @@ export default function MyBetsPage() {
                         )}
                       </div>
 
-                      {/* Action Button */}
-                      <div className="ml-4 flex-shrink-0">
+                      {/* Action Buttons */}
+                      <div className="ml-4 flex-shrink-0 flex flex-col gap-2">
+                        {/* Reveal button for unrevealed bets */}
+                        {!bet.revealed && hasUnrevealedCommit(bet.predictionId) && (
+                          <Button
+                            onClick={() => handleRevealClick(bet.predictionId)}
+                            className="bg-yellow-600 hover:bg-yellow-700 text-white"
+                            size="sm"
+                            disabled={!canReveal(prediction.expiresAt)}
+                          >
+                            <Eye className="h-4 w-4 mr-2" />
+                            {t('reveal')}
+                          </Button>
+                        )}
+                        
+                        {/* Claim button for resolved winning bets */}
                         {canClaim ? (
                           <Button
                             onClick={() => handleClaim(bet.id)}
                             className="bg-green-600 hover:bg-green-700 text-white"
                             size="sm"
+                            disabled={contract.loading}
                           >
                             <DollarSign className="h-4 w-4 mr-2" />
                             {t('claim')}
                           </Button>
                         ) : bet.claimed ? (
                           <Badge variant="success" className="bg-green-600 text-white">{t('claimed')}</Badge>
+                        ) : !bet.revealed ? (
+                          <Badge variant="secondary" className="bg-gray-600 text-white">Unrevealed</Badge>
                         ) : prediction.status === 'active' ? (
                           <Badge variant="secondary" className="bg-blue-600 text-white">{t('active')}</Badge>
                         ) : isWinning ? (
@@ -432,6 +549,42 @@ export default function MyBetsPage() {
           </div>
         )}
       </div>
+
+      {/* Reveal Modal */}
+      {selectedBet && (
+        <RevealModal
+          open={showRevealModal}
+          onOpenChange={setShowRevealModal}
+          prediction={selectedBet.prediction}
+          commitData={selectedBet.commitData}
+          onConfirm={handleRevealConfirm}
+        />
+      )}
+
+      {/* Transaction Status */}
+      {contract.txStatus !== 'idle' && (
+        <TransactionStatus
+          status={contract.txStatus}
+          txHash={contract.txHash}
+          error={contract.error}
+          showDialog={true}
+          onClose={contract.resetTxState}
+        />
+      )}
+
+      {/* Error Banner */}
+      {error && !loading && (
+        <div className="fixed bottom-4 right-4 z-50">
+          <Card className="bg-red-500/20 border-red-500 max-w-md">
+            <CardContent className="p-4">
+              <div className="flex items-center gap-2">
+                <AlertCircle className="h-5 w-5 text-red-500" />
+                <p className="text-red-900 font-medium text-sm">{error}</p>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
     </div>
   );
 }

@@ -1,0 +1,230 @@
+/**
+ * API Client for backend communication
+ * Base URL: /api (proxied to backend server)
+ */
+
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
+
+export interface APIResponse<T> {
+  success: boolean;
+  data?: T;
+  error?: string;
+  message?: string;
+}
+
+/**
+ * Base fetch wrapper with error handling
+ */
+async function apiFetch<T>(
+  endpoint: string,
+  options: RequestInit = {}
+): Promise<APIResponse<T>> {
+  try {
+    const url = `${API_BASE_URL}${endpoint}`;
+    
+    const response = await fetch(url, {
+      ...options,
+      headers: {
+        'Content-Type': 'application/json',
+        ...options.headers,
+      },
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      return {
+        success: false,
+        error: data.error || `HTTP ${response.status}: ${response.statusText}`,
+      };
+    }
+
+    return {
+      success: true,
+      data: data.data || data,
+      message: data.message,
+    };
+  } catch (error: any) {
+    console.error(`API Error [${endpoint}]:`, error);
+    return {
+      success: false,
+      error: error.message || 'Network error occurred',
+    };
+  }
+}
+
+/**
+ * Market API Methods
+ */
+export const marketAPI = {
+  /**
+   * Get all markets with optional filters
+   */
+  async getMarkets(filters?: {
+    status?: string;
+    category?: string;
+    limit?: number;
+    offset?: number;
+  }) {
+    const params = new URLSearchParams();
+    if (filters?.status) params.append('status', filters.status);
+    if (filters?.category) params.append('category', filters.category);
+    if (filters?.limit) params.append('limit', filters.limit.toString());
+    if (filters?.offset) params.append('offset', filters.offset.toString());
+
+    const query = params.toString() ? `?${params.toString()}` : '';
+    return apiFetch<any[]>(`/markets${query}`, { method: 'GET' });
+  },
+
+  /**
+   * Get a single market by ID
+   */
+  async getMarket(marketId: string) {
+    return apiFetch<any>(`/markets/${marketId}`, { method: 'GET' });
+  },
+
+  /**
+   * Create a new market (admin only)
+   */
+  async createMarket(marketData: {
+    title: string;
+    description: string;
+    category: string;
+    expiresAt: number;
+    initialLiquidity: string;
+    userAddress: string;
+    txHash?: string;
+  }) {
+    return apiFetch<any>('/markets', {
+      method: 'POST',
+      body: JSON.stringify(marketData),
+    });
+  },
+
+  /**
+   * Submit a bet commit
+   */
+  async commitBet(marketId: string, commitData: {
+    userAddress: string;
+    commitHash: string;
+    amount: string;
+    txHash: string;
+  }) {
+    return apiFetch<any>(`/markets/${marketId}/commit`, {
+      method: 'POST',
+      body: JSON.stringify(commitData),
+    });
+  },
+
+  /**
+   * Reveal a bet
+   */
+  async revealBet(marketId: string, revealData: {
+    userAddress: string;
+    outcome: 'yes' | 'no';
+    salt: string;
+    amount: string;
+    txHash: string;
+  }) {
+    return apiFetch<any>(`/markets/${marketId}/reveal`, {
+      method: 'POST',
+      body: JSON.stringify(revealData),
+    });
+  },
+
+  /**
+   * Resolve a market (oracle/admin only)
+   */
+  async resolveMarket(marketId: string, resolutionData: {
+    outcome: 'yes' | 'no';
+    reasoning: string;
+    oracleAddress: string;
+    txHash: string;
+  }) {
+    return apiFetch<any>(`/markets/${marketId}/resolve`, {
+      method: 'POST',
+      body: JSON.stringify(resolutionData),
+    });
+  },
+};
+
+/**
+ * User API Methods
+ */
+export const userAPI = {
+  /**
+   * Get user's bets
+   */
+  async getUserBets(userAddress: string) {
+    return apiFetch<any[]>(`/users/${userAddress}/bets`, { method: 'GET' });
+  },
+
+  /**
+   * Get user's profile/stats
+   */
+  async getUserProfile(userAddress: string) {
+    return apiFetch<any>(`/users/${userAddress}/profile`, { method: 'GET' });
+  },
+};
+
+/**
+ * Leaderboard API Methods
+ */
+export const leaderboardAPI = {
+  /**
+   * Get leaderboard
+   */
+  async getLeaderboard(filters?: {
+    timeframe?: 'all' | 'month' | 'week';
+    category?: string;
+    limit?: number;
+  }) {
+    const params = new URLSearchParams();
+    if (filters?.timeframe) params.append('timeframe', filters.timeframe);
+    if (filters?.category) params.append('category', filters.category);
+    if (filters?.limit) params.append('limit', filters.limit.toString());
+
+    const query = params.toString() ? `?${params.toString()}` : '';
+    return apiFetch<any[]>(`/leaderboard${query}`, { method: 'GET' });
+  },
+};
+
+/**
+ * Health check
+ */
+export const healthAPI = {
+  async check() {
+    return apiFetch<{ status: string; timestamp: number }>('/health', { method: 'GET' });
+  },
+};
+
+/**
+ * Helper: Check if backend is reachable
+ */
+export async function checkBackendHealth(): Promise<boolean> {
+  const result = await healthAPI.check();
+  return result.success === true;
+}
+
+/**
+ * Helper: Handle API errors with user-friendly messages
+ */
+export function getErrorMessage(error: any): string {
+  if (typeof error === 'string') return error;
+  if (error?.error) return error.error;
+  if (error?.message) return error.message;
+  return 'An unexpected error occurred';
+}
+
+/**
+ * Export all API methods
+ */
+export const api = {
+  markets: marketAPI,
+  users: userAPI,
+  leaderboard: leaderboardAPI,
+  health: healthAPI,
+};
+
+export default api;
+
