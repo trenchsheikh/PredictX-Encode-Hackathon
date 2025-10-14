@@ -6,17 +6,18 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Prediction } from '@/types/prediction';
 import { formatBNB, formatTimeRemaining } from '@/lib/utils';
-import { Clock, Users, ArrowUp, ArrowDown, Flame, ChevronDown, ChevronUp, Info } from 'lucide-react';
+import { Clock, Users, ArrowUp, ArrowDown, Flame, ChevronDown, ChevronUp, Info, History, CheckCircle, XCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useI18n } from '@/components/providers/privy-provider';
 
 interface PredictionCardProps {
   prediction: Prediction;
   onBet: (predictionId: string, outcome: 'yes' | 'no') => void;
+  onViewHistory?: (predictionId: string) => void;
   userBets?: { [predictionId: string]: { outcome: 'yes' | 'no'; shares: number } };
 }
 
-export function PredictionCard({ prediction, onBet, userBets }: PredictionCardProps) {
+export function PredictionCard({ prediction, onBet, onViewHistory, userBets }: PredictionCardProps) {
   const { t } = useI18n();
   const [isLoading, setIsLoading] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
@@ -48,6 +49,28 @@ export function PredictionCard({ prediction, onBet, userBets }: PredictionCardPr
               >
                 {prediction.category}
               </Badge>
+              {(prediction.status === 'resolved' || prediction.status === 'cancelled') && (
+                <Badge 
+                  className={cn(
+                    "text-xs",
+                    prediction.status === 'resolved' 
+                      ? "bg-green-500/20 text-green-400 border-green-500/30"
+                      : "bg-yellow-500/20 text-yellow-400 border-yellow-500/30"
+                  )}
+                >
+                  {prediction.status === 'resolved' ? (
+                    <>
+                      <CheckCircle className="h-3 w-3 mr-1" />
+                      Resolved
+                    </>
+                  ) : (
+                    <>
+                      <XCircle className="h-3 w-3 mr-1" />
+                      Expired
+                    </>
+                  )}
+                </Badge>
+              )}
               {prediction.isHot && (
                 <Badge variant="warning" className="text-xs animate-pulse">
                   <Flame className="h-3 w-3 mr-1" />
@@ -165,6 +188,20 @@ export function PredictionCard({ prediction, onBet, userBets }: PredictionCardPr
           </div>
         )}
 
+        {/* View History Button for Completed Predictions */}
+        {(prediction.status === 'resolved' || prediction.status === 'cancelled') && onViewHistory && (
+          <div className="mb-3">
+            <Button
+              size="sm"
+              className="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold"
+              onClick={() => onViewHistory(prediction.id)}
+            >
+              <History className="h-3 w-3 mr-2" />
+              View History
+            </Button>
+          </div>
+        )}
+
         {/* Resolution Info */}
         {prediction.resolution && (
           <div className="p-3 rounded-lg bg-yellow-500 border border-yellow-600 mb-3">
@@ -185,7 +222,12 @@ export function PredictionCard({ prediction, onBet, userBets }: PredictionCardPr
           </div>
           <div className="flex items-center gap-1">
             <Clock className="h-3 w-3" />
-            <span>{formatTimeRemaining(prediction.expiresAt)}</span>
+            <span>
+              {(prediction.status === 'resolved' || prediction.status === 'cancelled') 
+                ? 'Expired' 
+                : formatTimeRemaining(prediction.expiresAt)
+              }
+            </span>
           </div>
         </div>
       </CardContent>

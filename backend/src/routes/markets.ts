@@ -157,6 +157,17 @@ router.post('/', async (req: Request, res: Response) => {
       });
     }
 
+    // Validate minimum expiration time (15 minutes)
+    const expirationTime = new Date(expiresAt).getTime();
+    const minExpirationTime = Date.now() + (15 * 60 * 1000); // 15 minutes from now
+    
+    if (expirationTime < minExpirationTime) {
+      return res.status(400).json({
+        success: false,
+        error: 'Expiration time must be at least 15 minutes from now',
+      });
+    }
+
     // This endpoint is for indexing only
     // Actual market creation must happen on-chain first
     // The blockchain event listener will automatically cache it

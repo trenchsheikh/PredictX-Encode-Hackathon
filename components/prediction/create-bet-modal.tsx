@@ -25,7 +25,7 @@ const createPredictionSchema = z.object({
   resolutionInstructions: z.string().optional(),
   userPrediction: z.enum(['yes', 'no']),
   bnbAmount: z.number().min(0.001, 'Minimum bet is 0.001 BNB').max(10, 'Maximum bet is 10 BNB'),
-  expiresAt: z.number().min(Date.now() + 3600000, 'Expiration must be at least 1 hour from now'),
+  expiresAt: z.number().min(Date.now() + 900000, 'Expiration must be at least 15 minutes from now'),
 });
 
 interface CreateBetModalProps {
@@ -74,7 +74,7 @@ export function CreateBetModal({ open, onOpenChange, onSubmit }: CreateBetModalP
       betType: 'custom',
       userPrediction: 'yes',
       bnbAmount: 0.01,
-      expiresAt: Date.now() + 86400000 * 7, // 7 days from now
+      expiresAt: Date.now() + 900000, // 15 minutes from now
     },
   });
 
@@ -126,7 +126,7 @@ export function CreateBetModal({ open, onOpenChange, onSubmit }: CreateBetModalP
         description: watchedDescription.slice(0, 150),
         summary: `This prediction market allows participants to bet on whether ${watchedDescription}. If YES wins, the stated outcome will have occurred. If NO wins, the stated outcome will not have occurred.`,
         category: watchedCategory,
-        expiresAt: Date.now() + 86400000 * 30, // 30 days from now
+        expiresAt: Date.now() + 900000, // 15 minutes from now
         resolutionInstructions: `Determine if ${watchedDescription} based on verifiable data sources and official records.`,
       };
       
@@ -379,15 +379,17 @@ export function CreateBetModal({ open, onOpenChange, onSubmit }: CreateBetModalP
                 valueAsNumber: false,
                 setValueAs: (value) => new Date(value).getTime()
               })}
-              min={new Date(Date.now() + 3600000).toISOString().slice(0, 16)}
-              defaultValue={new Date(Date.now() + 86400000 * 7).toISOString().slice(0, 16)}
+              min={new Date(Date.now() + 900000).toISOString().slice(0, 16)}
+              defaultValue={new Date(Date.now() + 900000).toISOString().slice(0, 16)}
               className="bg-black/90 border-black text-white"
             />
             {errors.expiresAt && (
-              <p className="text-sm text-red-600 font-semibold">{errors.expiresAt.message}</p>
+              <p className="text-sm text-red-600 font-semibold">
+                {errors.expiresAt.message}
+              </p>
             )}
             <p className="text-xs text-black">
-              Set when this prediction market will close and be resolved
+              Set when this prediction market will close and be resolved (minimum 15 minutes)
             </p>
           </div>
 

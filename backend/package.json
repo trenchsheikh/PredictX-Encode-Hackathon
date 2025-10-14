@@ -9,10 +9,19 @@
     "dev": "nodemon src/server.ts",
     "test": "echo \"No tests yet\" && exit 0"
   },
-  "keywords": ["darkbet", "prediction-market", "blockchain", "api"],
+  "keywords": [
+    "darkbet",
+    "prediction-market",
+    "blockchain",
+    "api"
+  ],
   "author": "DarkBet Team",
   "license": "MIT",
   "dependencies": {
+    "@radix-ui/react-label": "^2.1.7",
+    "@radix-ui/react-tabs": "^1.1.13",
+    "axios": "^1.7.9",
+    "class-variance-authority": "^0.7.1",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "ethers": "^6.13.4",

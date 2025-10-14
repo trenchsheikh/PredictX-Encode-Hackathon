@@ -162,7 +162,7 @@ contract PredictionMarket is Ownable, ReentrancyGuard, Pausable {
         uint256 expiresAt,
         uint8 category
     ) external whenNotPaused returns (uint256) {
-        require(expiresAt > block.timestamp + 1 hours, "Must expire at least 1 hour from now");
+        require(expiresAt > block.timestamp + 15 minutes, "Must expire at least 15 minutes from now");
         require(expiresAt < block.timestamp + 365 days, "Cannot expire more than 1 year from now");
         require(bytes(title).length > 0 && bytes(title).length <= 200, "Invalid title length");
         require(category <= 7, "Invalid category");

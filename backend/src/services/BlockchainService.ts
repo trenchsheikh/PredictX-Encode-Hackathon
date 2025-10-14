@@ -4,6 +4,7 @@ import { Market } from '../models/Market';
 import { Commitment } from '../models/Commitment';
 import { Bet } from '../models/Bet';
 import { MarketStatus } from '../types';
+import { transactionHistoryService } from './TransactionHistoryService';
 
 export class BlockchainService {
   private provider: ethers.JsonRpcProvider;
@@ -79,6 +80,34 @@ export class BlockchainService {
   }
 
   /**
+   * Resolve a market (requires admin wallet)
+   */
+  async resolveMarket(marketId: number, outcome: boolean, reasoning: string): Promise<string> {
+    try {
+      // Get admin wallet from environment
+      const adminPrivateKey = process.env.ADMIN_PRIVATE_KEY;
+      if (!adminPrivateKey) {
+        throw new Error('Admin private key not configured');
+      }
+
+      const adminWallet = new ethers.Wallet(adminPrivateKey, this.provider);
+      const contractWithSigner = this.predictionMarket.connect(adminWallet);
+
+      // Call resolveMarket function
+      const tx = await (contractWithSigner as any).resolveMarket(marketId, outcome, reasoning);
+      const receipt = await tx.wait();
+
+      console.log(`✅ Market ${marketId} resolved: ${outcome ? 'YES' : 'NO'}`);
+      console.log(`   Transaction: ${receipt.hash}`);
+
+      return receipt.hash;
+    } catch (error: any) {
+      console.error(`❌ Failed to resolve market ${marketId}:`, error);
+      throw error;
+    }
+  }
+
+  /**
    * Get market data from blockchain
    */
   async getMarketFromChain(marketId: number): Promise<any> {
@@ -143,6 +172,24 @@ export class BlockchainService {
 
       await market.save();
       console.log(`✅ Market ${marketId} cached in database`);
+
+      // Record transaction
+      try {
+        const txHash = (event as any).transactionHash || (event as any).log?.transactionHash || 'unknown';
+        const blockNumber = (event as any).blockNumber || 0;
+        const timestamp = Number(marketData.createdAt) * 1000;
+        
+        await transactionHistoryService.recordTransaction(
+          Number(marketId),
+          creator,
+          'create',
+          txHash,
+          blockNumber,
+          timestamp
+        );
+      } catch (error) {
+        console.error('Failed to record market creation transaction:', error);
+      }
     } catch (error) {
       console.error(`❌ Error handling MarketCreated event:`, error);
     }
@@ -170,6 +217,25 @@ export class BlockchainService {
 
       await commitment.save();
       console.log(`✅ Commitment cached for market ${marketId}`);
+
+      // Record transaction
+      try {
+        const txHash = (event as any).transactionHash || (event as any).log?.transactionHash || 'unknown';
+        const blockNumber = (event as any).blockNumber || 0;
+        const timestamp = Date.now();
+        
+        await transactionHistoryService.recordTransaction(
+          Number(marketId),
+          user,
+          'commit',
+          txHash,
+          blockNumber,
+          timestamp,
+          { amount: amount.toString() }
+        );
+      } catch (error) {
+        console.error('Failed to record bet commit transaction:', error);
+      }
     } catch (error) {
       // If duplicate, it's fine (already cached)
       if ((error as any).code !== 11000) {
@@ -226,6 +292,29 @@ export class BlockchainService {
       );
 
       console.log(`✅ Bet revealed and cached for market ${marketId}`);
+
+      // Record transaction
+      try {
+        const txHash = (event as any).transactionHash || (event as any).log?.transactionHash || 'unknown';
+        const blockNumber = (event as any).blockNumber || 0;
+        const timestamp = Date.now();
+        
+        await transactionHistoryService.recordTransaction(
+          Number(marketId),
+          user,
+          'reveal',
+          txHash,
+          blockNumber,
+          timestamp,
+          { 
+            amount: amount.toString(),
+            outcome,
+            shares: shares.toString()
+          }
+        );
+      } catch (error) {
+        console.error('Failed to record bet reveal transaction:', error);
+      }
     } catch (error) {
       console.error(`❌ Error handling BetRevealed event:`, error);
     }
@@ -252,6 +341,25 @@ export class BlockchainService {
       );
 
       console.log(`✅ Market ${marketId} resolved`);
+
+      // Record transaction
+      try {
+        const txHash = (event as any).transactionHash || (event as any).log?.transactionHash || 'unknown';
+        const blockNumber = (event as any).blockNumber || 0;
+        const timestamp = Date.now();
+        
+        await transactionHistoryService.recordTransaction(
+          Number(marketId),
+          'system', // Market resolution is system-initiated
+          'resolve',
+          txHash,
+          blockNumber,
+          timestamp,
+          { outcome }
+        );
+      } catch (error) {
+        console.error('Failed to record market resolution transaction:', error);
+      }
     } catch (error) {
       console.error(`❌ Error handling MarketResolved event:`, error);
     }
@@ -272,6 +380,25 @@ export class BlockchainService {
       );
 
       console.log(`✅ Claim recorded for market ${marketId}`);
+
+      // Record transaction
+      try {
+        const txHash = (event as any).transactionHash || (event as any).log?.transactionHash || 'unknown';
+        const blockNumber = (event as any).blockNumber || 0;
+        const timestamp = Date.now();
+        
+        await transactionHistoryService.recordTransaction(
+          Number(marketId),
+          user,
+          'claim',
+          txHash,
+          blockNumber,
+          timestamp,
+          { amount: amount.toString() }
+        );
+      } catch (error) {
+        console.error('Failed to record winnings claim transaction:', error);
+      }
     } catch (error) {
       console.error(`❌ Error handling WinningsClaimed event:`, error);
     }

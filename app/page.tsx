@@ -9,13 +9,15 @@ import { PredictionCard } from '@/components/prediction/prediction-card';
 import { Filters } from '@/components/prediction/filters';
 import { CreateBetModal } from '@/components/prediction/create-bet-modal';
 import { BetModal } from '@/components/prediction/bet-modal';
+import { CryptoPredictionModal, CryptoPredictionData } from '@/components/prediction/crypto-prediction-modal';
+import { TransactionHistoryModal } from '@/components/prediction/transaction-history-modal';
 import { Particles } from '@/components/ui/particles';
 import { ShimmeringText } from '@/components/ui/shimmering-text';
 import { AppleHelloEffect } from '@/components/ui/apple-hello-effect';
 import { InteractiveGridPattern } from '@/components/ui/interactive-grid-pattern';
 import { TransactionStatus } from '@/components/ui/transaction-status';
 import { Prediction, FilterOptions, CreatePredictionData } from '@/types/prediction';
-import { Plus, TrendingUp, Users, Clock, Zap, Star, Trophy, Flame, Target, BarChart3, TrendingDown, ArrowUp, ArrowDown, Eye, Shield, Lock, Loader2, RefreshCw } from 'lucide-react';
+import { Plus, TrendingUp, Users, Clock, Zap, Star, Trophy, Flame, Target, BarChart3, TrendingDown, ArrowUp, ArrowDown, Eye, Shield, Lock, Loader2, RefreshCw, AlertCircle } from 'lucide-react';
 import { useI18n } from '@/components/providers/privy-provider';
 import { cn } from '@/lib/utils';
 import { api, getErrorMessage } from '@/lib/api-client';
@@ -37,13 +39,16 @@ export default function HomePage() {
   
   // Modal state
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const [showCryptoModal, setShowCryptoModal] = useState(false);
   const [showBetModal, setShowBetModal] = useState(false);
+  const [showHistoryModal, setShowHistoryModal] = useState(false);
   const [selectedPrediction, setSelectedPrediction] = useState<Prediction | null>(null);
   const [selectedOutcome, setSelectedOutcome] = useState<'yes' | 'no'>('yes');
+  const [selectedHistoryPrediction, setSelectedHistoryPrediction] = useState<string>('');
   
   // User bets tracking
   const [userBets, setUserBets] = useState<{ [predictionId: string]: { outcome: 'yes' | 'no'; shares: number } }>({});
-  
+
   // Client-only mounted state (fixes hydration errors for random animations)
   const [mounted, setMounted] = useState(false);
   
@@ -138,10 +143,15 @@ export default function HomePage() {
       alert('Please connect your wallet to place a bet');
       return;
     }
-
+    
     setSelectedPrediction(prediction);
     setSelectedOutcome(outcome);
     setShowBetModal(true);
+  };
+
+  const handleViewHistory = (predictionId: string) => {
+    setSelectedHistoryPrediction(predictionId);
+    setShowHistoryModal(true);
   };
 
   /**
@@ -232,10 +242,10 @@ export default function HomePage() {
 
       // Call backend API to index the market
       await api.markets.createMarket({
-        title: data.title,
-        description: data.description,
-        category: data.category,
-        expiresAt: data.expiresAt,
+      title: data.title,
+      description: data.description,
+      category: data.category,
+      expiresAt: data.expiresAt,
         initialLiquidity: ethers.parseEther(data.bnbAmount.toString()).toString(),
         userAddress,
         txHash: result.txHash,
@@ -244,10 +254,63 @@ export default function HomePage() {
       // Refresh markets
       await fetchMarkets();
 
-      setShowCreateModal(false);
-      alert('Prediction created successfully!');
+    setShowCreateModal(false);
+    alert('Prediction created successfully!');
     } catch (err: any) {
       console.error('Create prediction failed:', err);
+      alert(getErrorMessage(err));
+    }
+  };
+
+  /**
+   * Handle create crypto prediction
+   */
+  const handleCreateCryptoPrediction = async (data: CryptoPredictionData) => {
+    if (!authenticated || !user?.wallet?.address) {
+      alert('Please connect your wallet to create a prediction');
+      return;
+    }
+
+    try {
+      const userAddress = user.wallet.address;
+      const category = 7; // Crypto category
+      const expiresAtTimestamp = Math.floor(data.deadline / 1000); // Convert to seconds
+
+      // Call smart contract to create market
+      const result = await contract.createMarket(
+        data.title,
+        data.description,
+        data.description, // Use description as summary
+        '', // No resolution instructions for auto-verified
+        category,
+        expiresAtTimestamp,
+        '0' // No initial liquidity for crypto predictions
+      );
+
+      if (!result.success || !result.txHash) {
+        const actualError = contract.error || 'Transaction failed';
+        console.error('Contract error:', contract.error);
+        throw new Error(actualError);
+      }
+
+      // Call backend API to index the market
+      await api.markets.createMarket({
+        title: data.title,
+        description: data.description,
+        category: 'crypto',
+        expiresAt: data.deadline,
+        initialLiquidity: '0',
+        userAddress,
+        txHash: result.txHash,
+      });
+
+      // Refresh markets
+      await fetchMarkets();
+
+      setShowCryptoModal(false);
+      alert('Crypto prediction created successfully!');
+    } catch (err: any) {
+      console.error('Create crypto prediction failed:', err);
       alert(getErrorMessage(err));
     }
   };
@@ -378,40 +441,40 @@ export default function HomePage() {
       
       {/* Rising dust on left side - Client-only to prevent hydration errors */}
       {mounted && (
-        <div className="fixed left-0 top-0 bottom-0 w-64 pointer-events-none z-[1] overflow-hidden">
-          {Array.from({ length: 50 }).map((_, i) => (
-            <div
-              key={`left-${i}`}
-              className="dust-particle"
-              style={{
-                left: `${Math.random() * 100}%`,
-                width: `${Math.random() * 4 + 2}px`,
-                height: `${Math.random() * 4 + 2}px`,
-                animationDuration: `${Math.random() * 10 + 15}s`,
-                animationDelay: `${Math.random() * 20}s`,
-              }}
-            />
-          ))}
-        </div>
+      <div className="fixed left-0 top-0 bottom-0 w-64 pointer-events-none z-[1] overflow-hidden">
+        {Array.from({ length: 50 }).map((_, i) => (
+          <div
+            key={`left-${i}`}
+            className="dust-particle"
+            style={{
+              left: `${Math.random() * 100}%`,
+              width: `${Math.random() * 4 + 2}px`,
+              height: `${Math.random() * 4 + 2}px`,
+              animationDuration: `${Math.random() * 10 + 15}s`,
+              animationDelay: `${Math.random() * 20}s`,
+            }}
+          />
+        ))}
+      </div>
       )}
       
       {/* Rising dust on right side - Client-only to prevent hydration errors */}
       {mounted && (
-        <div className="fixed right-0 top-0 bottom-0 w-64 pointer-events-none z-[1] overflow-hidden">
-          {Array.from({ length: 50 }).map((_, i) => (
-            <div
-              key={`right-${i}`}
-              className="dust-particle"
-              style={{
-                left: `${Math.random() * 100}%`,
-                width: `${Math.random() * 4 + 2}px`,
-                height: `${Math.random() * 4 + 2}px`,
-                animationDuration: `${Math.random() * 10 + 15}s`,
-                animationDelay: `${Math.random() * 20}s`,
-              }}
-            />
-          ))}
-        </div>
+      <div className="fixed right-0 top-0 bottom-0 w-64 pointer-events-none z-[1] overflow-hidden">
+        {Array.from({ length: 50 }).map((_, i) => (
+          <div
+            key={`right-${i}`}
+            className="dust-particle"
+            style={{
+              left: `${Math.random() * 100}%`,
+              width: `${Math.random() * 4 + 2}px`,
+              height: `${Math.random() * 4 + 2}px`,
+              animationDuration: `${Math.random() * 10 + 15}s`,
+              animationDelay: `${Math.random() * 20}s`,
+            }}
+          />
+        ))}
+      </div>
       )}
       
       {/* Hero Section - Betting Style */}
@@ -421,26 +484,26 @@ export default function HomePage() {
           <div className="text-center">
             <h1 className="text-5xl sm:text-7xl bold-title text-black">
               {t('live_markets')}
-            </h1>
+              </h1>
             <p className="mt-4 text-lg leading-8 text-black max-w-2xl mx-auto animate-fade-in">
               {t('hero_subtitle')}
             </p>
             
-            {/* Quick Stats Bar */}
-            <div className="mt-8 flex flex-wrap justify-center gap-4 text-sm">
-              <div className="flex items-center gap-2 bg-black/80 px-4 py-2 rounded-full border border-black">
-                <Flame className="h-4 w-4 text-yellow-400" />
-                <span className="text-white font-medium">{stats.activePredictions} Live Markets</span>
-              </div>
-              <div className="flex items-center gap-2 bg-black/80 px-4 py-2 rounded-full border border-black">
-                <TrendingUp className="h-4 w-4 text-green-400" />
-                <span className="text-white font-medium">{stats.totalVolume.toFixed(2)} BNB Volume</span>
-              </div>
-              <div className="flex items-center gap-2 bg-black/80 px-4 py-2 rounded-full border border-black">
-                <Users className="h-4 w-4 text-blue-400" />
-                <span className="text-white font-medium">{stats.totalParticipants} Players</span>
-              </div>
-            </div>
+             {/* Quick Stats Bar */}
+             <div className="mt-8 flex flex-wrap justify-center gap-4 text-sm">
+               <div className="flex items-center gap-2 bg-black/80 px-4 py-2 rounded-full border border-black">
+                 <Flame className="h-4 w-4 text-yellow-400" />
+                 <span className="text-white font-medium">{stats.activePredictions} Live Markets</span>
+               </div>
+               <div className="flex items-center gap-2 bg-black/80 px-4 py-2 rounded-full border border-black">
+                 <TrendingUp className="h-4 w-4 text-green-400" />
+                 <span className="text-white font-medium">{stats.totalVolume.toFixed(2)} BNB Volume</span>
+               </div>
+               <div className="flex items-center gap-2 bg-black/80 px-4 py-2 rounded-full border border-black">
+                 <Users className="h-4 w-4 text-blue-400" />
+                 <span className="text-white font-medium">{stats.totalParticipants} Players</span>
+               </div>
+             </div>
 
             {/* Dark Pools Feature Card */}
             <div className="mt-8 max-w-4xl mx-auto">
@@ -476,26 +539,37 @@ export default function HomePage() {
               </Card>
             </div>
 
-            {/* CTA Buttons */}
+             {/* CTA Buttons */}
             <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in">
               <div className="neon-border">
-                <Button
-                  size="lg"
-                  onClick={() => setShowCreateModal(true)}
+              <Button
+                size="lg"
+                onClick={() => setShowCreateModal(true)}
                   className="bg-black hover:bg-black/90 text-white text-lg px-8 py-3"
                   disabled={!authenticated}
-                >
-                  <Plus className="h-5 w-5 mr-2" />
+              >
+                <Plus className="h-5 w-5 mr-2" />
                   Make a Prediction
                 </Button>
               </div>
+              <div className="neon-border">
               <Button
-                variant="outline"
                 size="lg"
-                className="border-black bg-black/90 text-white hover:bg-black text-lg px-8 py-3"
+                onClick={() => setShowCryptoModal(true)}
+                  className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white text-lg px-8 py-3"
+                  disabled={!authenticated}
+              >
+                <Target className="h-5 w-5 mr-2" />
+                  Crypto Prediction
+                </Button>
+              </div>
+               <Button
+                 variant="outline"
+                 size="lg"
+                 className="border-black bg-black/90 text-white hover:bg-black text-lg px-8 py-3"
                 onClick={fetchMarkets}
                 disabled={loading}
-              >
+               >
                 {loading ? <Loader2 className="h-5 w-5 mr-2 animate-spin" /> : <RefreshCw className="h-5 w-5 mr-2" />}
                 Refresh Markets
               </Button>
@@ -511,23 +585,23 @@ export default function HomePage() {
 
       {/* Error Banner */}
       {error && (
-        <div className="mx-auto max-w-7xl px-6 lg:px-8 mb-6 relative z-10">
+      <div className="mx-auto max-w-7xl px-6 lg:px-8 mb-6 relative z-10">
           <Card className="bg-red-500/20 border-red-500">
             <CardContent className="p-4">
               <div className="flex items-center gap-2">
                 <AlertCircle className="h-5 w-5 text-red-500" />
                 <p className="text-red-900 font-medium">{error}</p>
-                <Button
-                  size="sm"
+                 <Button
+                   size="sm"
                   variant="outline"
                   onClick={fetchMarkets}
                   className="ml-auto"
-                >
+                 >
                   Retry
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
+                 </Button>
+                </div>
+             </CardContent>
+           </Card>
         </div>
       )}
 
@@ -552,46 +626,73 @@ export default function HomePage() {
             totalCount={filteredPredictions.length}
           />
 
-          {/* Markets Grid */}
+           {/* Markets Grid */}
           {loading ? (
             <div className="flex items-center justify-center py-12">
               <Loader2 className="h-12 w-12 text-black animate-spin" />
             </div>
           ) : filteredPredictions.length === 0 ? (
-            <Card className="text-center py-12 border-black bg-black/90">
+             <Card className="text-center py-12 border-black bg-black/90">
               <CardContent>
-                <div className="mx-auto w-24 h-24 bg-yellow-500 rounded-full flex items-center justify-center mb-4">
-                  <TrendingUp className="h-12 w-12 text-black" />
+                 <div className="mx-auto w-24 h-24 bg-yellow-500 rounded-full flex items-center justify-center mb-4">
+                   <TrendingUp className="h-12 w-12 text-black" />
                 </div>
-                <h3 className="text-lg font-medium text-white mb-2">
-                  {t('no_predictions_found')}
+                 <h3 className="text-lg font-medium text-white mb-2">
+                   {t('no_predictions_found')}
                 </h3>
-                <p className="text-gray-200 mb-4">
-                  {t('try_adjusting_filters')}
+                 <p className="text-gray-200 mb-4">
+                   {t('try_adjusting_filters')}
                 </p>
                 <Button
                   onClick={() => setShowCreateModal(true)}
-                  className="bg-white hover:bg-gray-200 text-black"
+                   className="bg-white hover:bg-gray-200 text-black"
                   disabled={!authenticated}
                 >
                   <Plus className="h-4 w-4 mr-2" />
-                  {t('create_first_prediction')}
+                   {t('create_first_prediction')}
                 </Button>
               </CardContent>
             </Card>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {filteredPredictions.map((prediction) => (
                 <PredictionCard
                   key={prediction.id}
                   prediction={prediction}
                   onBet={handleBetClick}
+                  onViewHistory={handleViewHistory}
                   userBets={userBets}
                 />
               ))}
             </div>
           )}
         </div>
+
+        {/* Completed Predictions Section */}
+        {predictions.filter(p => p.status === 'resolved' || p.status === 'cancelled').length > 0 && (
+          <div className="mt-12">
+            <div className="flex items-center gap-3 mb-6">
+              <CheckCircle className="h-6 w-6 text-green-500" />
+              <h2 className="text-2xl font-bold text-white">
+                Completed Predictions
+              </h2>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {predictions
+                .filter(p => p.status === 'resolved' || p.status === 'cancelled')
+                .map((prediction) => (
+                  <PredictionCard
+                    key={prediction.id}
+                    prediction={prediction}
+                    onBet={handleBetClick}
+                    onViewHistory={handleViewHistory}
+                    userBets={userBets}
+                  />
+                ))}
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Create Prediction Modal */}
@@ -599,6 +700,13 @@ export default function HomePage() {
         open={showCreateModal}
         onOpenChange={setShowCreateModal}
         onSubmit={handleCreatePrediction}
+      />
+
+      {/* Crypto Prediction Modal */}
+      <CryptoPredictionModal
+        open={showCryptoModal}
+        onOpenChange={setShowCryptoModal}
+        onSubmit={handleCreateCryptoPrediction}
       />
 
       {/* Bet Modal */}
@@ -611,6 +719,14 @@ export default function HomePage() {
           onConfirm={handleBetConfirm}
         />
       )}
+
+      {/* Transaction History Modal */}
+      <TransactionHistoryModal
+        open={showHistoryModal}
+        onOpenChange={setShowHistoryModal}
+        predictionId={selectedHistoryPrediction}
+        predictionTitle={predictions.find(p => p.id === selectedHistoryPrediction)?.title || ''}
+      />
 
       {/* Transaction Status (from contract hook) */}
       {contract.txStatus !== 'idle' && (
