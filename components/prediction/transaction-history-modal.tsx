@@ -70,8 +70,7 @@ export function TransactionHistoryModal({
   const fetchTransactionHistory = async () => {
     setLoading(true);
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
-      const response = await fetch(`${apiUrl}/transactions/market/${predictionId}`);
+      const response = await fetch(`/api/transactions/market/${predictionId}`);
       const data = await response.json();
       
       if (data.success) {

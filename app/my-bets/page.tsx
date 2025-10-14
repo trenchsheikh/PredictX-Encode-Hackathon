@@ -211,10 +211,9 @@ export default function MyBetsPage() {
    */
   const testBackendConnection = async () => {
     try {
-      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
-      console.log('🔍 Testing backend connection to:', backendUrl);
+      console.log('🔍 Testing backend connection to: /api');
       
-      const response = await fetch(`${backendUrl}/health`);
+      const response = await fetch('/api/health');
       const result = await response.json();
       
       if (response.ok) {
@@ -355,8 +354,7 @@ export default function MyBetsPage() {
    */
   const triggerMarketResolution = async () => {
     try {
-      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
-      const response = await fetch(`${backendUrl}/api/markets/trigger-resolution`, {
+      const response = await fetch('/api/markets/trigger-resolution', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -392,10 +390,9 @@ export default function MyBetsPage() {
    */
   const manualResolveMarket6 = async () => {
     try {
-      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
       console.log('🔄 Manually resolving market 6...');
       
-      const response = await fetch(`${backendUrl}/api/markets/resolve-market`, {
+      const response = await fetch('/api/markets/resolve-market', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
