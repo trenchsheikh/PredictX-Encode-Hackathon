@@ -118,14 +118,12 @@ export function TransactionStatus({
         <div className="flex items-start gap-3">
           <div className="flex-shrink-0">{config.icon}</div>
           <div className="flex-1 space-y-2">
-            <h3 className="font-semibold">{config.title}</h3>
-            <p className="text-sm text-muted-foreground">
-              {config.description}
-            </p>
+            <h3 className="font-semibold text-white">{config.title}</h3>
+            <p className="text-sm text-gray-300">{config.description}</p>
 
             {txHash && (
               <div className="flex items-center gap-2 pt-2">
-                <code className="flex-1 rounded bg-secondary px-2 py-1 text-xs">
+                <code className="flex-1 rounded border border-gray-700/50 bg-black px-2 py-1 text-xs text-white">
                   {formatTxHash(txHash)}
                 </code>
                 <Button
@@ -133,6 +131,7 @@ export function TransactionStatus({
                   size="sm"
                   variant="outline"
                   onClick={copyToClipboard}
+                  className="border-gray-600/50 bg-black text-gray-300 hover:bg-gray-800 hover:text-white"
                 >
                   {copied ? (
                     <CheckCircle2 className="h-4 w-4" />
@@ -140,7 +139,13 @@ export function TransactionStatus({
                     <Copy className="h-4 w-4" />
                   )}
                 </Button>
-                <Button type="button" size="sm" variant="outline" asChild>
+                <Button
+                  type="button"
+                  size="sm"
+                  variant="outline"
+                  className="border-gray-600/50 bg-black text-gray-300 hover:bg-gray-800 hover:text-white"
+                  asChild
+                >
                   <a
                     href={getBSCScanTxUrl(txHash)}
                     target="_blank"
@@ -153,9 +158,9 @@ export function TransactionStatus({
             )}
 
             {status === 'error' && error && (
-              <div className="bg-destructive/10 flex items-start gap-2 rounded p-2 text-xs">
-                <AlertTriangle className="text-destructive mt-0.5 h-4 w-4 flex-shrink-0" />
-                <span className="text-destructive">{error}</span>
+              <div className="flex items-start gap-2 rounded border border-red-500/20 bg-red-500/10 p-2 text-xs">
+                <AlertTriangle className="mt-0.5 h-4 w-4 flex-shrink-0 text-red-400" />
+                <span className="text-red-400">{error}</span>
               </div>
             )}
           </div>
@@ -167,13 +172,15 @@ export function TransactionStatus({
   // Dialog version
   return (
     <Dialog open={showDialog} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[500px]">
+      <DialogContent className="border-gray-700/50 bg-black backdrop-blur-md sm:max-w-[500px]">
         <DialogHeader>
           <div className="flex flex-col items-center space-y-4 py-4 text-center">
             {config.icon}
             <div>
-              <DialogTitle className="mb-2 text-xl">{config.title}</DialogTitle>
-              <DialogDescription className="text-sm">
+              <DialogTitle className="mb-2 text-xl text-white">
+                {config.title}
+              </DialogTitle>
+              <DialogDescription className="text-sm text-gray-300">
                 {config.description}
               </DialogDescription>
             </div>
@@ -183,9 +190,11 @@ export function TransactionStatus({
         <div className="space-y-4">
           {txHash && (
             <div className="space-y-2">
-              <label className="text-sm font-medium">Transaction Hash</label>
+              <label className="text-sm font-medium text-white">
+                Transaction Hash
+              </label>
               <div className="flex items-center gap-2">
-                <code className="flex-1 break-all rounded bg-secondary px-3 py-2 text-xs">
+                <code className="flex-1 break-all rounded border border-gray-700/50 bg-black px-3 py-2 text-xs text-white">
                   {txHash}
                 </code>
                 <Button
@@ -194,6 +203,7 @@ export function TransactionStatus({
                   variant="outline"
                   onClick={copyToClipboard}
                   title="Copy transaction hash"
+                  className="border-gray-600/50 bg-black text-gray-300 hover:bg-gray-800 hover:text-white"
                 >
                   {copied ? (
                     <CheckCircle2 className="h-4 w-4" />
@@ -206,7 +216,7 @@ export function TransactionStatus({
               <Button
                 type="button"
                 variant="outline"
-                className="w-full"
+                className="w-full border-gray-600/50 bg-black text-gray-300 hover:bg-gray-800 hover:text-white"
                 asChild
               >
                 <a
@@ -222,9 +232,9 @@ export function TransactionStatus({
           )}
 
           {status === 'error' && error && (
-            <div className="bg-destructive/10 border-destructive/20 flex items-start gap-2 rounded-lg border p-3">
-              <AlertTriangle className="text-destructive mt-0.5 h-4 w-4 flex-shrink-0" />
-              <div className="text-destructive text-sm">
+            <div className="flex items-start gap-2 rounded-lg border border-red-500/20 bg-red-500/10 p-3">
+              <AlertTriangle className="mt-0.5 h-4 w-4 flex-shrink-0 text-red-400" />
+              <div className="text-sm text-red-400">
                 <p className="mb-1 font-semibold">Error Details:</p>
                 <p className="text-xs">{error}</p>
               </div>
@@ -232,7 +242,7 @@ export function TransactionStatus({
           )}
 
           {status === 'pending' && (
-            <div className="rounded-lg border border-blue-500/20 bg-blue-500/10 p-3 text-sm text-muted-foreground">
+            <div className="rounded-lg border border-blue-500/20 bg-blue-500/10 p-3 text-sm text-gray-300">
               <p>
                 ⏳ This may take a few moments. Please don't close this window.
               </p>
@@ -240,7 +250,7 @@ export function TransactionStatus({
           )}
 
           {status === 'success' && (
-            <div className="text-center text-sm text-muted-foreground">
+            <div className="text-center text-sm text-gray-400">
               Closing in {countdown} seconds...
             </div>
           )}
@@ -248,7 +258,15 @@ export function TransactionStatus({
 
         <div className="flex justify-end gap-2 pt-4">
           {status !== 'pending' && onClose && (
-            <Button type="button" onClick={onClose}>
+            <Button
+              type="button"
+              onClick={onClose}
+              className={
+                status === 'success'
+                  ? 'bg-green-600 text-white hover:bg-green-700'
+                  : 'border-gray-600/50 bg-black text-gray-300 hover:bg-gray-800 hover:text-white'
+              }
+            >
               {status === 'success' ? 'Done' : 'Close'}
             </Button>
           )}
