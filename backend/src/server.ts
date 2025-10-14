@@ -18,7 +18,36 @@ const PORT = process.env.PORT || 3001;
 
 // ============ Middleware ============
 
-app.use(cors());
+// CORS configuration
+const corsOptions = {
+  origin: function (origin: string | undefined, callback: Function) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    
+    const allowedOrigins = [
+      'https://www.darkbet.fun',
+      'https://darkbet-ogyqttkx5-sami-t01s-projects.vercel.app',
+      'http://localhost:3000',
+      'http://localhost:3001'
+    ];
+    
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      // For development, allow all origins
+      if (process.env.NODE_ENV === 'development') {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    }
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
