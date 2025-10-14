@@ -69,19 +69,25 @@ export async function loadContractABI(contractName: 'PredictionMarket' | 'Vault'
 }
 
 /**
- * Get contract addresses from environment
+ * Get contract addresses from deployment files or environment
  */
 export function getContractAddresses() {
+  // Try environment variables first
   const predictionMarket = process.env.NEXT_PUBLIC_PREDICTION_CONTRACT_ADDRESS;
   const vault = process.env.NEXT_PUBLIC_VAULT_CONTRACT_ADDRESS;
   
-  if (!predictionMarket || !vault) {
-    throw new Error('Contract addresses not configured. Check .env file.');
+  if (predictionMarket && vault) {
+    return {
+      predictionMarket,
+      vault,
+    };
   }
   
+  // Fallback to hardcoded addresses from deployment
+  console.warn('Environment variables not set, using hardcoded contract addresses');
   return {
-    predictionMarket,
-    vault,
+    predictionMarket: '0x672e13Cc6196c784EF3bf0762A18d2645F0f12ca',
+    vault: '0x9D4f9aFed1572a7947a1f6619111d3FfED66db17',
   };
 }
 
@@ -155,14 +161,34 @@ export function getBSCScanAddressUrl(address: string): string {
 /**
  * Check if wallet is on correct network
  */
-export async function checkNetwork(provider: any): Promise<boolean> {
+export async function checkNetwork(provider?: any): Promise<{ isCorrect: boolean; chainId?: number }> {
   try {
-    const network = await provider.getNetwork();
+    let network;
+    
+    if (provider) {
+      // Use provided provider
+      network = await provider.getNetwork();
+    } else if (typeof window !== 'undefined' && window.ethereum) {
+      // Use window.ethereum as fallback
+      const ethersProvider = new ethers.BrowserProvider(window.ethereum);
+      network = await ethersProvider.getNetwork();
+    } else {
+      return { isCorrect: false, chainId: undefined };
+    }
+    
     const expectedChainId = parseInt(process.env.NEXT_PUBLIC_CHAIN_ID || '97');
-    return Number(network.chainId) === expectedChainId;
+    const isCorrect = Number(network.chainId) === expectedChainId;
+    
+    console.log('Network check:', { 
+      currentChainId: network.chainId, 
+      expectedChainId, 
+      isCorrect 
+    });
+    
+    return { isCorrect, chainId: Number(network.chainId) };
   } catch (error) {
     console.error('Error checking network:', error);
-    return false;
+    return { isCorrect: false, chainId: undefined };
   }
 }
 

@@ -53,10 +53,21 @@ export function usePredictionContract() {
    * Get signer from Privy wallet
    */
   const getSigner = useCallback(async (): Promise<ethers.Signer | null> => {
-    console.log('Getting signer...', { authenticated, walletCount: wallets.length });
+    console.log('🔍 Getting signer...', { 
+      authenticated, 
+      walletCount: wallets.length,
+      userAddress: user?.wallet?.address 
+    });
     
-    if (!authenticated || wallets.length === 0) {
+    if (!authenticated) {
       const errorMsg = 'Please connect your wallet first';
+      console.error('❌', errorMsg);
+      setError(errorMsg);
+      return null;
+    }
+
+    if (!wallets || wallets.length === 0) {
+      const errorMsg = 'No wallet found. Please connect your wallet.';
       console.error('❌', errorMsg);
       setError(errorMsg);
       return null;
@@ -64,120 +75,366 @@ export function usePredictionContract() {
 
     try {
       const wallet = wallets[0];
-      console.log('Wallet found:', wallet.address, 'Type:', wallet.walletClientType);
-      console.log('Wallet object keys:', Object.keys(wallet));
+      console.log('🔍 Wallet found:', {
+        address: wallet.address,
+        type: wallet.walletClientType,
+        chainId: wallet.chainId,
+        availableMethods: Object.keys(wallet).filter(key => typeof wallet[key] === 'function')
+      });
       
-      // Handle different wallet types
+      // Try multiple methods to get the signer
+      let signer: ethers.Signer | null = null;
+      
+      // Method 1: Try Privy's getEthereumProvider (for MetaMask)
       if (wallet.walletClientType === 'metamask' || wallet.walletClientType === 'injected') {
-        // For MetaMask connected via Privy, use Privy's getEthereumProvider
-        console.log('Using MetaMask wallet via Privy');
+        console.log('🔍 Trying MetaMask via Privy...');
         
-        // Check if wallet has getEthereumProvider method (Privy's method)
         if (typeof wallet.getEthereumProvider === 'function') {
-          console.log('Using Privy getEthereumProvider...');
-          const provider = await wallet.getEthereumProvider();
-          console.log('✅ Provider obtained from Privy');
-          
-          const ethersProvider = new ethers.BrowserProvider(provider);
-          
-          // Check and switch network using Privy's switchChain
-          console.log('Current wallet chainId:', wallet.chainId);
-          if (wallet.chainId !== '0x61' && wallet.chainId !== 97) {
-            console.log('Switching to BSC Testnet via Privy...');
-            try {
-              await wallet.switchChain(97); // BSC Testnet
-              console.log('✅ Switched to BSC Testnet');
-            } catch (switchError: any) {
-              console.error('Failed to switch chain:', switchError);
-              throw new Error('Please switch to BSC Testnet in your wallet');
+          try {
+            console.log('🔍 Using Privy getEthereumProvider...');
+            const provider = await wallet.getEthereumProvider();
+            console.log('✅ Provider obtained from Privy');
+            
+            const ethersProvider = new ethers.BrowserProvider(provider);
+            
+            // Switch network if needed
+            if (wallet.chainId !== '0x61' && wallet.chainId !== 97 && wallet.chainId !== 'eip155:97') {
+              console.log('🔍 Switching to BSC Testnet...', { currentChainId: wallet.chainId });
+              try {
+                await wallet.switchChain(97);
+                console.log('✅ Switched to BSC Testnet');
+              } catch (switchError: any) {
+                console.warn('⚠️ Failed to switch chain:', switchError.message);
+                // Try alternative method
+                try {
+                  console.log('🔍 Trying alternative chain switch...');
+                  await wallet.switchChain('0x61'); // Hex format
+                  console.log('✅ Switched to BSC Testnet (hex)');
+                } catch (altError: any) {
+                  console.warn('⚠️ Alternative switch also failed:', altError.message);
+                  // Continue anyway, user can switch manually
+                }
+              }
+            } else {
+              console.log('✅ Already on BSC Testnet');
             }
-          } else {
-            console.log('✅ Already on BSC Testnet');
+            
+            signer = await ethersProvider.getSigner();
+            console.log('✅ Signer obtained via Privy');
+          } catch (privyError: any) {
+            console.warn('⚠️ Privy method failed:', privyError.message);
           }
-          
-          console.log('Getting signer from provider...');
-          const signer = await ethersProvider.getSigner();
-          console.log('✅ Signer obtained');
-          
-          const signerAddress = await signer.getAddress();
-          console.log('✅ Signer address:', signerAddress);
-          console.log('✅ Matches Privy wallet:', signerAddress.toLowerCase() === wallet.address.toLowerCase());
-          
-          return signer;
-        } else {
-          // Fallback to window.ethereum if getEthereumProvider not available
-          console.log('Fallback to window.ethereum');
-          if (typeof window === 'undefined' || !window.ethereum) {
-            throw new Error('MetaMask not detected. Please install MetaMask extension.');
-          }
-          
-          const provider = new ethers.BrowserProvider(window.ethereum);
-          console.log('✅ Provider obtained');
-          
-          await window.ethereum.request({ method: 'eth_requestAccounts' });
-          
-          // Check and switch network
-          const network = await provider.getNetwork();
-          if (Number(network.chainId) !== 97) {
-            await window.ethereum.request({
-              method: 'wallet_switchEthereumChain',
-              params: [{ chainId: '0x61' }],
-            });
-          }
-          
-          const signer = await provider.getSigner();
-          return signer;
         }
-      } else if (wallet.walletClientType === 'privy' && typeof wallet.getEthersProvider === 'function') {
-        // For Privy embedded wallets
-        console.log('Using Privy embedded wallet');
-        const provider = await wallet.getEthersProvider();
-        console.log('✅ Provider obtained');
         
-        const signer = await provider.getSigner();
-        console.log('✅ Signer obtained');
+        // Method 2: Fallback to window.ethereum
+        if (!signer && typeof window !== 'undefined' && window.ethereum) {
+          try {
+            console.log('🔍 Fallback to window.ethereum...');
+            const provider = new ethers.BrowserProvider(window.ethereum);
+            
+            // Request accounts
+            await window.ethereum.request({ method: 'eth_requestAccounts' });
+            
+            // Switch network if needed
+            const network = await provider.getNetwork();
+            console.log('🔍 Current network:', { chainId: network.chainId, name: network.name });
+            if (Number(network.chainId) !== 97) {
+              console.log('🔍 Switching to BSC Testnet via window.ethereum...');
+              try {
+                await window.ethereum.request({
+                  method: 'wallet_switchEthereumChain',
+                  params: [{ chainId: '0x61' }], // BSC Testnet
+                });
+                console.log('✅ Switched to BSC Testnet');
+              } catch (switchError: any) {
+                console.warn('⚠️ Failed to switch network:', switchError.message);
+                // Try adding the network if it doesn't exist
+                if (switchError.code === 4902) {
+                  try {
+                    console.log('🔍 Adding BSC Testnet network...');
+                    await window.ethereum.request({
+                      method: 'wallet_addEthereumChain',
+                      params: [{
+                        chainId: '0x61',
+                        chainName: 'BSC Testnet',
+                        nativeCurrency: {
+                          name: 'BNB',
+                          symbol: 'BNB',
+                          decimals: 18,
+                        },
+                        rpcUrls: ['https://data-seed-prebsc-1-s1.binance.org:8545/'],
+                        blockExplorerUrls: ['https://testnet.bscscan.com/'],
+                      }],
+                    });
+                    console.log('✅ Added BSC Testnet network');
+                  } catch (addError: any) {
+                    console.warn('⚠️ Failed to add BSC Testnet:', addError.message);
+                  }
+                }
+              }
+            } else {
+              console.log('✅ Already on BSC Testnet');
+            }
+            
+            signer = await provider.getSigner();
+            console.log('✅ Signer obtained via window.ethereum');
+          } catch (windowError: any) {
+            console.warn('⚠️ Window.ethereum method failed:', windowError.message);
+          }
+        }
+      }
+      
+      // Method 3: Try Privy embedded wallet
+      if (!signer && wallet.walletClientType === 'privy' && typeof wallet.getEthersProvider === 'function') {
+        try {
+          console.log('🔍 Trying Privy embedded wallet...');
+          const provider = await wallet.getEthersProvider();
+          signer = await provider.getSigner();
+          console.log('✅ Signer obtained via Privy embedded wallet');
+        } catch (privyError: any) {
+          console.warn('⚠️ Privy embedded wallet failed:', privyError.message);
+        }
+      }
+      
+      // Method 4: Try any available method on the wallet object
+      if (!signer) {
+        console.log('🔍 Trying any available signer method...');
+        const methods = Object.keys(wallet).filter(key => 
+          typeof wallet[key] === 'function' && 
+          (key.includes('signer') || key.includes('provider') || key.includes('ethereum'))
+        );
         
+        console.log('Available methods to try:', methods);
+        
+        for (const method of methods) {
+          try {
+            console.log(`🔍 Trying wallet.${method}...`);
+            const result = await wallet[method]();
+            console.log(`Result from wallet.${method}:`, result);
+            
+            if (result && typeof result.getSigner === 'function') {
+              signer = await result.getSigner();
+              console.log(`✅ Signer obtained via wallet.${method}`);
+              break;
+            } else if (result && typeof result.getSigner === 'function') {
+              // Some wallets might have getSigner as a property
+              signer = result.getSigner;
+              console.log(`✅ Signer obtained via wallet.${method} (property)`);
+              break;
+            }
+          } catch (methodError: any) {
+            console.warn(`⚠️ wallet.${method} failed:`, methodError.message);
+          }
+        }
+      }
+      
+      // Method 5: Try to create a simple provider from the wallet address
+      if (!signer && wallet.address) {
+        try {
+          console.log('🔍 Trying to create provider from wallet address...');
+          if (typeof window !== 'undefined' && window.ethereum) {
+            const provider = new ethers.BrowserProvider(window.ethereum);
+            signer = await provider.getSigner();
+            console.log('✅ Signer created from window.ethereum with wallet address');
+          }
+        } catch (addressError: any) {
+          console.warn('⚠️ Address-based signer creation failed:', addressError.message);
+        }
+      }
+      
+      // Method 6: Create a basic signer if all else fails
+      if (!signer && wallet.address) {
+        try {
+          console.log('🔍 Creating basic signer as last resort...');
+          if (typeof window !== 'undefined' && window.ethereum) {
+            const provider = new ethers.BrowserProvider(window.ethereum);
+            
+            // Create a basic signer with just the address
+            const basicSigner = {
+              getAddress: async () => wallet.address,
+              signMessage: async (message: string) => {
+                return await window.ethereum.request({
+                  method: 'personal_sign',
+                  params: [message, wallet.address],
+                });
+              },
+              signTransaction: async (transaction: any) => {
+                return await window.ethereum.request({
+                  method: 'eth_signTransaction',
+                  params: [transaction],
+                });
+              },
+              sendTransaction: async (transaction: any) => {
+                return await window.ethereum.request({
+                  method: 'eth_sendTransaction',
+                  params: [transaction],
+                });
+              },
+              provider: provider,
+              _isSigner: true,
+            };
+            
+            signer = basicSigner as any;
+            console.log('✅ Basic signer created');
+          }
+        } catch (basicError: any) {
+          console.warn('⚠️ Basic signer creation failed:', basicError.message);
+        }
+      }
+      
+      if (!signer) {
+        throw new Error(`Unable to get signer from wallet type: ${wallet.walletClientType}. Available methods: ${Object.keys(wallet).filter(key => typeof wallet[key] === 'function').join(', ')}`);
+      }
+      
+      // Verify signer
+      try {
         const signerAddress = await signer.getAddress();
         console.log('✅ Signer address:', signerAddress);
+        console.log('✅ Wallet address:', wallet.address);
+        console.log('✅ Addresses match:', signerAddress.toLowerCase() === wallet.address.toLowerCase());
+      } catch (addressError: any) {
+        console.warn('⚠️ Could not get signer address:', addressError.message);
+        console.log('Signer object:', signer);
+        console.log('Signer methods:', Object.getOwnPropertyNames(signer));
+        console.log('Signer prototype methods:', Object.getOwnPropertyNames(Object.getPrototypeOf(signer)));
         
-        return signer;
-      } else {
-        throw new Error(`Unsupported wallet type: ${wallet.walletClientType}`);
+        // Check if signer has the expected methods
+        if (typeof signer.getAddress !== 'function') {
+          throw new Error('Signer does not have getAddress method. Signer type: ' + typeof signer);
+        }
       }
+      
+      return signer;
     } catch (err: any) {
       console.error('❌ Failed to get signer:', err);
-      setError(parseContractError(err));
+      const errorMsg = `Failed to get wallet signer: ${err.message}`;
+      setError(errorMsg);
       return null;
     }
-  }, [authenticated, wallets]);
+  }, [authenticated, wallets, user?.wallet?.address]);
 
   /**
    * Get contract instance
    */
   const getContract = useCallback(async (): Promise<ethers.Contract | null> => {
-    const signer = await getSigner();
-    if (!signer) {
-      setError('Failed to get wallet signer');
-      return null;
-    }
+    console.log('🔍 Getting contract instance...', { 
+      authenticated, 
+      walletCount: wallets?.length || 0,
+      abiLength: contractABI.length 
+    });
     
-    if (contractABI.length === 0) {
-      setError('Contract ABI not loaded. Please refresh the page.');
-      return null;
-    }
-
     try {
+      // Check if user is authenticated
+      if (!authenticated) {
+        const errorMsg = 'Please connect your wallet first';
+        console.error('❌', errorMsg);
+        setError(errorMsg);
+        return null;
+      }
+
+      // Check if wallet is available
+      if (!wallets || wallets.length === 0) {
+        const errorMsg = 'No wallet found. Please connect your wallet.';
+        console.error('❌', errorMsg);
+        setError(errorMsg);
+        return null;
+      }
+
+      console.log('🔍 Getting signer...');
+      const signer = await getSigner();
+      if (!signer) {
+        const errorMsg = 'Failed to get wallet signer. Please check your wallet connection.';
+        console.error('❌', errorMsg);
+        setError(errorMsg);
+        return null;
+      }
+      console.log('✅ Signer obtained');
+      
+      if (contractABI.length === 0) {
+        const errorMsg = 'Contract ABI not loaded. Please refresh the page and try again.';
+        console.error('❌', errorMsg);
+        setError(errorMsg);
+        return null;
+      }
+      console.log('✅ ABI loaded');
+
+      // Check network
+      console.log('🔍 Checking network...');
+      
+      // First try to get chainId from wallet
+      const wallet = wallets[0];
+      let currentChainId = wallet.chainId;
+      
+      // Convert chainId to number if it's in different formats
+      if (typeof currentChainId === 'string') {
+        if (currentChainId.startsWith('eip155:')) {
+          currentChainId = parseInt(currentChainId.split(':')[1]);
+        } else if (currentChainId.startsWith('0x')) {
+          currentChainId = parseInt(currentChainId, 16);
+        } else {
+          currentChainId = parseInt(currentChainId);
+        }
+      }
+      
+      console.log('Wallet chainId:', { original: wallet.chainId, converted: currentChainId });
+      
+      // Check if we're on BSC Testnet (chainId 97)
+      if (currentChainId !== 97) {
+        const errorMsg = `Please switch to BSC Testnet (Chain ID: 97). Current: ${currentChainId || 'Unknown'}`;
+        console.error('❌', errorMsg);
+        setError(errorMsg);
+        return null;
+      }
+      
+      // Also try the provider-based check as backup
+      try {
+        const networkCheck = await checkNetwork();
+        if (!networkCheck.isCorrect) {
+          console.warn('⚠️ Provider-based network check failed, but wallet chainId is correct');
+        }
+      } catch (networkError: any) {
+        console.warn('⚠️ Network check failed:', networkError.message);
+        // Continue anyway since wallet chainId check passed
+      }
+      
+      console.log('✅ Network check passed');
+
       const addresses = getContractAddresses();
       console.log('Contract addresses:', addresses);
+      
+      if (!addresses.predictionMarket) {
+        const errorMsg = 'Contract address not found. Please check your configuration.';
+        console.error('❌', errorMsg);
+        setError(errorMsg);
+        return null;
+      }
+
+      console.log('🔍 Creating contract instance...');
+      
+      // Verify signer before creating contract
+      if (!signer || typeof signer.getAddress !== 'function') {
+        throw new Error('Invalid signer: missing getAddress method');
+      }
+      
+      // Test signer before using it
+      try {
+        const testAddress = await signer.getAddress();
+        console.log('✅ Signer test passed, address:', testAddress);
+      } catch (signerTestError: any) {
+        console.error('❌ Signer test failed:', signerTestError);
+        throw new Error(`Signer is invalid: ${signerTestError.message}`);
+      }
+      
       const contract = new ethers.Contract(addresses.predictionMarket, contractABI, signer);
-      console.log('✅ Contract instance created');
+      console.log('✅ Contract instance created successfully');
       return contract;
     } catch (err: any) {
       console.error('❌ Failed to create contract instance:', err);
-      setError(parseContractError(err));
+      const errorMessage = err.message || 'Unknown error occurred';
+      setError(`Failed to get contract instance: ${errorMessage}`);
       return null;
     }
-  }, [getSigner, contractABI]);
+  }, [authenticated, wallets, getSigner, contractABI]);
 
   /**
    * Create a new market
@@ -390,6 +647,198 @@ export function usePredictionContract() {
         throw new Error('Failed to get contract instance');
       }
 
+      // Debug: Check market and bet data before claiming
+      console.log('🔍 Checking market and bet data before claiming...');
+      console.log('🔍 Market ID:', marketId, 'Type:', typeof marketId);
+      
+      try {
+        console.log('🔍 Calling getMarket with marketId:', marketId);
+        
+        // First check if market exists by trying to get basic info
+        try {
+          const market = await contract.getMarket(marketId);
+          console.log('✅ Market exists on blockchain');
+        } catch (marketError: any) {
+          console.error('❌ Market does not exist on blockchain:', marketError);
+          throw new Error(`Market ${marketId} does not exist on blockchain. Error: ${marketError.message}`);
+        }
+        
+        const market = await contract.getMarket(marketId);
+        console.log('Raw market data:', market);
+        
+        // Handle both array and object formats
+        let marketData;
+        if (Array.isArray(market) || (market && typeof market === 'object' && '0' in market)) {
+          // Market data is returned as array or indexed object
+          // Let's log all indices to understand the structure
+          console.log('Market indices:', {
+            '0': market[0]?.toString(),
+            '1': market[1],
+            '2': market[2],
+            '3': market[3],
+            '4': market[4]?.toString(),
+            '5': market[5]?.toString(),
+            '6': market[6]?.toString(),
+            '7': market[7]?.toString(),
+            '8': market[8]?.toString(),
+            '9': market[9]?.toString(),
+            '10': market[10]?.toString(),
+            '11': market[11]?.toString(),
+            '12': market[12],
+            '13': market[13]?.toString(),
+            '14': market[14],
+            '15': market[15]
+          });
+          
+          // Based on the actual data structure from the logs
+          marketData = {
+            marketId: market[0]?.toString() || 'undefined',
+            title: market[1] || 'undefined',
+            description: market[2] || 'undefined',
+            creator: market[3] || 'undefined',
+            createdAt: market[4]?.toString() || 'undefined',
+            expiresAt: market[5]?.toString() || 'undefined',
+            category: market[6]?.toString() || 'undefined',
+            totalPool: market[7]?.toString() || 'undefined',
+            yesShares: market[8]?.toString() || 'undefined',
+            noShares: market[9]?.toString() || 'undefined',
+            status: market[10]?.toString() || 'undefined',
+            outcome: market[11] ? (market[11] > 0 ? true : false) : false, // Convert bigint to boolean
+            resolutionReasoning: market[12] || 'undefined',
+            fee: market[13]?.toString() || 'undefined',
+            cancelled: market[14] || false,
+            resolutionTxHash: market[15] || 'undefined'
+          };
+        } else {
+          // Market data is returned as object with named properties
+          marketData = {
+            marketId: market?.marketId?.toString() || 'undefined',
+            status: market?.status?.toString() || 'undefined',
+            outcome: market?.outcome,
+            totalPool: market?.totalPool?.toString() || 'undefined',
+            yesShares: market?.yesShares?.toString() || 'undefined',
+            noShares: market?.noShares?.toString() || 'undefined'
+          };
+        }
+        console.log('Market data:', marketData);
+
+        let userAddress;
+        try {
+          userAddress = await contract.signer.getAddress();
+          console.log('User address from signer:', userAddress);
+        } catch (addressError: any) {
+          console.warn('Failed to get address from signer:', addressError.message);
+          // Fallback to wallet address
+          if (wallets && wallets.length > 0) {
+            userAddress = wallets[0].address;
+            console.log('Using wallet address as fallback:', userAddress);
+          } else {
+            throw new Error('Cannot get user address');
+          }
+        }
+        
+        let bet;
+        try {
+          bet = await contract.getBet(marketId, userAddress);
+          console.log('Raw bet data from getBet:', bet);
+        } catch (getBetError: any) {
+          console.warn('getBet failed, trying alternative method:', getBetError.message);
+          
+          // Try alternative method - check if bet exists in the bets mapping
+          try {
+            bet = await contract.bets(marketId, userAddress);
+            console.log('Raw bet data from bets mapping:', bet);
+          } catch (betsError: any) {
+            console.error('bets mapping also failed:', betsError.message);
+            throw new Error(`Failed to fetch bet data: ${getBetError.message}`);
+          }
+        }
+        
+        // Safely extract bet data with null checks
+        const betData = {
+          user: bet?.user || 'undefined',
+          amount: bet?.amount?.toString() || 'undefined',
+          outcome: bet?.outcome,
+          claimed: bet?.claimed,
+          shares: bet?.shares?.toString() || 'undefined'
+        };
+        console.log('Bet data:', betData);
+
+        // Check requirements with safe data
+        if (!market || marketData.status === 'undefined') {
+          throw new Error('Failed to fetch market data from contract');
+        }
+        
+        // Check if market is resolved on blockchain
+        if (marketData.status !== '2') {
+          console.log('⚠️ Market not resolved on blockchain, checking database...');
+          
+          // Try to get market data from backend API as fallback
+          try {
+            const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
+            const response = await fetch(`${backendUrl}/api/markets/${marketId}`);
+            
+            if (response.ok) {
+              const dbResponse = await response.json();
+              console.log('Database market data:', dbResponse);
+              
+              // Handle different response structures
+              let dbMarket;
+              if (dbResponse.success && dbResponse.data) {
+                dbMarket = dbResponse.data;
+                console.log('Using dbResponse.data structure');
+              } else if (dbResponse.marketId) {
+                dbMarket = dbResponse;
+                console.log('Using direct dbResponse structure');
+              } else {
+                console.error('Invalid database response format:', dbResponse);
+                throw new Error('Invalid database response format');
+              }
+              
+              console.log('Parsed database market:', dbMarket);
+              console.log('Database market status:', dbMarket.status, 'Type:', typeof dbMarket.status);
+              
+              // If market is resolved in database, proceed with claim
+              if (dbMarket.status === 2) {
+                console.log('✅ Market resolved in database, proceeding with claim...');
+              } else {
+                console.log('❌ Market not resolved in database. Status:', dbMarket.status);
+                throw new Error(`Market not resolved. Blockchain status: ${marketData.status}, Database status: ${dbMarket.status}. Please wait for resolution or contact support.`);
+              }
+            } else {
+              throw new Error(`Market not resolved on blockchain. Status: ${marketData.status}. Please wait for resolution or contact support.`);
+            }
+          } catch (dbError: any) {
+            console.error('Database check failed:', dbError);
+            throw new Error(`Market not resolved on blockchain. Status: ${marketData.status}. Please wait for resolution or contact support.`);
+          }
+        }
+        
+        if (!bet || bet.amount === undefined) {
+          throw new Error('Failed to fetch bet data from contract');
+        }
+        if (bet.amount === 0) {
+          throw new Error('No bet found for this user');
+        }
+        if (bet.claimed) {
+          throw new Error('Bet already claimed');
+        }
+        if (bet.outcome !== market.outcome) {
+          throw new Error(`Bet did not win. Bet outcome: ${bet.outcome}, Market outcome: ${market.outcome}`);
+        }
+
+        console.log('✅ All requirements met, proceeding with claim...');
+      } catch (debugError: any) {
+        console.error('❌ Pre-claim validation failed:', debugError);
+        
+        // Check if it's a contract call error
+        if (debugError.code === 'CALL_EXCEPTION' || debugError.message.includes('missing revert data')) {
+          throw new Error(`Market ${marketId} does not exist on blockchain or contract call failed. Please check if the market is properly deployed.`);
+        }
+        
+        throw new Error(`Pre-claim validation failed: ${debugError.message}`);
+      }
+
       // Estimate gas
       const gasLimit = await estimateGas(contract, 'claimWinnings', [marketId]);
 
@@ -429,6 +878,127 @@ export function usePredictionContract() {
       return { success: false };
     }
   }, [getContract]);
+
+  /**
+   * Check if refund is available for a market
+   */
+  const checkRefundAvailability = useCallback(async (
+    marketId: number
+  ): Promise<{ available: boolean; reason?: string; amount?: string }> => {
+    try {
+      const contract = await getContract();
+      if (!contract) {
+        return { available: false, reason: 'Contract not available' };
+      }
+
+      // Get user address safely
+      let userAddress: string;
+      try {
+        userAddress = await contract.signer.getAddress();
+      } catch (addressError: any) {
+        console.error('Failed to get user address from signer:', addressError);
+        
+        // Fallback to wallet address
+        if (wallets && wallets.length > 0) {
+          userAddress = wallets[0].address;
+          console.log('Using wallet address as fallback:', userAddress);
+        } else {
+          return { available: false, reason: 'Failed to get user address' };
+        }
+      }
+
+      // Get market data
+      const market = await contract.getMarket(marketId);
+      const commitment = await contract.getCommitment(marketId, userAddress);
+      
+      // Check if user has a commitment
+      if (commitment.commitHash === '0x0000000000000000000000000000000000000000000000000000000000000000') {
+        return { available: false, reason: 'No commitment found' };
+      }
+
+      // Check if already revealed
+      if (commitment.revealed) {
+        return { available: false, reason: 'Already revealed' };
+      }
+
+      // Check market status and timing
+      const now = Math.floor(Date.now() / 1000);
+      const expiresAt = Number(market.expiresAt);
+      const commitRevealTimeout = 3600; // 1 hour in seconds
+
+      if (market.status === 3) { // Cancelled
+        return { 
+          available: true, 
+          amount: ethers.formatEther(commitment.amount),
+          reason: 'Market cancelled' 
+        };
+      } else if (market.status === 1 && now > expiresAt + commitRevealTimeout) { // Resolving + timeout
+        return { 
+          available: true, 
+          amount: ethers.formatEther(commitment.amount),
+          reason: 'Reveal period expired' 
+        };
+      } else {
+        return { 
+          available: false, 
+          reason: `Refunds not available. Market status: ${market.status}, Expired: ${now > expiresAt}, Timeout: ${now > expiresAt + commitRevealTimeout}` 
+        };
+      }
+    } catch (err: any) {
+      console.error('Error checking refund availability:', err);
+      return { available: false, reason: `Error: ${err.message}` };
+    }
+  }, [getContract, wallets]);
+
+  /**
+   * Claim refund for unrevealed commitment
+   */
+  const claimRefund = useCallback(async (
+    marketId: number
+  ): Promise<{ success: boolean; txHash?: string; amount?: string }> => {
+    setLoading(true);
+    setTxStatus('pending');
+    setError(undefined);
+    setTxHash(undefined);
+
+    try {
+      const contract = await getContract();
+      if (!contract) {
+        throw new Error('Failed to get contract instance');
+      }
+
+      // Check if refund is available first
+      const refundCheck = await checkRefundAvailability(marketId);
+      if (!refundCheck.available) {
+        throw new Error(`Refund not available: ${refundCheck.reason}`);
+      }
+
+      // Estimate gas
+      const gasLimit = await estimateGas(contract, 'claimRefund', [marketId]);
+
+      // Send transaction
+      const tx = await contract.claimRefund(marketId, { gasLimit });
+
+      setTxHash(tx.hash);
+
+      // Wait for confirmation
+      const receipt = await waitForTransaction(tx);
+      if (!receipt) {
+        throw new Error('Transaction timeout');
+      }
+
+      setTxStatus('success');
+      setLoading(false);
+
+      return { success: true, txHash: tx.hash, amount: refundCheck.amount };
+    } catch (err: any) {
+      const errorMsg = parseContractError(err);
+      setError(errorMsg);
+      setTxStatus('error');
+      setLoading(false);
+      return { success: false };
+    }
+  }, [getContract, checkRefundAvailability]);
 
   /**
    * Resolve a market (oracle/admin only)
@@ -540,11 +1110,13 @@ export function usePredictionContract() {
     commitBet,
     revealBet,
     claimWinnings,
+    claimRefund,
     resolveMarket,
 
     // Read methods
     getMarketData,
     getUserBet,
+    checkRefundAvailability,
 
     // Utilities
     resetTxState,

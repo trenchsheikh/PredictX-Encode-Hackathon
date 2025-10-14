@@ -1,0 +1,90 @@
+'use client';
+
+import { motion } from 'framer-motion';
+import { LucideIcon } from 'lucide-react';
+import { cn } from '@/lib/utils';
+
+interface StatsCardProps {
+  title: string;
+  value: string | number;
+  icon: LucideIcon;
+  trend?: {
+    value: number;
+    isPositive: boolean;
+  };
+  className?: string;
+  delay?: number;
+}
+
+export function StatsCard({ 
+  title, 
+  value, 
+  icon: Icon, 
+  trend, 
+  className,
+  delay = 0 
+}: StatsCardProps) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay }}
+      whileHover={{ 
+        y: -4,
+        transition: { duration: 0.2 }
+      }}
+      className={cn(
+        "relative overflow-hidden rounded-xl bg-gradient-to-br from-gray-900/60 to-gray-800/40 backdrop-blur-sm border border-gray-700/50 p-6",
+        "hover:border-yellow-500/30 hover:shadow-lg hover:shadow-yellow-500/10 transition-all duration-300",
+        className
+      )}
+    >
+      {/* Background pattern */}
+      <div className="absolute inset-0 opacity-5">
+        <div className="absolute inset-0 bg-gradient-to-br from-yellow-500 to-transparent" />
+      </div>
+      
+      <div className="relative z-10">
+        <div className="flex items-center justify-between mb-4">
+          <div className="p-2 rounded-lg bg-yellow-500/10">
+            <Icon className="w-5 h-5 text-yellow-400" />
+          </div>
+          {trend && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: delay + 0.2 }}
+              className={cn(
+                "flex items-center space-x-1 text-sm font-medium px-2 py-1 rounded-full",
+                trend.isPositive 
+                  ? "text-green-400 bg-green-500/10" 
+                  : "text-red-400 bg-red-500/10"
+              )}
+            >
+              <span>{trend.isPositive ? '+' : ''}{trend.value}%</span>
+            </motion.div>
+          )}
+        </div>
+        
+        <div className="space-y-1">
+          <motion.h3
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: delay + 0.1 }}
+            className="text-2xl font-bold text-white"
+          >
+            {value}
+          </motion.h3>
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: delay + 0.2 }}
+            className="text-sm text-gray-400"
+          >
+            {title}
+          </motion.p>
+        </div>
+      </div>
+    </motion.div>
+  );
+}

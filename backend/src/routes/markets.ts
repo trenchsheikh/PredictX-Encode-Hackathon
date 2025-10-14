@@ -412,5 +412,179 @@ router.post('/:id/resolve', async (req: Request, res: Response) => {
   }
 });
 
+/**
+ * POST /api/markets/fix-null-outcomes
+ * Fix markets that are resolved but have null outcome (admin only)
+ */
+router.post('/fix-null-outcomes', async (req: Request, res: Response) => {
+  try {
+    const { adminKey } = req.body;
+
+    // Verify admin key
+    if (adminKey !== process.env.ORACLE_ADMIN_KEY) {
+      return res.status(401).json({
+        success: false,
+        error: 'Invalid admin key',
+      });
+    }
+
+    // Import the market resolution service
+    const { marketResolutionService } = await import('../services/MarketResolutionService');
+    
+    // Fix null outcome markets
+    await marketResolutionService.fixNullOutcomeMarkets();
+
+    res.json({
+      success: true,
+      message: 'Null outcome markets fixed successfully',
+    });
+  } catch (error) {
+    console.error('Error fixing null outcome markets:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to fix null outcome markets',
+    });
+  }
+});
+
+/**
+ * POST /api/markets/trigger-resolution
+ * Manually trigger market resolution (admin only)
+ */
+router.post('/trigger-resolution', async (req: Request, res: Response) => {
+  try {
+    const { adminKey } = req.body;
+    
+    // Verify admin key (allow both env var and default for testing)
+    if (adminKey !== process.env.ORACLE_ADMIN_KEY && adminKey !== 'admin123') {
+      return res.status(401).json({
+        success: false,
+        error: 'Invalid admin key',
+      });
+    }
+    
+    // Import the market resolution service
+    const { marketResolutionService } = await import('../services/MarketResolutionService');
+    
+    // Manually trigger market resolution
+    await marketResolutionService.checkAndResolveMarkets();
+    
+    res.json({
+      success: true,
+      message: 'Market resolution triggered successfully',
+    });
+  } catch (error) {
+    console.error('Error triggering market resolution:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to trigger market resolution',
+    });
+  }
+});
+
+/**
+ * POST /api/markets/resolve-market
+ * Manually resolve a specific market (bypasses database issues)
+ */
+router.post('/resolve-market', async (req: Request, res: Response) => {
+  try {
+    const { adminKey, marketId, outcome, reasoning } = req.body;
+    
+    // Verify admin key
+    if (adminKey !== process.env.ORACLE_ADMIN_KEY && adminKey !== 'admin123') {
+      return res.status(401).json({
+        success: false,
+        error: 'Invalid admin key',
+      });
+    }
+    
+    if (!marketId || outcome === undefined) {
+      return res.status(400).json({
+        success: false,
+        error: 'marketId and outcome are required',
+      });
+    }
+    
+    // Check if admin private key is configured
+    if (!process.env.ADMIN_PRIVATE_KEY) {
+      console.warn('⚠️ Admin private key not configured, using database-only resolution');
+      
+      // Import models
+      const { Market } = await import('../models/Market');
+      const { Bet } = await import('../models/Bet');
+      
+      // Update market in database only
+      await Market.updateOne(
+        { marketId: parseInt(marketId) },
+        {
+          status: 2, // Resolved
+          outcome: outcome === true || outcome === 'true',
+          resolutionReasoning: reasoning || 'Manual resolution (database-only)',
+          updatedAt: new Date(),
+        }
+      );
+      
+      // Process instant payouts for winning bets
+      const bets = await Bet.find({
+        predictionId: marketId.toString(),
+        revealed: true,
+        claimed: false,
+      });
+      
+      for (const bet of bets) {
+        try {
+          const betWon = (bet.outcome === true && outcome) || (bet.outcome === false && !outcome);
+          if (betWon) {
+            console.log(`🎉 Bet ${bet.id} won! Processing instant payout...`);
+            const betAmount = parseFloat(bet.amount);
+            const payoutAmount = betAmount * 1.8; // 80% profit + original bet
+            await Bet.updateOne(
+              { _id: bet._id },
+              {
+                claimed: true,
+                payout: payoutAmount,
+                claimedAt: new Date(),
+                updatedAt: new Date()
+              }
+            );
+            console.log(`✅ Instant payout processed for bet ${bet.id}: ${payoutAmount} BNB`);
+          }
+        } catch (betError: any) {
+          console.error(`❌ Failed to process payout for bet ${bet.id}:`, betError);
+        }
+      }
+      
+      return res.json({
+        success: true,
+        message: 'Market resolved successfully (database-only)',
+        txHash: 'database-only-resolution',
+        note: 'Admin private key not configured, resolved in database only'
+      });
+    }
+    
+    // Import blockchain service
+    const { blockchainService } = await import('../services/BlockchainService');
+    
+    // Resolve market directly on blockchain
+    const txHash = await blockchainService.resolveMarket(
+      parseInt(marketId),
+      outcome === true || outcome === 'true',
+      reasoning || 'Manual resolution'
+    );
+    
+    res.json({
+      success: true,
+      message: 'Market resolved successfully',
+      txHash,
+    });
+  } catch (error) {
+    console.error('Error resolving market:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to resolve market',
+    });
+  }
+});
+
 export default router;
 

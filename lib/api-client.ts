@@ -175,17 +175,15 @@ export const leaderboardAPI = {
    * Get leaderboard
    */
   async getLeaderboard(filters?: {
-    timeframe?: 'all' | 'month' | 'week';
-    category?: string;
+    timeframe?: 'all' | '7d' | '30d' | '90d';
     limit?: number;
   }) {
     const params = new URLSearchParams();
     if (filters?.timeframe) params.append('timeframe', filters.timeframe);
-    if (filters?.category) params.append('category', filters.category);
     if (filters?.limit) params.append('limit', filters.limit.toString());
 
     const query = params.toString() ? `?${params.toString()}` : '';
-    return apiFetch<any[]>(`/leaderboard${query}`, { method: 'GET' });
+    return apiFetch<any>(`/users/leaderboard${query}`, { method: 'GET' });
   },
 };
 

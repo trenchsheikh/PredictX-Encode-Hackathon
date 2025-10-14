@@ -39,74 +39,7 @@ interface LeaderboardEntry {
   lastActive: number;
 }
 
-// Mock leaderboard data
-const mockLeaderboard: LeaderboardEntry[] = [
-  {
-    rank: 1,
-    address: '0x1234...5678',
-    username: 'CryptoOracle',
-    totalWinnings: 2.5,
-    totalBets: 25,
-    winRate: 0.84,
-    totalVolume: 5.2,
-    badges: ['Champion', 'Hot Streak', 'High Roller'],
-    isVerified: true,
-    streak: 8,
-    lastActive: Date.now() - 3600000,
-  },
-  {
-    rank: 2,
-    address: '0x2345...6789',
-    username: 'PredictionMaster',
-    totalWinnings: 1.8,
-    totalBets: 18,
-    winRate: 0.78,
-    totalVolume: 3.6,
-    badges: ['Expert', 'Consistent'],
-    isVerified: true,
-    streak: 5,
-    lastActive: Date.now() - 7200000,
-  },
-  {
-    rank: 3,
-    address: '0x3456...7890',
-    username: 'MarketWizard',
-    totalWinnings: 1.5,
-    totalBets: 22,
-    winRate: 0.73,
-    totalVolume: 4.1,
-    badges: ['Rising Star', 'Active Trader'],
-    isVerified: false,
-    streak: 3,
-    lastActive: Date.now() - 1800000,
-  },
-  {
-    rank: 4,
-    address: '0x4567...8901',
-    username: 'BNBWhale',
-    totalWinnings: 1.2,
-    totalBets: 15,
-    winRate: 0.80,
-    totalVolume: 6.8,
-    badges: ['High Roller', 'Whale'],
-    isVerified: true,
-    streak: 2,
-    lastActive: Date.now() - 10800000,
-  },
-  {
-    rank: 5,
-    address: '0x5678...9012',
-    username: 'PredictionPro',
-    totalWinnings: 1.0,
-    totalBets: 20,
-    winRate: 0.70,
-    totalVolume: 2.9,
-    badges: ['Pro', 'Consistent'],
-    isVerified: false,
-    streak: 1,
-    lastActive: Date.now() - 5400000,
-  },
-];
+// Leaderboard data will be fetched from API
 
 const timeframes = [
   { value: 'all', label: 'All Time' },
@@ -128,6 +61,40 @@ export default function LeaderboardPage() {
   const [selectedTimeframe, setSelectedTimeframe] = useState('all');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [sortBy, setSortBy] = useState<'winnings' | 'winrate' | 'volume' | 'bets'>('winnings');
+  const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string>();
+
+  /**
+   * Fetch leaderboard data from API
+   */
+  const fetchLeaderboard = async () => {
+    setLoading(true);
+    setError(undefined);
+    
+    try {
+      const response = await api.leaderboard.getLeaderboard({
+        timeframe: selectedTimeframe as 'all' | '7d' | '30d' | '90d',
+        limit: 50,
+      });
+
+      if (!response.success || !response.data) {
+        throw new Error(response.error || 'Failed to fetch leaderboard');
+      }
+
+      setLeaderboard(response.data.leaderboard || []);
+    } catch (err) {
+      console.error('Error fetching leaderboard:', err);
+      setError(err instanceof Error ? err.message : 'Failed to fetch leaderboard');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Fetch data on component mount and when filters change
+  useEffect(() => {
+    fetchLeaderboard();
+  }, [selectedTimeframe, selectedCategory]);
 
   const getRankIcon = (rank: number) => {
     switch (rank) {
@@ -168,7 +135,7 @@ export default function LeaderboardPage() {
     return 'Just now';
   };
 
-  const sortedLeaderboard = [...mockLeaderboard].sort((a, b) => {
+  const sortedLeaderboard = [...leaderboard].sort((a, b) => {
     switch (sortBy) {
       case 'winnings':
         return b.totalWinnings - a.totalWinnings;
@@ -183,22 +150,51 @@ export default function LeaderboardPage() {
     }
   });
 
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 flex items-center justify-center">
+        <div className="text-center">
+          <Loader2 className="h-12 w-12 text-yellow-400 animate-spin mx-auto mb-4" />
+          <p className="text-white text-lg">Loading leaderboard...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 flex items-center justify-center">
+        <div className="text-center">
+          <AlertCircle className="h-12 w-12 text-red-500 mx-auto mb-4" />
+          <p className="text-white text-lg mb-4">Failed to load leaderboard</p>
+          <p className="text-gray-300 mb-6">{error}</p>
+          <Button 
+            onClick={fetchLeaderboard}
+            className="bg-gradient-to-r from-yellow-400 to-yellow-600 hover:from-yellow-500 hover:to-yellow-700 text-black font-semibold"
+          >
+            Try Again
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-yellow-400 via-yellow-500 to-yellow-600">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800">
       <div className="mx-auto max-w-7xl px-6 py-16 lg:px-8">
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold tracking-tight text-white sm:text-6xl mb-4">
+          <h1 className="text-4xl font-bold tracking-tight text-white sm:text-6xl mb-4 font-brand-large gradient-text-brand">
             {t('leaderboard')}
           </h1>
-          <p className="text-lg text-gray-200 max-w-2xl mx-auto">
+          <p className="text-lg text-gray-300 max-w-2xl mx-auto">
             {t('top_performers')}
           </p>
         </div>
 
         {/* Stats Overview */}
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 mb-12">
-          <Card className="bg-black/90 border-black">
+          <Card className="bg-gray-800/60 backdrop-blur-sm border border-gray-700/50">
             <CardContent className="p-6">
               <div className="flex items-center">
                 <div className="flex-shrink-0">
@@ -206,11 +202,11 @@ export default function LeaderboardPage() {
                 </div>
                 <div className="ml-5 w-0 flex-1">
                   <dl>
-                    <dt className="text-sm font-medium text-gray-200 truncate">
+                    <dt className="text-sm font-medium text-gray-300 truncate">
                       {t('total_players')}
                     </dt>
                     <dd className="text-lg font-medium text-white">
-                      {mockLeaderboard.length}
+                      {leaderboard.length}
                     </dd>
                   </dl>
                 </div>
@@ -218,7 +214,7 @@ export default function LeaderboardPage() {
             </CardContent>
           </Card>
 
-          <Card className="bg-black/90 border-black">
+          <Card className="bg-gray-800/60 backdrop-blur-sm border border-gray-700/50">
             <CardContent className="p-6">
               <div className="flex items-center">
                 <div className="flex-shrink-0">
@@ -226,11 +222,11 @@ export default function LeaderboardPage() {
                 </div>
                 <div className="ml-5 w-0 flex-1">
                   <dl>
-                    <dt className="text-sm font-medium text-gray-200 truncate">
+                    <dt className="text-sm font-medium text-gray-300 truncate">
                       {t('total_winnings')}
                     </dt>
                     <dd className="text-lg font-medium text-white">
-                      {formatBNB(mockLeaderboard.reduce((sum, entry) => sum + entry.totalWinnings, 0))}
+                      {formatBNB(leaderboard.reduce((sum, entry) => sum + entry.totalWinnings, 0))}
                     </dd>
                   </dl>
                 </div>
@@ -238,7 +234,7 @@ export default function LeaderboardPage() {
             </CardContent>
           </Card>
 
-          <Card className="bg-black/90 border-black">
+          <Card className="bg-gray-800/60 backdrop-blur-sm border border-gray-700/50">
             <CardContent className="p-6">
               <div className="flex items-center">
                 <div className="flex-shrink-0">
@@ -246,11 +242,11 @@ export default function LeaderboardPage() {
                 </div>
                 <div className="ml-5 w-0 flex-1">
                   <dl>
-                    <dt className="text-sm font-medium text-gray-200 truncate">
+                    <dt className="text-sm font-medium text-gray-300 truncate">
                       {t('total_bets_sort')}
                     </dt>
                     <dd className="text-lg font-medium text-white">
-                      {mockLeaderboard.reduce((sum, entry) => sum + entry.totalBets, 0)}
+                      {leaderboard.reduce((sum, entry) => sum + entry.totalBets, 0)}
                     </dd>
                   </dl>
                 </div>
@@ -258,7 +254,7 @@ export default function LeaderboardPage() {
             </CardContent>
           </Card>
 
-          <Card className="bg-black/90 border-black">
+          <Card className="bg-gray-800/60 backdrop-blur-sm border border-gray-700/50">
             <CardContent className="p-6">
               <div className="flex items-center">
                 <div className="flex-shrink-0">
@@ -266,11 +262,11 @@ export default function LeaderboardPage() {
                 </div>
                 <div className="ml-5 w-0 flex-1">
                   <dl>
-                    <dt className="text-sm font-medium text-gray-200 truncate">
+                    <dt className="text-sm font-medium text-gray-300 truncate">
                       Avg Win Rate
                     </dt>
                     <dd className="text-lg font-medium text-white">
-                      {Math.round(mockLeaderboard.reduce((sum, entry) => sum + entry.winRate, 0) / mockLeaderboard.length * 100)}%
+                      {leaderboard.length > 0 ? Math.round(leaderboard.reduce((sum, entry) => sum + entry.winRate, 0) / leaderboard.length * 100) : 0}%
                     </dd>
                   </dl>
                 </div>
@@ -280,17 +276,17 @@ export default function LeaderboardPage() {
         </div>
 
         {/* Filters */}
-        <Card className="mb-8 border-yellow-500/20 bg-black/50">
+        <Card className="mb-8 border-yellow-500/20 bg-gray-800/60 backdrop-blur-sm border border-gray-700/50">
           <CardContent className="p-6">
             <div className="flex flex-col sm:flex-row gap-4">
               <div className="flex-1">
-                <label className="text-sm font-medium text-gray-200 mb-2 block">
+                <label className="text-sm font-medium text-gray-300 mb-2 block">
                   Timeframe
                 </label>
                 <select
                   value={selectedTimeframe}
                   onChange={(e) => setSelectedTimeframe(e.target.value)}
-                  className="w-full p-2 border border-yellow-500/20 rounded-md bg-black/30 text-gray-200"
+                  className="w-full p-2 border border-gray-700/50 rounded-md bg-gray-800/60 text-white focus:border-yellow-400/50 focus:ring-yellow-400/20"
                 >
                   {timeframes.map((timeframe) => (
                     <option key={timeframe.value} value={timeframe.value}>
@@ -301,13 +297,13 @@ export default function LeaderboardPage() {
               </div>
               
               <div className="flex-1">
-                <label className="text-sm font-medium text-gray-200 mb-2 block">
+                <label className="text-sm font-medium text-gray-300 mb-2 block">
                   Category
                 </label>
                 <select
                   value={selectedCategory}
                   onChange={(e) => setSelectedCategory(e.target.value)}
-                  className="w-full p-2 border border-yellow-500/20 rounded-md bg-black/30 text-gray-200"
+                  className="w-full p-2 border border-gray-700/50 rounded-md bg-gray-800/60 text-white focus:border-yellow-400/50 focus:ring-yellow-400/20"
                 >
                   {categories.map((category) => (
                     <option key={category.value} value={category.value}>
@@ -318,13 +314,13 @@ export default function LeaderboardPage() {
               </div>
               
               <div className="flex-1">
-                <label className="text-sm font-medium text-gray-200 mb-2 block">
+                <label className="text-sm font-medium text-gray-300 mb-2 block">
                   {t('sort_by')}
                 </label>
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value as any)}
-                  className="w-full p-2 border border-yellow-500/20 rounded-md bg-black/30 text-gray-200"
+                  className="w-full p-2 border border-gray-700/50 rounded-md bg-gray-800/60 text-white focus:border-yellow-400/50 focus:ring-yellow-400/20"
                 >
                   <option value="winnings">{t('total_winnings_sort')}</option>
                   <option value="winrate">{t('win_rate_sort')}</option>
@@ -342,8 +338,8 @@ export default function LeaderboardPage() {
             <Card 
               key={entry.address} 
               className={cn(
-                "hover:shadow-lg transition-all duration-300 border-yellow-500/20 bg-black/50",
-                entry.rank <= 3 && "ring-2 ring-yellow-500/20 bg-gradient-to-r from-yellow-500/10 to-yellow-600/10"
+                "hover:shadow-lg transition-all duration-300 border-gray-700/50 bg-gray-800/60 backdrop-blur-sm",
+                entry.rank <= 3 && "ring-2 ring-yellow-400/30 bg-gradient-to-r from-yellow-400/10 to-yellow-600/10"
               )}
             >
               <CardContent className="p-6">
@@ -372,7 +368,7 @@ export default function LeaderboardPage() {
                         )}
                       </div>
                       
-                      <div className="flex items-center gap-4 text-sm text-gray-200 mb-3">
+                      <div className="flex items-center gap-4 text-sm text-gray-300 mb-3">
                         <span>{formatAddress(entry.address)}</span>
                         <span>•</span>
                         <span>Last active {formatLastActive(entry.lastActive)}</span>
@@ -394,34 +390,34 @@ export default function LeaderboardPage() {
                   
                   <div className="flex items-center gap-8">
                     <div className="text-center">
-                      <div className="text-sm text-gray-200">{t('winnings')}</div>
+                      <div className="text-sm text-gray-300">{t('winnings')}</div>
                       <div className="text-lg font-semibold text-white">
                         {formatBNB(entry.totalWinnings)}
                       </div>
                     </div>
                     
                     <div className="text-center">
-                      <div className="text-sm text-gray-200">{t('win_rate')}</div>
+                      <div className="text-sm text-gray-300">{t('win_rate')}</div>
                       <div className="text-lg font-semibold text-white">
                         {Math.round(entry.winRate * 100)}%
                       </div>
                     </div>
                     
                     <div className="text-center">
-                      <div className="text-sm text-gray-200">{t('bets')}</div>
+                      <div className="text-sm text-gray-300">{t('bets')}</div>
                       <div className="text-lg font-semibold text-white">
                         {entry.totalBets}
                       </div>
                     </div>
                     
                     <div className="text-center">
-                      <div className="text-sm text-gray-200">{t('volume')}</div>
+                      <div className="text-sm text-gray-300">{t('volume')}</div>
                       <div className="text-lg font-semibold text-white">
                         {formatBNB(entry.totalVolume)}
                       </div>
                     </div>
                     
-                    <Button variant="outline" size="sm">
+                    <Button variant="outline" size="sm" className="border-gray-600/50 text-gray-300 hover:bg-gray-700/50 hover:text-white">
                       <ExternalLink className="h-4 w-4 mr-2" />
                       {t('view')}
                     </Button>

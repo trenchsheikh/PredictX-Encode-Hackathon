@@ -17,7 +17,11 @@ import { AppleHelloEffect } from '@/components/ui/apple-hello-effect';
 import { InteractiveGridPattern } from '@/components/ui/interactive-grid-pattern';
 import { TransactionStatus } from '@/components/ui/transaction-status';
 import { Prediction, FilterOptions, CreatePredictionData } from '@/types/prediction';
-import { Plus, TrendingUp, Users, Clock, Zap, Star, Trophy, Flame, Target, BarChart3, TrendingDown, ArrowUp, ArrowDown, Eye, Shield, Lock, Loader2, RefreshCw, AlertCircle } from 'lucide-react';
+import { Plus, TrendingUp, Users, Clock, Zap, Star, Trophy, Flame, Target, BarChart3, TrendingDown, ArrowUp, ArrowDown, Eye, Shield, Lock, Loader2, RefreshCw, AlertCircle, CheckCircle } from 'lucide-react';
+import { HeroSection } from '@/components/ui/hero-section';
+import { AnimatedCard } from '@/components/ui/animated-card';
+import { AnimatedButton } from '@/components/ui/animated-button';
+import { AnimatedBackground } from '@/components/ui/animated-background';
 import { useI18n } from '@/components/providers/privy-provider';
 import { cn } from '@/lib/utils';
 import { api, getErrorMessage } from '@/lib/api-client';
@@ -326,7 +330,10 @@ export default function HomePage() {
   };
 
   return (
-    <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-yellow-400 via-yellow-500 to-yellow-600">
+    <div className="min-h-screen relative overflow-hidden">
+      {/* Page-specific background */}
+      <AnimatedBackground variant="grid" />
+      
       <style jsx>{`
         @keyframes riseUp {
           0% {
@@ -477,125 +484,26 @@ export default function HomePage() {
       </div>
       )}
       
-      {/* Hero Section - Betting Style */}
-      <div className="relative overflow-hidden z-10">
-        <div className="absolute inset-0 bnb-pattern opacity-10" />
-        <div className="relative mx-auto max-w-7xl px-6 py-8 sm:py-12 lg:px-8">
-          <div className="text-center">
-            <h1 className="text-5xl sm:text-7xl bold-title text-black">
-              {t('live_markets')}
-              </h1>
-            <p className="mt-4 text-lg leading-8 text-black max-w-2xl mx-auto animate-fade-in">
-              {t('hero_subtitle')}
-            </p>
-            
-             {/* Quick Stats Bar */}
-             <div className="mt-8 flex flex-wrap justify-center gap-4 text-sm">
-               <div className="flex items-center gap-2 bg-black/80 px-4 py-2 rounded-full border border-black">
-                 <Flame className="h-4 w-4 text-yellow-400" />
-                 <span className="text-white font-medium">{stats.activePredictions} Live Markets</span>
-               </div>
-               <div className="flex items-center gap-2 bg-black/80 px-4 py-2 rounded-full border border-black">
-                 <TrendingUp className="h-4 w-4 text-green-400" />
-                 <span className="text-white font-medium">{stats.totalVolume.toFixed(2)} BNB Volume</span>
-               </div>
-               <div className="flex items-center gap-2 bg-black/80 px-4 py-2 rounded-full border border-black">
-                 <Users className="h-4 w-4 text-blue-400" />
-                 <span className="text-white font-medium">{stats.totalParticipants} Players</span>
-               </div>
-             </div>
-
-            {/* Dark Pools Feature Card */}
-            <div className="mt-8 max-w-4xl mx-auto">
-              <Card className="border-black bg-black/80 backdrop-blur">
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-center gap-2 mb-4">
-                    <Eye className="h-6 w-6 text-yellow-400" />
-                    <h2 className="text-xl font-semibold text-white">
-                      {t('dark_pools_title')}
-                    </h2>
-                  </div>
-                  <p className="text-gray-200 leading-relaxed text-center mb-6">
-                    {t('dark_pools_description')}
-                  </p>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
-                    <div className="p-4 rounded-lg bg-yellow-400/20 border border-yellow-400/30">
-                      <Lock className="h-6 w-6 text-yellow-400 mx-auto mb-2" />
-                      <div className="text-sm font-medium text-white mb-1">{t('privacy')}</div>
-                      <div className="text-xs text-gray-200">{t('privacy_description')}</div>
-                    </div>
-                    <div className="p-4 rounded-lg bg-yellow-400/20 border border-yellow-400/30">
-                      <Shield className="h-6 w-6 text-yellow-400 mx-auto mb-2" />
-                      <div className="text-sm font-medium text-white mb-1">{t('anti_manipulation')}</div>
-                      <div className="text-xs text-gray-200">{t('anti_manipulation_description')}</div>
-                    </div>
-                    <div className="p-4 rounded-lg bg-yellow-400/20 border border-yellow-400/30">
-                      <Users className="h-6 w-6 text-yellow-400 mx-auto mb-2" />
-                      <div className="text-sm font-medium text-white mb-1">{t('clean_slate')}</div>
-                      <div className="text-xs text-gray-200">{t('clean_slate_description')}</div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-
-             {/* CTA Buttons */}
-            <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in">
-              <div className="neon-border">
-              <Button
-                size="lg"
-                onClick={() => setShowCreateModal(true)}
-                  className="bg-black hover:bg-black/90 text-white text-lg px-8 py-3"
-                  disabled={!authenticated}
-              >
-                <Plus className="h-5 w-5 mr-2" />
-                  Make a Prediction
-                </Button>
-              </div>
-              <div className="neon-border">
-              <Button
-                size="lg"
-                onClick={() => setShowCryptoModal(true)}
-                  className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white text-lg px-8 py-3"
-                  disabled={!authenticated}
-              >
-                <Target className="h-5 w-5 mr-2" />
-                  Crypto Prediction
-                </Button>
-              </div>
-               <Button
-                 variant="outline"
-                 size="lg"
-                 className="border-black bg-black/90 text-white hover:bg-black text-lg px-8 py-3"
-                onClick={fetchMarkets}
-                disabled={loading}
-               >
-                {loading ? <Loader2 className="h-5 w-5 mr-2 animate-spin" /> : <RefreshCw className="h-5 w-5 mr-2" />}
-                Refresh Markets
-              </Button>
-              {!authenticated && (
-                <p className="text-sm text-black font-medium mt-2">
-                  {t('connect_to_create')}
-                </p>
-              )}
-            </div>
-          </div>
-        </div>
-      </div>
+      {/* Hero Section */}
+      <HeroSection
+        onCreateClick={() => setShowCreateModal(true)}
+        onCryptoClick={() => setShowCryptoModal(true)}
+        isAuthenticated={authenticated}
+      />
 
       {/* Error Banner */}
       {error && (
       <div className="mx-auto max-w-7xl px-6 lg:px-8 mb-6 relative z-10">
-          <Card className="bg-red-500/20 border-red-500">
+          <Card className="bg-red-500/20 border-red-500/50 backdrop-blur-sm">
             <CardContent className="p-4">
               <div className="flex items-center gap-2">
-                <AlertCircle className="h-5 w-5 text-red-500" />
-                <p className="text-red-900 font-medium">{error}</p>
+                <AlertCircle className="h-5 w-5 text-red-400" />
+                <p className="text-red-200 font-medium">{error}</p>
                  <Button
                    size="sm"
                   variant="outline"
                   onClick={fetchMarkets}
-                  className="ml-auto"
+                  className="ml-auto border-red-400/50 text-red-200 hover:bg-red-500/20"
                  >
                   Retry
                  </Button>
@@ -611,9 +519,9 @@ export default function HomePage() {
           {/* Section Header */}
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <BarChart3 className="h-6 w-6 text-black" />
-              <h2 className="text-2xl font-bold text-black">All Markets</h2>
-              <Badge variant="outline" className="border-black text-black">
+              <BarChart3 className="h-6 w-6 text-yellow-400" />
+              <h2 className="text-2xl font-heading text-white">All Markets</h2>
+              <Badge variant="outline" className="border-yellow-400/50 text-yellow-400 bg-yellow-400/10">
                 {filteredPredictions.length} markets
               </Badge>
             </div>
@@ -629,23 +537,23 @@ export default function HomePage() {
            {/* Markets Grid */}
           {loading ? (
             <div className="flex items-center justify-center py-12">
-              <Loader2 className="h-12 w-12 text-black animate-spin" />
+              <Loader2 className="h-12 w-12 text-yellow-400 animate-spin" />
             </div>
           ) : filteredPredictions.length === 0 ? (
-             <Card className="text-center py-12 border-black bg-black/90">
+             <Card className="text-center py-12 bg-gray-900/60 backdrop-blur-sm border-gray-700/50">
               <CardContent>
-                 <div className="mx-auto w-24 h-24 bg-yellow-500 rounded-full flex items-center justify-center mb-4">
-                   <TrendingUp className="h-12 w-12 text-black" />
+                 <div className="mx-auto w-24 h-24 bg-yellow-400/20 rounded-full flex items-center justify-center mb-4 border border-yellow-400/30">
+                   <TrendingUp className="h-12 w-12 text-yellow-400" />
                 </div>
-                 <h3 className="text-lg font-medium text-white mb-2">
+                 <h3 className="text-lg font-heading text-white mb-2">
                    {t('no_predictions_found')}
                 </h3>
-                 <p className="text-gray-200 mb-4">
+                 <p className="text-gray-300 mb-4">
                    {t('try_adjusting_filters')}
                 </p>
                 <Button
                   onClick={() => setShowCreateModal(true)}
-                   className="bg-white hover:bg-gray-200 text-black"
+                   className="bg-yellow-400 hover:bg-yellow-500 text-black"
                   disabled={!authenticated}
                 >
                   <Plus className="h-4 w-4 mr-2" />
@@ -654,15 +562,20 @@ export default function HomePage() {
               </CardContent>
             </Card>
           ) : (
-             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {filteredPredictions.map((prediction) => (
-                <PredictionCard
+             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredPredictions.map((prediction, index) => (
+                <AnimatedCard
                   key={prediction.id}
-                  prediction={prediction}
-                  onBet={handleBetClick}
-                  onViewHistory={handleViewHistory}
-                  userBets={userBets}
-                />
+                  delay={index * 0.1}
+                  className="p-0"
+                >
+                  <PredictionCard
+                    prediction={prediction}
+                    onBet={handleBetClick}
+                    onViewHistory={handleViewHistory}
+                    userBets={userBets}
+                  />
+                </AnimatedCard>
               ))}
             </div>
           )}
@@ -672,23 +585,28 @@ export default function HomePage() {
         {predictions.filter(p => p.status === 'resolved' || p.status === 'cancelled').length > 0 && (
           <div className="mt-12">
             <div className="flex items-center gap-3 mb-6">
-              <CheckCircle className="h-6 w-6 text-green-500" />
-              <h2 className="text-2xl font-bold text-white">
+              <CheckCircle className="h-6 w-6 text-green-400" />
+              <h2 className="text-2xl font-heading text-white">
                 Completed Predictions
               </h2>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {predictions
                 .filter(p => p.status === 'resolved' || p.status === 'cancelled')
-                .map((prediction) => (
-                  <PredictionCard
+                .map((prediction, index) => (
+                  <AnimatedCard
                     key={prediction.id}
-                    prediction={prediction}
-                    onBet={handleBetClick}
-                    onViewHistory={handleViewHistory}
-                    userBets={userBets}
-                  />
+                    delay={index * 0.1}
+                    className="p-0"
+                  >
+                    <PredictionCard
+                      prediction={prediction}
+                      onBet={handleBetClick}
+                      onViewHistory={handleViewHistory}
+                      userBets={userBets}
+                    />
+                  </AnimatedCard>
                 ))}
             </div>
           </div>

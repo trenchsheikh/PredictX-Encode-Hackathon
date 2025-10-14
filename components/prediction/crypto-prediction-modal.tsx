@@ -98,19 +98,25 @@ export function CryptoPredictionModal({ open, onOpenChange, onSubmit }: CryptoPr
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-gray-900/95 backdrop-blur-md border border-gray-700/50 shadow-2xl">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+          <DialogTitle className="text-2xl font-bold text-white font-heading flex items-center gap-2">
+            <TrendingUp className="h-6 w-6 text-yellow-400" />
             Create Crypto Prediction Market
           </DialogTitle>
         </DialogHeader>
 
-        <div className="space-y-6">
+        <div className="space-y-8">
           {/* Step 1: Select Cryptocurrency */}
-          <div>
-            <Label className="text-lg font-semibold mb-3 block">
-              1. Select Cryptocurrency
-            </Label>
+          <div className="space-y-4">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-full bg-yellow-400 text-black font-bold flex items-center justify-center text-sm">
+                1
+              </div>
+              <Label className="text-lg font-semibold text-white">
+                Select Cryptocurrency
+              </Label>
+            </div>
             <CryptoSelector
               value={selectedCrypto?.id || null}
               onChange={setSelectedCrypto}
@@ -119,52 +125,57 @@ export function CryptoPredictionModal({ open, onOpenChange, onSubmit }: CryptoPr
 
           {/* Step 2: Prediction Details */}
           {selectedCrypto && (
-            <div className="space-y-4 border-t pt-6">
-              <Label className="text-lg font-semibold block">
-                2. Prediction Details
-              </Label>
+            <div className="space-y-6 border-t border-gray-700/50 pt-8">
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-full bg-yellow-400 text-black font-bold flex items-center justify-center text-sm">
+                  2
+                </div>
+                <Label className="text-lg font-semibold text-white">
+                  Prediction Details
+                </Label>
+              </div>
 
               <Tabs value={predictionType} onValueChange={(v) => setPredictionType(v as any)}>
-                <TabsList className="grid w-full grid-cols-2">
-                  <TabsTrigger value="price_target">Price Target</TabsTrigger>
-                  <TabsTrigger value="custom">Custom Prediction</TabsTrigger>
+                <TabsList className="grid w-full grid-cols-2 bg-gray-800/60 border border-gray-700/50">
+                  <TabsTrigger value="price_target" className="data-[state=active]:bg-yellow-400 data-[state=active]:text-black text-gray-300">Price Target</TabsTrigger>
+                  <TabsTrigger value="custom" className="data-[state=active]:bg-yellow-400 data-[state=active]:text-black text-gray-300">Custom Prediction</TabsTrigger>
                 </TabsList>
 
-                <TabsContent value="price_target" className="space-y-4 mt-4">
+                <TabsContent value="price_target" className="space-y-6 mt-6">
                   {/* Current Price Display */}
-                  <div className="bg-purple-50 dark:bg-purple-900/20 p-4 rounded-lg">
+                  <div className="bg-gray-800/60 backdrop-blur-sm border border-gray-700/50 p-6 rounded-xl">
                     <div className="flex items-center justify-between">
                       <div>
-                        <div className="text-sm text-gray-600 dark:text-gray-400">Current {selectedCrypto.name} Price</div>
-                        <div className="text-2xl font-bold">${selectedCrypto.currentPrice.toLocaleString()}</div>
+                        <div className="text-sm text-gray-400">Current {selectedCrypto.name} Price</div>
+                        <div className="text-3xl font-bold text-white">${selectedCrypto.currentPrice.toLocaleString()}</div>
                       </div>
                       <div className={cn(
-                        'flex items-center gap-1',
-                        selectedCrypto.priceChange24h >= 0 ? 'text-green-500' : 'text-red-500'
+                        'flex items-center gap-2 px-3 py-2 rounded-lg',
+                        selectedCrypto.priceChange24h >= 0 ? 'text-green-400 bg-green-500/10' : 'text-red-400 bg-red-500/10'
                       )}>
-                        {selectedCrypto.priceChange24h >= 0 ? <TrendingUp /> : <TrendingDown />}
+                        {selectedCrypto.priceChange24h >= 0 ? <TrendingUp className="h-4 w-4" /> : <TrendingDown className="h-4 w-4" />}
                         <span className="font-semibold">{Math.abs(selectedCrypto.priceChange24h).toFixed(2)}%</span>
                       </div>
                     </div>
                   </div>
 
                   {/* Operator Selection */}
-                  <div>
-                    <Label htmlFor="operator">Prediction Type</Label>
+                  <div className="space-y-3">
+                    <Label htmlFor="operator" className="text-white font-medium">Prediction Type</Label>
                     <Select value={operator} onValueChange={(v) => setOperator(v as any)}>
-                      <SelectTrigger id="operator">
+                      <SelectTrigger id="operator" className="bg-gray-800/60 border-gray-700/50 text-white focus:border-yellow-400/50 focus:ring-yellow-400/20">
                         <SelectValue />
                       </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="above">
+                      <SelectContent className="bg-gray-800 border-gray-700/50">
+                        <SelectItem value="above" className="text-white hover:bg-gray-700/50">
                           <div className="flex items-center gap-2">
-                            <TrendingUp className="h-4 w-4 text-green-500" />
+                            <TrendingUp className="h-4 w-4 text-green-400" />
                             <span>Will reach or exceed</span>
                           </div>
                         </SelectItem>
-                        <SelectItem value="below">
+                        <SelectItem value="below" className="text-white hover:bg-gray-700/50">
                           <div className="flex items-center gap-2">
-                            <TrendingDown className="h-4 w-4 text-red-500" />
+                            <TrendingDown className="h-4 w-4 text-red-400" />
                             <span>Will stay below</span>
                           </div>
                         </SelectItem>
@@ -173,8 +184,8 @@ export function CryptoPredictionModal({ open, onOpenChange, onSubmit }: CryptoPr
                   </div>
 
                   {/* Target Price */}
-                  <div>
-                    <Label htmlFor="targetPrice">Target Price (USD)</Label>
+                  <div className="space-y-3">
+                    <Label htmlFor="targetPrice" className="text-white font-medium">Target Price (USD)</Label>
                     <div className="relative">
                       <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
                       <Input
@@ -183,42 +194,45 @@ export function CryptoPredictionModal({ open, onOpenChange, onSubmit }: CryptoPr
                         placeholder="Enter target price..."
                         value={targetPrice}
                         onChange={(e) => setTargetPrice(e.target.value)}
-                        className="pl-10"
+                        className="pl-10 bg-gray-800/60 border-gray-700/50 text-white placeholder:text-gray-400 focus:border-yellow-400/50 focus:ring-yellow-400/20"
                         min="0"
                         step="0.01"
                       />
                     </div>
                     {targetPrice && (
-                      <div className="mt-2 text-sm text-gray-600">
-                        Prediction: {selectedCrypto.name} will {operator === 'above' ? 'reach or exceed' : 'stay below'} ${parseFloat(targetPrice).toLocaleString()}
+                      <div className="mt-3 p-3 bg-gray-800/40 rounded-lg border border-gray-700/30">
+                        <div className="text-sm text-gray-300">
+                          <span className="font-medium text-yellow-400">Prediction:</span> {selectedCrypto.name} will {operator === 'above' ? 'reach or exceed' : 'stay below'} <span className="font-semibold text-white">${parseFloat(targetPrice).toLocaleString()}</span>
+                        </div>
                       </div>
                     )}
                   </div>
                 </TabsContent>
 
-                <TabsContent value="custom" className="space-y-4 mt-4">
-                  <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg flex items-start gap-3">
-                    <AlertCircle className="h-5 w-5 text-blue-500 flex-shrink-0 mt-0.5" />
-                    <div className="text-sm text-blue-900 dark:text-blue-100">
-                      <strong>Custom predictions</strong> can include any question about {selectedCrypto.name}, such as market cap comparisons, trading volume, or other metrics. Make sure your prediction is clear and verifiable.
+                <TabsContent value="custom" className="space-y-6 mt-6">
+                  <div className="bg-blue-500/10 border border-blue-500/20 p-4 rounded-xl flex items-start gap-3">
+                    <AlertCircle className="h-5 w-5 text-blue-400 flex-shrink-0 mt-0.5" />
+                    <div className="text-sm text-blue-200">
+                      <strong className="text-blue-100">Custom predictions</strong> can include any question about {selectedCrypto.name}, such as market cap comparisons, trading volume, or other metrics. Make sure your prediction is clear and verifiable.
                     </div>
                   </div>
 
-                  <div>
-                    <Label htmlFor="customTitle">Prediction Title</Label>
+                  <div className="space-y-3">
+                    <Label htmlFor="customTitle" className="text-white font-medium">Prediction Title</Label>
                     <Input
                       id="customTitle"
                       placeholder={`e.g., "Will ${selectedCrypto.name} flip Bitcoin in market cap?"`}
                       value={customTitle}
                       onChange={(e) => setCustomTitle(e.target.value)}
+                      className="bg-gray-800/60 border-gray-700/50 text-white placeholder:text-gray-400 focus:border-yellow-400/50 focus:ring-yellow-400/20"
                     />
                   </div>
 
-                  <div>
-                    <Label htmlFor="customDescription">Description & Resolution Criteria</Label>
+                  <div className="space-y-3">
+                    <Label htmlFor="customDescription" className="text-white font-medium">Description & Resolution Criteria</Label>
                     <textarea
                       id="customDescription"
-                      className="w-full min-h-[120px] p-3 border rounded-md resize-none"
+                      className="w-full min-h-[120px] p-3 bg-gray-800/60 border border-gray-700/50 text-white placeholder:text-gray-400 focus:border-yellow-400/50 focus:ring-yellow-400/20 rounded-lg resize-none"
                       placeholder="Describe the prediction and how it will be resolved..."
                       value={customDescription}
                       onChange={(e) => setCustomDescription(e.target.value)}
@@ -228,8 +242,11 @@ export function CryptoPredictionModal({ open, onOpenChange, onSubmit }: CryptoPr
               </Tabs>
 
               {/* Deadline */}
-              <div>
-                <Label htmlFor="deadline">Resolution Deadline</Label>
+              <div className="space-y-3">
+                <Label htmlFor="deadline" className="text-white font-medium flex items-center gap-2">
+                  <Calendar className="h-4 w-4 text-yellow-400" />
+                  Resolution Deadline
+                </Label>
                 <div className="relative">
                   <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
                   <Input
@@ -238,32 +255,32 @@ export function CryptoPredictionModal({ open, onOpenChange, onSubmit }: CryptoPr
                     value={deadline}
                     onChange={(e) => setDeadline(e.target.value)}
                     min={minDeadline}
-                    className="pl-10"
+                    className="pl-10 bg-gray-800/60 border-gray-700/50 text-white focus:border-yellow-400/50 focus:ring-yellow-400/20"
                   />
                 </div>
-                <div className="mt-1 text-xs text-gray-500">
+                <div className="text-xs text-gray-400">
                   Minimum: 15 minutes from now
                 </div>
               </div>
             </div>
           )}
 
-          {/* Submit Button */}
-          <div className="flex gap-3 border-t pt-4">
+          {/* Submit Buttons */}
+          <div className="flex gap-4 border-t border-gray-700/50 pt-6">
             <Button
               variant="outline"
               onClick={() => {
                 handleReset();
                 onOpenChange(false);
               }}
-              className="flex-1"
+              className="flex-1 border-gray-700/50 bg-gray-800/60 text-white hover:bg-gray-800/80 transition-all duration-200"
             >
               Cancel
             </Button>
             <Button
               onClick={handleSubmitForm}
               disabled={!isValid()}
-              className="flex-1 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
+              className="flex-1 bg-gradient-to-r from-yellow-400 to-yellow-600 hover:from-yellow-500 hover:to-yellow-700 text-black font-semibold shadow-md hover:shadow-lg transition-all duration-200"
             >
               Create Prediction Market
             </Button>

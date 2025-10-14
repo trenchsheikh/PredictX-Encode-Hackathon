@@ -1,19 +1,30 @@
 import type { Metadata } from 'next';
-import { Space_Grotesk } from 'next/font/google';
+import { Inter, Poppins } from 'next/font/google';
 import './globals.css';
 import { PrivyProviderWrapper } from '@/components/providers/privy-provider';
-import { Header } from '@/components/layout/header';
-import { Footer } from '@/components/layout/footer';
-import { InteractiveGridPattern } from '@/components/ui/interactive-grid-pattern';
-import { Particles } from '@/components/ui/particles';
+import { AnimatedHeader } from '@/components/layout/animated-header';
+import { AnimatedFooter } from '@/components/layout/animated-footer';
+import { AnimatedBackground } from '@/components/ui/animated-background';
+import { PageTransition } from '@/components/ui/page-transition';
+import { IntroProvider } from '@/components/providers/intro-provider';
 
-const spaceGrotesk = Space_Grotesk({ subsets: ['latin'] });
+const inter = Inter({ 
+  subsets: ['latin'],
+  variable: '--font-inter',
+  display: 'swap',
+});
+const poppins = Poppins({ 
+  subsets: ['latin'],
+  variable: '--font-poppins',
+  weight: ['300', '400', '500', '600', '700', '800'],
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://darkbet.vercel.app'),
-  title: 'DarkBet - BNB Chain Prediction Markets',
-  description: 'Fully On-Chain Live Betting Market with AI-Driven Results. Built on BNB Smart Chain.',
-  keywords: ['prediction markets', 'BNB Chain', 'blockchain', 'betting', 'crypto', 'DeFi'],
+  title: 'DarkBet - DarkPool Betting Platform',
+  description: 'DarkPool Betting - The future of prediction markets. Built on BNB Smart Chain with AI-driven results and fully on-chain execution.',
+  keywords: ['darkpool betting', 'prediction markets', 'BNB Chain', 'blockchain', 'betting', 'crypto', 'DeFi', 'dark pool'],
   authors: [{ name: 'DarkBet Team' }],
   icons: {
     icon: '/favicon.ico',
@@ -22,8 +33,8 @@ export const metadata: Metadata = {
   },
   manifest: '/site.webmanifest',
   openGraph: {
-    title: 'DarkBet - BNB Chain Prediction Markets',
-    description: 'Fully On-Chain Live Betting Market with AI-Driven Results. Built on BNB Smart Chain.',
+    title: 'DarkBet - DarkPool Betting Platform',
+    description: 'DarkPool Betting - The future of prediction markets. Built on BNB Smart Chain with AI-driven results and fully on-chain execution.',
     type: 'website',
     locale: 'en_US',
     images: [
@@ -37,8 +48,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'DarkBet - BNB Chain Prediction Markets',
-    description: 'Fully On-Chain Live Betting Market with AI-Driven Results. Built on BNB Smart Chain.',
+    title: 'DarkBet - DarkPool Betting Platform',
+    description: 'DarkPool Betting - The future of prediction markets. Built on BNB Smart Chain with AI-driven results and fully on-chain execution.',
     images: ['/darkbet.jpg'],
   },
 };
@@ -50,20 +61,22 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={spaceGrotesk.className}>
+      <body className={`${inter.className} ${poppins.variable} ${inter.variable}`}>
         <PrivyProviderWrapper>
-          <div className="min-h-screen flex flex-col relative">
-            {/* Global Yellow Background - Clean, no dust */}
-            <div className="fixed inset-0 -z-50">
-              {/* Base yellow gradient */}
-              <div className="absolute inset-0 bg-gradient-to-br from-yellow-400 via-yellow-500 to-yellow-600" />
+          <IntroProvider>
+            <div className="min-h-screen flex flex-col relative">
+              {/* Animated Background */}
+              <AnimatedBackground variant="gradient" />
+              
+              <AnimatedHeader />
+              <main className="flex-1 relative z-10">
+                <PageTransition>
+                  {children}
+                </PageTransition>
+              </main>
+              <AnimatedFooter />
             </div>
-            <Header />
-            <main className="flex-1">
-              {children}
-            </main>
-            <Footer />
-          </div>
+          </IntroProvider>
         </PrivyProviderWrapper>
       </body>
     </html>

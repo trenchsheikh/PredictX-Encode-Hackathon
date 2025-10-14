@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -17,6 +17,8 @@ import { Bot, Plus, X, Calendar, DollarSign, Target, Sparkles } from 'lucide-rea
 import { cn } from '@/lib/utils';
 import { useI18n } from '@/components/providers/privy-provider';
 import { getAIService, getDefaultAIConfig, initializeAI } from '@/lib/ai-service';
+import { CryptoSelector, CryptoOption } from '@/components/ui/crypto-selector';
+import { AnimatedButton } from '@/components/ui/animated-button';
 
 const createPredictionSchema = z.object({
   description: z.string().min(10, 'Description must be at least 10 characters'),
@@ -45,6 +47,8 @@ const categories: { value: PredictionCategory; label: string; icon: string }[] =
   { value: 'custom', label: 'Custom', icon: '🎯' },
 ];
 
+// Crypto options will be fetched from API
+
 export function CreateBetModal({ open, onOpenChange, onSubmit }: CreateBetModalProps) {
   const { t } = useI18n();
   const [aiGenerated, setAiGenerated] = useState<{
@@ -58,6 +62,49 @@ export function CreateBetModal({ open, onOpenChange, onSubmit }: CreateBetModalP
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [options, setOptions] = useState<string[]>(['YES', 'NO']);
   const [generateAnalysis, setGenerateAnalysis] = useState(true);
+  const [selectedCrypto, setSelectedCrypto] = useState<string>('');
+  const [cryptoOptions, setCryptoOptions] = useState<CryptoOption[]>([]);
+  const [cryptoLoading, setCryptoLoading] = useState(false);
+
+  /**
+   * Fetch crypto data from CoinGecko API
+   */
+  const fetchCryptoData = async () => {
+    setCryptoLoading(true);
+    try {
+      const response = await fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=20&page=1&sparkline=false');
+      const data = await response.json();
+      
+      const cryptoData: CryptoOption[] = data.map((coin: any) => ({
+        id: coin.id,
+        name: coin.name,
+        symbol: coin.symbol.toUpperCase(),
+        icon: coin.symbol.charAt(0).toUpperCase(),
+        price: coin.current_price,
+        change: coin.price_change_percentage_24h,
+      }));
+      
+      setCryptoOptions(cryptoData);
+    } catch (error) {
+      console.error('Failed to fetch crypto data:', error);
+      // Fallback to basic crypto options
+      setCryptoOptions([
+        { id: 'bitcoin', name: 'Bitcoin', symbol: 'BTC', icon: '₿', price: 45000, change: 2.5 },
+        { id: 'ethereum', name: 'Ethereum', symbol: 'ETH', icon: 'Ξ', price: 3200, change: -1.2 },
+        { id: 'binancecoin', name: 'BNB', symbol: 'BNB', icon: 'B', price: 320, change: 5.8 },
+        { id: 'cardano', name: 'Cardano', symbol: 'ADA', icon: 'A', price: 0.45, change: 3.1 },
+        { id: 'solana', name: 'Solana', symbol: 'SOL', icon: 'S', price: 95, change: -2.3 },
+        { id: 'matic-network', name: 'Polygon', symbol: 'MATIC', icon: 'M', price: 0.85, change: 1.7 },
+      ]);
+    } finally {
+      setCryptoLoading(false);
+    }
+  };
+
+  // Fetch crypto data when component mounts
+  useEffect(() => {
+    fetchCryptoData();
+  }, []);
 
   const {
     register,
@@ -176,26 +223,26 @@ export function CreateBetModal({ open, onOpenChange, onSubmit }: CreateBetModalP
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto bg-gradient-to-br from-yellow-400 via-yellow-500 to-yellow-600 border-black">
+      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto bg-gray-900/95 backdrop-blur-md border border-gray-700/50 shadow-2xl">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2 text-black">
-            <Target className="h-5 w-5 text-black" />
+          <DialogTitle className="flex items-center gap-2 text-white font-heading">
+            <Target className="h-5 w-5 text-yellow-400" />
             {t('create_prediction_market')}
           </DialogTitle>
-          <DialogDescription className="text-black/80">
+          <DialogDescription className="text-gray-300">
             {t('create_prediction_description')}
           </DialogDescription>
         </DialogHeader>
 
         <form onSubmit={handleSubmit(onFormSubmit)} className="space-y-6">
           {/* Wallet Requirement Notice */}
-          <Card className="border-black bg-black/90">
+          <Card className="border-gray-700/50 bg-gray-800/60 backdrop-blur-sm">
             <CardContent className="p-4">
               <div className="flex items-center gap-2 text-sm">
                 <DollarSign className="h-4 w-4 text-yellow-400" />
                 <span className="font-medium text-white">{t('wallet_required')}</span>
               </div>
-              <p className="text-xs text-gray-200 mt-1">
+              <p className="text-xs text-gray-300 mt-1">
                 {t('connect_wallet_to_create')}
               </p>
             </CardContent>
@@ -203,30 +250,30 @@ export function CreateBetModal({ open, onOpenChange, onSubmit }: CreateBetModalP
 
           {/* Bet Type Selection */}
           <div className="space-y-2">
-            <label className="text-sm font-medium text-black">{t('bet_type')} *</label>
+            <label className="text-sm font-medium text-white">{t('bet_type')} *</label>
             <div className="grid grid-cols-2 gap-4">
               <Card 
                 className={cn(
-                  "cursor-pointer transition-all border-black bg-black/80",
-                  watchedBetType === 'custom' ? "ring-2 ring-black bg-black/90" : "hover:bg-black/70"
+                  "cursor-pointer transition-all duration-200 border-gray-700/50 bg-gray-800/60 backdrop-blur-sm",
+                  watchedBetType === 'custom' ? "ring-2 ring-yellow-400/50 bg-gray-800/80" : "hover:bg-gray-800/80"
                 )}
                 onClick={() => setValue('betType', 'custom')}
               >
                 <CardContent className="p-4">
                   <div className="text-sm font-medium text-white">{t('custom_bet')}</div>
-                  <div className="text-xs text-gray-200">{t('manual_resolution')}</div>
+                  <div className="text-xs text-gray-300">{t('manual_resolution')}</div>
                 </CardContent>
               </Card>
               <Card 
                 className={cn(
-                  "cursor-pointer transition-all border-black bg-black/80",
-                  watchedBetType === 'auto-verified' ? "ring-2 ring-black bg-black/90" : "hover:bg-black/70"
+                  "cursor-pointer transition-all duration-200 border-gray-700/50 bg-gray-800/60 backdrop-blur-sm",
+                  watchedBetType === 'auto-verified' ? "ring-2 ring-yellow-400/50 bg-gray-800/80" : "hover:bg-gray-800/80"
                 )}
                 onClick={() => setValue('betType', 'auto-verified')}
               >
                 <CardContent className="p-4">
                   <div className="text-sm font-medium text-white">{t('auto_verified_outcome')}</div>
-                  <div className="text-xs text-gray-200">{t('price_oracle')}</div>
+                  <div className="text-xs text-gray-300">{t('price_oracle')}</div>
                 </CardContent>
               </Card>
             </div>
@@ -234,29 +281,75 @@ export function CreateBetModal({ open, onOpenChange, onSubmit }: CreateBetModalP
 
           {/* Bet Description */}
           <div className="space-y-2">
-            <label className="text-sm font-medium text-black">{t('bet_description')} *</label>
+            <label className="text-sm font-medium text-white">{t('bet_description')} *</label>
             <Textarea
               {...register('description')}
               placeholder={t('describe_prediction')}
-              className="min-h-[100px] bg-black/90 border-black text-white placeholder:text-gray-300"
+              className="min-h-[100px] bg-gray-800/60 border-gray-700/50 text-white placeholder:text-gray-400 focus:border-yellow-400/50 focus:ring-yellow-400/20"
             />
             {errors.description && (
-              <p className="text-sm text-red-600 font-semibold">{errors.description.message}</p>
+              <p className="text-sm text-red-400 font-medium">{errors.description.message}</p>
             )}
           </div>
+
+          {/* Category Selection */}
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-white">{t('category')} *</label>
+            <Select
+              value={watch('category')}
+              onValueChange={(value: PredictionCategory) => setValue('category', value)}
+            >
+              <SelectTrigger className="bg-gray-800/60 border-gray-700/50 text-white focus:border-yellow-400/50 focus:ring-yellow-400/20">
+                <SelectValue placeholder="Select a category" />
+              </SelectTrigger>
+              <SelectContent className="bg-gray-800 border-gray-700/50">
+                {categories.map((category) => (
+                  <SelectItem key={category.value} value={category.value} className="text-white hover:bg-gray-700/50">
+                    <div className="flex items-center gap-2">
+                      <span>{category.icon}</span>
+                      <span>{category.label}</span>
+                    </div>
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            {errors.category && (
+              <p className="text-sm text-red-400 font-medium">{errors.category.message}</p>
+            )}
+          </div>
+
+          {/* Crypto Selection (only show for crypto category) */}
+          {watch('category') === 'crypto' && (
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-white">Select Cryptocurrency</label>
+              {cryptoLoading ? (
+                <div className="flex items-center justify-center p-8">
+                  <Loader2 className="h-6 w-6 animate-spin text-yellow-400 mr-2" />
+                  <span className="text-gray-400">Loading cryptocurrencies...</span>
+                </div>
+              ) : (
+                <CryptoSelector
+                  options={cryptoOptions}
+                  value={selectedCrypto}
+                  onValueChange={setSelectedCrypto}
+                  placeholder="Choose a cryptocurrency to predict about"
+                />
+              )}
+            </div>
+          )}
 
           {/* AI Analysis */}
           {watchedDescription.length > 10 && (
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <label className="text-sm font-medium text-black">{t('ai_resolution_instructions')}</label>
+                <label className="text-sm font-medium text-white">{t('ai_resolution_instructions')}</label>
                 <Button
                   type="button"
                   variant="outline"
                   size="sm"
                   onClick={analyzeWithAI}
                   disabled={isAnalyzing}
-                  className="flex items-center gap-2 border-black bg-black/90 text-white hover:bg-black"
+                  className="flex items-center gap-2 border-gray-700/50 bg-gray-800/60 text-white hover:bg-gray-800/80 transition-all duration-200"
                 >
                   <Bot className="h-4 w-4" />
                   {isAnalyzing ? t('analyzing') : t('analyze')}
@@ -264,13 +357,13 @@ export function CreateBetModal({ open, onOpenChange, onSubmit }: CreateBetModalP
               </div>
               
               {/* Generate Analysis Checkbox */}
-              <div className="flex items-center gap-2 p-3 rounded-lg bg-black/80 border border-black">
+              <div className="flex items-center gap-2 p-3 rounded-lg bg-gray-800/60 border border-gray-700/50">
                 <input
                   type="checkbox"
                   id="generateAnalysis"
                   checked={generateAnalysis}
                   onChange={(e) => setGenerateAnalysis(e.target.checked)}
-                  className="w-4 h-4 rounded border-white/20 bg-black/50 text-yellow-400 focus:ring-yellow-400"
+                  className="w-4 h-4 rounded border-gray-600/50 bg-gray-700/50 text-yellow-400 focus:ring-yellow-400/20"
                 />
                 <label htmlFor="generateAnalysis" className="text-sm text-white cursor-pointer flex-1">
                   Generate detailed analysis (unbiased summary for card)
@@ -278,7 +371,7 @@ export function CreateBetModal({ open, onOpenChange, onSubmit }: CreateBetModalP
               </div>
 
               {aiGenerated && (
-                <Card className="border-black bg-black/80">
+                <Card className="border-gray-700/50 bg-gray-800/60 backdrop-blur-sm">
                   <CardHeader className="pb-2">
                     <CardTitle className="text-sm flex items-center gap-2 text-yellow-400">
                       <Sparkles className="h-4 w-4 text-yellow-400" />
@@ -287,30 +380,30 @@ export function CreateBetModal({ open, onOpenChange, onSubmit }: CreateBetModalP
                   </CardHeader>
                   <CardContent className="space-y-3">
                     <div>
-                      <div className="text-xs text-gray-300">{t('title')}</div>
+                      <div className="text-xs text-gray-400">{t('title')}</div>
                       <div className="text-sm font-medium text-white">{aiGenerated.title}</div>
                     </div>
                     <div>
-                      <div className="text-xs text-gray-300">Description</div>
-                      <div className="text-sm text-gray-200">{aiGenerated.description}</div>
+                      <div className="text-xs text-gray-400">Description</div>
+                      <div className="text-sm text-gray-300">{aiGenerated.description}</div>
                     </div>
                     {generateAnalysis && aiGenerated.summary && (
                       <div>
-                        <div className="text-xs text-gray-300">Detailed Analysis</div>
-                        <div className="text-sm text-gray-200 whitespace-pre-wrap max-h-40 overflow-y-auto">
+                        <div className="text-xs text-gray-400">Detailed Analysis</div>
+                        <div className="text-sm text-gray-300 whitespace-pre-wrap max-h-40 overflow-y-auto">
                           {aiGenerated.summary}
                         </div>
                       </div>
                     )}
                     <div>
-                      <div className="text-xs text-gray-300">{t('resolution_instructions')}</div>
-                      <div className="text-sm text-gray-200">{aiGenerated.resolutionInstructions}</div>
+                      <div className="text-xs text-gray-400">{t('resolution_instructions')}</div>
+                      <div className="text-sm text-gray-300">{aiGenerated.resolutionInstructions}</div>
                     </div>
                     <div className="flex items-center gap-2">
-                      <Badge variant="outline" className="border-white text-white">
+                      <Badge variant="outline" className="border-gray-600/50 text-gray-300">
                         {aiGenerated.category}
                       </Badge>
-                      <span className="text-xs text-gray-200">
+                      <span className="text-xs text-gray-400">
                         Expires: {new Date(aiGenerated.expiresAt).toLocaleDateString()}
                       </span>
                     </div>
@@ -321,14 +414,14 @@ export function CreateBetModal({ open, onOpenChange, onSubmit }: CreateBetModalP
               <Textarea
                 {...register('resolutionInstructions')}
                 placeholder="AI will generate resolution instructions automatically based on your bet"
-                className="min-h-[80px] bg-black/90 border-black text-white placeholder:text-gray-300"
+                className="min-h-[80px] bg-gray-800/60 border-gray-700/50 text-white placeholder:text-gray-400 focus:border-yellow-400/50 focus:ring-yellow-400/20"
               />
             </div>
           )}
 
           {/* Options */}
           <div className="space-y-2">
-            <label className="text-sm font-medium text-black">{t('options')} * (min 2)</label>
+            <label className="text-sm font-medium text-white">{t('options')} * (min 2)</label>
             <div className="space-y-2">
               {options.map((option, index) => (
                 <div key={index} className="flex items-center gap-2">
@@ -339,7 +432,7 @@ export function CreateBetModal({ open, onOpenChange, onSubmit }: CreateBetModalP
                       newOptions[index] = e.target.value;
                       setOptions(newOptions);
                     }}
-                    className="flex-1 bg-black/90 border-black text-white placeholder:text-gray-300"
+                    className="flex-1 bg-gray-800/60 border-gray-700/50 text-white placeholder:text-gray-400 focus:border-yellow-400/50 focus:ring-yellow-400/20"
                   />
                   {options.length > 2 && (
                     <Button
@@ -347,7 +440,7 @@ export function CreateBetModal({ open, onOpenChange, onSubmit }: CreateBetModalP
                       variant="outline"
                       size="sm"
                       onClick={() => removeOption(index)}
-                      className="border-black bg-black/90 text-white hover:bg-black"
+                      className="border-gray-700/50 bg-gray-800/60 text-white hover:bg-gray-800/80 transition-all duration-200"
                     >
                       <X className="h-4 w-4" />
                     </Button>
@@ -359,7 +452,7 @@ export function CreateBetModal({ open, onOpenChange, onSubmit }: CreateBetModalP
                 variant="outline"
                 size="sm"
                 onClick={addOption}
-                className="w-full border-black bg-black/90 text-white hover:bg-black"
+                className="w-full border-gray-700/50 bg-gray-800/60 text-white hover:bg-gray-800/80 transition-all duration-200"
               >
                 <Plus className="h-4 w-4 mr-2" />
                 {t('add_option')}
@@ -369,8 +462,8 @@ export function CreateBetModal({ open, onOpenChange, onSubmit }: CreateBetModalP
 
           {/* Expiration Date */}
           <div className="space-y-2">
-            <label className="text-sm font-medium text-black flex items-center gap-2">
-              <Calendar className="h-4 w-4" />
+            <label className="text-sm font-medium text-white flex items-center gap-2">
+              <Calendar className="h-4 w-4 text-yellow-400" />
               Bet Expiration Date *
             </label>
             <Input
@@ -381,26 +474,26 @@ export function CreateBetModal({ open, onOpenChange, onSubmit }: CreateBetModalP
               })}
               min={new Date(Date.now() + 900000).toISOString().slice(0, 16)}
               defaultValue={new Date(Date.now() + 900000).toISOString().slice(0, 16)}
-              className="bg-black/90 border-black text-white"
+              className="bg-gray-800/60 border-gray-700/50 text-white focus:border-yellow-400/50 focus:ring-yellow-400/20"
             />
             {errors.expiresAt && (
-              <p className="text-sm text-red-600 font-semibold">
+              <p className="text-sm text-red-400 font-medium">
                 {errors.expiresAt.message}
               </p>
             )}
-            <p className="text-xs text-black">
+            <p className="text-xs text-gray-400">
               Set when this prediction market will close and be resolved (minimum 15 minutes)
             </p>
           </div>
 
           {/* Place Initial Bet */}
-          <Card className="border-black bg-black/80">
+          <Card className="border-gray-700/50 bg-gray-800/60 backdrop-blur-sm">
             <CardHeader className="pb-2">
               <CardTitle className="text-sm flex items-center gap-2 text-yellow-400">
                 <Target className="h-4 w-4 text-yellow-400" />
                 {t('place_initial_bet')}
               </CardTitle>
-              <p className="text-xs text-gray-200">
+              <p className="text-xs text-gray-300">
                 {t('prevent_spam')}
               </p>
             </CardHeader>
@@ -412,12 +505,12 @@ export function CreateBetModal({ open, onOpenChange, onSubmit }: CreateBetModalP
                     value={watch('userPrediction')}
                     onValueChange={(value: 'yes' | 'no') => setValue('userPrediction', value)}
                   >
-                    <SelectTrigger className="bg-black border-black text-white">
+                    <SelectTrigger className="bg-gray-800/60 border-gray-700/50 text-white focus:border-yellow-400/50 focus:ring-yellow-400/20">
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent className="bg-black border-black">
-                      <SelectItem value="yes" className="text-white">YES</SelectItem>
-                      <SelectItem value="no" className="text-white">NO</SelectItem>
+                    <SelectContent className="bg-gray-800 border-gray-700/50">
+                      <SelectItem value="yes" className="text-white hover:bg-gray-700/50">YES</SelectItem>
+                      <SelectItem value="no" className="text-white hover:bg-gray-700/50">NO</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -429,36 +522,37 @@ export function CreateBetModal({ open, onOpenChange, onSubmit }: CreateBetModalP
                     min="0.001"
                     max="10"
                     {...register('bnbAmount', { valueAsNumber: true })}
-                    className="bg-black border-black text-white placeholder:text-gray-300"
+                    className="bg-gray-800/60 border-gray-700/50 text-white placeholder:text-gray-400 focus:border-yellow-400/50 focus:ring-yellow-400/20"
                   />
                   {errors.bnbAmount && (
-                    <p className="text-xs text-red-600 font-semibold">{errors.bnbAmount.message}</p>
+                    <p className="text-xs text-red-400 font-medium">{errors.bnbAmount.message}</p>
                   )}
                 </div>
               </div>
-              <div className="text-center text-sm text-gray-200">
+              <div className="text-center text-sm text-gray-300">
                 {t('click_create_will_prompt').replace('{amount}', formatBNB(watch('bnbAmount')))}
               </div>
             </CardContent>
           </Card>
 
           {/* Dialog Footer */}
-          <div className="flex justify-end gap-2 pt-4 border-t border-black">
-            <Button
+          <div className="flex justify-end gap-3 pt-4 border-t border-gray-700/50">
+            <AnimatedButton
               type="button"
               variant="outline"
               onClick={handleClose}
-              className="border-black bg-black/90 text-white hover:bg-black"
+              className="border-gray-700/50 bg-gray-800/60 text-white hover:bg-gray-800/80 transition-all duration-200"
             >
               {t('cancel')}
-            </Button>
-            <Button
+            </AnimatedButton>
+            <AnimatedButton
               type="submit"
               disabled={isSubmitting}
-              className="bg-white hover:bg-gray-200 text-black font-semibold"
+              loading={isSubmitting}
+              className="bg-gradient-to-r from-yellow-400 to-yellow-600 hover:from-yellow-500 hover:to-yellow-700 text-black font-semibold shadow-md hover:shadow-lg transition-all duration-200"
             >
               {isSubmitting ? t('creating') : t('create_bet')}
-            </Button>
+            </AnimatedButton>
           </div>
         </form>
       </DialogContent>

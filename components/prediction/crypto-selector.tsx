@@ -60,7 +60,7 @@ export function CryptoSelector({ value, onChange, className }: CryptoSelectorPro
   if (loading) {
     return (
       <div className="flex items-center justify-center p-8">
-        <Loader2 className="h-8 w-8 animate-spin text-purple-500" />
+        <Loader2 className="h-8 w-8 animate-spin text-yellow-400" />
       </div>
     );
   }
@@ -75,50 +75,44 @@ export function CryptoSelector({ value, onChange, className }: CryptoSelectorPro
           placeholder="Search cryptocurrencies..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="pl-10"
+          className="pl-10 bg-gray-800/60 border-gray-700/50 text-white placeholder:text-gray-400 focus:border-yellow-400/50 focus:ring-yellow-400/20"
         />
       </div>
 
       {/* Crypto Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 max-h-[400px] overflow-y-auto custom-scrollbar">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-h-[400px] overflow-y-auto custom-scrollbar pr-2">
         {filteredCryptos.map((crypto) => (
           <Card
             key={crypto.id}
             className={cn(
-              'cursor-pointer transition-all hover:shadow-lg hover:scale-[1.02]',
+              'cursor-pointer transition-all duration-200 hover:shadow-lg hover:scale-[1.02] bg-gray-800/60 backdrop-blur-sm border-gray-700/50',
               value === crypto.id
-                ? 'ring-2 ring-purple-500 bg-purple-500/10'
-                : 'hover:ring-1 hover:ring-purple-300'
+                ? 'ring-2 ring-yellow-400/50 bg-yellow-400/10'
+                : 'hover:ring-1 hover:ring-yellow-400/30 hover:bg-gray-800/80'
             )}
             onClick={() => onChange(crypto)}
           >
-            <CardContent className="p-4">
-              <div className="flex items-start justify-between">
+            <CardContent className="p-4 h-full flex flex-col">
+              <div className="flex items-center justify-between mb-3">
                 {/* Crypto Info */}
-                <div className="flex items-center gap-3">
-                  {/* Logo placeholder - in production use actual logos */}
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white font-bold text-sm">
-                    {crypto.symbol.slice(0, 2)}
-                  </div>
-                  <div>
-                    <div className="font-semibold text-sm">{crypto.name}</div>
-                    <div className="text-xs text-gray-500">{crypto.symbol}</div>
-                  </div>
+                <div className="flex-1">
+                  <div className="font-semibold text-sm text-white">{crypto.name}</div>
+                  <div className="text-xs text-gray-400">{crypto.symbol}</div>
                 </div>
 
                 {/* Selected Indicator */}
                 {value === crypto.id && (
-                  <Badge variant="default" className="bg-purple-500">
+                  <Badge variant="default" className="bg-yellow-400 text-black text-xs">
                     Selected
                   </Badge>
                 )}
               </div>
 
               {/* Price Info */}
-              <div className="mt-3 space-y-1">
-                <div className="flex items-baseline justify-between">
-                  <span className="text-xs text-gray-500">Price:</span>
-                  <span className="font-bold">
+              <div className="space-y-2 flex-grow">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs text-gray-400">Price</span>
+                  <span className="font-bold text-white text-sm">
                     ${crypto.currentPrice.toLocaleString(undefined, {
                       minimumFractionDigits: 2,
                       maximumFractionDigits: 2,
@@ -126,20 +120,20 @@ export function CryptoSelector({ value, onChange, className }: CryptoSelectorPro
                   </span>
                 </div>
 
-                <div className="flex items-baseline justify-between">
-                  <span className="text-xs text-gray-500">Market Cap:</span>
-                  <span className="text-xs font-medium">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs text-gray-400">Market Cap</span>
+                  <span className="text-xs font-medium text-gray-300">
                     ${(crypto.marketCap / 1e9).toFixed(2)}B
                   </span>
                 </div>
 
                 {/* 24h Change */}
                 <div className="flex items-center justify-between">
-                  <span className="text-xs text-gray-500">24h Change:</span>
+                  <span className="text-xs text-gray-400">24h Change</span>
                   <div
                     className={cn(
-                      'flex items-center gap-1 text-xs font-medium',
-                      crypto.priceChange24h >= 0 ? 'text-green-500' : 'text-red-500'
+                      'flex items-center gap-1 text-xs font-medium px-2 py-1 rounded',
+                      crypto.priceChange24h >= 0 ? 'text-green-400 bg-green-500/10' : 'text-red-400 bg-red-500/10'
                     )}
                   >
                     {crypto.priceChange24h >= 0 ? (
@@ -157,7 +151,7 @@ export function CryptoSelector({ value, onChange, className }: CryptoSelectorPro
       </div>
 
       {filteredCryptos.length === 0 && (
-        <div className="text-center text-gray-500 py-8">
+        <div className="text-center text-gray-400 py-8">
           No cryptocurrencies found matching "{searchQuery}"
         </div>
       )}
