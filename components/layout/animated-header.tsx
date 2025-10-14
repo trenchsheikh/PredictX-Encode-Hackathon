@@ -8,7 +8,6 @@ import { useI18n } from '@/components/providers/privy-provider';
 import { AnimatedButton } from '@/components/ui/animated-button';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Globe, Wallet, TrendingUp, Zap, Shield } from 'lucide-react';
-import { cn } from '@/lib/utils';
 
 const navigation = [
   { key: 'nav_home', href: '/', icon: TrendingUp },
@@ -20,8 +19,13 @@ const navigation = [
 export function AnimatedHeader() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const { locale, setLocale, t } = useI18n();
   const { ready, authenticated, user, login, logout } = usePrivy();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Track scroll for header background effect
   useEffect(() => {
@@ -41,7 +45,7 @@ export function AnimatedHeader() {
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6, ease: 'easeOut' }}
-      className="relative sticky top-0 z-50"
+      className="sticky top-0 z-50"
     >
       {/* Animated Background */}
       <motion.div
@@ -54,30 +58,37 @@ export function AnimatedHeader() {
         className="absolute inset-0 border-b border-yellow-500/20 backdrop-blur-md"
       />
 
-      {/* Animated particles background */}
-      <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        {Array.from({ length: 20 }).map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute h-1 w-1 rounded-full bg-yellow-400/30"
-            animate={{
-              x: [0, 100, 0],
-              y: [0, -100, 0],
-              opacity: [0, 1, 0],
-            }}
-            transition={{
-              duration: 8 + i * 0.5,
-              repeat: Infinity,
-              delay: i * 0.2,
-              ease: 'easeInOut',
-            }}
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-            }}
-          />
-        ))}
-      </div>
+      {/* Animated particles background - only render after hydration */}
+      {mounted && (
+        <div className="pointer-events-none absolute inset-0 overflow-hidden">
+          {Array.from({ length: 20 }).map((_, i) => {
+            const leftPosition = ((i * 13.7) % 100) + i * 0.1;
+            const topPosition = ((i * 7.3) % 100) + i * 0.05;
+
+            return (
+              <motion.div
+                key={i}
+                className="absolute h-1 w-1 rounded-full bg-yellow-400/30"
+                animate={{
+                  x: [0, 100, 0],
+                  y: [0, -100, 0],
+                  opacity: [0, 1, 0],
+                }}
+                transition={{
+                  duration: 8 + i * 0.5,
+                  repeat: Infinity,
+                  delay: i * 0.2,
+                  ease: 'easeInOut',
+                }}
+                style={{
+                  left: `${leftPosition}%`,
+                  top: `${topPosition}%`,
+                }}
+              />
+            );
+          })}
+        </div>
+      )}
 
       <nav className="relative z-10 mx-auto mb-4 mt-4 flex max-w-7xl items-center justify-between rounded-xl border border-gray-700/30 bg-gray-900/80 p-3 shadow-xl backdrop-blur-md lg:px-6">
         {/* Logo */}
