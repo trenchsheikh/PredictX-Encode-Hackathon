@@ -64,10 +64,10 @@ router.post('/sync', async (req: Request, res: Response) => {
   try {
     const { fromBlock } = req.body;
     const startBlock = fromBlock || 0;
-    
+
     console.log(`🔄 Manual sync triggered from block ${startBlock}`);
     await blockchainService.syncHistoricalEvents(startBlock);
-    
+
     res.json({
       success: true,
       message: `Synced events from block ${startBlock}`,
@@ -94,7 +94,9 @@ router.get('/:id', async (req: Request, res: Response) => {
 
     // If not in cache, fetch from blockchain
     if (!market) {
-      console.log(`Market ${marketId} not in cache, fetching from blockchain...`);
+      console.log(
+        `Market ${marketId} not in cache, fetching from blockchain...`
+      );
       const chainData = await blockchainService.getMarketFromChain(marketId);
 
       market = {
@@ -153,14 +155,15 @@ router.post('/', async (req: Request, res: Response) => {
     if (!title || !description || !expiresAt || category === undefined) {
       return res.status(400).json({
         success: false,
-        error: 'Missing required fields: title, description, expiresAt, category',
+        error:
+          'Missing required fields: title, description, expiresAt, category',
       });
     }
 
     // Validate minimum expiration time (15 minutes)
     const expirationTime = new Date(expiresAt).getTime();
-    const minExpirationTime = Date.now() + (15 * 60 * 1000); // 15 minutes from now
-    
+    const minExpirationTime = Date.now() + 15 * 60 * 1000; // 15 minutes from now
+
     if (expirationTime < minExpirationTime) {
       return res.status(400).json({
         success: false,
@@ -174,7 +177,8 @@ router.post('/', async (req: Request, res: Response) => {
 
     res.json({
       success: true,
-      message: 'Market creation must be done via smart contract transaction. Use frontend to create markets.',
+      message:
+        'Market creation must be done via smart contract transaction. Use frontend to create markets.',
       note: 'The backend will automatically index the market when MarketCreated event is emitted.',
     });
   } catch (error) {
@@ -214,7 +218,10 @@ router.post('/:id/commit', async (req: Request, res: Response) => {
 
     // Verify on blockchain (optional but recommended)
     try {
-      const chainCommitment = await blockchainService.getCommitmentFromChain(marketId, user);
+      const chainCommitment = await blockchainService.getCommitmentFromChain(
+        marketId,
+        user
+      );
       if (chainCommitment.commitHash !== commitHash) {
         return res.status(400).json({
           success: false,
@@ -293,7 +300,10 @@ router.post('/:id/reveal', async (req: Request, res: Response) => {
     }
 
     // Update commitment to revealed
-    await Commitment.updateOne({ marketId, user }, { $set: { revealed: true } });
+    await Commitment.updateOne(
+      { marketId, user },
+      { $set: { revealed: true } }
+    );
 
     // Create bet record
     const bet = new Bet({
@@ -429,8 +439,10 @@ router.post('/fix-null-outcomes', async (req: Request, res: Response) => {
     }
 
     // Import the market resolution service
-    const { marketResolutionService } = await import('../services/MarketResolutionService');
-    
+    const { marketResolutionService } = await import(
+      '../services/MarketResolutionService'
+    );
+
     // Fix null outcome markets
     await marketResolutionService.fixNullOutcomeMarkets();
 
@@ -454,7 +466,7 @@ router.post('/fix-null-outcomes', async (req: Request, res: Response) => {
 router.post('/trigger-resolution', async (req: Request, res: Response) => {
   try {
     const { adminKey } = req.body;
-    
+
     // Verify admin key (allow both env var and default for testing)
     if (adminKey !== process.env.ORACLE_ADMIN_KEY && adminKey !== 'admin123') {
       return res.status(401).json({
@@ -462,13 +474,15 @@ router.post('/trigger-resolution', async (req: Request, res: Response) => {
         error: 'Invalid admin key',
       });
     }
-    
+
     // Import the market resolution service
-    const { marketResolutionService } = await import('../services/MarketResolutionService');
-    
+    const { marketResolutionService } = await import(
+      '../services/MarketResolutionService'
+    );
+
     // Manually trigger market resolution
     await marketResolutionService.checkAndResolveMarkets();
-    
+
     res.json({
       success: true,
       message: 'Market resolution triggered successfully',
@@ -489,7 +503,7 @@ router.post('/trigger-resolution', async (req: Request, res: Response) => {
 router.post('/resolve-market', async (req: Request, res: Response) => {
   try {
     const { adminKey, marketId, outcome, reasoning } = req.body;
-    
+
     // Verify admin key
     if (adminKey !== process.env.ORACLE_ADMIN_KEY && adminKey !== 'admin123') {
       return res.status(401).json({
@@ -497,22 +511,24 @@ router.post('/resolve-market', async (req: Request, res: Response) => {
         error: 'Invalid admin key',
       });
     }
-    
+
     if (!marketId || outcome === undefined) {
       return res.status(400).json({
         success: false,
         error: 'marketId and outcome are required',
       });
     }
-    
+
     // Check if admin private key is configured
     if (!process.env.ADMIN_PRIVATE_KEY) {
-      console.warn('⚠️ Admin private key not configured, using database-only resolution');
-      
+      console.warn(
+        '⚠️ Admin private key not configured, using database-only resolution'
+      );
+
       // Import models
       const { Market } = await import('../models/Market');
       const { Bet } = await import('../models/Bet');
-      
+
       // Update market in database only
       await Market.updateOne(
         { marketId: parseInt(marketId) },
@@ -523,17 +539,19 @@ router.post('/resolve-market', async (req: Request, res: Response) => {
           updatedAt: new Date(),
         }
       );
-      
+
       // Process instant payouts for winning bets
       const bets = await Bet.find({
         predictionId: marketId.toString(),
         revealed: true,
         claimed: false,
       });
-      
+
       for (const bet of bets) {
         try {
-          const betWon = (bet.outcome === true && outcome) || (bet.outcome === false && !outcome);
+          const betWon =
+            (bet.outcome === true && outcome) ||
+            (bet.outcome === false && !outcome);
           if (betWon) {
             console.log(`🎉 Bet ${bet.id} won! Processing instant payout...`);
             const betAmount = parseFloat(bet.amount);
@@ -544,34 +562,39 @@ router.post('/resolve-market', async (req: Request, res: Response) => {
                 claimed: true,
                 payout: payoutAmount,
                 claimedAt: new Date(),
-                updatedAt: new Date()
+                updatedAt: new Date(),
               }
             );
-            console.log(`✅ Instant payout processed for bet ${bet.id}: ${payoutAmount} BNB`);
+            console.log(
+              `✅ Instant payout processed for bet ${bet.id}: ${payoutAmount} BNB`
+            );
           }
         } catch (betError: any) {
-          console.error(`❌ Failed to process payout for bet ${bet.id}:`, betError);
+          console.error(
+            `❌ Failed to process payout for bet ${bet.id}:`,
+            betError
+          );
         }
       }
-      
+
       return res.json({
         success: true,
         message: 'Market resolved successfully (database-only)',
         txHash: 'database-only-resolution',
-        note: 'Admin private key not configured, resolved in database only'
+        note: 'Admin private key not configured, resolved in database only',
       });
     }
-    
+
     // Import blockchain service
     const { blockchainService } = await import('../services/BlockchainService');
-    
+
     // Resolve market directly on blockchain
     const txHash = await blockchainService.resolveMarket(
       parseInt(marketId),
       outcome === true || outcome === 'true',
       reasoning || 'Manual resolution'
     );
-    
+
     res.json({
       success: true,
       message: 'Market resolved successfully',
@@ -587,4 +610,3 @@ router.post('/resolve-market', async (req: Request, res: Response) => {
 });
 
 export default router;
-

@@ -16,26 +16,26 @@ interface StatsCardProps {
   delay?: number;
 }
 
-export function StatsCard({ 
-  title, 
-  value, 
-  icon: Icon, 
-  trend, 
+export function StatsCard({
+  title,
+  value,
+  icon: Icon,
+  trend,
   className,
-  delay = 0 
+  delay = 0,
 }: StatsCardProps) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay }}
-      whileHover={{ 
+      whileHover={{
         y: -4,
-        transition: { duration: 0.2 }
+        transition: { duration: 0.2 },
       }}
       className={cn(
-        "relative overflow-hidden rounded-xl bg-gradient-to-br from-gray-900/60 to-gray-800/40 backdrop-blur-sm border border-gray-700/50 p-6",
-        "hover:border-yellow-500/30 hover:shadow-lg hover:shadow-yellow-500/10 transition-all duration-300",
+        'relative overflow-hidden rounded-xl border border-gray-700/50 bg-gradient-to-br from-gray-900/60 to-gray-800/40 p-6 backdrop-blur-sm',
+        'transition-all duration-300 hover:border-yellow-500/30 hover:shadow-lg hover:shadow-yellow-500/10',
         className
       )}
     >
@@ -43,11 +43,11 @@ export function StatsCard({
       <div className="absolute inset-0 opacity-5">
         <div className="absolute inset-0 bg-gradient-to-br from-yellow-500 to-transparent" />
       </div>
-      
+
       <div className="relative z-10">
-        <div className="flex items-center justify-between mb-4">
-          <div className="p-2 rounded-lg bg-yellow-500/10">
-            <Icon className="w-5 h-5 text-yellow-400" />
+        <div className="mb-4 flex items-center justify-between">
+          <div className="rounded-lg bg-yellow-500/10 p-2">
+            <Icon className="h-5 w-5 text-yellow-400" />
           </div>
           {trend && (
             <motion.div
@@ -55,17 +55,20 @@ export function StatsCard({
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: delay + 0.2 }}
               className={cn(
-                "flex items-center space-x-1 text-sm font-medium px-2 py-1 rounded-full",
-                trend.isPositive 
-                  ? "text-green-400 bg-green-500/10" 
-                  : "text-red-400 bg-red-500/10"
+                'flex items-center space-x-1 rounded-full px-2 py-1 text-sm font-medium',
+                trend.isPositive
+                  ? 'bg-green-500/10 text-green-400'
+                  : 'bg-red-500/10 text-red-400'
               )}
             >
-              <span>{trend.isPositive ? '+' : ''}{trend.value}%</span>
+              <span>
+                {trend.isPositive ? '+' : ''}
+                {trend.value}%
+              </span>
             </motion.div>
           )}
         </div>
-        
+
         <div className="space-y-1">
           <motion.h3
             initial={{ opacity: 0 }}

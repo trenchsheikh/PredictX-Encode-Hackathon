@@ -13,9 +13,24 @@ export function IntroAnimation({ onComplete }: IntroAnimationProps) {
   const [isVisible, setIsVisible] = useState(true);
 
   const steps = [
-    { icon: Shield, text: 'DarkBet', color: 'text-yellow-400', fontClass: 'font-brand' },
-    { icon: TrendingUp, text: 'DarkPool Betting', color: 'text-white', fontClass: 'font-heading' },
-    { icon: Zap, text: 'Powered by BNB', color: 'text-yellow-400', fontClass: 'font-heading' },
+    {
+      icon: Shield,
+      text: 'DarkBet',
+      color: 'text-yellow-400',
+      fontClass: 'font-brand',
+    },
+    {
+      icon: TrendingUp,
+      text: 'DarkPool Betting',
+      color: 'text-white',
+      fontClass: 'font-heading',
+    },
+    {
+      icon: Zap,
+      text: 'Powered by BNB',
+      color: 'text-yellow-400',
+      fontClass: 'font-heading',
+    },
   ];
 
   useEffect(() => {
@@ -47,18 +62,18 @@ export function IntroAnimation({ onComplete }: IntroAnimationProps) {
             <motion.div
               initial={{ scale: 0.5, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
+              transition={{ duration: 0.8, ease: 'easeOut' }}
               className="mb-8"
             >
               <div className="relative">
                 <motion.div
                   animate={{ rotate: 360 }}
-                  transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-                  className="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-r from-yellow-400 to-yellow-600 flex items-center justify-center"
+                  transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
+                  className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-r from-yellow-400 to-yellow-600"
                 >
-                  <TrendingUp className="w-10 h-10 text-black" />
+                  <TrendingUp className="h-10 w-10 text-black" />
                 </motion.div>
-                
+
                 {/* Pulsing ring */}
                 <motion.div
                   animate={{ scale: [1, 1.2, 1], opacity: [0.5, 0, 0.5] }}
@@ -76,18 +91,20 @@ export function IntroAnimation({ onComplete }: IntroAnimationProps) {
                   <motion.div
                     key={index}
                     initial={{ opacity: 0, y: 20 }}
-                    animate={{ 
+                    animate={{
                       opacity: currentStep >= index ? 1 : 0.3,
                       y: currentStep >= index ? 0 : 20,
-                      scale: currentStep === index ? 1.05 : 1
+                      scale: currentStep === index ? 1.05 : 1,
                     }}
-                    transition={{ duration: 0.6, ease: "easeOut" }}
+                    transition={{ duration: 0.6, ease: 'easeOut' }}
                     className={`flex items-center justify-center space-x-3 ${
                       currentStep === index ? step.color : 'text-gray-500'
                     }`}
                   >
-                    <Icon className="w-6 h-6" />
-                    <span className={`text-2xl font-bold tracking-wide ${step.fontClass}`}>
+                    <Icon className="h-6 w-6" />
+                    <span
+                      className={`text-2xl font-bold tracking-wide ${step.fontClass}`}
+                    >
                       {step.text}
                     </span>
                   </motion.div>
@@ -100,21 +117,21 @@ export function IntroAnimation({ onComplete }: IntroAnimationProps) {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.5 }}
-              className="flex justify-center space-x-2 mt-8"
+              className="mt-8 flex justify-center space-x-2"
             >
-              {[0, 1, 2].map((i) => (
+              {[0, 1, 2].map(i => (
                 <motion.div
                   key={i}
-                  animate={{ 
+                  animate={{
                     scale: [1, 1.2, 1],
-                    opacity: [0.5, 1, 0.5]
+                    opacity: [0.5, 1, 0.5],
                   }}
-                  transition={{ 
+                  transition={{
                     duration: 1,
                     repeat: Infinity,
-                    delay: i * 0.2
+                    delay: i * 0.2,
                   }}
-                  className="w-2 h-2 bg-yellow-400 rounded-full"
+                  className="h-2 w-2 rounded-full bg-yellow-400"
                 />
               ))}
             </motion.div>

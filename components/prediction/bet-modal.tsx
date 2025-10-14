@@ -1,7 +1,14 @@
-"use client";
+'use client';
 
 import { useState } from 'react';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
@@ -17,7 +24,13 @@ interface BetModalProps {
   onConfirm: (amount: number) => Promise<void>;
 }
 
-export function BetModal({ open, onOpenChange, prediction, outcome, onConfirm }: BetModalProps) {
+export function BetModal({
+  open,
+  onOpenChange,
+  prediction,
+  outcome,
+  onConfirm,
+}: BetModalProps) {
   const [amount, setAmount] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -26,8 +39,13 @@ export function BetModal({ open, onOpenChange, prediction, outcome, onConfirm }:
   const isYes = outcome === 'yes';
   const currentPrice = isYes ? prediction.yesPrice : prediction.noPrice;
   const estimatedShares = numAmount / currentPrice;
-  const potentialPayout = calculatePayout(estimatedShares, isYes ? prediction.yesShares : prediction.noShares, prediction.totalPool);
-  const roi = numAmount > 0 ? ((potentialPayout - numAmount) / numAmount * 100) : 0;
+  const potentialPayout = calculatePayout(
+    estimatedShares,
+    isYes ? prediction.yesShares : prediction.noShares,
+    prediction.totalPool
+  );
+  const roi =
+    numAmount > 0 ? ((potentialPayout - numAmount) / numAmount) * 100 : 0;
 
   const minBet = 0.001;
   const maxBet = 100;
@@ -59,7 +77,7 @@ export function BetModal({ open, onOpenChange, prediction, outcome, onConfirm }:
 
     setLoading(true);
     setError('');
-    
+
     try {
       await onConfirm(numAmount);
       setAmount('');
@@ -82,23 +100,23 @@ export function BetModal({ open, onOpenChange, prediction, outcome, onConfirm }:
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             {isYes ? (
-              <TrendingUp className="w-5 h-5 text-green-500" />
+              <TrendingUp className="h-5 w-5 text-green-500" />
             ) : (
-              <TrendingDown className="w-5 h-5 text-red-500" />
+              <TrendingDown className="h-5 w-5 text-red-500" />
             )}
             Betting {isYes ? 'YES' : 'NO'}
           </DialogTitle>
-          <DialogDescription className="text-left pt-2">
+          <DialogDescription className="pt-2 text-left">
             {prediction.title}
           </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-4 py-4">
           {/* Current Odds */}
-          <div className="flex items-center justify-between p-3 bg-secondary/50 rounded-lg">
+          <div className="flex items-center justify-between rounded-lg bg-secondary/50 p-3">
             <span className="text-sm text-muted-foreground">Current Odds</span>
             <div className="flex items-center gap-2">
-              <Badge variant={isYes ? "default" : "destructive"}>
+              <Badge variant={isYes ? 'default' : 'destructive'}>
                 {isYes ? 'YES' : 'NO'}
               </Badge>
               <span className="font-semibold">{formatBNB(currentPrice)}</span>
@@ -112,7 +130,7 @@ export function BetModal({ open, onOpenChange, prediction, outcome, onConfirm }:
               type="number"
               placeholder="0.00"
               value={amount}
-              onChange={(e) => {
+              onChange={e => {
                 setAmount(e.target.value);
                 setError('');
               }}
@@ -121,10 +139,10 @@ export function BetModal({ open, onOpenChange, prediction, outcome, onConfirm }:
               step="0.001"
               disabled={loading}
             />
-            
+
             {/* Quick Amount Buttons */}
             <div className="flex gap-2">
-              {[0.01, 0.1, 0.5, 1].map((value) => (
+              {[0.01, 0.1, 0.5, 1].map(value => (
                 <Button
                   key={value}
                   type="button"
@@ -142,18 +160,20 @@ export function BetModal({ open, onOpenChange, prediction, outcome, onConfirm }:
 
           {/* Error Message */}
           {error && (
-            <div className="flex items-center gap-2 p-3 bg-destructive/10 border border-destructive/20 rounded-lg">
-              <AlertCircle className="w-4 h-4 text-destructive" />
-              <span className="text-sm text-destructive">{error}</span>
+            <div className="bg-destructive/10 border-destructive/20 flex items-center gap-2 rounded-lg border p-3">
+              <AlertCircle className="text-destructive h-4 w-4" />
+              <span className="text-destructive text-sm">{error}</span>
             </div>
           )}
 
           {/* Bet Summary */}
           {numAmount > 0 && !error && (
-            <div className="space-y-2 p-4 bg-secondary/30 rounded-lg border border-border">
+            <div className="space-y-2 rounded-lg border border-border bg-secondary/30 p-4">
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">Estimated Shares</span>
-                <span className="font-medium">{estimatedShares.toFixed(4)}</span>
+                <span className="font-medium">
+                  {estimatedShares.toFixed(4)}
+                </span>
               </div>
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">Potential Payout</span>
@@ -163,23 +183,38 @@ export function BetModal({ open, onOpenChange, prediction, outcome, onConfirm }:
               </div>
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">Potential ROI</span>
-                <span className={`font-medium ${roi >= 0 ? 'text-green-500' : 'text-red-500'}`}>
-                  {roi >= 0 ? '+' : ''}{roi.toFixed(2)}%
+                <span
+                  className={`font-medium ${roi >= 0 ? 'text-green-500' : 'text-red-500'}`}
+                >
+                  {roi >= 0 ? '+' : ''}
+                  {roi.toFixed(2)}%
                 </span>
               </div>
-              <div className="flex justify-between text-sm pt-2 border-t border-border">
-                <span className="text-muted-foreground">Platform Fee (10%)</span>
-                <span className="font-medium">{formatBNB(numAmount * 0.1)}</span>
+              <div className="flex justify-between border-t border-border pt-2 text-sm">
+                <span className="text-muted-foreground">
+                  Platform Fee (10%)
+                </span>
+                <span className="font-medium">
+                  {formatBNB(numAmount * 0.1)}
+                </span>
               </div>
             </div>
           )}
 
           {/* Info Banner */}
-          <div className="flex items-start gap-2 p-3 bg-blue-500/10 border border-blue-500/20 rounded-lg">
-            <Info className="w-4 h-4 text-blue-500 mt-0.5 flex-shrink-0" />
-            <div className="text-xs text-muted-foreground space-y-1">
-              <p><strong className="text-foreground">Darkpool Betting:</strong> Your bet choice will be hidden until you reveal it after market expiration.</p>
-              <p><strong className="text-foreground">Important:</strong> Save your reveal secret! You must reveal within 1 hour after market expiration to claim winnings.</p>
+          <div className="flex items-start gap-2 rounded-lg border border-blue-500/20 bg-blue-500/10 p-3">
+            <Info className="mt-0.5 h-4 w-4 flex-shrink-0 text-blue-500" />
+            <div className="space-y-1 text-xs text-muted-foreground">
+              <p>
+                <strong className="text-foreground">Darkpool Betting:</strong>{' '}
+                Your bet choice will be hidden until you reveal it after market
+                expiration.
+              </p>
+              <p>
+                <strong className="text-foreground">Important:</strong> Save
+                your reveal secret! You must reveal within 1 hour after market
+                expiration to claim winnings.
+              </p>
             </div>
           </div>
         </div>
@@ -197,7 +232,11 @@ export function BetModal({ open, onOpenChange, prediction, outcome, onConfirm }:
             type="button"
             onClick={handleConfirm}
             disabled={loading || !amount || !!error}
-            className={isYes ? 'bg-green-600 hover:bg-green-700' : 'bg-red-600 hover:bg-red-700'}
+            className={
+              isYes
+                ? 'bg-green-600 hover:bg-green-700'
+                : 'bg-red-600 hover:bg-red-700'
+            }
           >
             {loading ? 'Placing Bet...' : `Bet ${formatBNB(numAmount)}`}
           </Button>
@@ -206,4 +245,3 @@ export function BetModal({ open, onOpenChange, prediction, outcome, onConfirm }:
     </Dialog>
   );
 }
-

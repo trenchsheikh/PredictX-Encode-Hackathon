@@ -18,7 +18,6 @@ This guide will help you set up Google Gemini AI for DarkBet's prediction market
      ```bash
      cp env.example .env.local
      ```
-   
    - Open `.env.local` and add your API key:
      ```bash
      NEXT_PUBLIC_GEMINI_API_KEY=your_actual_api_key_here
@@ -27,9 +26,11 @@ This guide will help you set up Google Gemini AI for DarkBet's prediction market
 ## Environment Variables
 
 ### Required
+
 - `NEXT_PUBLIC_GEMINI_API_KEY` - Your Google Gemini API key
 
 ### Optional
+
 - `NEXT_PUBLIC_GEMINI_MODEL` - Model to use (default: `gemini-1.5-flash`)
   - Options: `gemini-1.5-flash`, `gemini-1.5-pro`
 - `NEXT_PUBLIC_AI_PROVIDER` - AI provider (default: `gemini`)
@@ -37,12 +38,14 @@ This guide will help you set up Google Gemini AI for DarkBet's prediction market
 ## Available Models
 
 ### Gemini 1.5 Flash (Recommended)
+
 - **Best for**: Fast, cost-effective responses
 - **Use case**: General prediction analysis
 - **Token limit**: 1M tokens context
 - **Model name**: `gemini-1.5-flash`
 
 ### Gemini 1.5 Pro
+
 - **Best for**: Complex, detailed analysis
 - **Use case**: Advanced predictions requiring deeper reasoning
 - **Token limit**: 2M tokens context
@@ -97,16 +100,19 @@ Check [Google AI Pricing](https://ai.google.dev/pricing) for current rates.
 ## Troubleshooting
 
 ### API Key Not Working
+
 - Verify the key is correct
 - Ensure the key has API access enabled
 - Check if you've exceeded rate limits
 
 ### Model Not Found
+
 - Verify model name is correct
 - Try using `gemini-1.5-flash` instead of pro
 - Check Gemini API documentation for available models
 
 ### Rate Limiting
+
 - Implement request throttling in your application
 - Consider upgrading to paid tier
 - Cache AI responses when possible
@@ -124,12 +130,14 @@ Check [Google AI Pricing](https://ai.google.dev/pricing) for current rates.
 If you prefer to use a different AI provider:
 
 ### OpenAI
+
 ```bash
 NEXT_PUBLIC_AI_PROVIDER=openai
 NEXT_PUBLIC_OPENAI_API_KEY=your_openai_key
 ```
 
 ### Anthropic Claude
+
 ```bash
 NEXT_PUBLIC_AI_PROVIDER=anthropic
 NEXT_PUBLIC_ANTHROPIC_API_KEY=your_anthropic_key
@@ -138,6 +146,7 @@ NEXT_PUBLIC_ANTHROPIC_API_KEY=your_anthropic_key
 ## Support
 
 For issues with:
+
 - **Gemini API**: Visit [Google AI Studio Help](https://ai.google.dev/docs)
 - **DarkBet Integration**: Open an issue on GitHub
 - **API Limits**: Check [Google Cloud Console](https://console.cloud.google.com)
@@ -145,4 +154,3 @@ For issues with:
 ---
 
 **Ready to start?** Copy `env.example` to `.env.local` and add your Gemini API key!
-

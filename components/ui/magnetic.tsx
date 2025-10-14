@@ -10,11 +10,11 @@ interface MagneticProps {
   scale?: number;
 }
 
-export function Magnetic({ 
-  children, 
-  className, 
-  intensity = 0.3, 
-  scale = 1.05 
+export function Magnetic({
+  children,
+  className,
+  intensity = 0.3,
+  scale = 1.05,
 }: MagneticProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -26,10 +26,10 @@ export function Magnetic({
     const rect = ref.current.getBoundingClientRect();
     const centerX = rect.left + rect.width / 2;
     const centerY = rect.top + rect.height / 2;
-    
+
     const mouseX = e.clientX - centerX;
     const mouseY = e.clientY - centerY;
-    
+
     setPosition({
       x: mouseX * intensity,
       y: mouseY * intensity,
@@ -62,5 +62,3 @@ export function Magnetic({
     </div>
   );
 }
-
-

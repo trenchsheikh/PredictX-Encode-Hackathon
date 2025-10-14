@@ -8,7 +8,9 @@
     "start": "node dist/server.js",
     "dev": "nodemon src/server.ts",
     "test": "echo \"No tests yet\" && exit 0",
-    "fix-null-outcomes": "ts-node scripts/fix-null-outcomes.ts"
+    "fix-null-outcomes": "ts-node scripts/fix-null-outcomes.ts",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "keywords": [
     "darkbet",
@@ -37,6 +39,7 @@
     "@types/express": "^5.0.0",
     "@types/node": "^22.10.2",
     "nodemon": "^3.1.9",
+    "prettier": "^3.0.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.7.2"
   }

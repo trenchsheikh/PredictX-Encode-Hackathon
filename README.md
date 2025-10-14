@@ -15,6 +15,7 @@ A decentralized prediction market platform built on BNB Smart Chain with AI-driv
 ## 🏗️ Architecture
 
 ### Frontend (Next.js + Vercel)
+
 - **Framework**: Next.js 14 with TypeScript
 - **UI Library**: shadcn/ui components
 - **Animations**: Framer Motion
@@ -23,6 +24,7 @@ A decentralized prediction market platform built on BNB Smart Chain with AI-driv
 - **Styling**: TailwindCSS with custom dark theme
 
 ### Backend (Node.js + Render)
+
 - **Framework**: Express.js with TypeScript
 - **Database**: MongoDB with Mongoose
 - **Blockchain**: Ethers.js for BNB Smart Chain interaction
@@ -30,6 +32,7 @@ A decentralized prediction market platform built on BNB Smart Chain with AI-driv
 - **Deployment**: Render.com
 
 ### Smart Contracts
+
 - **Network**: BNB Smart Chain Testnet
 - **Language**: Solidity
 - **Features**: Commit-reveal scheme, market resolution, payout distribution
@@ -188,6 +191,7 @@ darkbet/
 ### Environment Variables
 
 #### Backend (.env)
+
 - `MONGODB_URI`: MongoDB connection string
 - `BSC_TESTNET_RPC_URL`: BNB Smart Chain RPC endpoint
 - `ADMIN_PRIVATE_KEY`: Private key for market resolution
@@ -195,6 +199,7 @@ darkbet/
 - `VAULT_CONTRACT_ADDRESS`: Deployed vault contract address
 
 #### Frontend (.env.local)
+
 - `NEXT_PUBLIC_PRIVY_APP_ID`: Privy application ID
 - `NEXT_PUBLIC_BACKEND_URL`: Backend URL (development only)
 - `NEXT_PUBLIC_PREDICTION_CONTRACT_ADDRESS`: Prediction contract address
@@ -250,18 +255,21 @@ npm run dev
 ### Available Scripts
 
 #### Backend
+
 - `npm run dev` - Start development server
 - `npm run build` - Build for production
 - `npm start` - Start production server
 - `npm run fix-null-outcomes` - Fix markets with null outcomes
 
 #### Frontend
+
 - `npm run dev` - Start development server
 - `npm run build` - Build for production
 - `npm start` - Start production server
 - `npm run lint` - Run ESLint
 
 #### Smart Contracts
+
 - `npx hardhat compile` - Compile contracts
 - `npx hardhat test` - Run tests
 - `npx hardhat run scripts/deploy.js --network bscTestnet` - Deploy contracts
@@ -282,16 +290,19 @@ Enable debug logging by setting `NODE_ENV=development` in your backend environme
 ## 📊 API Endpoints
 
 ### Markets
+
 - `GET /api/markets` - List all markets
 - `POST /api/markets` - Create new market
 - `GET /api/markets/:id` - Get market details
 - `POST /api/markets/trigger-resolution` - Trigger market resolution
 
 ### Users
+
 - `GET /api/users/:address/bets` - Get user's bets
 - `GET /api/users/leaderboard` - Get leaderboard data
 
 ### Oracle
+
 - `GET /api/oracle/prices` - Get cryptocurrency prices
 
 ## 🤝 Contributing
@@ -309,6 +320,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ## 🆘 Support
 
 For support and questions:
+
 - Create an issue in the GitHub repository
 - Check the troubleshooting section above
 - Review the API documentation

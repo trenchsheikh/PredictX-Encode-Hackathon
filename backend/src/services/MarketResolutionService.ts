@@ -73,7 +73,8 @@ class MarketResolutionService {
       for (const market of expiredMarkets) {
         try {
           // Check if it's a crypto prediction that can be auto-resolved
-          if (market.category === 7) { // Crypto category
+          if (market.category === 7) {
+            // Crypto category
             await this.resolveMarket(market);
           } else {
             // For non-crypto markets, try to resolve with basic logic first
@@ -86,7 +87,10 @@ class MarketResolutionService {
             }
           }
         } catch (error) {
-          console.error(`❌ Failed to resolve market ${market.marketId}:`, error);
+          console.error(
+            `❌ Failed to resolve market ${market.marketId}:`,
+            error
+          );
         }
       }
     } catch (error) {
@@ -97,10 +101,12 @@ class MarketResolutionService {
   /**
    * Try to resolve non-crypto markets using basic logic
    */
-  private async tryBasicResolution(market: any): Promise<{ success: boolean; outcome?: boolean; reasoning?: string }> {
+  private async tryBasicResolution(
+    market: any
+  ): Promise<{ success: boolean; outcome?: boolean; reasoning?: string }> {
     try {
       const title = market.title.toLowerCase();
-      
+
       // Check for time-based predictions
       if (title.includes('by') && title.includes('2024')) {
         const currentYear = new Date().getFullYear();
@@ -108,52 +114,61 @@ class MarketResolutionService {
           return {
             success: true,
             outcome: false, // Past deadline, likely didn't happen
-            reasoning: 'Prediction deadline has passed - defaulting to NO'
+            reasoning: 'Prediction deadline has passed - defaulting to NO',
           };
         }
       }
-      
+
       // Check for sports predictions (basic logic)
-      if (market.category === 1) { // Sports category
+      if (market.category === 1) {
+        // Sports category
         // For sports, we can't determine outcome without external data
         // Return false to trigger default resolution
         return { success: false };
       }
-      
+
       // Check for weather predictions
-      if (market.category === 2) { // Weather category
+      if (market.category === 2) {
+        // Weather category
         // For weather, we can't determine outcome without external data
         return { success: false };
       }
-      
+
       // Check for politics predictions
-      if (market.category === 3) { // Politics category
+      if (market.category === 3) {
+        // Politics category
         // For politics, we can't determine outcome without external data
         return { success: false };
       }
-      
+
       // Check for entertainment predictions
-      if (market.category === 4) { // Entertainment category
+      if (market.category === 4) {
+        // Entertainment category
         // For entertainment, we can't determine outcome without external data
         return { success: false };
       }
-      
+
       // Check for technology predictions
-      if (market.category === 5) { // Technology category
+      if (market.category === 5) {
+        // Technology category
         // For technology, we can't determine outcome without external data
         return { success: false };
       }
-      
+
       // Check for economics predictions
-      if (market.category === 6) { // Economics category
+      if (market.category === 6) {
+        // Economics category
         // For economics, we can't determine outcome without external data
         return { success: false };
       }
-      
+
       // Default: can't resolve
       return { success: false };
     } catch (error) {
-      console.error(`❌ Error in basic resolution for market ${market.marketId}:`, error);
+      console.error(
+        `❌ Error in basic resolution for market ${market.marketId}:`,
+        error
+      );
       return { success: false };
     }
   }
@@ -168,7 +183,7 @@ class MarketResolutionService {
       // For now, resolve with a default outcome to allow payouts
       // This is a temporary solution - ideally we'd implement refunds
       const defaultOutcome = true; // Default to YES wins for unresolved markets
-      
+
       // Call smart contract to resolve with default outcome
       let txHash: string;
       try {
@@ -178,7 +193,10 @@ class MarketResolutionService {
           'Market expired - default resolution applied (YES wins)'
         );
       } catch (blockchainError: any) {
-        console.warn(`⚠️ Blockchain resolution failed for expired market ${market.marketId}:`, blockchainError.message);
+        console.warn(
+          `⚠️ Blockchain resolution failed for expired market ${market.marketId}:`,
+          blockchainError.message
+        );
         console.log('🔄 Proceeding with database-only resolution...');
         txHash = 'database-only-resolution'; // Fallback for testing
       }
@@ -189,18 +207,24 @@ class MarketResolutionService {
         {
           status: 2, // Resolved
           outcome: defaultOutcome,
-          resolutionReasoning: 'Market expired - default resolution applied (YES wins)',
+          resolutionReasoning:
+            'Market expired - default resolution applied (YES wins)',
           updatedAt: new Date(),
         }
       );
 
-        console.log(`⏰ Market ${market.marketId} resolved with default outcome: ${defaultOutcome ? 'YES' : 'NO'}`);
-        
-        // Process instant payouts for expired market
-        await this.processInstantPayouts(market.marketId, defaultOutcome);
-      } catch (error) {
-        console.error(`❌ Failed to resolve market ${market.marketId} as expired:`, error);
-      
+      console.log(
+        `⏰ Market ${market.marketId} resolved with default outcome: ${defaultOutcome ? 'YES' : 'NO'}`
+      );
+
+      // Process instant payouts for expired market
+      await this.processInstantPayouts(market.marketId, defaultOutcome);
+    } catch (error) {
+      console.error(
+        `❌ Failed to resolve market ${market.marketId} as expired:`,
+        error
+      );
+
       // Fallback: mark as resolved with null outcome (users won't be able to claim)
       try {
         await Market.updateOne(
@@ -212,9 +236,14 @@ class MarketResolutionService {
             updatedAt: new Date(),
           }
         );
-        console.log(`⚠️ Market ${market.marketId} marked as expired with null outcome (no payouts possible)`);
+        console.log(
+          `⚠️ Market ${market.marketId} marked as expired with null outcome (no payouts possible)`
+        );
       } catch (fallbackError) {
-        console.error(`❌ Failed to mark market ${market.marketId} as expired (fallback):`, fallbackError);
+        console.error(
+          `❌ Failed to mark market ${market.marketId} as expired (fallback):`,
+          fallbackError
+        );
       }
     }
   }
@@ -251,7 +280,10 @@ class MarketResolutionService {
           verification.reasoning
         );
       } catch (blockchainError: any) {
-        console.warn(`⚠️ Blockchain resolution failed for market ${market.marketId}:`, blockchainError.message);
+        console.warn(
+          `⚠️ Blockchain resolution failed for market ${market.marketId}:`,
+          blockchainError.message
+        );
         console.log('🔄 Proceeding with database-only resolution...');
         txHash = 'database-only-resolution'; // Fallback for testing
       }
@@ -267,7 +299,9 @@ class MarketResolutionService {
         }
       );
 
-      console.log(`✅ Market ${market.marketId} resolved: ${verification.outcome ? 'YES' : 'NO'}`);
+      console.log(
+        `✅ Market ${market.marketId} resolved: ${verification.outcome ? 'YES' : 'NO'}`
+      );
 
       // Immediately process payouts for winning bets
       await this.processInstantPayouts(market.marketId, verification.outcome);
@@ -317,7 +351,11 @@ class MarketResolutionService {
       }
 
       // Call smart contract to resolve
-      const txHash = await blockchainService.resolveMarket(marketId, outcome, reasoning);
+      const txHash = await blockchainService.resolveMarket(
+        marketId,
+        outcome,
+        reasoning
+      );
 
       // Update market in database
       await Market.updateOne(
@@ -330,7 +368,9 @@ class MarketResolutionService {
         }
       );
 
-      console.log(`🔧 Manual resolution for market ${marketId}: ${outcome ? 'YES' : 'NO'}`);
+      console.log(
+        `🔧 Manual resolution for market ${marketId}: ${outcome ? 'YES' : 'NO'}`
+      );
 
       return {
         marketId,
@@ -341,7 +381,10 @@ class MarketResolutionService {
         txHash,
       };
     } catch (error: any) {
-      console.error(`❌ Manual resolution failed for market ${marketId}:`, error);
+      console.error(
+        `❌ Manual resolution failed for market ${marketId}:`,
+        error
+      );
       return {
         marketId,
         success: false,
@@ -376,10 +419,13 @@ class MarketResolutionService {
   /**
    * Process instant payouts for winning bets after market resolution
    */
-  private async processInstantPayouts(marketId: number, outcome: boolean): Promise<void> {
+  private async processInstantPayouts(
+    marketId: number,
+    outcome: boolean
+  ): Promise<void> {
     try {
       console.log(`💰 Processing instant payouts for market ${marketId}...`);
-      
+
       // Find all revealed bets for this market
       const bets = await Bet.find({
         predictionId: marketId.toString(),
@@ -393,38 +439,52 @@ class MarketResolutionService {
         try {
           // Check if bet won (outcome matches)
           // bet.outcome is boolean: true = yes, false = no
-          const betWon = (bet.outcome === true && outcome) || (bet.outcome === false && !outcome);
-          
+          const betWon =
+            (bet.outcome === true && outcome) ||
+            (bet.outcome === false && !outcome);
+
           if (betWon) {
             console.log(`🎉 Bet ${bet.id} won! Processing instant payout...`);
-            
+
             // Calculate payout amount (bet.amount is stored as string)
             const betAmount = parseFloat(bet.amount);
             const payoutAmount = betAmount * 1.8; // 80% profit + original bet
-            
+
             // Mark bet as claimed immediately
             await Bet.updateOne(
               { _id: bet._id },
-              { 
-                claimed: true, 
+              {
+                claimed: true,
                 payout: payoutAmount,
                 claimedAt: new Date(),
-                updatedAt: new Date()
+                updatedAt: new Date(),
               }
             );
-            
-            console.log(`✅ Instant payout processed for bet ${bet.id}: ${payoutAmount} BNB`);
+
+            console.log(
+              `✅ Instant payout processed for bet ${bet.id}: ${payoutAmount} BNB`
+            );
           } else {
-            console.log(`❌ Bet ${bet.id} lost (${bet.outcome} vs ${outcome ? 'yes' : 'no'})`);
+            console.log(
+              `❌ Bet ${bet.id} lost (${bet.outcome} vs ${outcome ? 'yes' : 'no'})`
+            );
           }
         } catch (betError: any) {
-          console.error(`❌ Failed to process payout for bet ${bet.id}:`, betError);
+          console.error(
+            `❌ Failed to process payout for bet ${bet.id}:`,
+            betError
+          );
         }
       }
-      
-      console.log(`✅ Instant payout processing completed for market ${marketId}`);
+
+      console.log(
+        `✅ Instant payout processing completed for market ${marketId}`
+      );
     } catch (error: any) {
-      console.error(`❌ Failed to process instant payouts for market ${marketId}:`, error);
+      console.error(
+        `❌ Failed to process instant payouts for market ${marketId}:`,
+        error
+      );
     }
   }
 
@@ -435,19 +495,21 @@ class MarketResolutionService {
   async fixNullOutcomeMarkets(): Promise<void> {
     try {
       console.log('🔧 Fixing markets with null outcome...');
-      
+
       const nullOutcomeMarkets = await Market.find({
         status: 2, // Resolved
         outcome: null,
       });
 
-      console.log(`🔍 Found ${nullOutcomeMarkets.length} markets with null outcome`);
+      console.log(
+        `🔍 Found ${nullOutcomeMarkets.length} markets with null outcome`
+      );
 
       for (const market of nullOutcomeMarkets) {
         try {
           // Resolve with default outcome
           const defaultOutcome = true; // Default to YES wins
-          
+
           // Call smart contract to resolve with default outcome
           let txHash: string;
           try {
@@ -457,7 +519,10 @@ class MarketResolutionService {
               'Market expired - default resolution applied (YES wins) - Fixed by admin'
             );
           } catch (blockchainError: any) {
-            console.warn(`⚠️ Blockchain resolution failed for null outcome market ${market.marketId}:`, blockchainError.message);
+            console.warn(
+              `⚠️ Blockchain resolution failed for null outcome market ${market.marketId}:`,
+              blockchainError.message
+            );
             console.log('🔄 Proceeding with database-only resolution...');
             txHash = 'database-only-resolution'; // Fallback for testing
           }
@@ -467,12 +532,15 @@ class MarketResolutionService {
             { marketId: market.marketId },
             {
               outcome: defaultOutcome,
-              resolutionReasoning: 'Market expired - default resolution applied (YES wins) - Fixed by admin',
+              resolutionReasoning:
+                'Market expired - default resolution applied (YES wins) - Fixed by admin',
               updatedAt: new Date(),
             }
           );
 
-          console.log(`✅ Fixed market ${market.marketId} with default outcome: ${defaultOutcome ? 'YES' : 'NO'}`);
+          console.log(
+            `✅ Fixed market ${market.marketId} with default outcome: ${defaultOutcome ? 'YES' : 'NO'}`
+          );
         } catch (error) {
           console.error(`❌ Failed to fix market ${market.marketId}:`, error);
         }

@@ -45,9 +45,9 @@ export function MotionHighlight({
       onMouseLeave={handleMouseLeave}
     >
       {children}
-      
+
       <div
-        className="absolute pointer-events-none rounded-full transition-opacity duration-300"
+        className="pointer-events-none absolute rounded-full transition-opacity duration-300"
         style={{
           left: highlight.x - highlightSize / 2,
           top: highlight.y - highlightSize / 2,
@@ -61,5 +61,3 @@ export function MotionHighlight({
     </div>
   );
 }
-
-

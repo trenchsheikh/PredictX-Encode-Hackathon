@@ -21,5 +21,7 @@ const commitmentSchema = new Schema<ICommitmentDocument>(
 // Compound index for efficient queries
 commitmentSchema.index({ marketId: 1, user: 1 }, { unique: true });
 
-export const Commitment = mongoose.model<ICommitmentDocument>('Commitment', commitmentSchema);
-
+export const Commitment = mongoose.model<ICommitmentDocument>(
+  'Commitment',
+  commitmentSchema
+);

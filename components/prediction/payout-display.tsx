@@ -3,15 +3,15 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { 
-  TrendingUp, 
-  TrendingDown, 
-  DollarSign, 
-  Clock, 
-  CheckCircle, 
+import {
+  TrendingUp,
+  TrendingDown,
+  DollarSign,
+  Clock,
+  CheckCircle,
   XCircle,
   ExternalLink,
-  Copy
+  Copy,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
@@ -45,14 +45,13 @@ export function PayoutDisplay({
   claimed,
   onClaim,
   txHash,
-  className
+  className,
 }: PayoutDisplayProps) {
   const [copied, setCopied] = useState(false);
 
-  const isWinner = outcome !== null && (
-    (outcome && userOutcome === 'yes') || 
-    (!outcome && userOutcome === 'no')
-  );
+  const isWinner =
+    outcome !== null &&
+    ((outcome && userOutcome === 'yes') || (!outcome && userOutcome === 'no'));
 
   const formatBNB = (value: string) => {
     const num = parseFloat(value);
@@ -80,8 +79,11 @@ export function PayoutDisplay({
   };
 
   const getOutcomeColor = () => {
-    if (outcome === null) return 'bg-yellow-500/20 text-yellow-700 border-yellow-500/30';
-    return outcome ? 'bg-green-500/20 text-green-700 border-green-500/30' : 'bg-red-500/20 text-red-700 border-red-500/30';
+    if (outcome === null)
+      return 'bg-yellow-500/20 text-yellow-700 border-yellow-500/30';
+    return outcome
+      ? 'bg-green-500/20 text-green-700 border-green-500/30'
+      : 'bg-red-500/20 text-red-700 border-red-500/30';
   };
 
   return (
@@ -89,10 +91,10 @@ export function PayoutDisplay({
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between">
           <div className="flex-1">
-            <CardTitle className="text-lg font-semibold line-clamp-2">
+            <CardTitle className="line-clamp-2 text-lg font-semibold">
               {title}
             </CardTitle>
-            <div className="flex items-center gap-2 mt-2">
+            <div className="mt-2 flex items-center gap-2">
               <Badge variant="outline" className="text-xs">
                 Market #{marketId}
               </Badge>
@@ -107,19 +109,19 @@ export function PayoutDisplay({
 
       <CardContent className="space-y-4">
         {/* Your Bet */}
-        <div className="bg-gray-50 dark:bg-gray-800/50 p-4 rounded-lg">
-          <div className="flex items-center justify-between mb-2">
+        <div className="rounded-lg bg-gray-50 p-4 dark:bg-gray-800/50">
+          <div className="mb-2 flex items-center justify-between">
             <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
               Your Bet
             </span>
-            <Badge 
+            <Badge
               variant={userOutcome === 'yes' ? 'default' : 'secondary'}
               className={userOutcome === 'yes' ? 'bg-green-500' : 'bg-red-500'}
             >
               {userOutcome === 'yes' ? (
-                <TrendingUp className="h-3 w-3 mr-1" />
+                <TrendingUp className="mr-1 h-3 w-3" />
               ) : (
-                <TrendingDown className="h-3 w-3 mr-1" />
+                <TrendingDown className="mr-1 h-3 w-3" />
               )}
               {userOutcome.toUpperCase()}
             </Badge>
@@ -133,7 +135,7 @@ export function PayoutDisplay({
         {outcome !== null && (
           <div className="space-y-3">
             {/* Market Outcome */}
-            <div className="flex items-center justify-between p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+            <div className="flex items-center justify-between rounded-lg bg-blue-50 p-3 dark:bg-blue-900/20">
               <span className="text-sm font-medium">Market Outcome:</span>
               <div className="flex items-center gap-2">
                 {outcome ? (
@@ -150,23 +152,37 @@ export function PayoutDisplay({
               <div className="text-sm font-medium text-gray-700 dark:text-gray-300">
                 Payout Calculation
               </div>
-              
+
               <div className="space-y-1 text-sm">
                 <div className="flex justify-between">
-                  <span className="text-gray-600 dark:text-gray-400">Total Pool:</span>
+                  <span className="text-gray-600 dark:text-gray-400">
+                    Total Pool:
+                  </span>
                   <span>{formatBNB(totalPool)} BNB</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-600 dark:text-gray-400">Your Shares:</span>
+                  <span className="text-gray-600 dark:text-gray-400">
+                    Your Shares:
+                  </span>
                   <span>{formatBNB(userShares)}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-600 dark:text-gray-400">Winning Shares:</span>
+                  <span className="text-gray-600 dark:text-gray-400">
+                    Winning Shares:
+                  </span>
                   <span>{formatBNB(totalWinningShares)}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-600 dark:text-gray-400">Platform Fee ({platformFee}%):</span>
-                  <span>-{formatBNB((parseFloat(userPayout) * platformFee / 100).toString())} BNB</span>
+                  <span className="text-gray-600 dark:text-gray-400">
+                    Platform Fee ({platformFee}%):
+                  </span>
+                  <span>
+                    -
+                    {formatBNB(
+                      ((parseFloat(userPayout) * platformFee) / 100).toString()
+                    )}{' '}
+                    BNB
+                  </span>
                 </div>
                 <div className="border-t pt-1">
                   <div className="flex justify-between font-semibold">
@@ -187,26 +203,26 @@ export function PayoutDisplay({
                   disabled={claimed}
                   className={cn(
                     'w-full',
-                    claimed 
-                      ? 'bg-gray-500 hover:bg-gray-500' 
+                    claimed
+                      ? 'bg-gray-500 hover:bg-gray-500'
                       : 'bg-green-600 hover:bg-green-700'
                   )}
                 >
                   {claimed ? (
                     <>
-                      <CheckCircle className="h-4 w-4 mr-2" />
+                      <CheckCircle className="mr-2 h-4 w-4" />
                       Claimed
                     </>
                   ) : (
                     <>
-                      <DollarSign className="h-4 w-4 mr-2" />
+                      <DollarSign className="mr-2 h-4 w-4" />
                       Claim {formatBNB(userPayout)} BNB
                     </>
                   )}
                 </Button>
               ) : (
-                <div className="text-center py-3 text-gray-500 dark:text-gray-400">
-                  <XCircle className="h-8 w-8 mx-auto mb-2 text-red-500" />
+                <div className="py-3 text-center text-gray-500 dark:text-gray-400">
+                  <XCircle className="mx-auto mb-2 h-8 w-8 text-red-500" />
                   <div className="text-sm">Your bet did not win</div>
                 </div>
               )}
@@ -216,13 +232,13 @@ export function PayoutDisplay({
 
         {/* Transaction Hash */}
         {txHash && (
-          <div className="pt-2 border-t">
+          <div className="border-t pt-2">
             <div className="flex items-center justify-between">
               <span className="text-xs text-gray-500 dark:text-gray-400">
                 Transaction:
               </span>
               <div className="flex items-center gap-2">
-                <code className="text-xs bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">
+                <code className="rounded bg-gray-100 px-2 py-1 text-xs dark:bg-gray-800">
                   {txHash.slice(0, 8)}...{txHash.slice(-8)}
                 </code>
                 <Button
@@ -236,7 +252,12 @@ export function PayoutDisplay({
                 <Button
                   size="sm"
                   variant="ghost"
-                  onClick={() => window.open(`https://testnet.bscscan.com/tx/${txHash}`, '_blank')}
+                  onClick={() =>
+                    window.open(
+                      `https://testnet.bscscan.com/tx/${txHash}`,
+                      '_blank'
+                    )
+                  }
                   className="h-6 w-6 p-0"
                 >
                   <ExternalLink className="h-3 w-3" />
@@ -248,10 +269,10 @@ export function PayoutDisplay({
 
         {/* Pending Resolution */}
         {outcome === null && (
-          <div className="text-center py-6 text-gray-500 dark:text-gray-400">
-            <Clock className="h-8 w-8 mx-auto mb-2 text-yellow-500" />
+          <div className="py-6 text-center text-gray-500 dark:text-gray-400">
+            <Clock className="mx-auto mb-2 h-8 w-8 text-yellow-500" />
             <div className="text-sm">Waiting for market resolution...</div>
-            <div className="text-xs mt-1">
+            <div className="mt-1 text-xs">
               Resolution will be automatic using oracle data
             </div>
           </div>

@@ -11,41 +11,41 @@ interface StatsDashboardProps {
   activeBets: number;
 }
 
-export function StatsDashboard({ 
-  totalBets, 
-  totalWinnings, 
-  winRate, 
-  activeBets 
+export function StatsDashboard({
+  totalBets,
+  totalWinnings,
+  winRate,
+  activeBets,
 }: StatsDashboardProps) {
   const stats = [
     {
       title: 'Total Bets',
       value: totalBets,
       icon: Target,
-      trend: { value: 12, isPositive: true }
+      trend: { value: 12, isPositive: true },
     },
     {
       title: 'Total Winnings',
       value: `${totalWinnings.toFixed(4)} BNB`,
       icon: DollarSign,
-      trend: { value: 8, isPositive: true }
+      trend: { value: 8, isPositive: true },
     },
     {
       title: 'Win Rate',
       value: `${winRate.toFixed(1)}%`,
       icon: Trophy,
-      trend: { value: 5, isPositive: winRate > 50 }
+      trend: { value: 5, isPositive: winRate > 50 },
     },
     {
       title: 'Active Bets',
       value: activeBets,
       icon: TrendingUp,
-      trend: { value: 15, isPositive: true }
-    }
+      trend: { value: 15, isPositive: true },
+    },
   ];
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+    <div className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
       {stats.map((stat, index) => (
         <StatsCard
           key={stat.title}

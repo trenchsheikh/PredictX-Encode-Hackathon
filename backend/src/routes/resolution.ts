@@ -9,7 +9,8 @@ const router = Router();
  */
 router.get('/pending', async (req: Request, res: Response) => {
   try {
-    const pendingMarkets = await marketResolutionService.getPendingResolutions();
+    const pendingMarkets =
+      await marketResolutionService.getPendingResolutions();
 
     res.json({
       success: true,
@@ -104,7 +105,8 @@ router.post('/trigger', async (req: Request, res: Response) => {
     }
 
     // Trigger resolution check
-    const pendingMarkets = await marketResolutionService.getPendingResolutions();
+    const pendingMarkets =
+      await marketResolutionService.getPendingResolutions();
     const results = [];
 
     for (const market of pendingMarkets) {

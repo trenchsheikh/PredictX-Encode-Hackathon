@@ -2,7 +2,7 @@
 
 **Generated:** October 13, 2025  
 **Project:** DarkBet - BNB Chain Prediction Markets  
-**Tech Stack:** Next.js 14, TypeScript, Tailwind CSS, Privy, shadcn/ui  
+**Tech Stack:** Next.js 14, TypeScript, Tailwind CSS, Privy, shadcn/ui
 
 ---
 
@@ -15,6 +15,7 @@ This document provides a comprehensive audit of the DarkBet frontend implementat
 ## 1. Application Structure
 
 ### 1.1 Technology Stack
+
 - **Framework:** Next.js 14 (App Router)
 - **Language:** TypeScript
 - **Styling:** Tailwind CSS with custom DarkBet theme
@@ -25,6 +26,7 @@ This document provides a comprehensive audit of the DarkBet frontend implementat
 - **Charts:** Recharts
 
 ### 1.2 File Structure
+
 ```
 app/
 ├── page.tsx                    # Home page with market listings
@@ -61,9 +63,11 @@ types/
 ## 2. Routes and Pages
 
 ### 2.1 Home Page (`/`)
+
 **File:** `app/page.tsx`
 
 **Features:**
+
 - ✅ Live market listings with real-time updates
 - ✅ Featured "hot" markets section
 - ✅ Statistics overview (total volume, participants, active markets)
@@ -73,18 +77,19 @@ types/
 - ✅ "Create Prediction" button (opens modal)
 
 **Data Expected:**
+
 ```typescript
 interface Prediction {
   id: string;
   title: string;
   description: string;
-  summary?: string;              // AI-generated unbiased analysis
-  category: PredictionCategory;  // sports|crypto|politics|etc
-  status: PredictionStatus;      // active|resolved|cancelled|expired
+  summary?: string; // AI-generated unbiased analysis
+  category: PredictionCategory; // sports|crypto|politics|etc
+  status: PredictionStatus; // active|resolved|cancelled|expired
   createdAt: number;
   expiresAt: number;
-  creator: string;               // wallet address
-  totalPool: number;             // BNB
+  creator: string; // wallet address
+  totalPool: number; // BNB
   yesPool: number;
   noPool: number;
   yesPrice: number;
@@ -99,6 +104,7 @@ interface Prediction {
 ```
 
 **API Calls Expected:**
+
 1. `GET /api/predictions` - Fetch all predictions with filtering
 2. `POST /api/predictions/:id/bet` - Place a bet
 3. `GET /api/stats` - Platform statistics
@@ -106,9 +112,11 @@ interface Prediction {
 ---
 
 ### 2.2 My Bets Page (`/my-bets`)
+
 **File:** `app/my-bets/page.tsx`
 
 **Features:**
+
 - ✅ Portfolio overview (total invested, total payout, active/resolved counts)
 - ✅ Bet history with filtering (all/active/resolved)
 - ✅ Bet details (shares, amount, price, potential payout)
@@ -117,22 +125,24 @@ interface Prediction {
 - ✅ Win/loss indicators
 
 **Data Expected:**
+
 ```typescript
 interface UserBet {
   id: string;
   predictionId: string;
-  user: string;                  // wallet address
+  user: string; // wallet address
   outcome: 'yes' | 'no';
   shares: number;
-  amount: number;                // BNB invested
-  price: number;                 // price at purchase
+  amount: number; // BNB invested
+  price: number; // price at purchase
   createdAt: number;
   claimed: boolean;
-  payout?: number;               // if won and resolved
+  payout?: number; // if won and resolved
 }
 ```
 
 **API Calls Expected:**
+
 1. `GET /api/users/:address/bets` - Fetch user's bets
 2. `POST /api/bets/:id/claim` - Claim winnings
 3. `GET /api/predictions/:id` - Get prediction details
@@ -142,9 +152,11 @@ interface UserBet {
 ---
 
 ### 2.3 Leaderboard Page (`/leaderboard`)
+
 **File:** `app/leaderboard/page.tsx`
 
 **Features:**
+
 - ✅ Top performers ranking (by winnings/win rate/volume/total bets)
 - ✅ User statistics (total winnings, win rate, volume, bet count)
 - ✅ Badge system (Champion, Hot Streak, High Roller, etc.)
@@ -155,6 +167,7 @@ interface UserBet {
 - ✅ Activity streaks
 
 **Data Expected:**
+
 ```typescript
 interface LeaderboardEntry {
   rank: number;
@@ -162,7 +175,7 @@ interface LeaderboardEntry {
   username?: string;
   totalWinnings: number;
   totalBets: number;
-  winRate: number;               // 0-1
+  winRate: number; // 0-1
   totalVolume: number;
   badges: string[];
   isVerified: boolean;
@@ -172,15 +185,18 @@ interface LeaderboardEntry {
 ```
 
 **API Calls Expected:**
+
 1. `GET /api/leaderboard` - Fetch leaderboard data with filters
 2. `GET /api/stats/global` - Global platform stats
 
 ---
 
 ### 2.4 How It Works Page (`/how-it-works`)
+
 **File:** `app/how-it-works/page.tsx`
 
 **Features:**
+
 - ✅ Step-by-step platform explanation
 - ✅ Dark pools concept explanation
 - ✅ AMM pricing explanation
@@ -197,9 +213,11 @@ interface LeaderboardEntry {
 ## 3. Core Components
 
 ### 3.1 PredictionCard Component
+
 **File:** `components/prediction/prediction-card.tsx`
 
 **Functionality:**
+
 - Displays single prediction market
 - Shows YES/NO odds with color coding (green/red)
 - Pool sizes and pricing
@@ -211,23 +229,29 @@ interface LeaderboardEntry {
 - User's bet indicator (if participated)
 
 **Props:**
+
 ```typescript
 interface PredictionCardProps {
   prediction: Prediction;
   onBet: (predictionId: string, outcome: 'yes' | 'no') => void;
-  userBets?: { [predictionId: string]: { outcome: 'yes' | 'no'; shares: number } };
+  userBets?: {
+    [predictionId: string]: { outcome: 'yes' | 'no'; shares: number };
+  };
 }
 ```
 
 **Expected API Integration:**
+
 - Click "YES" or "NO" → triggers `onBet()` → should call `POST /api/predictions/:id/bet`
 
 ---
 
 ### 3.2 CreateBetModal Component
+
 **File:** `components/prediction/create-bet-modal.tsx`
 
 **Functionality:**
+
 - ✅ Bet type selection (Custom vs Auto-verified)
 - ✅ AI integration for title/summary generation
   - Supports Gemini (default), OpenAI, Anthropic
@@ -240,22 +264,24 @@ interface PredictionCardProps {
 - ✅ Toggle for AI analysis generation
 
 **Form Data:**
+
 ```typescript
 interface CreatePredictionData {
-  title: string;                 // AI-generated
-  description: string;           // User input
-  summary?: string;              // AI-generated unbiased analysis
+  title: string; // AI-generated
+  description: string; // User input
+  summary?: string; // AI-generated unbiased analysis
   category: PredictionCategory;
   betType: 'custom' | 'auto-verified';
   resolutionInstructions?: string;
-  options: string[];             // Default: ['YES', 'NO']
-  userPrediction: 'yes' | 'no';  // Creator's bet
-  bnbAmount: number;             // Creator's stake
-  expiresAt: number;             // Unix timestamp
+  options: string[]; // Default: ['YES', 'NO']
+  userPrediction: 'yes' | 'no'; // Creator's bet
+  bnbAmount: number; // Creator's stake
+  expiresAt: number; // Unix timestamp
 }
 ```
 
 **Expected Flow:**
+
 1. User enters description
 2. Click "Analyze" → calls AI service (frontend-side currently)
 3. AI generates title, summary, resolution instructions
@@ -266,6 +292,7 @@ interface CreatePredictionData {
    - Mint initial shares for creator
 
 **API Calls Expected:**
+
 1. `POST /api/ai/analyze` - Generate prediction metadata (should be backend, not frontend)
 2. `POST /api/predictions` - Create new prediction market
 3. Smart contract interaction via Privy's `sendTransaction()`
@@ -273,9 +300,11 @@ interface CreatePredictionData {
 ---
 
 ### 3.3 Filters Component
+
 **File:** `components/prediction/filters.tsx`
 
 **Functionality:**
+
 - Status filter (active/resolved/cancelled/expired)
 - Category filter (8 categories)
 - Time range filter (24h/7d/30d)
@@ -284,6 +313,7 @@ interface CreatePredictionData {
 - Clear all filters button
 
 **Filter Interface:**
+
 ```typescript
 interface FilterOptions {
   status?: PredictionStatus;
@@ -298,9 +328,11 @@ interface FilterOptions {
 ---
 
 ### 3.4 Header Component
+
 **File:** `components/layout/header.tsx`
 
 **Functionality:**
+
 - ✅ Logo and branding
 - ✅ Navigation links (Home, My Bets, How it Works, Leaderboard)
 - ✅ Language toggle (EN/ZH)
@@ -312,11 +344,13 @@ interface FilterOptions {
 - ✅ Magnetic hover effects
 
 **Privy Integration:**
+
 ```typescript
 const { ready, authenticated, user, login, logout } = usePrivy();
 ```
 
 **Expected Wallet Features:**
+
 - Multi-wallet support (MetaMask, WalletConnect, etc.)
 - BNB Smart Chain network (Chain ID: 56 or 97 for testnet)
 - Transaction signing for bets and claims
@@ -353,13 +387,18 @@ export interface Prediction {
 }
 
 // Categories
-export type PredictionCategory = 
-  | 'sports' | 'crypto' | 'politics' | 'entertainment' 
-  | 'weather' | 'finance' | 'technology' | 'custom';
+export type PredictionCategory =
+  | 'sports'
+  | 'crypto'
+  | 'politics'
+  | 'entertainment'
+  | 'weather'
+  | 'finance'
+  | 'technology'
+  | 'custom';
 
 // Status
-export type PredictionStatus = 
-  | 'active' | 'resolved' | 'cancelled' | 'expired';
+export type PredictionStatus = 'active' | 'resolved' | 'cancelled' | 'expired';
 
 // Resolution result
 export interface PredictionResolution {
@@ -413,6 +452,7 @@ export interface FilterOptions {
 ## 5. Business Logic Implemented (Frontend)
 
 ### 5.1 Betting Logic
+
 **Location:** `app/page.tsx` (lines 260-299)
 
 ```typescript
@@ -422,21 +462,23 @@ const handleBet = async (predictionId: string, outcome: 'yes' | 'no') => {
     alert('Please connect your wallet to place a bet');
     return;
   }
-  
+
   // 2. Calculate shares based on current price
   const betAmount = 0.01; // Mock amount (should be user input)
-  const shares = betAmount / (outcome === 'yes' ? prediction.yesPrice : prediction.noPrice);
-  
+  const shares =
+    betAmount / (outcome === 'yes' ? prediction.yesPrice : prediction.noPrice);
+
   // 3. Update local state (MOCK - should be blockchain transaction)
   // Real implementation should:
   // - Call smart contract to place bet
   // - Wait for transaction confirmation
   // - Update backend API
   // - Fetch updated market data
-}
+};
 ```
 
 **⚠️ Currently Mock Implementation - Needs:**
+
 - User amount input
 - Smart contract transaction
 - Error handling
@@ -447,6 +489,7 @@ const handleBet = async (predictionId: string, outcome: 'yes' | 'no') => {
 ---
 
 ### 5.2 Market Creation Logic
+
 **Location:** `app/page.tsx` (lines 301-349)
 
 ```typescript
@@ -479,10 +522,11 @@ const handleCreatePrediction = async (data: CreatePredictionData) => {
   // - Interact with smart contract
   // - Wait for confirmation
   // - Redirect to new market page
-}
+};
 ```
 
 **⚠️ Needs Backend:**
+
 - `POST /api/predictions` endpoint
 - Smart contract deployment and ABI
 - Transaction receipt handling
@@ -492,16 +536,20 @@ const handleCreatePrediction = async (data: CreatePredictionData) => {
 ---
 
 ### 5.3 Pricing Calculation (AMM)
+
 **Location:** Comments indicate FPMM (Fixed Product Market Maker)
 
 **Current Implementation:**
+
 ```typescript
 // app/page.tsx lines 284-285
-const newYesPrice = newTotalPool > 0 ? newYesPool / newTotalPool * 0.01 : 0.005;
-const newNoPrice = newTotalPool > 0 ? newNoPool / newTotalPool * 0.01 : 0.005;
+const newYesPrice =
+  newTotalPool > 0 ? (newYesPool / newTotalPool) * 0.01 : 0.005;
+const newNoPrice = newTotalPool > 0 ? (newNoPool / newTotalPool) * 0.01 : 0.005;
 ```
 
 **⚠️ Simplified - Real AMM Should:**
+
 1. Maintain constant product: `yesPool × noPool = k`
 2. Calculate price impact before trade
 3. Implement slippage protection
@@ -509,6 +557,7 @@ const newNoPrice = newTotalPool > 0 ? newNoPool / newTotalPool * 0.01 : 0.005;
 5. Charge liquidity provider fees (if applicable)
 
 **Expected Formula (FPMM):**
+
 ```
 Price_YES = yesShares / totalShares
 Price_NO = noShares / totalShares
@@ -518,12 +567,13 @@ Price_YES + Price_NO = 1 (normalized to 0.01 BNB in UI)
 ---
 
 ### 5.4 Payout Calculation
+
 **Location:** `lib/utils.ts`
 
 ```typescript
 export function calculatePayout(
-  shares: number, 
-  totalWinningShares: number, 
+  shares: number,
+  totalWinningShares: number,
   totalPool: number
 ): number {
   if (totalWinningShares === 0) return 0;
@@ -532,6 +582,7 @@ export function calculatePayout(
 ```
 
 **Formula:**
+
 ```
 Payout = (User Shares / Total Winning Shares) × Total Pool × 0.9
 ```
@@ -543,9 +594,11 @@ Payout = (User Shares / Total Winning Shares) × Total Pool × 0.9
 ## 6. AI Integration
 
 ### 6.1 AI Service Architecture
+
 **File:** `lib/ai-service.ts`
 
 **Supported Providers:**
+
 1. **Gemini** (Default)
    - Model: `gemini-1.5-flash` or `gemini-1.5-pro`
    - API: Google Generative AI
@@ -559,20 +612,23 @@ Payout = (User Shares / Total Winning Shares) × Total Pool × 0.9
    - Custom API endpoint support
 
 ### 6.2 AI Analysis Output
+
 ```typescript
 interface AIAnalysisResult {
-  title: string;                    // Max 60 chars
-  description: string;              // 3-line, max 150 chars
-  summary: string;                  // 200-300 words, unbiased analysis
-  category: string;                 // AI-suggested category
-  expiresAt: number;                // Calculated from expiresInDays
-  resolutionInstructions: string;   // How to verify outcome
-  suggestedOptions?: string[];      // Default: ['YES', 'NO']
+  title: string; // Max 60 chars
+  description: string; // 3-line, max 150 chars
+  summary: string; // 200-300 words, unbiased analysis
+  category: string; // AI-suggested category
+  expiresAt: number; // Calculated from expiresInDays
+  resolutionInstructions: string; // How to verify outcome
+  suggestedOptions?: string[]; // Default: ['YES', 'NO']
 }
 ```
 
 ### 6.3 AI Prompt Structure
+
 The AI prompt includes:
+
 - Request for clear, measurable title
 - Concise 3-line description
 - **Unbiased summary explaining BOTH YES and NO outcomes equally**
@@ -582,20 +638,22 @@ The AI prompt includes:
 - Optional custom options
 
 **⚠️ Current Issue:**
+
 - AI API calls happen on **client-side** (browser)
 - API keys exposed in browser environment variables
 - **Should be moved to backend API route** for security
 
 **Recommendation:**
+
 ```typescript
 // Should be: Backend API route
-POST /api/ai/analyze
+POST / api / ai / analyze;
 {
   description: string;
   category: string;
 }
 
-Response: AIAnalysisResult
+Response: AIAnalysisResult;
 ```
 
 ---
@@ -603,6 +661,7 @@ Response: AIAnalysisResult
 ## 7. Wallet Integration (Privy)
 
 ### 7.1 Configuration
+
 **File:** `lib/privy-config.ts`
 
 ```typescript
@@ -611,7 +670,7 @@ export const PRIVY_APP_ID = process.env.NEXT_PUBLIC_PRIVY_APP_ID || '';
 export const privyClientConfig: PrivyClientConfig = {
   appearance: {
     theme: 'dark',
-    accentColor: '#F0B90B',  // BNB Yellow
+    accentColor: '#F0B90B', // BNB Yellow
   },
   loginMethods: ['wallet', 'email', 'sms', 'google', 'twitter', 'discord'],
   embeddedWallets: {
@@ -623,7 +682,9 @@ export const privyClientConfig: PrivyClientConfig = {
 ```
 
 ### 7.2 Expected Network Configuration
+
 **Missing from current implementation:**
+
 ```typescript
 // Should add to privy-config.ts
 import { bsc, bscTestnet } from 'viem/chains';
@@ -636,6 +697,7 @@ export const privyClientConfig: PrivyClientConfig = {
 ```
 
 ### 7.3 Transaction Methods Used
+
 ```typescript
 import { useSendTransaction } from '@privy-io/react-auth';
 
@@ -649,6 +711,7 @@ await sendTransaction({
 ```
 
 **⚠️ Missing:**
+
 - Contract interaction (calling functions with ABI)
 - Gas estimation
 - Transaction status tracking
@@ -659,16 +722,19 @@ await sendTransaction({
 ## 8. Internationalization (i18n)
 
 **Supported Languages:**
+
 - English (en)
 - Chinese Simplified (zh)
 
 **Implementation:**
+
 - Custom context provider (`I18nProvider`)
 - 150+ translation keys
 - Language toggle in header
 - Persistent across sessions (should add localStorage)
 
 **Coverage:**
+
 - ✅ Navigation
 - ✅ Buttons and CTAs
 - ✅ Form labels
@@ -681,13 +747,16 @@ await sendTransaction({
 ## 9. UI/UX Features
 
 ### 9.1 Theme and Styling
+
 **Brand Colors:**
+
 - Primary: BNB Yellow (#F0B90B / rgb(240, 185, 11))
 - Background: Yellow gradient (from-yellow-400 via-yellow-500 to-yellow-600)
 - Cards: Black with transparency (bg-black/90)
 - Accents: Green for YES, Red for NO
 
 **Visual Effects:**
+
 - Rising dust particles (animated background)
 - Neon green borders with pulse animation
 - Magnetic hover effects (Framer Motion)
@@ -696,6 +765,7 @@ await sendTransaction({
 - Interactive grid patterns
 
 ### 9.2 Responsive Design
+
 - ✅ Mobile navigation menu
 - ✅ Responsive grid layouts (1/2/3 columns)
 - ✅ Touch-friendly buttons
@@ -703,6 +773,7 @@ await sendTransaction({
 - ✅ Mobile-optimized forms
 
 ### 9.3 Animations
+
 - ✅ Page transitions
 - ✅ Card hover states
 - ✅ Button glow effects
@@ -716,6 +787,7 @@ await sendTransaction({
 ## 10. Missing Features / To Be Implemented
 
 ### 10.1 Backend API Integration
+
 **Priority: HIGH**
 
 Currently all data is mock/local state. Needs:
@@ -746,6 +818,7 @@ Currently all data is mock/local state. Needs:
 ---
 
 ### 10.2 Smart Contract Integration
+
 **Priority: HIGH**
 
 Needs Solidity contracts for:
@@ -769,6 +842,7 @@ Needs Solidity contracts for:
    - External resolver verification
 
 **Required Smart Contract Functions:**
+
 ```solidity
 // PredictionMarket.sol
 function createMarket(
@@ -797,9 +871,11 @@ function cancelMarket(uint256 marketId) external; // Creator only if sole partic
 ---
 
 ### 10.3 Real-time Updates
+
 **Priority: MEDIUM**
 
 Current implementation has no live updates. Should add:
+
 - WebSocket connection for real-time market updates
 - Price updates as bets are placed
 - New market notifications
@@ -807,6 +883,7 @@ Current implementation has no live updates. Should add:
 - Live participant count
 
 **Options:**
+
 1. Socket.io
 2. Server-Sent Events (SSE)
 3. GraphQL Subscriptions
@@ -815,9 +892,11 @@ Current implementation has no live updates. Should add:
 ---
 
 ### 10.4 User Input for Bet Amounts
+
 **Priority: HIGH**
 
 Currently bet amount is hardcoded (`0.01 BNB`). Need:
+
 - Amount input field in `PredictionCard`
 - Quote/preview before transaction
 - Min/max bet limits
@@ -827,9 +906,11 @@ Currently bet amount is hardcoded (`0.01 BNB`). Need:
 ---
 
 ### 10.5 Transaction Status Tracking
+
 **Priority: HIGH**
 
 Need to show:
+
 - Transaction pending state
 - Transaction hash
 - BSCScan link
@@ -837,6 +918,7 @@ Need to show:
 - Error messages with retry
 
 **Suggested Component:**
+
 ```typescript
 <TransactionStatus
   hash={txHash}
@@ -849,9 +931,11 @@ Need to show:
 ---
 
 ### 10.6 Market Details Page
+
 **Priority: MEDIUM**
 
 Currently no dedicated market page. Should add:
+
 - Route: `/market/[id]`
 - Full market details
 - Betting history (all participants)
@@ -863,9 +947,11 @@ Currently no dedicated market page. Should add:
 ---
 
 ### 10.7 Search Functionality
+
 **Priority: MEDIUM**
 
 Add search bar to filter markets by:
+
 - Title keywords
 - Description
 - Creator address
@@ -874,9 +960,11 @@ Add search bar to filter markets by:
 ---
 
 ### 10.8 Price Chart
+
 **Priority: LOW**
 
 Show price history over time:
+
 - Line chart for YES/NO prices
 - Volume chart
 - Participant growth
@@ -884,9 +972,11 @@ Show price history over time:
 ---
 
 ### 10.9 Notifications
+
 **Priority: LOW**
 
 Notify users when:
+
 - Their bet is placed successfully
 - Market they bet on is resolved
 - They have winnings to claim
@@ -895,9 +985,11 @@ Notify users when:
 ---
 
 ### 10.10 Profile Page
+
 **Priority: LOW**
 
 User profile showing:
+
 - Betting statistics
 - Win/loss record
 - Badges and achievements
@@ -954,6 +1046,7 @@ User profile showing:
 ## 12. Environment Variables Required
 
 ### 12.1 Current (.env.example)
+
 ```env
 # Gemini AI
 NEXT_PUBLIC_GEMINI_API_KEY=your_gemini_api_key_here
@@ -970,6 +1063,7 @@ NEXT_PUBLIC_AI_PROVIDER=gemini
 ```
 
 ### 12.2 Additional Variables Needed
+
 ```env
 # ⚠️ REMOVE FROM FRONTEND (move to backend):
 # NEXT_PUBLIC_GEMINI_API_KEY
@@ -998,18 +1092,19 @@ RESOLUTION_CRON_SECRET=...                                 # For cron jobs
 ## 13. Data Flow Summary
 
 ### 13.1 Create Prediction Flow
+
 ```
-User → CreateBetModal (form) 
-     → AI Analyze (frontend - SHOULD BE BACKEND) 
-     → Fill form 
-     → Submit 
-     → sendTransaction() to Vault 
+User → CreateBetModal (form)
+     → AI Analyze (frontend - SHOULD BE BACKEND)
+     → Fill form
+     → Submit
+     → sendTransaction() to Vault
      → ❌ LOCAL STATE UPDATE (SHOULD BE API CALL)
-     
+
 Expected Flow:
-User → CreateBetModal 
-     → POST /api/ai/analyze (backend) 
-     → Fill form 
+User → CreateBetModal
+     → POST /api/ai/analyze (backend)
+     → Fill form
      → POST /api/predictions (backend creates market, calls smart contract)
      → Transaction to smart contract
      → Backend listens for event, updates DB
@@ -1017,14 +1112,15 @@ User → CreateBetModal
 ```
 
 ### 13.2 Place Bet Flow
+
 ```
-User → Click YES/NO on PredictionCard 
+User → Click YES/NO on PredictionCard
      → ❌ HARDCODED 0.01 BNB (SHOULD BE USER INPUT)
      → ❌ LOCAL STATE UPDATE
-     
+
 Expected Flow:
-User → Enter bet amount 
-     → Click YES/NO 
+User → Enter bet amount
+     → Click YES/NO
      → POST /api/predictions/:id/bet (backend calculates shares)
      → Transaction to smart contract
      → Backend verifies transaction, updates DB
@@ -1033,12 +1129,13 @@ User → Enter bet amount
 ```
 
 ### 13.3 Claim Winnings Flow
+
 ```
-User → Click "Claim" in My Bets 
+User → Click "Claim" in My Bets
      → ❌ LOCAL STATE UPDATE
-     
+
 Expected Flow:
-User → Click "Claim" 
+User → Click "Claim"
      → POST /api/bets/:id/claim (backend verifies eligibility)
      → Smart contract transfers winnings (minus 10% fee)
      → Backend updates DB (bet.claimed = true)
@@ -1046,9 +1143,10 @@ User → Click "Claim"
 ```
 
 ### 13.4 Resolution Flow
+
 ```
 ❌ NOT IMPLEMENTED
-     
+
 Expected Flow (Automated):
 Cron job → Checks for expired markets
          → POST /api/ai/resolve (with market data)
@@ -1064,6 +1162,7 @@ Cron job → Checks for expired markets
 ## 14. Testing Status
 
 ### 14.1 Current Testing
+
 - ❌ No unit tests found
 - ❌ No integration tests
 - ❌ No E2E tests
@@ -1072,23 +1171,27 @@ Cron job → Checks for expired markets
 ### 14.2 Recommended Test Coverage
 
 **Unit Tests (Jest + React Testing Library):**
+
 - Component rendering
 - Form validation
 - Helper functions (`formatBNB`, `calculatePayout`, etc.)
 - AI service (with mocked API calls)
 
 **Integration Tests:**
+
 - Wallet connection flow
 - Market creation flow (with mock contract)
 - Betting flow
 - Claiming flow
 
 **E2E Tests (Playwright/Cypress):**
+
 - Complete user journeys
 - Multi-language support
 - Mobile responsiveness
 
 **Smart Contract Tests (Hardhat):**
+
 - Market creation
 - Betting logic
 - Resolution
@@ -1100,6 +1203,7 @@ Cron job → Checks for expired markets
 ## 15. Performance Considerations
 
 ### 15.1 Current Performance
+
 - ✅ Static pages with fast initial load
 - ✅ Code splitting via Next.js
 - ✅ Optimized images with Next/Image
@@ -1107,6 +1211,7 @@ Cron job → Checks for expired markets
 - ⚠️ Multiple shadcn/ui components (can be optimized)
 
 ### 15.2 Recommendations
+
 1. **Lazy Loading:**
    - Lazy load `CreateBetModal` (only when opened)
    - Lazy load heavy animation components
@@ -1310,6 +1415,7 @@ POST   /api/webhooks/blockchain
 ## 18. Deployment Checklist
 
 ### 18.1 Frontend (Vercel)
+
 - ✅ Next.js 14 configured
 - ✅ Environment variables documented
 - ✅ Build successful locally
@@ -1319,6 +1425,7 @@ POST   /api/webhooks/blockchain
 - ⚠️ Add analytics (Plausible/Google Analytics)
 
 ### 18.2 Backend (To Be Built)
+
 - ⚠️ Deploy Node.js API server (Railway/Render/AWS)
 - ⚠️ Set up MongoDB (MongoDB Atlas)
 - ⚠️ Configure CORS for frontend domain
@@ -1327,6 +1434,7 @@ POST   /api/webhooks/blockchain
 - ⚠️ Set up monitoring (DataDog/New Relic)
 
 ### 18.3 Smart Contracts (To Be Built)
+
 - ⚠️ Deploy to BSC Testnet first
 - ⚠️ Get contracts verified on BSCScan
 - ⚠️ Test all functions on testnet
@@ -1335,6 +1443,7 @@ POST   /api/webhooks/blockchain
 - ⚠️ Update frontend with contract addresses
 
 ### 18.4 AI Resolution (To Be Built)
+
 - ⚠️ Set up cron job server (or use Vercel Cron)
 - ⚠️ Configure API keys for verification sources
 - ⚠️ Test resolution logic thoroughly
@@ -1345,6 +1454,7 @@ POST   /api/webhooks/blockchain
 ## 19. Cost Estimates (Monthly)
 
 ### 19.1 Infrastructure
+
 - **Frontend (Vercel):** $0 - $20 (Hobby/Pro plan)
 - **Backend API (Railway):** $5 - $50 (depending on traffic)
 - **MongoDB Atlas:** $0 - $57 (Free tier to M10)
@@ -1352,23 +1462,27 @@ POST   /api/webhooks/blockchain
 - **Total Infrastructure:** ~$20 - $100/month
 
 ### 19.2 External APIs
+
 - **Gemini AI (Google):** Free tier: 60 requests/min
 - **Price Oracles (Chainlink):** On-chain gas costs
 - **Verification APIs:** $0 - $50/month (depending on usage)
 - **Total APIs:** ~$0 - $100/month
 
 ### 19.3 Blockchain Costs
+
 - **Contract Deployment:** ~$50 - $200 one-time (BSC gas)
 - **Transaction Gas:** User-paid (not platform cost)
 - **Resolution Transactions:** ~$1 - $5 per resolution (platform pays)
 - **Total Blockchain:** ~$50 - $500/month (depending on market volume)
 
 ### 19.4 Total Estimated Monthly Cost
+
 - **Low Traffic:** $70 - $200/month
 - **Medium Traffic:** $200 - $500/month
 - **High Traffic:** $500+/month
 
 **Revenue (10% platform fee on all payouts):**
+
 - Break-even at ~$700 - $5,000 monthly bet volume
 
 ---
@@ -1376,6 +1490,7 @@ POST   /api/webhooks/blockchain
 ## 20. Next Steps / Recommendations
 
 ### 20.1 Immediate (Week 1-2)
+
 1. ✅ **Backend API Development:**
    - Set up Node.js + Express/Fastify
    - Connect to MongoDB
@@ -1394,6 +1509,7 @@ POST   /api/webhooks/blockchain
    - Test end-to-end flow on testnet
 
 ### 20.2 Short Term (Week 3-4)
+
 4. ✅ **User Input for Bet Amounts:**
    - Add amount input to PredictionCard
    - Show quote/preview before transaction
@@ -1408,6 +1524,7 @@ POST   /api/webhooks/blockchain
    - Update markets live as bets are placed
 
 ### 20.3 Medium Term (Month 2)
+
 7. ✅ **AI Resolution System:**
    - Set up cron jobs
    - Integrate 25+ verification APIs
@@ -1424,6 +1541,7 @@ POST   /api/webhooks/blockchain
    - Add betting history
 
 ### 20.4 Long Term (Month 3+)
+
 10. ✅ **Additional Features:**
     - Search functionality
     - Notifications
@@ -1447,12 +1565,14 @@ POST   /api/webhooks/blockchain
 ## 21. Contact & Support
 
 **Development Team:**
+
 - Frontend: ✅ Complete
 - Backend: ⚠️ To be built
 - Smart Contracts: ⚠️ To be built
 - AI Resolution: ⚠️ To be built
 
 **For Questions:**
+
 - Review this audit document
 - Check implementation plan document
 - Refer to code comments in `app/` and `components/`
@@ -1464,6 +1584,7 @@ POST   /api/webhooks/blockchain
 The DarkBet frontend is **production-ready** from a UI/UX perspective. All components are implemented, styled, and functional with mock data. The application demonstrates a professional, modern interface with excellent attention to detail.
 
 **Key Strengths:**
+
 - ✅ Complete UI implementation
 - ✅ Professional design system
 - ✅ Comprehensive type definitions
@@ -1473,6 +1594,7 @@ The DarkBet frontend is **production-ready** from a UI/UX perspective. All compo
 - ✅ Responsive and accessible
 
 **Critical Next Steps:**
+
 1. Build backend API (Node.js + MongoDB)
 2. Develop and deploy smart contracts (Solidity)
 3. Move AI service to backend for security
@@ -1482,6 +1604,7 @@ The DarkBet frontend is **production-ready** from a UI/UX perspective. All compo
 7. Set up AI resolution system
 
 **Estimated Timeline to Production:**
+
 - Backend API: 2-3 weeks
 - Smart Contracts: 2-3 weeks
 - Testing & Integration: 1-2 weeks
@@ -1493,4 +1616,3 @@ The frontend provides an excellent foundation for a full-featured prediction mar
 ---
 
 **End of Frontend Audit Report**
-

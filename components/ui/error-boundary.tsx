@@ -15,7 +15,10 @@ interface ErrorBoundaryProps {
   fallback?: React.ComponentType<{ error: Error; resetError: () => void }>;
 }
 
-export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
+export class ErrorBoundary extends React.Component<
+  ErrorBoundaryProps,
+  ErrorBoundaryState
+> {
   constructor(props: ErrorBoundaryProps) {
     super(props);
     this.state = { hasError: false };
@@ -37,28 +40,34 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
     if (this.state.hasError) {
       if (this.props.fallback) {
         const FallbackComponent = this.props.fallback;
-        return <FallbackComponent error={this.state.error!} resetError={this.resetError} />;
+        return (
+          <FallbackComponent
+            error={this.state.error!}
+            resetError={this.resetError}
+          />
+        );
       }
 
       return (
-        <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 flex items-center justify-center p-4">
-          <Card className="max-w-md w-full bg-gray-800/60 backdrop-blur-sm border border-gray-700/50">
+        <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-gray-900 via-black to-gray-800 p-4">
+          <Card className="w-full max-w-md border border-gray-700/50 bg-gray-800/60 backdrop-blur-sm">
             <CardHeader className="text-center">
-              <div className="mx-auto mb-4 w-12 h-12 bg-red-500/20 rounded-full flex items-center justify-center">
+              <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-red-500/20">
                 <AlertCircle className="h-6 w-6 text-red-400" />
               </div>
               <CardTitle className="text-white">Something went wrong</CardTitle>
             </CardHeader>
-            <CardContent className="text-center space-y-4">
+            <CardContent className="space-y-4 text-center">
               <p className="text-gray-300">
-                We encountered an unexpected error. Please try refreshing the page.
+                We encountered an unexpected error. Please try refreshing the
+                page.
               </p>
               {process.env.NODE_ENV === 'development' && this.state.error && (
                 <details className="text-left">
-                  <summary className="text-sm text-gray-400 cursor-pointer">
+                  <summary className="cursor-pointer text-sm text-gray-400">
                     Error Details
                   </summary>
-                  <pre className="mt-2 text-xs text-red-400 bg-gray-900/50 p-2 rounded overflow-auto">
+                  <pre className="mt-2 overflow-auto rounded bg-gray-900/50 p-2 text-xs text-red-400">
                     {this.state.error.message}
                     {'\n'}
                     {this.state.error.stack}
@@ -67,9 +76,9 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
               )}
               <Button
                 onClick={this.resetError}
-                className="w-full bg-gradient-to-r from-yellow-400 to-yellow-600 hover:from-yellow-500 hover:to-yellow-700 text-black font-semibold"
+                className="w-full bg-gradient-to-r from-yellow-400 to-yellow-600 font-semibold text-black hover:from-yellow-500 hover:to-yellow-700"
               >
-                <RefreshCw className="h-4 w-4 mr-2" />
+                <RefreshCw className="mr-2 h-4 w-4" />
                 Try Again
               </Button>
             </CardContent>

@@ -14,23 +14,25 @@ router.get('/:address/bets', async (req: Request, res: Response) => {
     const userAddress = req.params.address.toLowerCase();
 
     // Get all commitments for this user
-    const commitments = await Commitment.find({ 
-      user: { $regex: new RegExp(`^${userAddress}$`, 'i') }
+    const commitments = await Commitment.find({
+      user: { $regex: new RegExp(`^${userAddress}$`, 'i') },
     }).lean();
 
     // Get all revealed bets for this user
-    const revealedBets = await Bet.find({ 
-      user: { $regex: new RegExp(`^${userAddress}$`, 'i') }
+    const revealedBets = await Bet.find({
+      user: { $regex: new RegExp(`^${userAddress}$`, 'i') },
     }).lean();
 
     // Get market details for each bet
-    const marketIds = Array.from(new Set([
-      ...commitments.map(c => c.marketId),
-      ...revealedBets.map(b => b.marketId)
-    ]));
+    const marketIds = Array.from(
+      new Set([
+        ...commitments.map(c => c.marketId),
+        ...revealedBets.map(b => b.marketId),
+      ])
+    );
 
-    const markets = await Market.find({ 
-      marketId: { $in: marketIds } 
+    const markets = await Market.find({
+      marketId: { $in: marketIds },
     }).lean();
 
     const marketMap = new Map(markets.map(m => [m.marketId, m]));
@@ -56,13 +58,19 @@ router.get('/:address/bets', async (req: Request, res: Response) => {
         revealedAt: bet.revealedAt,
         claimed: bet.claimed,
         txHash: bet.txHash,
-      }))
+      })),
     ];
 
     // Sort by timestamp/revealedAt (most recent first)
     userBets.sort((a, b) => {
-      const timeA = 'revealedAt' in a ? new Date(a.revealedAt).getTime() : new Date(a.timestamp).getTime();
-      const timeB = 'revealedAt' in b ? new Date(b.revealedAt).getTime() : new Date(b.timestamp).getTime();
+      const timeA =
+        'revealedAt' in a
+          ? new Date(a.revealedAt).getTime()
+          : new Date(a.timestamp).getTime();
+      const timeB =
+        'revealedAt' in b
+          ? new Date(b.revealedAt).getTime()
+          : new Date(b.timestamp).getTime();
       return timeB - timeA;
     });
 
@@ -94,14 +102,20 @@ router.get('/:address/stats', async (req: Request, res: Response) => {
     const userAddress = req.params.address.toLowerCase();
 
     // Get all revealed bets
-    const bets = await Bet.find({ 
-      user: { $regex: new RegExp(`^${userAddress}$`, 'i') }
+    const bets = await Bet.find({
+      user: { $regex: new RegExp(`^${userAddress}$`, 'i') },
     }).lean();
 
     // Calculate stats
     const totalBets = bets.length;
-    const totalInvested = bets.reduce((sum, bet) => sum + BigInt(bet.amount), BigInt(0));
-    const totalShares = bets.reduce((sum, bet) => sum + BigInt(bet.shares), BigInt(0));
+    const totalInvested = bets.reduce(
+      (sum, bet) => sum + BigInt(bet.amount),
+      BigInt(0)
+    );
+    const totalShares = bets.reduce(
+      (sum, bet) => sum + BigInt(bet.shares),
+      BigInt(0)
+    );
     const claimedBets = bets.filter(b => b.claimed).length;
 
     res.json({
@@ -131,13 +145,13 @@ router.get('/:address/stats', async (req: Request, res: Response) => {
 router.get('/leaderboard', async (req: Request, res: Response) => {
   try {
     const { timeframe = 'all', limit = 50 } = req.query;
-    
+
     // Calculate time filter
     let timeFilter = {};
     if (timeframe !== 'all') {
       const now = new Date();
       let startDate: Date;
-      
+
       switch (timeframe) {
         case '7d':
           startDate = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
@@ -151,21 +165,21 @@ router.get('/leaderboard', async (req: Request, res: Response) => {
         default:
           startDate = new Date(0);
       }
-      
+
       timeFilter = {
-        revealedAt: { $gte: startDate }
+        revealedAt: { $gte: startDate },
       };
     }
 
     // Get all revealed bets with time filter
     const bets = await Bet.find(timeFilter).lean();
-    
+
     // Group by user and calculate stats
     const userStats = new Map();
-    
+
     for (const bet of bets) {
       const userAddress = bet.user.toLowerCase();
-      
+
       if (!userStats.has(userAddress)) {
         userStats.set(userAddress, {
           address: userAddress,
@@ -176,19 +190,22 @@ router.get('/leaderboard', async (req: Request, res: Response) => {
           lastActive: 0,
         });
       }
-      
+
       const stats = userStats.get(userAddress);
       stats.totalBets++;
       stats.totalVolume += parseFloat(bet.amount);
-      stats.lastActive = Math.max(stats.lastActive, new Date(bet.revealedAt).getTime());
-      
+      stats.lastActive = Math.max(
+        stats.lastActive,
+        new Date(bet.revealedAt).getTime()
+      );
+
       // Calculate winnings (simplified - would need market resolution data)
       if (bet.claimed) {
         stats.totalWinnings += parseFloat(bet.shares) * 0.1; // Simplified calculation
         stats.winCount++;
       }
     }
-    
+
     // Convert to array and calculate win rates
     const leaderboard = Array.from(userStats.values()).map(stats => ({
       ...stats,
@@ -196,34 +213,36 @@ router.get('/leaderboard', async (req: Request, res: Response) => {
       totalWinnings: stats.totalWinnings,
       totalVolume: stats.totalVolume,
     }));
-    
+
     // Sort by total winnings (descending)
     leaderboard.sort((a, b) => b.totalWinnings - a.totalWinnings);
-    
+
     // Add ranks and badges
-    const rankedLeaderboard = leaderboard.slice(0, parseInt(limit as string)).map((entry, index) => {
-      const badges = [];
-      
-      if (entry.winRate >= 0.8) badges.push('Expert');
-      if (entry.totalWinnings >= 2) badges.push('High Roller');
-      if (entry.winRate >= 0.9) badges.push('Champion');
-      if (entry.totalBets >= 20) badges.push('Active Trader');
-      if (entry.totalVolume >= 5) badges.push('Whale');
-      
-      return {
-        rank: index + 1,
-        address: entry.address,
-        username: `User${entry.address.slice(-4)}`, // Generate username from address
-        totalWinnings: entry.totalWinnings,
-        totalBets: entry.totalBets,
-        winRate: entry.winRate,
-        totalVolume: entry.totalVolume,
-        badges,
-        isVerified: entry.totalBets >= 10, // Simple verification based on activity
-        streak: Math.floor(Math.random() * 10), // Placeholder - would need streak calculation
-        lastActive: entry.lastActive,
-      };
-    });
+    const rankedLeaderboard = leaderboard
+      .slice(0, parseInt(limit as string))
+      .map((entry, index) => {
+        const badges = [];
+
+        if (entry.winRate >= 0.8) badges.push('Expert');
+        if (entry.totalWinnings >= 2) badges.push('High Roller');
+        if (entry.winRate >= 0.9) badges.push('Champion');
+        if (entry.totalBets >= 20) badges.push('Active Trader');
+        if (entry.totalVolume >= 5) badges.push('Whale');
+
+        return {
+          rank: index + 1,
+          address: entry.address,
+          username: `User${entry.address.slice(-4)}`, // Generate username from address
+          totalWinnings: entry.totalWinnings,
+          totalBets: entry.totalBets,
+          winRate: entry.winRate,
+          totalVolume: entry.totalVolume,
+          badges,
+          isVerified: entry.totalBets >= 10, // Simple verification based on activity
+          streak: Math.floor(Math.random() * 10), // Placeholder - would need streak calculation
+          lastActive: entry.lastActive,
+        };
+      });
 
     res.json({
       success: true,
@@ -243,4 +262,3 @@ router.get('/leaderboard', async (req: Request, res: Response) => {
 });
 
 export default router;
-

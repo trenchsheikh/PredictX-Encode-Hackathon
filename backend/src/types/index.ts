@@ -57,4 +57,3 @@ export interface BlockchainEvent {
   transactionHash: string;
   args: any;
 }
-

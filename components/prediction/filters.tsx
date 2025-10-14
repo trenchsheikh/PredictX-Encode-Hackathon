@@ -29,7 +29,11 @@ const timeRanges = [
   { value: '30d', label: '30 Days' },
 ];
 
-export function Filters({ filters, onFiltersChange, totalCount }: FiltersProps) {
+export function Filters({
+  filters,
+  onFiltersChange,
+  totalCount,
+}: FiltersProps) {
   const updateFilter = (key: keyof FilterOptions, value: any) => {
     onFiltersChange({ ...filters, [key]: value });
   };
@@ -51,27 +55,32 @@ export function Filters({ filters, onFiltersChange, totalCount }: FiltersProps) 
               variant="ghost"
               size="sm"
               onClick={clearAllFilters}
-              className="text-black hover:text-black/80 hover:bg-black/10"
+              className="text-black hover:bg-black/10 hover:text-black/80"
             >
-              <X className="h-4 w-4 mr-1" />
+              <X className="mr-1 h-4 w-4" />
               Clear all
             </Button>
           )}
         </div>
-        <div className="text-sm text-black font-medium">
+        <div className="text-sm font-medium text-black">
           {totalCount} markets
         </div>
       </div>
 
       {/* Filter Options - Always Visible */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 p-4 rounded-lg bg-black/90 border border-black">
+      <div className="grid grid-cols-1 gap-4 rounded-lg border border-black bg-black/90 p-4 md:grid-cols-2 lg:grid-cols-4">
         {/* Status Filter */}
         <div className="space-y-2">
           <label className="text-sm font-medium text-white">Status</label>
           <select
             value={filters.status || 'all'}
-            onChange={(e) => updateFilter('status', e.target.value === 'all' ? undefined : e.target.value)}
-            className="w-full p-2 border border-white/20 rounded-md bg-black/50 text-white focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400"
+            onChange={e =>
+              updateFilter(
+                'status',
+                e.target.value === 'all' ? undefined : e.target.value
+              )
+            }
+            className="w-full rounded-md border border-white/20 bg-black/50 p-2 text-white focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400"
           >
             <option value="all">All Status</option>
             <option value="active">Active</option>
@@ -86,11 +95,16 @@ export function Filters({ filters, onFiltersChange, totalCount }: FiltersProps) 
           <label className="text-sm font-medium text-white">Category</label>
           <select
             value={filters.category || 'all'}
-            onChange={(e) => updateFilter('category', e.target.value === 'all' ? undefined : e.target.value)}
-            className="w-full p-2 border border-white/20 rounded-md bg-black/50 text-white focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400"
+            onChange={e =>
+              updateFilter(
+                'category',
+                e.target.value === 'all' ? undefined : e.target.value
+              )
+            }
+            className="w-full rounded-md border border-white/20 bg-black/50 p-2 text-white focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400"
           >
             <option value="all">All Categories</option>
-            {categories.map((category) => (
+            {categories.map(category => (
               <option key={category.value} value={category.value}>
                 {category.label}
               </option>
@@ -103,10 +117,15 @@ export function Filters({ filters, onFiltersChange, totalCount }: FiltersProps) 
           <label className="text-sm font-medium text-white">Time Range</label>
           <select
             value={filters.timeRange || 'all'}
-            onChange={(e) => updateFilter('timeRange', e.target.value === 'all' ? undefined : e.target.value)}
-            className="w-full p-2 border border-white/20 rounded-md bg-black/50 text-white focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400"
+            onChange={e =>
+              updateFilter(
+                'timeRange',
+                e.target.value === 'all' ? undefined : e.target.value
+              )
+            }
+            className="w-full rounded-md border border-white/20 bg-black/50 p-2 text-white focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400"
           >
-            {timeRanges.map((range) => (
+            {timeRanges.map(range => (
               <option key={range.value} value={range.value}>
                 {range.label}
               </option>
@@ -119,8 +138,8 @@ export function Filters({ filters, onFiltersChange, totalCount }: FiltersProps) 
           <label className="text-sm font-medium text-white">Popularity</label>
           <select
             value={filters.isHot ? 'hot' : 'all'}
-            onChange={(e) => updateFilter('isHot', e.target.value === 'hot')}
-            className="w-full p-2 border border-white/20 rounded-md bg-black/50 text-white focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400"
+            onChange={e => updateFilter('isHot', e.target.value === 'hot')}
+            className="w-full rounded-md border border-white/20 bg-black/50 p-2 text-white focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400"
           >
             <option value="all">All</option>
             <option value="hot">Hot Only</option>
@@ -132,44 +151,45 @@ export function Filters({ filters, onFiltersChange, totalCount }: FiltersProps) 
       {hasActiveFilters && (
         <div className="flex flex-wrap gap-2">
           {filters.status && (
-            <Badge className="flex items-center gap-1 bg-black/90 text-white border border-white/20">
+            <Badge className="flex items-center gap-1 border border-white/20 bg-black/90 text-white">
               Status: {filters.status}
               <button
                 onClick={() => updateFilter('status', undefined)}
-                className="ml-1 hover:bg-white/20 rounded-full p-0.5"
+                className="ml-1 rounded-full p-0.5 hover:bg-white/20"
               >
                 <X className="h-3 w-3" />
               </button>
             </Badge>
           )}
           {filters.category && (
-            <Badge className="flex items-center gap-1 bg-black/90 text-white border border-white/20">
-              Category: {categories.find(c => c.value === filters.category)?.label}
+            <Badge className="flex items-center gap-1 border border-white/20 bg-black/90 text-white">
+              Category:{' '}
+              {categories.find(c => c.value === filters.category)?.label}
               <button
                 onClick={() => updateFilter('category', undefined)}
-                className="ml-1 hover:bg-white/20 rounded-full p-0.5"
+                className="ml-1 rounded-full p-0.5 hover:bg-white/20"
               >
                 <X className="h-3 w-3" />
               </button>
             </Badge>
           )}
           {filters.timeRange && (
-            <Badge className="flex items-center gap-1 bg-black/90 text-white border border-white/20">
+            <Badge className="flex items-center gap-1 border border-white/20 bg-black/90 text-white">
               Time: {timeRanges.find(t => t.value === filters.timeRange)?.label}
               <button
                 onClick={() => updateFilter('timeRange', undefined)}
-                className="ml-1 hover:bg-white/20 rounded-full p-0.5"
+                className="ml-1 rounded-full p-0.5 hover:bg-white/20"
               >
                 <X className="h-3 w-3" />
               </button>
             </Badge>
           )}
           {filters.isHot && (
-            <Badge className="flex items-center gap-1 bg-yellow-500 text-black border border-yellow-600">
+            <Badge className="flex items-center gap-1 border border-yellow-600 bg-yellow-500 text-black">
               Hot Only
               <button
                 onClick={() => updateFilter('isHot', undefined)}
-                className="ml-1 hover:bg-black/20 rounded-full p-0.5"
+                className="ml-1 rounded-full p-0.5 hover:bg-black/20"
               >
                 <X className="h-3 w-3" />
               </button>
@@ -180,5 +200,3 @@ export function Filters({ filters, onFiltersChange, totalCount }: FiltersProps) 
     </div>
   );
 }
-
-

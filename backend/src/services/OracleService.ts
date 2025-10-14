@@ -35,7 +35,8 @@ export interface VerificationResult {
 class OracleService {
   private readonly COINGECKO_API = 'https://api.coingecko.com/api/v3';
   private readonly CACHE_DURATION = 60000; // 1 minute cache
-  private priceCache: Map<string, { data: CryptoPrice; timestamp: number }> = new Map();
+  private priceCache: Map<string, { data: CryptoPrice; timestamp: number }> =
+    new Map();
 
   /**
    * Supported cryptocurrencies
@@ -78,7 +79,9 @@ class OracleService {
         throw new Error(`Price data not found for ${cryptoId}`);
       }
 
-      const cryptoInfo = Object.values(this.SUPPORTED_CRYPTOS).find(c => c.id === cryptoId);
+      const cryptoInfo = Object.values(this.SUPPORTED_CRYPTOS).find(
+        c => c.id === cryptoId
+      );
 
       const priceData: CryptoPrice = {
         id: cryptoId,
@@ -131,7 +134,9 @@ class OracleService {
    * @param condition The prediction condition to verify
    * @returns Verification result with outcome (true/false)
    */
-  async verifyPrediction(condition: PredictionCondition): Promise<VerificationResult> {
+  async verifyPrediction(
+    condition: PredictionCondition
+  ): Promise<VerificationResult> {
     try {
       const priceData = await this.getPrice(condition.crypto);
 
@@ -156,7 +161,9 @@ class OracleService {
         case 'equals':
           // Allow 1% tolerance for "equals"
           const tolerance = condition.targetPrice * 0.01;
-          outcome = Math.abs(priceData.currentPrice - condition.targetPrice) <= tolerance;
+          outcome =
+            Math.abs(priceData.currentPrice - condition.targetPrice) <=
+            tolerance;
           reasoning = `${priceData.name} price of $${priceData.currentPrice.toLocaleString()} is ${
             outcome ? 'approximately equal to' : 'not equal to'
           } target of $${condition.targetPrice.toLocaleString()}`;
@@ -191,7 +198,10 @@ class OracleService {
    * - "Will Ethereum stay below $5,000?"
    * - "Will BNB exceed $1000?"
    */
-  parsePredictionTitle(title: string, deadline: number): PredictionCondition | null {
+  parsePredictionTitle(
+    title: string,
+    deadline: number
+  ): PredictionCondition | null {
     const lowerTitle = title.toLowerCase();
 
     // Find crypto
@@ -216,9 +226,18 @@ class OracleService {
 
     // Determine operator
     let operator: 'above' | 'below' | 'equals' = 'above';
-    if (lowerTitle.includes('below') || lowerTitle.includes('under') || lowerTitle.includes('less than')) {
+    if (
+      lowerTitle.includes('below') ||
+      lowerTitle.includes('under') ||
+      lowerTitle.includes('less than')
+    ) {
       operator = 'below';
-    } else if (lowerTitle.includes('reach') || lowerTitle.includes('exceed') || lowerTitle.includes('above') || lowerTitle.includes('over')) {
+    } else if (
+      lowerTitle.includes('reach') ||
+      lowerTitle.includes('exceed') ||
+      lowerTitle.includes('above') ||
+      lowerTitle.includes('over')
+    ) {
       operator = 'above';
     } else if (lowerTitle.includes('equal') || lowerTitle.includes('exactly')) {
       operator = 'equals';
@@ -235,7 +254,10 @@ class OracleService {
   /**
    * Verify a market using its title and deadline
    */
-  async verifyMarket(title: string, deadline: number): Promise<VerificationResult> {
+  async verifyMarket(
+    title: string,
+    deadline: number
+  ): Promise<VerificationResult> {
     const condition = this.parsePredictionTitle(title, deadline);
 
     if (!condition) {
@@ -255,8 +277,14 @@ class OracleService {
   /**
    * Admin override for manual testing
    */
-  async manualResolve(marketId: number, outcome: boolean, reasoning: string): Promise<VerificationResult> {
-    console.log(`🔧 Manual override for market ${marketId}: ${outcome ? 'YES' : 'NO'}`);
+  async manualResolve(
+    marketId: number,
+    outcome: boolean,
+    reasoning: string
+  ): Promise<VerificationResult> {
+    console.log(
+      `🔧 Manual override for market ${marketId}: ${outcome ? 'YES' : 'NO'}`
+    );
 
     return {
       success: true,
@@ -271,7 +299,10 @@ class OracleService {
   /**
    * Get market cap comparison (for "Will ETH flip BTC?" type predictions)
    */
-  async compareMarketCaps(crypto1: string, crypto2: string): Promise<{
+  async compareMarketCaps(
+    crypto1: string,
+    crypto2: string
+  ): Promise<{
     crypto1Higher: boolean;
     crypto1Cap: number;
     crypto2Cap: number;
@@ -301,4 +332,3 @@ class OracleService {
 }
 
 export const oracleService = new OracleService();
-

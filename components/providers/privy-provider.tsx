@@ -4,15 +4,14 @@ import { PrivyProvider } from '@privy-io/react-auth';
 import { PRIVY_APP_ID, privyClientConfig } from '@/lib/privy-config';
 import { createContext, useContext, useMemo, useState } from 'react';
 
-export function PrivyProviderWrapper({ children }: { children: React.ReactNode }) {
+export function PrivyProviderWrapper({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <PrivyProvider
-      appId={PRIVY_APP_ID}
-      config={privyClientConfig}
-    >
-      <I18nProvider>
-        {children}
-      </I18nProvider>
+    <PrivyProvider appId={PRIVY_APP_ID} config={privyClientConfig}>
+      <I18nProvider>{children}</I18nProvider>
     </PrivyProvider>
   );
 }
@@ -32,31 +31,41 @@ const defaultMessages: Record<Locale, Messages> = {
     create_bet: 'Make a Prediction',
     live_markets: 'Live Bet Markets',
     // Home page
-           hero_subtitle: 'Private Dark Pool Prediction Markets with AI-Driven Results. Built on BNB Smart Chain.',
-           dark_pools_title: 'How Dark Pools Work',
-           dark_pools_description: 'Unlike traditional prediction markets where every bet and position is publicly visible, DarkBet operates through dark pools. Private liquidity layers hide order flow and participant activity until settlement.',
-           privacy: 'Privacy',
-           privacy_description: 'Order flow and positions remain hidden until settlement',
-           anti_manipulation: 'Anti-Manipulation',
-           anti_manipulation_description: 'Prevents copy-trading and market manipulation',
-           clean_slate: 'Clean Slate',
-           clean_slate_description: 'Important actors can place predictions without risking identity',
-           dark_pools_comparison_title: 'How Dark Pools Differ from Traditional Markets',
-           traditional_markets_title: 'Traditional Markets',
-           traditional_markets_points: 'All bets and positions are publicly visible|Order flow is transparent to everyone|Vulnerable to copy-trading and manipulation|Participants can be identified and targeted|Market makers can front-run large orders',
-           darkbet_dark_pools_title: 'DarkBet Dark Pools',
-           darkbet_dark_pools_points: 'Private liquidity layers hide all activity|Order flow remains confidential until settlement|Prevents copy-trading and manipulation|Protects participant identity and privacy|Fair execution without front-running',
-           connect_to_create: 'Connect wallet to create predictions',
+    hero_subtitle:
+      'Private Dark Pool Prediction Markets with AI-Driven Results. Built on BNB Smart Chain.',
+    dark_pools_title: 'How Dark Pools Work',
+    dark_pools_description:
+      'Unlike traditional prediction markets where every bet and position is publicly visible, DarkBet operates through dark pools. Private liquidity layers hide order flow and participant activity until settlement.',
+    privacy: 'Privacy',
+    privacy_description:
+      'Order flow and positions remain hidden until settlement',
+    anti_manipulation: 'Anti-Manipulation',
+    anti_manipulation_description:
+      'Prevents copy-trading and market manipulation',
+    clean_slate: 'Clean Slate',
+    clean_slate_description:
+      'Important actors can place predictions without risking identity',
+    dark_pools_comparison_title:
+      'How Dark Pools Differ from Traditional Markets',
+    traditional_markets_title: 'Traditional Markets',
+    traditional_markets_points:
+      'All bets and positions are publicly visible|Order flow is transparent to everyone|Vulnerable to copy-trading and manipulation|Participants can be identified and targeted|Market makers can front-run large orders',
+    darkbet_dark_pools_title: 'DarkBet Dark Pools',
+    darkbet_dark_pools_points:
+      'Private liquidity layers hide all activity|Order flow remains confidential until settlement|Prevents copy-trading and manipulation|Protects participant identity and privacy|Fair execution without front-running',
+    connect_to_create: 'Connect wallet to create predictions',
     active_predictions: 'Active Predictions',
     total_participants: 'Total Participants',
     total_volume: 'Total Volume',
     total_predictions: 'Total Predictions',
     no_predictions_found: 'No predictions found',
-    try_adjusting_filters: 'Try adjusting your filters or create the first prediction!',
+    try_adjusting_filters:
+      'Try adjusting your filters or create the first prediction!',
     create_first_prediction: 'Create First Prediction',
     // Make a Prediction Modal
     create_prediction_market: 'Make a Prediction',
-    create_prediction_description: 'Create a prediction market with automated or manual resolution',
+    create_prediction_description:
+      'Create a prediction market with automated or manual resolution',
     wallet_required: 'Wallet Required',
     connect_wallet_to_create: 'Connect your wallet to create predictions',
     bet_type: 'Bet Type',
@@ -65,7 +74,8 @@ const defaultMessages: Record<Locale, Messages> = {
     auto_verified_outcome: 'Auto-verified outcome',
     price_oracle: 'Price Oracle',
     bet_description: 'Bet Description',
-    describe_prediction: 'Describe your prediction. AI will auto-generate the bet title.',
+    describe_prediction:
+      'Describe your prediction. AI will auto-generate the bet title.',
     ai_resolution_instructions: 'AI Resolution Instructions',
     analyze: 'Analyze',
     analyzing: 'Analyzing...',
@@ -75,10 +85,12 @@ const defaultMessages: Record<Locale, Messages> = {
     options: 'Options',
     add_option: 'Add Option',
     place_initial_bet: 'Place Your Initial Bet (Required)',
-    prevent_spam: 'To prevent spam, creators must participate in their own prediction',
+    prevent_spam:
+      'To prevent spam, creators must participate in their own prediction',
     your_prediction: 'Your Prediction',
     bnb_amount: 'BNB Amount',
-    click_create_will_prompt: 'Clicking "Make a Prediction" will prompt your wallet to send {amount} to the vault',
+    click_create_will_prompt:
+      'Clicking "Make a Prediction" will prompt your wallet to send {amount} to the vault',
     cancel: 'Cancel',
     creating: 'Creating...',
     // Prediction Card
@@ -113,20 +125,25 @@ const defaultMessages: Record<Locale, Messages> = {
     no_bets_found: 'No bets found',
     no_active_bets: "You don't have any active bets.",
     no_resolved_bets: "You don't have any resolved bets.",
-    no_bets_yet: "You haven't placed any bets yet. Start by exploring the prediction markets!",
+    no_bets_yet:
+      "You haven't placed any bets yet. Start by exploring the prediction markets!",
     explore_markets: 'Explore Markets',
     expires_in: 'Expires in',
     resolved_on: 'Resolved',
     // How it Works
     how_darkbet_works: 'How DarkBet Works',
     platform_overview: 'Platform Overview',
-    platform_description: 'DarkBet is a decentralized prediction market where you can create and participate in bets on real-world events',
+    platform_description:
+      'DarkBet is a decentralized prediction market where you can create and participate in bets on real-world events',
     blockchain_based: 'Blockchain-Based',
-    blockchain_description: 'All transactions happen on BNB Smart Chain with native BNB tokens for maximum transparency',
+    blockchain_description:
+      'All transactions happen on BNB Smart Chain with native BNB tokens for maximum transparency',
     ai_powered: 'AI-Powered',
-    ai_description: 'Advanced AI generates bet titles, suggests deadlines, and resolves outcomes using real-world data',
+    ai_description:
+      'Advanced AI generates bet titles, suggests deadlines, and resolves outcomes using real-world data',
     real_time: 'Real-Time',
-    real_time_description: 'Live activity feed and instant updates when bets are created, joined, or resolved',
+    real_time_description:
+      'Live activity feed and instant updates when bets are created, joined, or resolved',
     // Leaderboard
     leaderboard: 'Leaderboard',
     top_performers: 'Top performers on DarkBet prediction markets',
@@ -155,7 +172,8 @@ const defaultMessages: Record<Locale, Messages> = {
     volume: 'Volume',
     view: 'View',
     more_features_coming: 'More Features Coming Soon',
-    working_on_features: "We're working on adding more detailed analytics, historical data, and advanced filtering options.",
+    working_on_features:
+      "We're working on adding more detailed analytics, historical data, and advanced filtering options.",
     historical_charts: 'Historical Charts',
     advanced_filters: 'Advanced Filters',
     portfolio_tracking: 'Portfolio Tracking',
@@ -171,21 +189,24 @@ const defaultMessages: Record<Locale, Messages> = {
     create_bet: '做出预测',
     live_markets: '实时投注市场',
     // Home page
-           hero_subtitle: '私有暗池预测市场，AI驱动结果。基于BNB智能链构建。',
-           dark_pools_title: '暗池工作原理',
-           dark_pools_description: '与传统的预测市场不同，传统市场中每个投注和头寸都是公开可见的，DarkBet通过暗池运作。私有流动性层隐藏订单流和参与者活动，直到结算。',
-           privacy: '隐私',
-           privacy_description: '订单流和头寸在结算前保持隐藏',
-           anti_manipulation: '反操纵',
-           anti_manipulation_description: '防止跟单交易和市场操纵',
-           clean_slate: '干净环境',
-           clean_slate_description: '重要参与者可以在不暴露身份的情况下进行预测',
-           dark_pools_comparison_title: '暗池与传统市场的区别',
-           traditional_markets_title: '传统市场',
-           traditional_markets_points: '所有投注和头寸都公开可见|订单流对所有人透明|容易受到跟单交易和操纵|参与者可能被识别和针对|做市商可以抢跑大订单',
-           darkbet_dark_pools_title: 'DarkBet暗池',
-           darkbet_dark_pools_points: '私有流动性层隐藏所有活动|订单流在结算前保持机密|防止跟单交易和操纵|保护参与者身份和隐私|公平执行，无抢跑',
-           connect_to_create: '连接钱包以创建预测',
+    hero_subtitle: '私有暗池预测市场，AI驱动结果。基于BNB智能链构建。',
+    dark_pools_title: '暗池工作原理',
+    dark_pools_description:
+      '与传统的预测市场不同，传统市场中每个投注和头寸都是公开可见的，DarkBet通过暗池运作。私有流动性层隐藏订单流和参与者活动，直到结算。',
+    privacy: '隐私',
+    privacy_description: '订单流和头寸在结算前保持隐藏',
+    anti_manipulation: '反操纵',
+    anti_manipulation_description: '防止跟单交易和市场操纵',
+    clean_slate: '干净环境',
+    clean_slate_description: '重要参与者可以在不暴露身份的情况下进行预测',
+    dark_pools_comparison_title: '暗池与传统市场的区别',
+    traditional_markets_title: '传统市场',
+    traditional_markets_points:
+      '所有投注和头寸都公开可见|订单流对所有人透明|容易受到跟单交易和操纵|参与者可能被识别和针对|做市商可以抢跑大订单',
+    darkbet_dark_pools_title: 'DarkBet暗池',
+    darkbet_dark_pools_points:
+      '私有流动性层隐藏所有活动|订单流在结算前保持机密|防止跟单交易和操纵|保护参与者身份和隐私|公平执行，无抢跑',
+    connect_to_create: '连接钱包以创建预测',
     active_predictions: '活跃预测',
     total_participants: '总参与者',
     total_volume: '总交易量',
@@ -259,11 +280,14 @@ const defaultMessages: Record<Locale, Messages> = {
     // How it Works
     how_darkbet_works: 'DarkBet如何运作',
     platform_overview: '平台概览',
-    platform_description: 'DarkBet是一个去中心化预测市场，您可以创建和参与现实世界事件的投注',
+    platform_description:
+      'DarkBet是一个去中心化预测市场，您可以创建和参与现实世界事件的投注',
     blockchain_based: '基于区块链',
-    blockchain_description: '所有交易都在BNB智能链上进行，使用原生BNB代币确保最大透明度',
+    blockchain_description:
+      '所有交易都在BNB智能链上进行，使用原生BNB代币确保最大透明度',
     ai_powered: 'AI驱动',
-    ai_description: '先进AI生成投注标题，建议截止时间，并使用真实世界数据解析结果',
+    ai_description:
+      '先进AI生成投注标题，建议截止时间，并使用真实世界数据解析结果',
     real_time: '实时',
     real_time_description: '实时活动动态和即时更新，当投注被创建、加入或解析时',
     // Leaderboard
@@ -306,18 +330,20 @@ const I18nContext = createContext<{
   locale: Locale;
   t: (key: string) => string;
   setLocale: (l: Locale) => void;
-}>({ locale: 'en', t: (k) => defaultMessages.en[k] || k, setLocale: () => {} });
+}>({ locale: 'en', t: k => defaultMessages.en[k] || k, setLocale: () => {} });
 
 export function I18nProvider({ children }: { children: React.ReactNode }) {
   const [locale, setLocale] = useState<Locale>('en');
-  const value = useMemo(() => ({
-    locale,
-    setLocale,
-    t: (key: string) => (defaultMessages[locale]?.[key] ?? defaultMessages.en[key] ?? key),
-  }), [locale]);
-  return (
-    <I18nContext.Provider value={value}>{children}</I18nContext.Provider>
+  const value = useMemo(
+    () => ({
+      locale,
+      setLocale,
+      t: (key: string) =>
+        defaultMessages[locale]?.[key] ?? defaultMessages.en[key] ?? key,
+    }),
+    [locale]
   );
+  return <I18nContext.Provider value={value}>{children}</I18nContext.Provider>;
 }
 
 export function useI18n() {
