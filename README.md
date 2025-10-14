@@ -1,206 +1,327 @@
-# DarkBet - BNB Chain Prediction Markets
+# DarkBet - DarkPool Betting Platform
 
-A fully on-chain prediction market platform built on BNB Smart Chain with AI-driven results and Privy wallet integration.
+A decentralized prediction market platform built on BNB Smart Chain with AI-driven results and fully on-chain execution. DarkBet combines the privacy and efficiency of dark pools with prediction markets, ensuring fair outcomes while preventing market manipulation.
 
-## Features
+## 🌟 Features
 
-- 🔗 **Fully On-Chain**: All transactions happen on BNB Smart Chain with native BNB tokens
-- 🤖 **AI-Powered**: Advanced AI generates bet titles, suggests deadlines, and resolves outcomes
-- ⚡ **Real-Time**: Live activity feed and instant updates
-- 🎯 **Multi-Category Support**: Sports, Crypto, Politics, Entertainment, Weather, Finance, Technology, and Custom
-- 🔐 **Secure**: Privy wallet integration with multi-wallet support
-- 📊 **Dynamic Pricing**: Fixed Product Market Maker (FPMM) for fair pricing
-- 🏆 **Leaderboard**: Track top performers and achievements
-- 🌐 **Multi-Language**: English and Chinese support
+- **DarkPool Betting**: Bets remain hidden until resolution, preventing manipulation
+- **AI-Driven Results**: Automated market resolution using external data sources
+- **Fully On-Chain**: All transactions and logic executed on BNB Smart Chain
+- **Real-Time Markets**: Live prediction markets with instant updates
+- **User-Friendly Interface**: Modern, responsive design with smooth animations
+- **Leaderboard System**: Track top performers and statistics
+- **Crypto Predictions**: Specialized markets for cryptocurrency price predictions
 
-## Tech Stack
+## 🏗️ Architecture
 
-- **Frontend**: Next.js 14, React 18, TypeScript
-- **Styling**: Tailwind CSS with custom DarkBet theme
-- **Wallet**: Privy for wallet integration
-- **Blockchain**: BNB Smart Chain (BSC)
-- **UI Components**: Radix UI primitives
-- **Forms**: React Hook Form with Zod validation
+### Frontend (Next.js + Vercel)
+- **Framework**: Next.js 14 with TypeScript
+- **UI Library**: shadcn/ui components
 - **Animations**: Framer Motion
+- **Charts**: Recharts for data visualization
+- **Wallet Integration**: Privy for wallet connection
+- **Styling**: TailwindCSS with custom dark theme
 
-## Getting Started
+### Backend (Node.js + Render)
+- **Framework**: Express.js with TypeScript
+- **Database**: MongoDB with Mongoose
+- **Blockchain**: Ethers.js for BNB Smart Chain interaction
+- **Oracle Service**: CoinGecko API for price data
+- **Deployment**: Render.com
+
+### Smart Contracts
+- **Network**: BNB Smart Chain Testnet
+- **Language**: Solidity
+- **Features**: Commit-reveal scheme, market resolution, payout distribution
+
+## 🚀 Quick Start
 
 ### Prerequisites
 
-- Node.js 18+ 
-- npm or yarn
-- Privy account and app ID
+- Node.js 18+ and npm
+- MongoDB database (MongoDB Atlas recommended)
+- BNB Smart Chain Testnet RPC URL
+- Privy App ID for wallet integration
 
-### Installation
+### 1. Clone the Repository
 
-1. Clone the repository:
 ```bash
 git clone <repository-url>
 cd darkbet
 ```
 
-2. Install dependencies:
+### 2. Backend Setup
+
 ```bash
+cd backend
 npm install
-# or
-yarn install
 ```
 
-3. Set up environment variables:
+Create a `.env` file in the `backend` directory:
+
+```env
+# Database
+MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/darkbet
+
+# Blockchain
+BSC_TESTNET_RPC_URL=https://data-seed-prefork-1-s1.binance.org:8545
+ADMIN_PRIVATE_KEY=your_admin_private_key_here
+
+# Contract Addresses (deploy contracts first)
+PREDICTION_CONTRACT_ADDRESS=0x...
+VAULT_CONTRACT_ADDRESS=0x...
+
+# Server
+PORT=3001
+NODE_ENV=production
+```
+
+### 3. Deploy Smart Contracts
+
 ```bash
-cp .env.example .env.local
+cd contracts
+npm install
+npx hardhat compile
+npx hardhat run scripts/deploy.js --network bscTestnet
 ```
 
-4. Configure your environment variables in `.env.local`:
+Update the contract addresses in your backend `.env` file.
+
+### 4. Start Backend
+
+```bash
+cd backend
+npm run dev
+```
+
+The backend will be available at `http://localhost:3001`
+
+### 5. Frontend Setup
+
+```bash
+cd .. # Back to root directory
+npm install
+```
+
+Create a `.env.local` file in the root directory:
+
 ```env
 # Privy Configuration
-NEXT_PUBLIC_PRIVY_APP_ID=your_privy_app_id_here
+NEXT_PUBLIC_PRIVY_APP_ID=your_privy_app_id
 
-# BNB Chain Configuration
-NEXT_PUBLIC_CHAIN_ID=56
-NEXT_PUBLIC_RPC_URL=https://bsc-dataseed.binance.org/
+# Backend URL (for development)
+NEXT_PUBLIC_BACKEND_URL=http://localhost:3001
 
-# Contract Addresses (to be deployed)
-NEXT_PUBLIC_VAULT_CONTRACT_ADDRESS=
-NEXT_PUBLIC_PREDICTION_CONTRACT_ADDRESS=
-
-# AI API Configuration
-NEXT_PUBLIC_AI_API_URL=
-AI_API_KEY=
+# Contract Addresses (same as backend)
+NEXT_PUBLIC_PREDICTION_CONTRACT_ADDRESS=0x...
+NEXT_PUBLIC_VAULT_CONTRACT_ADDRESS=0x...
 ```
 
-5. Run the development server:
+### 6. Start Frontend
+
 ```bash
 npm run dev
-# or
-yarn dev
 ```
 
-6. Open [http://localhost:3000](http://localhost:3000) in your browser.
+The frontend will be available at `http://localhost:3000`
 
-## Vercel Deployment
+## 🌐 Deployment
 
-### Prerequisites for Deployment
+### Backend Deployment (Render)
 
-1. **Vercel Account**: Sign up at [vercel.com](https://vercel.com)
-2. **GitHub Repository**: Push your code to GitHub
-3. **Environment Variables**: Set up required environment variables
+1. Connect your GitHub repository to Render
+2. Create a new Web Service
+3. Set the following environment variables in Render:
+   - `MONGODB_URI`
+   - `BSC_TESTNET_RPC_URL`
+   - `ADMIN_PRIVATE_KEY`
+   - `PREDICTION_CONTRACT_ADDRESS`
+   - `VAULT_CONTRACT_ADDRESS`
+   - `NODE_ENV=production`
 
-### Deployment Steps
+4. Deploy and note the Render URL (e.g., `https://darkbet.onrender.com`)
 
-1. **Connect to Vercel**:
-   - Go to [vercel.com/dashboard](https://vercel.com/dashboard)
-   - Click "New Project"
-   - Import your GitHub repository
+### Frontend Deployment (Vercel)
 
-2. **Configure Environment Variables**:
-   ```env
-   NEXT_PUBLIC_PRIVY_APP_ID=your_privy_app_id_here
-   NEXT_PUBLIC_VAULT_CONTRACT_ADDRESS=your_contract_address
-   ```
+1. Connect your GitHub repository to Vercel
+2. Set the following environment variables in Vercel:
+   - `NEXT_PUBLIC_PRIVY_APP_ID`
+   - `NEXT_PUBLIC_PREDICTION_CONTRACT_ADDRESS`
+   - `NEXT_PUBLIC_VAULT_CONTRACT_ADDRESS`
+   - `NEXT_PUBLIC_BACKEND_URL=https://your-render-app.onrender.com`
 
-3. **Deploy**:
-   - Click "Deploy" and Vercel will automatically build and deploy your app
-   - Your app will be available at `https://your-project-name.vercel.app`
+3. Deploy
 
-### Environment Variables for Production
-
-Set these in your Vercel dashboard under Project Settings > Environment Variables:
-
-- `NEXT_PUBLIC_PRIVY_APP_ID` - Your Privy application ID
-- `NEXT_PUBLIC_VAULT_CONTRACT_ADDRESS` - Your deployed vault contract address
-- `NEXT_PUBLIC_CHAIN_ID` - BNB Chain ID (56 for mainnet, 97 for testnet)
-
-## Project Structure
+## 📁 Project Structure
 
 ```
+darkbet/
 ├── app/                    # Next.js app directory
-│   ├── globals.css        # Global styles
-│   ├── layout.tsx         # Root layout
-│   ├── page.tsx           # Home page
-│   ├── my-bets/           # My Bets page
-│   ├── how-it-works/      # How it Works page
-│   └── leaderboard/       # Leaderboard page
+│   ├── api/               # Vercel API routes (proxy to backend)
+│   ├── my-bets/           # User bets page
+│   ├── leaderboard/       # Leaderboard page
+│   └── how-it-works/      # How it works page
 ├── components/            # React components
 │   ├── ui/               # Reusable UI components
-│   ├── layout/           # Layout components
 │   ├── prediction/       # Prediction-related components
-│   └── providers/        # Context providers
-├── lib/                  # Utility functions
-├── types/                # TypeScript type definitions
-└── public/               # Static assets
+│   └── layout/           # Layout components
+├── lib/                  # Utility libraries
+│   ├── api-client.ts     # API client for backend communication
+│   ├── blockchain-utils.ts # Blockchain utilities
+│   └── hooks/            # Custom React hooks
+├── backend/              # Backend server
+│   ├── src/
+│   │   ├── models/       # MongoDB models
+│   │   ├── routes/       # API routes
+│   │   ├── services/     # Business logic
+│   │   └── server.ts     # Express server
+│   └── package.json
+├── contracts/            # Smart contracts
+│   ├── contracts/        # Solidity contracts
+│   ├── scripts/          # Deployment scripts
+│   └── hardhat.config.ts
+└── types/               # TypeScript type definitions
 ```
 
-## Key Components
+## 🔧 Configuration
 
-### Prediction System
-- **PredictionCard**: Displays individual prediction markets
-- **CreateBetModal**: Modal for creating new predictions with AI integration
-- **Filters**: Advanced filtering for predictions
+### Environment Variables
 
-### Wallet Integration
-- **PrivyProvider**: Wraps the app with Privy authentication
-- **Header**: Navigation with wallet connection status
+#### Backend (.env)
+- `MONGODB_URI`: MongoDB connection string
+- `BSC_TESTNET_RPC_URL`: BNB Smart Chain RPC endpoint
+- `ADMIN_PRIVATE_KEY`: Private key for market resolution
+- `PREDICTION_CONTRACT_ADDRESS`: Deployed prediction contract address
+- `VAULT_CONTRACT_ADDRESS`: Deployed vault contract address
 
-### Pages
-- **Home**: Live bet markets with stats and filtering
-- **My Bets**: User's betting history and portfolio
-- **How it Works**: Detailed explanation of the platform
-- **Leaderboard**: Top performers and rankings
+#### Frontend (.env.local)
+- `NEXT_PUBLIC_PRIVY_APP_ID`: Privy application ID
+- `NEXT_PUBLIC_BACKEND_URL`: Backend URL (development only)
+- `NEXT_PUBLIC_PREDICTION_CONTRACT_ADDRESS`: Prediction contract address
+- `NEXT_PUBLIC_VAULT_CONTRACT_ADDRESS`: Vault contract address
 
-## DarkBet Theme
+### Smart Contract Configuration
 
-The platform uses a custom DarkBet-themed design system:
+1. Deploy contracts to BNB Smart Chain Testnet
+2. Update contract addresses in both frontend and backend
+3. Ensure admin private key has sufficient BNB for gas fees
 
-- **Primary**: BNB Yellow (#F0B90B)
-- **Background**: Black (#000000)
-- **Accent**: BNB Green (#00D4AA)
-- **Gradients**: Black to yellow combinations
-- **Animations**: Glow effects and smooth transitions
+## 🎯 Usage
 
-## Smart Contract Integration
+### Creating a Prediction Market
 
-The platform is designed to integrate with BNB Smart Chain contracts:
+1. Connect your wallet using Privy
+2. Click "Start DarkPool Betting" on the homepage
+3. Fill in market details:
+   - Title and description
+   - Category (General, Crypto, Sports, etc.)
+   - Resolution date
+   - Initial BNB amount
+4. Submit the transaction
 
-- **Vault Contract**: Manages funds and payouts
-- **Prediction Contract**: Handles prediction creation and resolution
-- **Token Contract**: BNB token integration
+### Placing Bets
 
-## AI Integration
+1. Browse active markets on the homepage
+2. Click on a market to view details
+3. Choose YES or NO prediction
+4. Enter bet amount
+5. Confirm transaction
 
-The platform includes AI-powered features:
+### Claiming Winnings
 
-- **Title Generation**: AI creates optimized prediction titles
-- **Deadline Suggestions**: Smart deadline recommendations
-- **Resolution**: Multi-layer AI verification system
-- **Evidence Gathering**: 25+ verification APIs
+1. Go to "My Bets" page
+2. View your bet history
+3. Click "Claim Winnings" for resolved markets
+4. Confirm transaction
 
-## Contributing
+## 🛠️ Development
+
+### Running in Development Mode
+
+```bash
+# Terminal 1 - Backend
+cd backend
+npm run dev
+
+# Terminal 2 - Frontend
+npm run dev
+```
+
+### Available Scripts
+
+#### Backend
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm start` - Start production server
+- `npm run fix-null-outcomes` - Fix markets with null outcomes
+
+#### Frontend
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm start` - Start production server
+- `npm run lint` - Run ESLint
+
+#### Smart Contracts
+- `npx hardhat compile` - Compile contracts
+- `npx hardhat test` - Run tests
+- `npx hardhat run scripts/deploy.js --network bscTestnet` - Deploy contracts
+
+## 🔍 Troubleshooting
+
+### Common Issues
+
+1. **CORS Errors**: Ensure backend CORS is configured for your frontend domain
+2. **Contract Not Found**: Verify contract addresses are correct in environment variables
+3. **Database Connection**: Check MongoDB URI and network connectivity
+4. **Wallet Connection**: Ensure Privy App ID is correctly configured
+
+### Debug Mode
+
+Enable debug logging by setting `NODE_ENV=development` in your backend environment.
+
+## 📊 API Endpoints
+
+### Markets
+- `GET /api/markets` - List all markets
+- `POST /api/markets` - Create new market
+- `GET /api/markets/:id` - Get market details
+- `POST /api/markets/trigger-resolution` - Trigger market resolution
+
+### Users
+- `GET /api/users/:address/bets` - Get user's bets
+- `GET /api/users/leaderboard` - Get leaderboard data
+
+### Oracle
+- `GET /api/oracle/prices` - Get cryptocurrency prices
+
+## 🤝 Contributing
 
 1. Fork the repository
-2. Create a feature branch: `git checkout -b feature/amazing-feature`
-3. Commit your changes: `git commit -m 'Add amazing feature'`
-4. Push to the branch: `git push origin feature/amazing-feature`
-5. Open a Pull Request
+2. Create a feature branch
+3. Make your changes
+4. Add tests if applicable
+5. Submit a pull request
 
-## License
+## 📄 License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-## Support
+## 🆘 Support
 
-For support, email support@darkbet.com or join our Telegram community.
+For support and questions:
+- Create an issue in the GitHub repository
+- Check the troubleshooting section above
+- Review the API documentation
 
-## Roadmap
+## 🔮 Roadmap
 
-- [ ] Smart contract deployment
-- [ ] AI API integration
-- [ ] Advanced analytics
+- [ ] Mainnet deployment
+- [ ] Additional prediction categories
 - [ ] Mobile app
-- [ ] Cross-chain support
+- [ ] Advanced analytics
+- [ ] Social features
 - [ ] Governance token
-- [ ] Staking rewards
 
 ---
 
-Built with ❤️ for the BNB Chain ecosystem
+**Built with ❤️ for the decentralized future of prediction markets**

@@ -3,7 +3,20 @@
  * Base URL: /api (proxied to backend server)
  */
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || process.env.NEXT_PUBLIC_BACKEND_URL || '/api';
+// Always use local API routes in production to ensure proper proxying
+const API_BASE_URL = process.env.NODE_ENV === 'production' 
+  ? '/api' 
+  : (process.env.NEXT_PUBLIC_API_URL || process.env.NEXT_PUBLIC_BACKEND_URL || '/api');
+
+// Debug logging
+if (typeof window !== 'undefined') {
+  console.log('🔍 API Client Debug:', {
+    NODE_ENV: process.env.NODE_ENV,
+    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
+    NEXT_PUBLIC_BACKEND_URL: process.env.NEXT_PUBLIC_BACKEND_URL,
+    API_BASE_URL: API_BASE_URL
+  });
+}
 
 export interface APIResponse<T> {
   success: boolean;

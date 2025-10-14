@@ -782,8 +782,7 @@ export function usePredictionContract() {
           
           // Try to get market data from backend API as fallback
           try {
-            const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
-            const response = await fetch(`${backendUrl}/api/markets/${marketId}`);
+            const response = await fetch(`/api/markets/${marketId}`);
             
             if (response.ok) {
               const dbResponse = await response.json();

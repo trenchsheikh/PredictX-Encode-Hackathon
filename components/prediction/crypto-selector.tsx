@@ -38,8 +38,7 @@ export function CryptoSelector({ value, onChange, className }: CryptoSelectorPro
 
   async function fetchCryptoPrices() {
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
-      const response = await fetch(`${apiUrl}/oracle/prices`);
+      const response = await fetch('/api/oracle/prices');
       const data = await response.json();
 
       if (data.success) {
