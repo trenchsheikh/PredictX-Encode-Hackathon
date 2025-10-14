@@ -13,7 +13,7 @@ const navigation = [
   { key: 'nav_home', href: '/', icon: TrendingUp },
   { key: 'nav_my_bets', href: '/my-bets', icon: Wallet },
   { key: 'nav_how', href: '/how-it-works', icon: Shield },
-  { key: 'nav_leaderboard', href: '/leaderboard', icon: Zap },
+  // { key: 'nav_leaderboard', href: '/leaderboard', icon: Zap },
 ];
 
 export function AnimatedHeader() {

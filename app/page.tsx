@@ -395,7 +395,7 @@ export default function HomePage() {
   };
 
   return (
-    <div className="relative min-h-screen overflow-hidden">
+    <div className="relative overflow-hidden">
       {/* Page-specific background */}
       <AnimatedBackground variant="grid" />
 

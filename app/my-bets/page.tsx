@@ -953,8 +953,8 @@ export default function MyBetsPage() {
                   className={cn(
                     'whitespace-nowrap border-b-2 px-1 py-2 text-sm font-medium',
                     activeTab === tab.key
-                      ? 'border-black text-black'
-                      : 'border-transparent text-black/60 hover:border-black/30 hover:text-black'
+                      ? 'border-white text-white'
+                      : 'border-transparent text-white/60 hover:border-white/30 hover:text-white'
                   )}
                 >
                   {tab.label}
