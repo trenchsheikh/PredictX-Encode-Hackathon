@@ -90,9 +90,11 @@ npm start
 ## 📡 API Endpoints
 
 ### **GET `/api/markets`**
+
 List all markets with filters
 
 **Query Parameters:**
+
 - `status` - Filter by status (0=Active, 1=Resolving, 2=Resolved, 3=Cancelled)
 - `category` - Filter by category (0-7)
 - `creator` - Filter by creator address
@@ -102,11 +104,13 @@ List all markets with filters
 - `sortOrder` - asc or desc (default: desc)
 
 **Example:**
+
 ```bash
 curl http://localhost:3001/api/markets?status=0&limit=10
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -122,14 +126,17 @@ curl http://localhost:3001/api/markets?status=0&limit=10
 ---
 
 ### **GET `/api/markets/:id`**
+
 Fetch single market by ID
 
 **Example:**
+
 ```bash
 curl http://localhost:3001/api/markets/1
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -149,6 +156,7 @@ curl http://localhost:3001/api/markets/1
 ---
 
 ### **POST `/api/markets`**
+
 Create new market (admin only)
 
 **Note:** This endpoint is informational. Market creation happens on-chain via smart contract. The backend automatically indexes MarketCreated events.
@@ -156,9 +164,11 @@ Create new market (admin only)
 ---
 
 ### **POST `/api/markets/:id/commit`**
+
 Index a committed bet
 
 **Body:**
+
 ```json
 {
   "user": "0x...",
@@ -173,9 +183,11 @@ Index a committed bet
 ---
 
 ### **POST `/api/markets/:id/reveal`**
+
 Index a revealed bet
 
 **Body:**
+
 ```json
 {
   "user": "0x...",
@@ -191,9 +203,11 @@ Index a revealed bet
 ---
 
 ### **POST `/api/markets/:id/resolve`**
+
 Index market resolution (oracle callback)
 
 **Body:**
+
 ```json
 {
   "outcome": true,
@@ -239,6 +253,7 @@ SYNC_FROM_BLOCK=0
 ```
 
 Or manually via service:
+
 ```typescript
 await blockchainService.syncHistoricalEvents(fromBlock);
 ```
@@ -246,6 +261,7 @@ await blockchainService.syncHistoricalEvents(fromBlock);
 ## 🗄️ MongoDB Schema
 
 ### Market
+
 ```typescript
 {
   marketId: number;      // Unique market ID
@@ -269,12 +285,13 @@ await blockchainService.syncHistoricalEvents(fromBlock);
 ```
 
 ### Commitment
+
 ```typescript
 {
   marketId: number;
-  user: string;          // Wallet address
+  user: string; // Wallet address
   commitHash: string;
-  amount: string;        // Wei as string
+  amount: string; // Wei as string
   timestamp: Date;
   revealed: boolean;
   txHash: string;
@@ -282,11 +299,12 @@ await blockchainService.syncHistoricalEvents(fromBlock);
 ```
 
 ### Bet
+
 ```typescript
 {
   marketId: number;
   user: string;
-  outcome: boolean;      // true=YES, false=NO
+  outcome: boolean; // true=YES, false=NO
   shares: string;
   amount: string;
   revealedAt: Date;
@@ -316,6 +334,7 @@ curl "http://localhost:3001/api/markets?status=0&category=1&limit=5"
 ## 🔧 Development
 
 ### Hot Reload
+
 ```bash
 npm run dev
 ```
@@ -323,6 +342,7 @@ npm run dev
 Nodemon watches `src/` folder and restarts on changes.
 
 ### Build
+
 ```bash
 npm run build
 ```
@@ -332,6 +352,7 @@ Compiles TypeScript to `dist/` folder.
 ### Logs
 
 The backend logs:
+
 - Incoming HTTP requests
 - Blockchain events caught
 - Database operations
@@ -340,21 +361,25 @@ The backend logs:
 ## 🐛 Troubleshooting
 
 ### "Contract addresses not found"
+
 - Deploy contracts first: `cd ../contracts && npm run deploy:testnet`
 - Check deployments folder: `/deployments/bscTestnet/contracts.json`
 - Or set manually in `.env`
 
 ### "MongoDB connection failed"
+
 - Ensure MongoDB is running: `mongosh` (local) or check Atlas connection string
 - Check `MONGODB_URI` in `.env`
 
 ### "No blockchain events"
+
 - Ensure contracts are deployed on correct network
 - Check `BSC_RPC_URL` points to BSC Testnet
 - Verify contract addresses are correct
 - Check RPC is not rate-limited
 
 ### "Event listener errors"
+
 - Make sure ABIs match deployed contracts
 - Recompile contracts if changed: `cd ../contracts && npm run compile`
 - Check event signatures match
@@ -413,6 +438,7 @@ pm2 startup
 ## 🤝 Integration with Frontend
 
 Frontend should:
+
 1. Create markets via smart contract
 2. Commit/reveal bets via smart contract
 3. Query backend API for fast reads
@@ -421,6 +447,7 @@ Frontend should:
 ## 📞 Support
 
 Check logs for errors:
+
 ```bash
 # Development
 npm run dev
@@ -433,4 +460,3 @@ pm2 logs darkbet-api
 
 **Status:** ✅ Ready for testing with deployed contracts  
 **Last Updated:** October 13, 2025
-

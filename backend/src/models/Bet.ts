@@ -24,4 +24,3 @@ betSchema.index({ marketId: 1, user: 1 });
 betSchema.index({ user: 1, revealedAt: -1 });
 
 export const Bet = mongoose.model<IBetDocument>('Bet', betSchema);
-

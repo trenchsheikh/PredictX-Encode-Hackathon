@@ -1,45 +1,55 @@
 {
-  "name": "darkbet-contracts",
-  "version": "1.0.0",
-  "description": "DarkBet Prediction Market Smart Contracts",
-  "scripts": {
-    "compile": "hardhat compile",
-    "test": "hardhat test",
-    "test:coverage": "hardhat coverage",
-    "deploy:testnet": "hardhat run scripts/deploy.ts --network bscTestnet",
-    "deploy:mainnet": "hardhat run scripts/deploy.ts --network bscMainnet",
-    "verify:testnet": "hardhat verify --network bscTestnet",
-    "verify:mainnet": "hardhat verify --network bscMainnet",
-    "clean": "hardhat clean",
-    "node": "hardhat node"
-  },
-  "keywords": ["smart-contracts", "solidity", "hardhat", "bnb-chain", "prediction-market"],
-  "author": "DarkBet Team",
-  "license": "MIT",
-  "devDependencies": {
-    "@nomicfoundation/hardhat-chai-matchers": "^2.1.0",
-    "@nomicfoundation/hardhat-ethers": "^3.1.0",
-    "@nomicfoundation/hardhat-ignition": "^0.15.13",
-    "@nomicfoundation/hardhat-ignition-ethers": "^0.15.14",
-    "@nomicfoundation/hardhat-network-helpers": "^1.1.0",
-    "@nomicfoundation/hardhat-toolbox": "^6.1.0",
-    "@nomicfoundation/hardhat-verify": "^2.1.1",
-    "@typechain/ethers-v6": "^0.5.1",
-    "@typechain/hardhat": "^9.1.0",
-    "@types/chai": "^4.3.5",
-    "@types/mocha": "^10.0.1",
-    "@types/node": "^20.4.2",
-    "chai": "^4.3.7",
-    "ethers": "^6.7.0",
-    "hardhat": "^2.26.3",
-    "hardhat-gas-reporter": "^2.3.0",
-    "solidity-coverage": "^0.8.16",
-    "ts-node": "^10.9.1",
-    "typechain": "^8.3.1",
-    "typescript": "^5.1.6"
-  },
-  "dependencies": {
-    "@openzeppelin/contracts": "^5.2.0",
-    "dotenv": "^16.3.1"
-  }
+    "name": "darkbet-contracts",
+    "version": "1.0.0",
+    "description": "DarkBet Prediction Market Smart Contracts",
+    "scripts": {
+        "compile": "hardhat compile",
+        "test": "hardhat test",
+        "test:coverage": "hardhat coverage",
+        "deploy:testnet": "hardhat run scripts/deploy.ts --network bscTestnet",
+        "deploy:mainnet": "hardhat run scripts/deploy.ts --network bscMainnet",
+        "verify:testnet": "hardhat verify --network bscTestnet",
+        "verify:mainnet": "hardhat verify --network bscMainnet",
+        "clean": "hardhat clean",
+        "node": "hardhat node",
+        "format": "prettier --write .",
+        "format:check": "prettier --check ."
+    },
+    "keywords": [
+        "smart-contracts",
+        "solidity",
+        "hardhat",
+        "bnb-chain",
+        "prediction-market"
+    ],
+    "author": "DarkBet Team",
+    "license": "MIT",
+    "devDependencies": {
+        "@nomicfoundation/hardhat-chai-matchers": "^2.1.0",
+        "@nomicfoundation/hardhat-ethers": "^3.1.0",
+        "@nomicfoundation/hardhat-ignition": "^0.15.13",
+        "@nomicfoundation/hardhat-ignition-ethers": "^0.15.14",
+        "@nomicfoundation/hardhat-network-helpers": "^1.1.0",
+        "@nomicfoundation/hardhat-toolbox": "^6.1.0",
+        "@nomicfoundation/hardhat-verify": "^2.1.1",
+        "@typechain/ethers-v6": "^0.5.1",
+        "@typechain/hardhat": "^9.1.0",
+        "@types/chai": "^4.3.5",
+        "@types/mocha": "^10.0.1",
+        "@types/node": "^20.4.2",
+        "chai": "^4.3.7",
+        "ethers": "^6.7.0",
+        "hardhat": "^2.26.3",
+        "hardhat-gas-reporter": "^2.3.0",
+        "prettier": "^3.0.0",
+        "prettier-plugin-solidity": "^1.3.0",
+        "solidity-coverage": "^0.8.16",
+        "ts-node": "^10.9.1",
+        "typechain": "^8.3.1",
+        "typescript": "^5.1.6"
+    },
+    "dependencies": {
+        "@openzeppelin/contracts": "^5.2.0",
+        "dotenv": "^16.3.1"
+    }
 }

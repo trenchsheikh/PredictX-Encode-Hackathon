@@ -80,7 +80,7 @@ export function Particles({
     const animate = () => {
       ctx.clearRect(0, 0, canvasSize.width, canvasSize.height);
 
-      particlesRef.current.forEach((particle) => {
+      particlesRef.current.forEach(particle => {
         // Update position
         particle.x += particle.vx;
         particle.y += particle.vy;
@@ -158,10 +158,8 @@ export function Particles({
   return (
     <canvas
       ref={canvasRef}
-      className={cn('absolute inset-0 pointer-events-none', className)}
+      className={cn('pointer-events-none absolute inset-0', className)}
       onMouseMove={handleMouseMove}
     />
   );
 }
-
-

@@ -22,14 +22,14 @@ export function generateCommit(
 ): { commitHash: string; salt: string } {
   // Generate random 32-byte salt
   const salt = ethers.hexlify(ethers.randomBytes(32));
-  
+
   // Create commit hash: keccak256(abi.encodePacked(outcome, salt, userAddress))
   // Must match contract: keccak256(abi.encodePacked(bool, bytes32, address))
   const commitHash = ethers.solidityPackedKeccak256(
     ['bool', 'bytes32', 'address'],
     [outcome === 'yes', salt, userAddress]
   );
-  
+
   return { commitHash, salt };
 }
 
@@ -46,7 +46,7 @@ export function verifyCommit(
     ['bool', 'bytes32', 'address'],
     [outcome === 'yes', salt, userAddress]
   );
-  
+
   return computedHash.toLowerCase() === commitHash.toLowerCase();
 }
 
@@ -60,11 +60,11 @@ export function storeCommitSecret(
   try {
     const key = `darkbet_commit_${marketId}`;
     const data = JSON.stringify(commitData);
-    
+
     // In production, encrypt this data before storing
     // For now, store as-is with warning
     localStorage.setItem(key, data);
-    
+
     // Also store in a master list for tracking all unrevealed bets
     addToUnrevealedList(marketId);
   } catch (error) {
@@ -80,9 +80,9 @@ export function getCommitSecret(marketId: string): CommitData | null {
   try {
     const key = `darkbet_commit_${marketId}`;
     const data = localStorage.getItem(key);
-    
+
     if (!data) return null;
-    
+
     return JSON.parse(data) as CommitData;
   } catch (error) {
     console.error('Failed to retrieve commit secret:', error);
@@ -97,7 +97,7 @@ export function clearCommitSecret(marketId: string): void {
   try {
     const key = `darkbet_commit_${marketId}`;
     localStorage.removeItem(key);
-    
+
     // Remove from unrevealed list
     removeFromUnrevealedList(marketId);
   } catch (error) {
@@ -180,8 +180,12 @@ export function getCommitsNeedingReveal(): Array<{
   deadline: number;
 }> {
   const unrevealed = getAllUnrevealedCommits();
-  const needsReveal: Array<{ marketId: string; commitData: CommitData; deadline: number }> = [];
-  
+  const needsReveal: Array<{
+    marketId: string;
+    commitData: CommitData;
+    deadline: number;
+  }> = [];
+
   for (const marketId of unrevealed) {
     const commitData = getCommitSecret(marketId);
     if (commitData) {
@@ -190,21 +194,23 @@ export function getCommitsNeedingReveal(): Array<{
       needsReveal.push({
         marketId,
         commitData,
-        deadline: 0 // Would calculate from market expiration
+        deadline: 0, // Would calculate from market expiration
       });
     }
   }
-  
+
   return needsReveal;
 }
 
 /**
  * Clean up expired commits (past reveal deadline)
  */
-export function cleanupExpiredCommits(markets: Array<{ id: string; expiresAt: number }>): void {
+export function cleanupExpiredCommits(
+  markets: Array<{ id: string; expiresAt: number }>
+): void {
   const now = Date.now();
   const unrevealed = getAllUnrevealedCommits();
-  
+
   for (const marketId of unrevealed) {
     const market = markets.find(m => m.id === marketId);
     if (market) {
@@ -225,14 +231,14 @@ export function exportCommitData(): string {
   try {
     const unrevealed = getAllUnrevealedCommits();
     const commits: { [marketId: string]: CommitData } = {};
-    
+
     for (const marketId of unrevealed) {
       const commitData = getCommitSecret(marketId);
       if (commitData) {
         commits[marketId] = commitData;
       }
     }
-    
+
     return JSON.stringify(commits, null, 2);
   } catch (error) {
     console.error('Failed to export commit data:', error);
@@ -243,16 +249,19 @@ export function exportCommitData(): string {
 /**
  * Import commit data from backup
  */
-export function importCommitData(jsonData: string): { success: boolean; imported: number } {
+export function importCommitData(jsonData: string): {
+  success: boolean;
+  imported: number;
+} {
   try {
     const commits = JSON.parse(jsonData);
     let imported = 0;
-    
+
     for (const [marketId, commitData] of Object.entries(commits)) {
       storeCommitSecret(marketId, commitData as CommitData);
       imported++;
     }
-    
+
     return { success: true, imported };
   } catch (error) {
     console.error('Failed to import commit data:', error);
@@ -266,7 +275,7 @@ export function importCommitData(jsonData: string): { success: boolean; imported
 export function getRevealInstructions(marketId: string): string | null {
   const commitData = getCommitSecret(marketId);
   if (!commitData) return null;
-  
+
   return `
 To reveal your bet on Market #${marketId}:
 
@@ -293,4 +302,3 @@ export const SECURITY_WARNING = `
 
 Store your reveal data safely!
 `.trim();
-

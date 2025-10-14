@@ -27,7 +27,7 @@ export function AppleHelloEffect({
     const timer = setTimeout(() => {
       setIsVisible(true);
       setIsAnimating(true);
-      
+
       setTimeout(() => {
         setIsAnimating(false);
       }, duration);
@@ -55,5 +55,3 @@ export function AppleHelloEffect({
     </div>
   );
 }
-
-

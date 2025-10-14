@@ -5,9 +5,30 @@ import { usePrivy, useWallets } from '@privy-io/react-auth';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { UserBet, Prediction, PredictionCategory, PredictionStatus } from '@/types/prediction';
-import { formatBNB, formatTimeRemaining, calculatePayout, formatAddress } from '@/lib/utils';
-import { Wallet, TrendingUp, TrendingDown, Clock, DollarSign, ExternalLink, Eye, Loader2, AlertCircle, CheckCircle } from 'lucide-react';
+import {
+  UserBet,
+  Prediction,
+  PredictionCategory,
+  PredictionStatus,
+} from '@/types/prediction';
+import {
+  formatBNB,
+  formatTimeRemaining,
+  calculatePayout,
+  formatAddress,
+} from '@/lib/utils';
+import {
+  Wallet,
+  TrendingUp,
+  TrendingDown,
+  Clock,
+  DollarSign,
+  ExternalLink,
+  Eye,
+  Loader2,
+  AlertCircle,
+  CheckCircle,
+} from 'lucide-react';
 import { StatsDashboard } from '@/components/ui/stats-dashboard';
 import { PerformanceChart } from '@/components/ui/performance-chart';
 import { AnimatedCard } from '@/components/ui/animated-card';
@@ -17,7 +38,12 @@ import { cn } from '@/lib/utils';
 import { useI18n } from '@/components/providers/privy-provider';
 import { api, getErrorMessage } from '@/lib/api-client';
 import { usePredictionContract } from '@/lib/hooks/use-prediction-contract';
-import { getCommitSecret, hasUnrevealedCommit, canReveal, clearCommitSecret } from '@/lib/commit-reveal';
+import {
+  getCommitSecret,
+  hasUnrevealedCommit,
+  canReveal,
+  clearCommitSecret,
+} from '@/lib/commit-reveal';
 import { RevealModal } from '@/components/prediction/reveal-modal';
 import { TransactionStatus } from '@/components/ui/transaction-status';
 import { mapCategory, mapStatus, calculatePrice } from '@/lib/blockchain-utils';
@@ -28,15 +54,21 @@ export default function MyBetsPage() {
   const { authenticated, user } = usePrivy();
   const { wallets } = useWallets();
   const contract = usePredictionContract();
-  
+
   // Data state
   const [userBets, setUserBets] = useState<UserBet[]>([]);
-  const [predictions, setPredictions] = useState<{ [id: string]: Prediction }>({});
-  const [activeTab, setActiveTab] = useState<'active' | 'resolved' | 'all'>('all');
+  const [predictions, setPredictions] = useState<{ [id: string]: Prediction }>(
+    {}
+  );
+  const [activeTab, setActiveTab] = useState<'active' | 'resolved' | 'all'>(
+    'all'
+  );
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string>();
-  const [refundChecks, setRefundChecks] = useState<{ [betId: string]: { available: boolean; reason?: string; amount?: string } }>({});
-  
+  const [refundChecks, setRefundChecks] = useState<{
+    [betId: string]: { available: boolean; reason?: string; amount?: string };
+  }>({});
+
   // Reveal modal state
   const [showRevealModal, setShowRevealModal] = useState(false);
   const [selectedBet, setSelectedBet] = useState<{
@@ -80,7 +112,9 @@ export default function MyBetsPage() {
           shares: bet.shares ? parseFloat(ethers.formatEther(bet.shares)) : 0,
           amount: parseFloat(ethers.formatEther(bet.amount)),
           price: 0, // Would calculate from market data
-          createdAt: new Date(isRevealed ? bet.revealedAt : bet.timestamp).getTime(),
+          createdAt: new Date(
+            isRevealed ? bet.revealedAt : bet.timestamp
+          ).getTime(),
           claimed: bet.claimed || false,
           payout: undefined, // Calculate from market if claimed
           revealed: isRevealed,
@@ -110,19 +144,32 @@ export default function MyBetsPage() {
             totalPool: parseFloat(ethers.formatEther(market.totalPool || '0')),
             yesPool: parseFloat(ethers.formatEther(market.yesPool || '0')),
             noPool: parseFloat(ethers.formatEther(market.noPool || '0')),
-            yesPrice: calculatePrice(market.yesPool || '0', market.totalPool || '1'),
-            noPrice: calculatePrice(market.noPool || '0', market.totalPool || '1'),
-            totalShares: parseFloat(ethers.formatEther(market.yesShares || '0')) + parseFloat(ethers.formatEther(market.noShares || '0')),
+            yesPrice: calculatePrice(
+              market.yesPool || '0',
+              market.totalPool || '1'
+            ),
+            noPrice: calculatePrice(
+              market.noPool || '0',
+              market.totalPool || '1'
+            ),
+            totalShares:
+              parseFloat(ethers.formatEther(market.yesShares || '0')) +
+              parseFloat(ethers.formatEther(market.noShares || '0')),
             yesShares: parseFloat(ethers.formatEther(market.yesShares || '0')),
             noShares: parseFloat(ethers.formatEther(market.noShares || '0')),
             participants: market.participants || 0,
             isHot: false,
-            resolution: market.outcome !== undefined ? {
-              outcome: market.outcome === true ? 'yes' : 'no',
-              resolvedAt: new Date(market.resolvedAt || Date.now()).getTime(),
-              reasoning: market.resolutionReasoning || 'Market resolved',
-              evidence: []
-            } : undefined,
+            resolution:
+              market.outcome !== undefined
+                ? {
+                    outcome: market.outcome === true ? 'yes' : 'no',
+                    resolvedAt: new Date(
+                      market.resolvedAt || Date.now()
+                    ).getTime(),
+                    reasoning: market.resolutionReasoning || 'Market resolved',
+                    evidence: [],
+                  }
+                : undefined,
           };
         }
       }
@@ -149,7 +196,9 @@ export default function MyBetsPage() {
     if (!contract.checkRefundAvailability) return;
 
     const unrevealedBets = userBets.filter(bet => !bet.revealed);
-    const checks: { [betId: string]: { available: boolean; reason?: string; amount?: string } } = {};
+    const checks: {
+      [betId: string]: { available: boolean; reason?: string; amount?: string };
+    } = {};
 
     for (const bet of unrevealedBets) {
       try {
@@ -167,7 +216,10 @@ export default function MyBetsPage() {
 
   // Check refunds when bets are loaded
   useEffect(() => {
-    if (userBets.length > 0 && typeof contract.checkRefundAvailability === 'function') {
+    if (
+      userBets.length > 0 &&
+      typeof contract.checkRefundAvailability === 'function'
+    ) {
       checkAllRefunds();
     }
   }, [userBets, contract.checkRefundAvailability]);
@@ -184,12 +236,15 @@ export default function MyBetsPage() {
       });
 
       if (expiredBets.length > 0) {
-        console.log('🕐 Found expired bets, triggering instant resolution...', expiredBets.length);
+        console.log(
+          '🕐 Found expired bets, triggering instant resolution...',
+          expiredBets.length
+        );
         // Debounce to avoid multiple rapid calls
         const timeoutId = setTimeout(() => {
           triggerMarketResolution();
         }, 2000); // Wait 2 seconds before triggering
-        
+
         return () => clearTimeout(timeoutId);
       }
     }
@@ -212,10 +267,10 @@ export default function MyBetsPage() {
   const testBackendConnection = async () => {
     try {
       console.log('🔍 Testing backend connection to: /api');
-      
+
       const response = await fetch('/api/health');
       const result = await response.json();
-      
+
       if (response.ok) {
         console.log('✅ Backend connection successful:', result);
       } else {
@@ -234,57 +289,62 @@ export default function MyBetsPage() {
     console.log('Authenticated:', authenticated);
     console.log('User:', user);
     console.log('Wallets:', wallets);
-    
+
     if (!authenticated) {
       alert('Please connect your wallet first');
       return;
     }
-    
+
     if (!wallets || wallets.length === 0) {
       alert('No wallet found. Please connect your wallet.');
       return;
     }
-    
+
     const wallet = wallets[0];
     console.log('Testing wallet:', wallet);
-    
+
     try {
       // Test if contract hook is working
       if (contract.error) {
         alert(`❌ Contract error: ${contract.error}`);
         return;
       }
-      
+
       if (contract.loading) {
         alert('⏳ Contract is loading, please wait...');
         return;
       }
-      
+
       // Test if we can create a signer (this tests the core wallet connection)
       try {
         // Import the contract hook's getSigner function
         const { getContractAddresses } = await import('@/lib/blockchain-utils');
         const { ethers } = await import('ethers');
-        
+
         // Test if we can get contract addresses
         const addresses = getContractAddresses();
         console.log('✅ Contract addresses loaded:', addresses);
-        
+
         // Test Privy wallet methods
         console.log('🔍 Testing Privy wallet methods...');
         console.log('Wallet object:', wallet);
-        console.log('Available methods:', Object.keys(wallet).filter(key => typeof (wallet as any)[key] === 'function'));
-        
+        console.log(
+          'Available methods:',
+          Object.keys(wallet).filter(
+            key => typeof (wallet as any)[key] === 'function'
+          )
+        );
+
         // Test different signer creation methods
         let signerCreated = false;
-        
+
         // Method 1: Try Privy's getEthereumProvider
         if (typeof wallet.getEthereumProvider === 'function') {
           try {
             console.log('🔍 Trying wallet.getEthereumProvider()...');
             const provider = await wallet.getEthereumProvider();
             console.log('✅ Provider from Privy:', provider);
-            
+
             const ethersProvider = new ethers.BrowserProvider(provider);
             const signer = await ethersProvider.getSigner();
             const address = await signer.getAddress();
@@ -294,9 +354,13 @@ export default function MyBetsPage() {
             console.warn('⚠️ Privy method failed:', privyError.message);
           }
         }
-        
+
         // Method 2: Try window.ethereum
-        if (!signerCreated && typeof window !== 'undefined' && window.ethereum) {
+        if (
+          !signerCreated &&
+          typeof window !== 'undefined' &&
+          window.ethereum
+        ) {
           try {
             console.log('🔍 Trying window.ethereum...');
             const provider = new ethers.BrowserProvider(window.ethereum);
@@ -305,24 +369,30 @@ export default function MyBetsPage() {
             console.log('✅ Signer created via window.ethereum:', address);
             signerCreated = true;
           } catch (windowError: any) {
-            console.warn('⚠️ Window.ethereum method failed:', windowError.message);
+            console.warn(
+              '⚠️ Window.ethereum method failed:',
+              windowError.message
+            );
           }
         }
-        
+
         // Method 3: Try any other method on the wallet
         if (!signerCreated) {
           console.log('🔍 Trying other wallet methods...');
-          const methods = Object.keys(wallet).filter(key =>
-            typeof (wallet as any)[key] === 'function' &&
-            (key.includes('provider') || key.includes('ethereum') || key.includes('signer'))
+          const methods = Object.keys(wallet).filter(
+            key =>
+              typeof (wallet as any)[key] === 'function' &&
+              (key.includes('provider') ||
+                key.includes('ethereum') ||
+                key.includes('signer'))
           );
-          
+
           for (const method of methods) {
             try {
               console.log(`🔍 Trying wallet.${method}()...`);
               const result = await (wallet as any)[method]();
               console.log(`Result from wallet.${method}:`, result);
-              
+
               if (result && typeof result.getSigner === 'function') {
                 const signer = await result.getSigner();
                 const address = await signer.getAddress();
@@ -335,11 +405,13 @@ export default function MyBetsPage() {
             }
           }
         }
-        
+
         if (signerCreated) {
           console.log('✅ Wallet connection successful! Signer is working.');
         } else {
-          console.error('❌ Failed to create signer with any method. Check console for details.');
+          console.error(
+            '❌ Failed to create signer with any method. Check console for details.'
+          );
         }
       } catch (signerError: any) {
         console.error('Signer creation failed:', signerError);
@@ -370,9 +442,9 @@ export default function MyBetsPage() {
         alert(`❌ Backend error (${response.status}): ${errorText}`);
         return;
       }
-      
+
       const result = await response.json();
-      
+
       if (result.success) {
         console.log('✅ Market resolution triggered successfully');
         // Silently refresh data without page reload
@@ -391,7 +463,7 @@ export default function MyBetsPage() {
   const manualResolveMarket6 = async () => {
     try {
       console.log('🔄 Manually resolving market 6...');
-      
+
       const response = await fetch('/api/markets/resolve-market', {
         method: 'POST',
         headers: {
@@ -404,9 +476,9 @@ export default function MyBetsPage() {
           reasoning: 'Manual resolution - Bitcoin price check',
         }),
       });
-      
+
       const result = await response.json();
-      
+
       if (response.ok && result.success) {
         console.log('✅ Market 6 resolved successfully:', result);
         // Refresh bets after a short delay
@@ -431,7 +503,9 @@ export default function MyBetsPage() {
     }
 
     const wallet = wallets[0];
-    console.log('🔄 Switching to BSC Testnet...', { currentChainId: wallet.chainId });
+    console.log('🔄 Switching to BSC Testnet...', {
+      currentChainId: wallet.chainId,
+    });
 
     try {
       // Try Privy's switchChain method
@@ -453,7 +527,9 @@ export default function MyBetsPage() {
         return;
       }
 
-      alert('❌ Unable to switch network. Please switch manually in your wallet.');
+      alert(
+        '❌ Unable to switch network. Please switch manually in your wallet.'
+      );
     } catch (error: any) {
       console.error('Network switch failed:', error);
       if (error.code === 4902) {
@@ -461,18 +537,22 @@ export default function MyBetsPage() {
         try {
           await window.ethereum.request({
             method: 'wallet_addEthereumChain',
-            params: [{
-              chainId: '0x61',
-              chainName: 'BSC Testnet',
-              nativeCurrency: { name: 'BNB', symbol: 'BNB', decimals: 18 },
-              rpcUrls: ['https://data-seed-prebsc-1-s1.binance.org:8545/'],
-              blockExplorerUrls: ['https://testnet.bscscan.com/'],
-            }],
+            params: [
+              {
+                chainId: '0x61',
+                chainName: 'BSC Testnet',
+                nativeCurrency: { name: 'BNB', symbol: 'BNB', decimals: 18 },
+                rpcUrls: ['https://data-seed-prebsc-1-s1.binance.org:8545/'],
+                blockExplorerUrls: ['https://testnet.bscscan.com/'],
+              },
+            ],
           });
           alert('✅ Added and switched to BSC Testnet!');
         } catch (addError: any) {
           console.error('Failed to add network:', addError);
-          alert('❌ Failed to add BSC Testnet. Please add it manually in your wallet.');
+          alert(
+            '❌ Failed to add BSC Testnet. Please add it manually in your wallet.'
+          );
         }
       } else {
         alert(`❌ Failed to switch network: ${error.message}`);
@@ -483,7 +563,7 @@ export default function MyBetsPage() {
   const filteredBets = userBets.filter(bet => {
     const prediction = predictions[bet.predictionId];
     if (!prediction) return false;
-    
+
     switch (activeTab) {
       case 'active':
         return prediction.status === 'active';
@@ -502,7 +582,9 @@ export default function MyBetsPage() {
     const commitData = getCommitSecret(predictionId);
 
     if (!prediction || !commitData) {
-      alert('Reveal data not found. Make sure you placed this bet on this device.');
+      alert(
+        'Reveal data not found. Make sure you placed this bet on this device.'
+      );
       return;
     }
 
@@ -565,18 +647,23 @@ export default function MyBetsPage() {
     if (!prediction) return;
 
     const isWinning = prediction.resolution?.outcome === bet.outcome;
-    const canClaim = prediction.status === 'resolved' && isWinning && !bet.claimed;
-    const canRefund = !bet.revealed && (prediction.status === 'cancelled' ||
-      (prediction.status === 'resolved' && !prediction.resolution));
+    const canClaim =
+      prediction.status === 'resolved' && isWinning && !bet.claimed;
+    const canRefund =
+      !bet.revealed &&
+      (prediction.status === 'cancelled' ||
+        (prediction.status === 'resolved' && !prediction.resolution));
 
     const claimType = canClaim ? 'winnings' : 'refund';
-    const claimAmount = canClaim ? calculatePotentialPayout(bet, prediction) : bet.amount;
+    const claimAmount = canClaim
+      ? calculatePotentialPayout(bet, prediction)
+      : bet.amount;
 
     setClaimBet({
       bet,
       prediction,
       type: claimType,
-      amount: claimAmount
+      amount: claimAmount,
     });
     setShowClaimModal(true);
   };
@@ -620,7 +707,9 @@ export default function MyBetsPage() {
 
       // Check if contract is available
       if (!contract) {
-        throw new Error('Contract not available. Please refresh the page and try again.');
+        throw new Error(
+          'Contract not available. Please refresh the page and try again.'
+        );
       }
 
       // Call smart contract
@@ -662,37 +751,45 @@ export default function MyBetsPage() {
   /**
    * Calculate potential payout for a bet
    */
-  const calculatePotentialPayout = (bet: UserBet, prediction: Prediction): number => {
-    if (prediction.status !== 'resolved' || !prediction.resolution?.outcome) return 0;
-    
+  const calculatePotentialPayout = (
+    bet: UserBet,
+    prediction: Prediction
+  ): number => {
+    if (prediction.status !== 'resolved' || !prediction.resolution?.outcome)
+      return 0;
+
     const isWinning = prediction.resolution.outcome === bet.outcome;
     if (!isWinning) return 0;
 
-    const totalWinningShares = prediction.resolution.outcome === 'yes' ? prediction.yesShares : prediction.noShares;
+    const totalWinningShares =
+      prediction.resolution.outcome === 'yes'
+        ? prediction.yesShares
+        : prediction.noShares;
     if (totalWinningShares === 0) return 0;
 
     // Calculate payout: (user shares / total winning shares) * total pool * 0.9 (10% platform fee)
-    const grossPayout = (bet.shares / totalWinningShares) * prediction.totalPool;
+    const grossPayout =
+      (bet.shares / totalWinningShares) * prediction.totalPool;
     const platformFee = grossPayout * 0.1; // 10% platform fee
     return grossPayout - platformFee;
   };
 
   if (!authenticated) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-yellow-400 via-yellow-500 to-yellow-600">
-        <Card className="w-full max-w-md text-center bg-black/90 border-black">
+      <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-yellow-400 via-yellow-500 to-yellow-600">
+        <Card className="w-full max-w-md border-black bg-black/90 text-center">
           <CardContent className="p-8">
-            <div className="mx-auto w-16 h-16 bg-yellow-500 rounded-full flex items-center justify-center mb-4">
+            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-yellow-500">
               <Wallet className="h-8 w-8 text-black" />
             </div>
-            <h2 className="text-2xl font-bold text-white mb-2">
+            <h2 className="mb-2 text-2xl font-bold text-white">
               {t('connect_wallet')}
             </h2>
-            <p className="text-gray-200 mb-6">
+            <p className="mb-6 text-gray-200">
               {t('connect_wallet_to_create')}
             </p>
-            <Button className="bg-white hover:bg-gray-200 text-black">
-              <Wallet className="h-4 w-4 mr-2" />
+            <Button className="bg-white text-black hover:bg-gray-200">
+              <Wallet className="mr-2 h-4 w-4" />
               {t('connect_wallet')}
             </Button>
           </CardContent>
@@ -703,64 +800,72 @@ export default function MyBetsPage() {
 
   const totalInvested = userBets.reduce((sum, bet) => sum + bet.amount, 0);
   const totalPayout = userBets.reduce((sum, bet) => sum + (bet.payout || 0), 0);
-  const activeBets = userBets.filter(bet => predictions[bet.predictionId]?.status === 'active').length;
-  const resolvedBets = userBets.filter(bet => predictions[bet.predictionId]?.status === 'resolved').length;
+  const activeBets = userBets.filter(
+    bet => predictions[bet.predictionId]?.status === 'active'
+  ).length;
+  const resolvedBets = userBets.filter(
+    bet => predictions[bet.predictionId]?.status === 'resolved'
+  ).length;
 
   return (
-    <div className="min-h-screen relative">
+    <div className="relative min-h-screen">
       {/* Page-specific background */}
       <AnimatedBackground variant="particles" />
-      
-      <div className="mx-auto max-w-7xl px-6 py-16 lg:px-8 relative z-10">
+
+      <div className="relative z-10 mx-auto max-w-7xl px-6 py-16 lg:px-8">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-4xl font-display text-white mb-2">{t('my_bets')}</h1>
-          <p className="text-gray-300 font-body">
-            {t('track_investments')}
-          </p>
-          
+          <h1 className="font-display mb-2 text-4xl text-white">
+            {t('my_bets')}
+          </h1>
+          <p className="font-body text-gray-300">{t('track_investments')}</p>
+
           {/* Connection Status */}
-          <div className="mt-4 p-4 rounded-xl bg-gray-900/60 backdrop-blur-sm border border-gray-700/50">
+          <div className="mt-4 rounded-xl border border-gray-700/50 bg-gray-900/60 p-4 backdrop-blur-sm">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2 text-sm">
-                <div className={`w-2 h-2 rounded-full ${contract.error ? 'bg-red-500' : 'bg-green-500'}`}></div>
-                <span className="text-white font-caption">
-                  {contract.error ? `Connection Issue: ${contract.error}` : 'Connected to BSC Testnet'}
+                <div
+                  className={`h-2 w-2 rounded-full ${contract.error ? 'bg-red-500' : 'bg-green-500'}`}
+                ></div>
+                <span className="font-caption text-white">
+                  {contract.error
+                    ? `Connection Issue: ${contract.error}`
+                    : 'Connected to BSC Testnet'}
                 </span>
               </div>
               <div className="flex gap-2">
                 <Button
                   onClick={testBackendConnection}
                   size="sm"
-                  className="bg-indigo-600 hover:bg-indigo-700 text-white"
+                  className="bg-indigo-600 text-white hover:bg-indigo-700"
                 >
                   Test Backend
                 </Button>
                 <Button
                   onClick={testWalletConnection}
                   size="sm"
-                  className="bg-blue-600 hover:bg-blue-700 text-white"
+                  className="bg-blue-600 text-white hover:bg-blue-700"
                 >
                   Test Connection
                 </Button>
                 <Button
                   onClick={switchToBSC}
                   size="sm"
-                  className="bg-purple-600 hover:bg-purple-700 text-white"
+                  className="bg-purple-600 text-white hover:bg-purple-700"
                 >
                   Switch to BSC
                 </Button>
                 <Button
                   onClick={triggerMarketResolution}
                   size="sm"
-                  className="bg-orange-600 hover:bg-orange-700 text-white"
+                  className="bg-orange-600 text-white hover:bg-orange-700"
                 >
                   Resolve Markets
                 </Button>
                 <Button
                   onClick={manualResolveMarket6}
                   size="sm"
-                  className="bg-red-600 hover:bg-red-700 text-white"
+                  className="bg-red-600 text-white hover:bg-red-700"
                 >
                   Resolve Market 6
                 </Button>
@@ -771,7 +876,7 @@ export default function MyBetsPage() {
                       window.location.reload();
                     }}
                     size="sm"
-                    className="bg-yellow-600 hover:bg-yellow-700 text-white"
+                    className="bg-yellow-600 text-white hover:bg-yellow-700"
                   >
                     Retry Connection
                   </Button>
@@ -780,11 +885,14 @@ export default function MyBetsPage() {
             </div>
             {contract.error && (
               <div className="mt-2 text-xs text-gray-400">
-                <div>Please check your wallet connection and network settings.</div>
+                <div>
+                  Please check your wallet connection and network settings.
+                </div>
                 <div className="mt-1">
-                  <strong>Debug Info:</strong> Authenticated: {authenticated ? 'Yes' : 'No'}, 
-                  Wallets: {wallets?.length || 0}, 
-                  User: {user?.wallet?.address ? 'Connected' : 'Not connected'},
+                  <strong>Debug Info:</strong> Authenticated:{' '}
+                  {authenticated ? 'Yes' : 'No'}, Wallets:{' '}
+                  {wallets?.length || 0}, User:{' '}
+                  {user?.wallet?.address ? 'Connected' : 'Not connected'},
                   Network: {wallets?.[0]?.chainId || 'Unknown'}
                 </div>
               </div>
@@ -796,10 +904,19 @@ export default function MyBetsPage() {
         <StatsDashboard
           totalBets={userBets.length}
           totalWinnings={totalPayout}
-          winRate={resolvedBets > 0 ? (userBets.filter(bet => {
-            const prediction = predictions[bet.predictionId];
-            return prediction?.status === 'resolved' && prediction.resolution?.outcome === bet.outcome;
-          }).length / resolvedBets) * 100 : 0}
+          winRate={
+            resolvedBets > 0
+              ? (userBets.filter(bet => {
+                  const prediction = predictions[bet.predictionId];
+                  return (
+                    prediction?.status === 'resolved' &&
+                    prediction.resolution?.outcome === bet.outcome
+                  );
+                }).length /
+                  resolvedBets) *
+                100
+              : 0
+          }
           activeBets={activeBets}
         />
 
@@ -811,7 +928,11 @@ export default function MyBetsPage() {
               { date: 'Week 2', winnings: 1.2, bets: 4 },
               { date: 'Week 3', winnings: 0.8, bets: 3 },
               { date: 'Week 4', winnings: 2.1, bets: 5 },
-              { date: 'This Week', winnings: totalPayout, bets: userBets.length },
+              {
+                date: 'This Week',
+                winnings: totalPayout,
+                bets: userBets.length,
+              },
             ]}
             type="area"
           />
@@ -825,19 +946,22 @@ export default function MyBetsPage() {
                 { key: 'all', label: t('all_bets'), count: userBets.length },
                 { key: 'active', label: t('active'), count: activeBets },
                 { key: 'resolved', label: t('resolved'), count: resolvedBets },
-              ].map((tab) => (
+              ].map(tab => (
                 <button
                   key={tab.key}
                   onClick={() => setActiveTab(tab.key as any)}
                   className={cn(
-                    'whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm',
+                    'whitespace-nowrap border-b-2 px-1 py-2 text-sm font-medium',
                     activeTab === tab.key
                       ? 'border-black text-black'
-                      : 'border-transparent text-black/60 hover:text-black hover:border-black/30'
+                      : 'border-transparent text-black/60 hover:border-black/30 hover:text-black'
                   )}
                 >
                   {tab.label}
-                  <Badge variant="secondary" className="ml-2 bg-black/90 text-white">
+                  <Badge
+                    variant="secondary"
+                    className="ml-2 bg-black/90 text-white"
+                  >
                     {tab.count}
                   </Badge>
                 </button>
@@ -848,60 +972,76 @@ export default function MyBetsPage() {
 
         {/* Bets List */}
         {filteredBets.length === 0 ? (
-          <Card className="text-center py-12 bg-black/90 border-black">
+          <Card className="border-black bg-black/90 py-12 text-center">
             <CardContent>
-              <div className="mx-auto w-24 h-24 bg-yellow-500 rounded-full flex items-center justify-center mb-4">
+              <div className="mx-auto mb-4 flex h-24 w-24 items-center justify-center rounded-full bg-yellow-500">
                 <TrendingUp className="h-12 w-12 text-black" />
               </div>
-              <h3 className="text-lg font-medium text-white mb-2">
+              <h3 className="mb-2 text-lg font-medium text-white">
                 {t('no_bets_found')}
               </h3>
-              <p className="text-gray-200 mb-4">
-                {activeTab === 'all' 
+              <p className="mb-4 text-gray-200">
+                {activeTab === 'all'
                   ? t('no_bets_yet')
-                  : activeTab === 'active' 
+                  : activeTab === 'active'
                     ? t('no_active_bets')
-                    : t('no_resolved_bets')
-                }
+                    : t('no_resolved_bets')}
               </p>
-              <Button className="bg-white hover:bg-gray-200 text-black">
+              <Button className="bg-white text-black hover:bg-gray-200">
                 {t('explore_markets')}
               </Button>
             </CardContent>
           </Card>
         ) : (
           <div className="space-y-4">
-            {filteredBets.map((bet) => {
+            {filteredBets.map(bet => {
               const prediction = predictions[bet.predictionId];
               if (!prediction) return null;
 
-              const OutcomeIcon = bet.outcome === 'unknown' ? Clock : getOutcomeIcon(bet.outcome as 'yes' | 'no');
+              const OutcomeIcon =
+                bet.outcome === 'unknown'
+                  ? Clock
+                  : getOutcomeIcon(bet.outcome as 'yes' | 'no');
               const isWinning = prediction.resolution?.outcome === bet.outcome;
               const isExpired = new Date().getTime() > prediction.expiresAt;
-              
+
               // Check if bet is revealed (use revealed property or check outcome)
               const isRevealed = bet.revealed || bet.outcome !== 'unknown';
-              
+
               // Can claim winnings if: resolved + won + not claimed + revealed
-              const canClaim = prediction.status === 'resolved' && isWinning && !bet.claimed && isRevealed;
-              
+              const canClaim =
+                prediction.status === 'resolved' &&
+                isWinning &&
+                !bet.claimed &&
+                isRevealed;
+
               // Check refund availability from smart contract
               const refundCheck = refundChecks[bet.id];
               const canRefund = !isRevealed && refundCheck?.available === true;
-              
+
               // Check if user can claim winnings (revealed + won + resolved + not claimed)
-              const canClaimWinnings = isRevealed && prediction.status === 'resolved' && isWinning && !bet.claimed;
-              
+              const canClaimWinnings =
+                isRevealed &&
+                prediction.status === 'resolved' &&
+                isWinning &&
+                !bet.claimed;
+
               // Check if user lost the bet (revealed + resolved + not winning)
-              const hasLost = isRevealed && prediction.status === 'resolved' && !isWinning;
-              
+              const hasLost =
+                isRevealed && prediction.status === 'resolved' && !isWinning;
+
               // Check if bet is waiting for resolution (revealed + not resolved yet)
-              const waitingForResolution = isRevealed && prediction.status !== 'resolved';
-              
+              const waitingForResolution =
+                isRevealed && prediction.status !== 'resolved';
+
               // Determine if user can claim anything (winnings or refund)
               const canClaimAnything = canClaim || canRefund;
               const claimType = canClaim ? 'winnings' : 'refund';
-              const claimAmount = canClaim ? calculatePotentialPayout(bet, prediction) : (refundCheck?.amount ? parseFloat(refundCheck.amount) : bet.amount);
+              const claimAmount = canClaim
+                ? calculatePotentialPayout(bet, prediction)
+                : refundCheck?.amount
+                  ? parseFloat(refundCheck.amount)
+                  : bet.amount;
 
               // Debug logging
               console.log('Bet Debug:', {
@@ -922,147 +1062,213 @@ export default function MyBetsPage() {
                 canClaimAnything,
                 claimed: bet.claimed,
                 hasUnrevealedCommit: hasUnrevealedCommit(bet.predictionId),
-                canReveal: canReveal(prediction.expiresAt)
+                canReveal: canReveal(prediction.expiresAt),
               });
 
               return (
-                <Card key={bet.id} className="hover:shadow-lg transition-shadow bg-black/90 border-black">
+                <Card
+                  key={bet.id}
+                  className="border-black bg-black/90 transition-shadow hover:shadow-lg"
+                >
                   <CardContent className="p-6">
                     <div className="flex items-start justify-between">
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2 mb-2">
-                          <Badge variant="outline" className="border-white text-white">
+                      <div className="min-w-0 flex-1">
+                        <div className="mb-2 flex items-center gap-2">
+                          <Badge
+                            variant="outline"
+                            className="border-white text-white"
+                          >
                             {prediction.category}
                           </Badge>
-                          <Badge variant={getStatusColor(prediction.status) as any} className="bg-yellow-500 text-black">
+                          <Badge
+                            variant={getStatusColor(prediction.status) as any}
+                            className="bg-yellow-500 text-black"
+                          >
                             {prediction.status}
                           </Badge>
                           {prediction.isHot && (
                             <Badge variant="warning">Hot</Badge>
                           )}
                         </div>
-                        
-                        <h3 className="text-lg font-semibold text-white mb-2 line-clamp-2">
+
+                        <h3 className="mb-2 line-clamp-2 text-lg font-semibold text-white">
                           {prediction.title}
                         </h3>
-                        
-                        <div className="flex items-center gap-4 text-sm text-gray-300 mb-4">
+
+                        <div className="mb-4 flex items-center gap-4 text-sm text-gray-300">
                           <div className="flex items-center gap-1">
                             <Clock className="h-4 w-4" />
                             <span>
-                              {prediction.status === 'active' 
+                              {prediction.status === 'active'
                                 ? `${t('expires_in')} ${formatTimeRemaining(prediction.expiresAt)}`
-                                : `${t('resolved_on')} ${new Date(prediction.resolution?.resolvedAt || prediction.expiresAt).toLocaleDateString()}`
-                              }
+                                : `${t('resolved_on')} ${new Date(prediction.resolution?.resolvedAt || prediction.expiresAt).toLocaleDateString()}`}
                             </span>
                           </div>
                           <div className="flex items-center gap-1">
-                            <OutcomeIcon className={cn("h-4 w-4", bet.outcome === 'yes' ? 'text-green-400' : 'text-red-400')} />
-                            <span className={bet.outcome === 'yes' ? 'text-green-400' : 'text-red-400'}>
+                            <OutcomeIcon
+                              className={cn(
+                                'h-4 w-4',
+                                bet.outcome === 'yes'
+                                  ? 'text-green-400'
+                                  : 'text-red-400'
+                              )}
+                            />
+                            <span
+                              className={
+                                bet.outcome === 'yes'
+                                  ? 'text-green-400'
+                                  : 'text-red-400'
+                              }
+                            >
                               {bet.outcome.toUpperCase()}
                             </span>
                           </div>
                         </div>
 
                         {/* Bet Details */}
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
                           <div>
-                            <div className="text-xs text-gray-400">{t('shares')}</div>
-                            <div className="text-sm font-medium text-white">{bet.shares.toFixed(2)}</div>
-                          </div>
-                          <div>
-                            <div className="text-xs text-gray-400">{t('amount')}</div>
-                            <div className="text-sm font-medium text-white">{formatBNB(bet.amount)}</div>
-                          </div>
-                          <div>
-                            <div className="text-xs text-gray-400">{t('price')}</div>
-                            <div className="text-sm font-medium text-white">{bet.price.toFixed(4)}</div>
-                          </div>
-                          <div>
-                            <div className="text-xs text-gray-400">{t('potential_payout')}</div>
+                            <div className="text-xs text-gray-400">
+                              {t('shares')}
+                            </div>
                             <div className="text-sm font-medium text-white">
-                              {prediction.status === 'resolved' && prediction.resolution?.outcome 
-                                ? formatBNB(calculatePotentialPayout(bet, prediction))
-                                : formatBNB(calculatePayout(bet.shares, 
-                                    bet.outcome === 'yes' ? prediction.yesShares : prediction.noShares, 
-                                    prediction.totalPool
-                                  ))
-                              }
+                              {bet.shares.toFixed(2)}
+                            </div>
+                          </div>
+                          <div>
+                            <div className="text-xs text-gray-400">
+                              {t('amount')}
+                            </div>
+                            <div className="text-sm font-medium text-white">
+                              {formatBNB(bet.amount)}
+                            </div>
+                          </div>
+                          <div>
+                            <div className="text-xs text-gray-400">
+                              {t('price')}
+                            </div>
+                            <div className="text-sm font-medium text-white">
+                              {bet.price.toFixed(4)}
+                            </div>
+                          </div>
+                          <div>
+                            <div className="text-xs text-gray-400">
+                              {t('potential_payout')}
+                            </div>
+                            <div className="text-sm font-medium text-white">
+                              {prediction.status === 'resolved' &&
+                              prediction.resolution?.outcome
+                                ? formatBNB(
+                                    calculatePotentialPayout(bet, prediction)
+                                  )
+                                : formatBNB(
+                                    calculatePayout(
+                                      bet.shares,
+                                      bet.outcome === 'yes'
+                                        ? prediction.yesShares
+                                        : prediction.noShares,
+                                      prediction.totalPool
+                                    )
+                                  )}
                             </div>
                           </div>
                         </div>
 
                         {/* Resolution Info */}
-                        {prediction.status === 'resolved' && prediction.resolution?.outcome !== undefined && (
-                          <div className="mt-4 p-3 rounded-lg bg-yellow-500/20 border border-yellow-500/30">
-                            <div className="text-sm font-medium mb-1 text-white">
-                              Resolution: {prediction.resolution.outcome === 'yes' ? 'YES' : 'NO'}
-                            </div>
-                            {prediction.resolution?.reasoning && (
-                              <div className="text-xs text-gray-200">
-                                {prediction.resolution.reasoning}
+                        {prediction.status === 'resolved' &&
+                          prediction.resolution?.outcome !== undefined && (
+                            <div className="mt-4 rounded-lg border border-yellow-500/30 bg-yellow-500/20 p-3">
+                              <div className="mb-1 text-sm font-medium text-white">
+                                Resolution:{' '}
+                                {prediction.resolution.outcome === 'yes'
+                                  ? 'YES'
+                                  : 'NO'}
                               </div>
-                            )}
-                          </div>
-                        )}
+                              {prediction.resolution?.reasoning && (
+                                <div className="text-xs text-gray-200">
+                                  {prediction.resolution.reasoning}
+                                </div>
+                              )}
+                            </div>
+                          )}
                       </div>
 
                       {/* Action Buttons */}
-                      <div className="ml-4 flex-shrink-0 flex flex-col gap-2">
+                      <div className="ml-4 flex flex-shrink-0 flex-col gap-2">
                         {/* Reveal button for unrevealed bets */}
-                        {!isRevealed && hasUnrevealedCommit(bet.predictionId) && !isExpired && (
-                          <Button
-                            onClick={() => handleRevealClick(bet.predictionId)}
-                            className="bg-yellow-600 hover:bg-yellow-700 text-white"
-                            size="sm"
-                            disabled={!canReveal(prediction.expiresAt)}
-                          >
-                            <Eye className="h-4 w-4 mr-2" />
-                            {t('reveal')}
-                          </Button>
-                        )}
-                        
+                        {!isRevealed &&
+                          hasUnrevealedCommit(bet.predictionId) &&
+                          !isExpired && (
+                            <Button
+                              onClick={() =>
+                                handleRevealClick(bet.predictionId)
+                              }
+                              className="bg-yellow-600 text-white hover:bg-yellow-700"
+                              size="sm"
+                              disabled={!canReveal(prediction.expiresAt)}
+                            >
+                              <Eye className="mr-2 h-4 w-4" />
+                              {t('reveal')}
+                            </Button>
+                          )}
+
                         {/* Unified Claim button for winnings or refunds */}
                         {canClaimAnything ? (
                           <Button
                             onClick={() => handleClaimClick(bet.id)}
-                            className={canClaim ? "bg-green-600 hover:bg-green-700 text-white" : "bg-orange-600 hover:bg-orange-700 text-white"}
+                            className={
+                              canClaim
+                                ? 'bg-green-600 text-white hover:bg-green-700'
+                                : 'bg-orange-600 text-white hover:bg-orange-700'
+                            }
                             size="sm"
                             disabled={contract.loading}
                           >
                             {contract.loading ? (
-                              <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                             ) : (
-                              <DollarSign className="h-4 w-4 mr-2" />
+                              <DollarSign className="mr-2 h-4 w-4" />
                             )}
-                            Claim {claimType === 'winnings' ? 'Winnings' : 'Refund'} ({formatBNB(claimAmount)} BNB)
+                            Claim{' '}
+                            {claimType === 'winnings' ? 'Winnings' : 'Refund'} (
+                            {formatBNB(claimAmount)} BNB)
                           </Button>
                         ) : bet.claimed ? (
-                          <Badge variant="success" className="bg-green-600 text-white">Claimed</Badge>
+                          <Badge
+                            variant="success"
+                            className="bg-green-600 text-white"
+                          >
+                            Claimed
+                          </Badge>
                         ) : !isRevealed && isExpired ? (
                           <div className="flex flex-col gap-2">
-                            <Badge variant="warning" className="bg-orange-600 text-white">
-                              {refundCheck?.available ? 'Can Refund' : 'Expired - Check Refund'}
+                            <Badge
+                              variant="warning"
+                              className="bg-orange-600 text-white"
+                            >
+                              {refundCheck?.available
+                                ? 'Can Refund'
+                                : 'Expired - Check Refund'}
                             </Badge>
                             {refundCheck?.reason && (
-                              <div className="text-xs text-gray-300 max-w-32">
+                              <div className="max-w-32 text-xs text-gray-300">
                                 {refundCheck.reason}
                               </div>
                             )}
                             {refundCheck?.available ? (
                               <Button
                                 onClick={() => handleClaimClick(bet.id)}
-                                className="bg-orange-600 hover:bg-orange-700 text-white"
+                                className="bg-orange-600 text-white hover:bg-orange-700"
                                 size="sm"
                                 disabled={contract.loading}
                               >
-                                <DollarSign className="h-4 w-4 mr-2" />
+                                <DollarSign className="mr-2 h-4 w-4" />
                                 Claim Refund
                               </Button>
                             ) : (
                               <Button
                                 onClick={() => checkAllRefunds()}
-                                className="bg-gray-600 hover:bg-gray-700 text-white"
+                                className="bg-gray-600 text-white hover:bg-gray-700"
                                 size="sm"
                               >
                                 Check Again
@@ -1070,39 +1276,69 @@ export default function MyBetsPage() {
                             )}
                           </div>
                         ) : !isRevealed ? (
-                          <Badge variant="secondary" className="bg-gray-600 text-white">Unrevealed</Badge>
+                          <Badge
+                            variant="secondary"
+                            className="bg-gray-600 text-white"
+                          >
+                            Unrevealed
+                          </Badge>
                         ) : waitingForResolution ? (
-                          <Badge variant="secondary" className="bg-yellow-600 text-white">Waiting for Resolution</Badge>
+                          <Badge
+                            variant="secondary"
+                            className="bg-yellow-600 text-white"
+                          >
+                            Waiting for Resolution
+                          </Badge>
                         ) : hasLost ? (
-                          <Badge variant="destructive" className="bg-red-600 text-white">Lost</Badge>
+                          <Badge
+                            variant="destructive"
+                            className="bg-red-600 text-white"
+                          >
+                            Lost
+                          </Badge>
                         ) : canClaimWinnings ? (
                           <div className="flex flex-col gap-2">
-                            <Badge variant="success" className="bg-green-600 text-white">Won - Can Claim</Badge>
+                            <Badge
+                              variant="success"
+                              className="bg-green-600 text-white"
+                            >
+                              Won - Can Claim
+                            </Badge>
                             <Button
                               onClick={() => handleClaimClick(bet.id)}
-                              className="bg-green-600 hover:bg-green-700 text-white"
+                              className="bg-green-600 text-white hover:bg-green-700"
                               size="sm"
                               disabled={contract.loading}
                             >
-                              <DollarSign className="h-4 w-4 mr-2" />
+                              <DollarSign className="mr-2 h-4 w-4" />
                               Claim Winnings
                             </Button>
                           </div>
                         ) : isWinning ? (
                           <div className="flex flex-col gap-2">
-                            <Badge variant="success" className="bg-green-600 text-white">Won</Badge>
+                            <Badge
+                              variant="success"
+                              className="bg-green-600 text-white"
+                            >
+                              Won
+                            </Badge>
                             <Button
                               onClick={() => handleClaimClick(bet.id)}
-                              className="bg-green-600 hover:bg-green-700 text-white"
+                              className="bg-green-600 text-white hover:bg-green-700"
                               size="sm"
                               disabled={contract.loading}
                             >
-                              <DollarSign className="h-4 w-4 mr-2" />
+                              <DollarSign className="mr-2 h-4 w-4" />
                               Try Claim
                             </Button>
                           </div>
                         ) : (
-                          <Badge variant="destructive" className="bg-red-600 text-white">Lost</Badge>
+                          <Badge
+                            variant="destructive"
+                            className="bg-red-600 text-white"
+                          >
+                            Lost
+                          </Badge>
                         )}
                       </div>
                     </div>
@@ -1127,29 +1363,34 @@ export default function MyBetsPage() {
 
       {/* Claim Confirmation Modal */}
       {claimBet && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <Card className="w-full max-w-md bg-black/90 border-black">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+          <Card className="w-full max-w-md border-black bg-black/90">
             <CardHeader>
-              <CardTitle className="text-white text-center">
-                {claimBet.type === 'winnings' ? 'Claim Winnings' : 'Claim Refund'}
+              <CardTitle className="text-center text-white">
+                {claimBet.type === 'winnings'
+                  ? 'Claim Winnings'
+                  : 'Claim Refund'}
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="text-center">
-                <div className="text-2xl font-bold text-yellow-400 mb-2">
+                <div className="mb-2 text-2xl font-bold text-yellow-400">
                   {formatBNB(claimBet.amount)} BNB
                 </div>
-                <p className="text-gray-300 text-sm">
-                  {claimBet.type === 'winnings' 
+                <p className="text-sm text-gray-300">
+                  {claimBet.type === 'winnings'
                     ? 'You won this prediction! Claim your winnings.'
-                    : 'This prediction expired. Get your refund.'
-                  }
+                    : 'This prediction expired. Get your refund.'}
                 </p>
               </div>
-              
-              <div className="bg-yellow-500/20 border border-yellow-500/30 rounded-lg p-3">
-                <p className="text-yellow-200 text-sm">
-                  <strong>Note:</strong> You'll need to sign a transaction to {claimBet.type === 'winnings' ? 'claim your winnings' : 'get your refund'}.
+
+              <div className="rounded-lg border border-yellow-500/30 bg-yellow-500/20 p-3">
+                <p className="text-sm text-yellow-200">
+                  <strong>Note:</strong> You'll need to sign a transaction to{' '}
+                  {claimBet.type === 'winnings'
+                    ? 'claim your winnings'
+                    : 'get your refund'}
+                  .
                 </p>
               </div>
 
@@ -1171,18 +1412,20 @@ export default function MyBetsPage() {
                     }
                   }}
                   className={`flex-1 ${
-                    claimBet.type === 'winnings' 
-                      ? 'bg-green-600 hover:bg-green-700' 
+                    claimBet.type === 'winnings'
+                      ? 'bg-green-600 hover:bg-green-700'
                       : 'bg-orange-600 hover:bg-orange-700'
                   } text-white`}
                   disabled={contract.loading}
                 >
                   {contract.loading ? (
-                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                   ) : (
-                    <DollarSign className="h-4 w-4 mr-2" />
+                    <DollarSign className="mr-2 h-4 w-4" />
                   )}
-                  {claimBet.type === 'winnings' ? 'Claim Winnings' : 'Claim Refund'}
+                  {claimBet.type === 'winnings'
+                    ? 'Claim Winnings'
+                    : 'Claim Refund'}
                 </Button>
               </div>
             </CardContent>
@@ -1204,11 +1447,11 @@ export default function MyBetsPage() {
       {/* Error Banner */}
       {error && !loading && (
         <div className="fixed bottom-4 right-4 z-50">
-          <Card className="bg-red-500/20 border-red-500 max-w-md">
+          <Card className="max-w-md border-red-500 bg-red-500/20">
             <CardContent className="p-4">
               <div className="flex items-center gap-2">
                 <AlertCircle className="h-5 w-5 text-red-500" />
-                <p className="text-red-900 font-medium text-sm">{error}</p>
+                <p className="text-sm font-medium text-red-900">{error}</p>
               </div>
             </CardContent>
           </Card>
@@ -1217,4 +1460,3 @@ export default function MyBetsPage() {
     </div>
   );
 }
-

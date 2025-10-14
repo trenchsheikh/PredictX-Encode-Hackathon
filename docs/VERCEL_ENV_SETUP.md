@@ -5,16 +5,19 @@ This document outlines all the environment variables needed for deploying DarkBe
 ## Required Environment Variables
 
 ### 1. MongoDB Configuration
+
 ```
 MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/darkbet?retryWrites=true&w=majority
 ```
 
 ### 2. Privy Wallet Configuration
+
 ```
 NEXT_PUBLIC_PRIVY_APP_ID=your_privy_app_id_here
 ```
 
 ### 3. AI Service Configuration
+
 ```
 NEXT_PUBLIC_AI_PROVIDER=gemini
 NEXT_PUBLIC_GEMINI_API_KEY=your_gemini_api_key_here
@@ -22,12 +25,14 @@ NEXT_PUBLIC_GEMINI_MODEL=gemini-1.5-flash
 ```
 
 ### 4. Application Configuration
+
 ```
 NEXT_PUBLIC_APP_URL=https://your-domain.vercel.app
 NEXT_PUBLIC_API_URL=/api
 ```
 
 ### 5. Blockchain Configuration
+
 ```
 NEXT_PUBLIC_CHAIN_ID=97
 NEXT_PUBLIC_PREDICTION_CONTRACT_ADDRESS=0x...
@@ -35,6 +40,7 @@ NEXT_PUBLIC_VAULT_CONTRACT_ADDRESS=0x...
 ```
 
 ### 6. Backend Configuration (Render backend)
+
 ```
 NEXT_PUBLIC_BACKEND_URL=https://your-backend.onrender.com
 # OR use NEXT_PUBLIC_API_URL to override
@@ -44,12 +50,14 @@ NEXT_PUBLIC_API_URL=https://your-backend.onrender.com/api
 ## Optional Environment Variables
 
 ### Oracle/Admin Configuration
+
 ```
 ORACLE_ADMIN_KEY=your_secure_admin_key
 ADMIN_PRIVATE_KEY=your_admin_private_key
 ```
 
 ### Alternative AI Providers
+
 ```
 # For OpenAI
 NEXT_PUBLIC_AI_PROVIDER=openai
@@ -89,16 +97,19 @@ NEXT_PUBLIC_AI_BASE_URL=https://your-custom-endpoint.com
 ## Troubleshooting
 
 ### Build Failures
+
 - Check that all required environment variables are set
 - Ensure MongoDB URI is correct and accessible
 - Verify Privy App ID is valid
 
 ### Runtime Errors
+
 - Check Vercel function logs in the dashboard
 - Ensure MongoDB connection string includes retryWrites=true
 - Verify all API endpoints are working
 
 ### Performance Issues
+
 - MongoDB connection is cached for serverless functions
 - Consider using Vercel's Edge Runtime for better performance
 - Monitor function execution times in Vercel dashboard

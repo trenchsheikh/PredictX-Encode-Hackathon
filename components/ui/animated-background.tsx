@@ -8,9 +8,9 @@ interface AnimatedBackgroundProps {
   className?: string;
 }
 
-export function AnimatedBackground({ 
-  variant = 'default', 
-  className = '' 
+export function AnimatedBackground({
+  variant = 'default',
+  className = '',
 }: AnimatedBackgroundProps) {
   const [mounted, setMounted] = useState(false);
 
@@ -29,7 +29,7 @@ export function AnimatedBackground({
           <div className="fixed inset-0 -z-50">
             {/* Base dark gradient */}
             <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-black to-gray-800" />
-            
+
             {/* Animated overlay gradients */}
             <motion.div
               className="absolute inset-0 bg-gradient-to-r from-transparent via-yellow-500/10 to-transparent"
@@ -40,10 +40,10 @@ export function AnimatedBackground({
               transition={{
                 duration: 8,
                 repeat: Infinity,
-                ease: "easeInOut",
+                ease: 'easeInOut',
               }}
             />
-            
+
             <motion.div
               className="absolute inset-0 bg-gradient-to-b from-transparent via-yellow-400/5 to-transparent"
               animate={{
@@ -53,7 +53,7 @@ export function AnimatedBackground({
               transition={{
                 duration: 12,
                 repeat: Infinity,
-                ease: "easeInOut",
+                ease: 'easeInOut',
                 delay: 2,
               }}
             />
@@ -62,12 +62,12 @@ export function AnimatedBackground({
 
       case 'particles':
         return (
-          <div className="fixed inset-0 -z-50 bg-gradient-to-br from-gray-900 via-black to-gray-800 overflow-hidden">
+          <div className="fixed inset-0 -z-50 overflow-hidden bg-gradient-to-br from-gray-900 via-black to-gray-800">
             {/* Floating particles */}
             {Array.from({ length: 50 }).map((_, i) => (
               <motion.div
                 key={`particle-${i}`}
-                className="absolute w-2 h-2 bg-yellow-400/30 rounded-full"
+                className="absolute h-2 w-2 rounded-full bg-yellow-400/30"
                 animate={{
                   x: [0, Math.random() * 200 - 100],
                   y: [0, Math.random() * 200 - 100],
@@ -78,7 +78,7 @@ export function AnimatedBackground({
                   duration: 6 + Math.random() * 4,
                   repeat: Infinity,
                   delay: Math.random() * 5,
-                  ease: "easeInOut",
+                  ease: 'easeInOut',
                 }}
                 style={{
                   left: `${Math.random() * 100}%`,
@@ -86,12 +86,12 @@ export function AnimatedBackground({
                 }}
               />
             ))}
-            
+
             {/* Larger floating orbs */}
             {Array.from({ length: 8 }).map((_, i) => (
               <motion.div
                 key={`orb-${i}`}
-                className="absolute w-16 h-16 bg-yellow-400/10 rounded-full blur-xl"
+                className="absolute h-16 w-16 rounded-full bg-yellow-400/10 blur-xl"
                 animate={{
                   x: [0, Math.random() * 400 - 200],
                   y: [0, Math.random() * 400 - 200],
@@ -101,7 +101,7 @@ export function AnimatedBackground({
                   duration: 15 + Math.random() * 10,
                   repeat: Infinity,
                   delay: Math.random() * 8,
-                  ease: "easeInOut",
+                  ease: 'easeInOut',
                 }}
                 style={{
                   left: `${Math.random() * 100}%`,
@@ -117,8 +117,8 @@ export function AnimatedBackground({
           <div className="fixed inset-0 -z-50 bg-gradient-to-br from-gray-900 via-black to-gray-800">
             {/* Animated grid pattern */}
             <div className="absolute inset-0 opacity-20">
-              <div 
-                className="w-full h-full"
+              <div
+                className="h-full w-full"
                 style={{
                   backgroundImage: `
                     linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
@@ -128,7 +128,7 @@ export function AnimatedBackground({
                 }}
               />
             </div>
-            
+
             {/* Moving grid lines */}
             <motion.div
               className="absolute inset-0"
@@ -138,7 +138,7 @@ export function AnimatedBackground({
               transition={{
                 duration: 20,
                 repeat: Infinity,
-                ease: "linear",
+                ease: 'linear',
               }}
               style={{
                 backgroundImage: `
@@ -156,7 +156,7 @@ export function AnimatedBackground({
           <div className="fixed inset-0 -z-50">
             {/* Base dark gradient */}
             <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-black to-gray-800" />
-            
+
             {/* Subtle animated overlay */}
             <motion.div
               className="absolute inset-0 bg-gradient-to-r from-transparent via-yellow-500/10 to-transparent"
@@ -166,7 +166,7 @@ export function AnimatedBackground({
               transition={{
                 duration: 15,
                 repeat: Infinity,
-                ease: "easeInOut",
+                ease: 'easeInOut',
               }}
             />
           </div>

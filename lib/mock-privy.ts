@@ -60,8 +60,8 @@ export function usePrivy(): PrivyAuthState {
       id: 'mock-user-123',
       wallet: {
         address: '0x1234567890123456789012345678901234567890',
-        chainId: '0x38' // BSC mainnet
-      }
+        chainId: '0x38', // BSC mainnet
+      },
     });
   };
 
@@ -80,7 +80,7 @@ export function usePrivy(): PrivyAuthState {
     setAuthenticated(true);
     setUser({
       id: 'mock-user-123',
-      email: { address: email }
+      email: { address: email },
     });
   };
 
@@ -96,7 +96,7 @@ export function usePrivy(): PrivyAuthState {
       setAuthenticated(true);
       setUser({
         id: 'mock-user-123',
-        email: { address: 'user@example.com' }
+        email: { address: 'user@example.com' },
       });
     } else {
       alert('Invalid code. Try 123456');
@@ -112,15 +112,19 @@ export function usePrivy(): PrivyAuthState {
     loginWithEmail,
     sendCode,
     loginWithCode,
-    connectWallet
+    connectWallet,
   };
 }
 
 // Mock PrivyProvider component
-export function PrivyProvider({ children, appId, config }: { 
-  children: any; 
-  appId: string; 
-  config: any; 
+export function PrivyProvider({
+  children,
+  appId,
+  config,
+}: {
+  children: any;
+  appId: string;
+  config: any;
 }) {
   return children as any;
 }
@@ -146,8 +150,8 @@ export function useWallets() {
     {
       address: '0x1234567890123456789012345678901234567890',
       chainId: '0x38',
-      connector: { name: 'MetaMask' }
-    }
+      connector: { name: 'MetaMask' },
+    },
   ];
   return { wallets };
 }
@@ -157,6 +161,6 @@ export function usePrivyWagmi() {
   return {
     walletClient: null,
     publicClient: null,
-    chain: { id: 56, name: 'BNB Smart Chain' }
+    chain: { id: 56, name: 'BNB Smart Chain' },
   };
 }

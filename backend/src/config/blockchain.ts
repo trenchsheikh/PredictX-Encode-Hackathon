@@ -11,7 +11,9 @@ export interface BlockchainConfig {
 }
 
 export function getBlockchainConfig(): BlockchainConfig {
-  const rpcUrl = process.env.BSC_RPC_URL || 'https://data-seed-prebsc-1-s1.binance.org:8545/';
+  const rpcUrl =
+    process.env.BSC_RPC_URL ||
+    'https://data-seed-prebsc-1-s1.binance.org:8545/';
   const provider = new ethers.JsonRpcProvider(rpcUrl);
 
   // Load contract addresses from deployments
@@ -32,8 +34,13 @@ export function getBlockchainConfig(): BlockchainConfig {
     vaultAddress = contractsData.contracts.Vault.address;
 
     // Load ABIs
-    const predictionMarketABIFile = path.join(deploymentsPath, 'PredictionMarket.json');
-    predictionMarketABI = JSON.parse(fs.readFileSync(predictionMarketABIFile, 'utf8'));
+    const predictionMarketABIFile = path.join(
+      deploymentsPath,
+      'PredictionMarket.json'
+    );
+    predictionMarketABI = JSON.parse(
+      fs.readFileSync(predictionMarketABIFile, 'utf8')
+    );
 
     const vaultABIFile = path.join(deploymentsPath, 'Vault.json');
     vaultABI = JSON.parse(fs.readFileSync(vaultABIFile, 'utf8'));
@@ -42,27 +49,43 @@ export function getBlockchainConfig(): BlockchainConfig {
     console.log(`   PredictionMarket: ${predictionMarketAddress}`);
     console.log(`   Vault: ${vaultAddress}`);
   } catch (error) {
-    console.error('⚠️  Could not load deployment files. Using environment variables.');
+    console.error(
+      '⚠️  Could not load deployment files. Using environment variables.'
+    );
 
     // Fallback to environment variables
     predictionMarketAddress = process.env.PREDICTION_MARKET_ADDRESS || '';
     vaultAddress = process.env.VAULT_ADDRESS || '';
 
     if (!predictionMarketAddress || !vaultAddress) {
-      throw new Error('Contract addresses not found. Deploy contracts first or set environment variables.');
+      throw new Error(
+        'Contract addresses not found. Deploy contracts first or set environment variables.'
+      );
     }
 
     // Load ABIs from artifacts (fallback)
     try {
-      const artifactsPath = path.join(__dirname, '../../../contracts/artifacts/contracts');
-      
+      const artifactsPath = path.join(
+        __dirname,
+        '../../../contracts/artifacts/contracts'
+      );
+
       const predictionMarketArtifact = JSON.parse(
-        fs.readFileSync(path.join(artifactsPath, 'PredictionMarket.sol/PredictionMarket.json'), 'utf8')
+        fs.readFileSync(
+          path.join(
+            artifactsPath,
+            'PredictionMarket.sol/PredictionMarket.json'
+          ),
+          'utf8'
+        )
       );
       predictionMarketABI = predictionMarketArtifact.abi;
 
       const vaultArtifact = JSON.parse(
-        fs.readFileSync(path.join(artifactsPath, 'Vault.sol/Vault.json'), 'utf8')
+        fs.readFileSync(
+          path.join(artifactsPath, 'Vault.sol/Vault.json'),
+          'utf8'
+        )
       );
       vaultABI = vaultArtifact.abi;
 
@@ -80,4 +103,3 @@ export function getBlockchainConfig(): BlockchainConfig {
     vaultABI,
   };
 }
-

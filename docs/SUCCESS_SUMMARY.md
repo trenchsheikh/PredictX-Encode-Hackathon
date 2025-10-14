@@ -25,10 +25,12 @@
 ### 🔗 Smart Contracts (BSC Testnet)
 
 **Vault Contract:**
+
 - Address: `0x9D4f9aFed1572a7947a1f6619111d3FfED66db17`
 - Explorer: https://testnet.bscscan.com/address/0x9D4f9aFed1572a7947a1f6619111d3FfED66db17
 
 **PredictionMarket Contract:**
+
 - Address: `0x672e13Cc6196c784EF3bf0762A18d2645F0f12ca`
 - Explorer: https://testnet.bscscan.com/address/0x672e13Cc6196c784EF3bf0762A18d2645F0f12ca
 
@@ -43,6 +45,7 @@
 **Markets:** http://localhost:3001/api/markets
 
 **Test Results:**
+
 ```bash
 $ curl http://localhost:3001/health
 {"status":"ok","timestamp":"2025-10-14T00:03:53.510Z"}
@@ -80,8 +83,9 @@ $ curl http://localhost:3001/api/markets
    - Transparent calculations
 
 3. **Full Stack Architecture:**
+
    ```
-   Frontend (Next.js) 
+   Frontend (Next.js)
         ↓
    Smart Contracts (BSC) ←→ Backend API (Node.js)
         ↓                          ↓
@@ -106,10 +110,12 @@ $ curl http://localhost:3001/api/markets
 ### Create Your First Market
 
 1. **Start Frontend:**
+
    ```bash
    cd darkbet
    npm run dev
    ```
+
    Visit: http://localhost:3000
 
 2. **Connect Wallet:**
@@ -127,6 +133,7 @@ $ curl http://localhost:3001/api/markets
 
 4. **Watch Backend Sync:**
    Backend logs will show:
+
    ```
    📢 MarketCreated: 1 - Will BTC reach $100k by end of 2025?
    ✅ Market 1 cached in database
@@ -150,6 +157,7 @@ $ curl http://localhost:3001/api/markets
    - Sign transaction
 
 3. **Backend Logs:**
+
    ```
    📢 BetCommitted: Market 1, User 0x...
    ✅ Commitment cached for market 1
@@ -161,6 +169,7 @@ $ curl http://localhost:3001/api/markets
    - Sign transaction
 
 5. **Backend Logs:**
+
    ```
    📢 BetRevealed: Market 1, User 0x..., Outcome YES
    ✅ Bet revealed and cached for market 1
@@ -176,39 +185,43 @@ $ curl http://localhost:3001/api/markets
 
 ## 📊 System Status
 
-| Component | Status | URL/Address |
-|-----------|--------|-------------|
-| Vault Contract | ✅ Live | 0x9D4f...db17 |
-| PredictionMarket | ✅ Live | 0x672e...12ca |
-| Backend API | ✅ Running | localhost:3001 |
-| MongoDB | ✅ Connected | localhost:27017 |
-| Frontend | ✅ Ready | localhost:3000 |
-| Event Listeners | ✅ Active | 5 events monitored |
-| Documentation | ✅ Complete | All READMEs written |
+| Component        | Status       | URL/Address         |
+| ---------------- | ------------ | ------------------- |
+| Vault Contract   | ✅ Live      | 0x9D4f...db17       |
+| PredictionMarket | ✅ Live      | 0x672e...12ca       |
+| Backend API      | ✅ Running   | localhost:3001      |
+| MongoDB          | ✅ Connected | localhost:27017     |
+| Frontend         | ✅ Ready     | localhost:3000      |
+| Event Listeners  | ✅ Active    | 5 events monitored  |
+| Documentation    | ✅ Complete  | All READMEs written |
 
 ---
 
 ## 🧪 API Endpoints (All Tested)
 
 ### 1. GET /health
+
 ```bash
 curl http://localhost:3001/health
 # Response: {"status":"ok","timestamp":"2025-10-14T..."}
 ```
 
 ### 2. GET /api/markets
+
 ```bash
 curl http://localhost:3001/api/markets
 # Response: {"success":true,"data":[...],"pagination":{...}}
 ```
 
 ### 3. GET /api/markets/:id
+
 ```bash
 curl http://localhost:3001/api/markets/1
 # Response: {"success":true,"data":{market details}}
 ```
 
 ### 4. POST /api/markets/:id/commit
+
 ```bash
 curl -X POST http://localhost:3001/api/markets/1/commit \
   -H "Content-Type: application/json" \
@@ -216,6 +229,7 @@ curl -X POST http://localhost:3001/api/markets/1/commit \
 ```
 
 ### 5. POST /api/markets/:id/reveal
+
 ```bash
 curl -X POST http://localhost:3001/api/markets/1/reveal \
   -H "Content-Type: application/json" \
@@ -223,6 +237,7 @@ curl -X POST http://localhost:3001/api/markets/1/reveal \
 ```
 
 ### 6. POST /api/markets/:id/resolve
+
 ```bash
 curl -X POST http://localhost:3001/api/markets/1/resolve \
   -H "Content-Type: application/json" \
@@ -234,6 +249,7 @@ curl -X POST http://localhost:3001/api/markets/1/resolve \
 ## 📁 Project Files Created
 
 ### Smart Contracts (`/contracts/`)
+
 - `contracts/PredictionMarket.sol` - Main contract (500+ lines)
 - `contracts/Vault.sol` - Fee management (150+ lines)
 - `test/PredictionMarket.test.ts` - Contract tests (36/40 passing)
@@ -242,6 +258,7 @@ curl -X POST http://localhost:3001/api/markets/1/resolve \
 - `hardhat.config.ts` - Network configurations
 
 ### Backend (`/backend/`)
+
 - `src/server.ts` - Main server
 - `src/config/database.ts` - MongoDB connection
 - `src/config/blockchain.ts` - Contract configs
@@ -253,11 +270,13 @@ curl -X POST http://localhost:3001/api/markets/1/resolve \
 - `src/types/index.ts` - TypeScript types
 
 ### Deployments (`/deployments/bscTestnet/`)
+
 - `contracts.json` - Deployment metadata
 - `Vault.json` - Vault ABI
 - `PredictionMarket.json` - PredictionMarket ABI
 
 ### Documentation
+
 - `DEPLOYMENT_GUIDE.md` - Complete deployment guide
 - `MILESTONE_2_COMPLETE.md` - What was built
 - `DEPLOYMENT_STATUS.md` - Status tracker
@@ -306,24 +325,28 @@ Through this project, you've implemented:
 ## 🔥 Key Features Implemented
 
 ### 1. Darkpool Betting (Unique!)
+
 - **No other BNB prediction market has this**
 - Privacy-preserving commit-reveal
 - Prevents front-running
 - Fair for all participants
 
 ### 2. FPMM Pricing
+
 - Dynamic price discovery
 - Fair market maker
 - Transparent calculations
 - No manipulation possible
 
 ### 3. Real-Time Sync
+
 - Instant event indexing
 - Automatic cache updates
 - Fast API responses
 - Always in sync with blockchain
 
 ### 4. Production-Ready
+
 - Comprehensive tests
 - Security best practices
 - Complete documentation
@@ -334,14 +357,14 @@ Through this project, you've implemented:
 
 ## 📈 Performance Metrics
 
-| Metric | Value |
-|--------|-------|
-| Contract Deployment Gas | ~2.8M gas |
+| Metric                   | Value          |
+| ------------------------ | -------------- |
+| Contract Deployment Gas  | ~2.8M gas      |
 | Average Transaction Cost | ~0.01-0.05 BNB |
-| API Response Time | < 100ms |
-| Event Sync Delay | < 1 second |
-| Database Query Time | < 10ms |
-| Test Coverage | 90%+ |
+| API Response Time        | < 100ms        |
+| Event Sync Delay         | < 1 second     |
+| Database Query Time      | < 10ms         |
+| Test Coverage            | 90%+           |
 
 ---
 
@@ -447,6 +470,7 @@ Through this project, you've implemented:
 ## 📞 Support & Resources
 
 ### Documentation
+
 - **Deployment Guide:** `DEPLOYMENT_GUIDE.md`
 - **Contracts Docs:** `contracts/README.md`
 - **Backend Docs:** `backend/README.md`
@@ -503,6 +527,7 @@ db.markets.countDocuments()
 You now have a **fully functional darkpool prediction market** on BSC Testnet!
 
 **What you've built:**
+
 - ✅ Privacy-preserving betting platform
 - ✅ Fair market maker algorithm
 - ✅ Real-time blockchain integration
@@ -518,6 +543,7 @@ You now have a **fully functional darkpool prediction market** on BSC Testnet!
 ## 🚀 Ready for Production
 
 All that remains:
+
 1. ✅ Test thoroughly on testnet (you can do this now!)
 2. ⏳ Get security audit
 3. ⏳ Deploy to mainnet
@@ -539,4 +565,3 @@ All that remains:
 **For:** DarkBet Darkpool Prediction Market
 
 🎲 **Welcome to the future of private prediction markets!**
-

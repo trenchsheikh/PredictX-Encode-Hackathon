@@ -55,15 +55,17 @@ router.get('/prices/:cryptoId', async (req: Request, res: Response) => {
  * Get list of supported cryptocurrencies
  */
 router.get('/supported', (req: Request, res: Response) => {
-    res.json({
-      success: true,
-      data: {
-        cryptocurrencies: Object.entries(oracleService.SUPPORTED_CRYPTOS).map(([id, info]) => ({
+  res.json({
+    success: true,
+    data: {
+      cryptocurrencies: Object.entries(oracleService.SUPPORTED_CRYPTOS).map(
+        ([id, info]) => ({
           ...info,
           id,
-        })),
-      },
-    });
+        })
+      ),
+    },
+  });
 });
 
 /**
@@ -247,4 +249,3 @@ router.post('/parse-prediction', (req: Request, res: Response) => {
 });
 
 export default router;
-

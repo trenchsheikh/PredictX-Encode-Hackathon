@@ -23,14 +23,18 @@ interface CryptoSelectorProps {
   className?: string;
 }
 
-export function CryptoSelector({ value, onChange, className }: CryptoSelectorProps) {
+export function CryptoSelector({
+  value,
+  onChange,
+  className,
+}: CryptoSelectorProps) {
   const [cryptos, setCryptos] = useState<CryptoData[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     fetchCryptoPrices();
-    
+
     // Refresh prices every 60 seconds
     const interval = setInterval(fetchCryptoPrices, 60000);
     return () => clearInterval(interval);
@@ -51,9 +55,10 @@ export function CryptoSelector({ value, onChange, className }: CryptoSelectorPro
     }
   }
 
-  const filteredCryptos = cryptos.filter(crypto =>
-    crypto.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    crypto.symbol.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredCryptos = cryptos.filter(
+    crypto =>
+      crypto.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      crypto.symbol.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   if (loading) {
@@ -68,51 +73,57 @@ export function CryptoSelector({ value, onChange, className }: CryptoSelectorPro
     <div className={cn('space-y-4', className)}>
       {/* Search */}
       <div className="relative">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+        <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
         <Input
           type="text"
           placeholder="Search cryptocurrencies..."
           value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="pl-10 bg-gray-800/60 border-gray-700/50 text-white placeholder:text-gray-400 focus:border-yellow-400/50 focus:ring-yellow-400/20"
+          onChange={e => setSearchQuery(e.target.value)}
+          className="border-gray-700/50 bg-gray-800/60 pl-10 text-white placeholder:text-gray-400 focus:border-yellow-400/50 focus:ring-yellow-400/20"
         />
       </div>
 
       {/* Crypto Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-h-[400px] overflow-y-auto custom-scrollbar pr-2">
-        {filteredCryptos.map((crypto) => (
+      <div className="custom-scrollbar grid max-h-[400px] grid-cols-1 gap-4 overflow-y-auto pr-2 md:grid-cols-2 lg:grid-cols-3">
+        {filteredCryptos.map(crypto => (
           <Card
             key={crypto.id}
             className={cn(
-              'cursor-pointer transition-all duration-200 hover:shadow-lg hover:scale-[1.02] bg-gray-800/60 backdrop-blur-sm border-gray-700/50',
+              'cursor-pointer border-gray-700/50 bg-gray-800/60 backdrop-blur-sm transition-all duration-200 hover:scale-[1.02] hover:shadow-lg',
               value === crypto.id
-                ? 'ring-2 ring-yellow-400/50 bg-yellow-400/10'
-                : 'hover:ring-1 hover:ring-yellow-400/30 hover:bg-gray-800/80'
+                ? 'bg-yellow-400/10 ring-2 ring-yellow-400/50'
+                : 'hover:bg-gray-800/80 hover:ring-1 hover:ring-yellow-400/30'
             )}
             onClick={() => onChange(crypto)}
           >
-            <CardContent className="p-4 h-full flex flex-col">
-              <div className="flex items-center justify-between mb-3">
+            <CardContent className="flex h-full flex-col p-4">
+              <div className="mb-3 flex items-center justify-between">
                 {/* Crypto Info */}
                 <div className="flex-1">
-                  <div className="font-semibold text-sm text-white">{crypto.name}</div>
+                  <div className="text-sm font-semibold text-white">
+                    {crypto.name}
+                  </div>
                   <div className="text-xs text-gray-400">{crypto.symbol}</div>
                 </div>
 
                 {/* Selected Indicator */}
                 {value === crypto.id && (
-                  <Badge variant="default" className="bg-yellow-400 text-black text-xs">
+                  <Badge
+                    variant="default"
+                    className="bg-yellow-400 text-xs text-black"
+                  >
                     Selected
                   </Badge>
                 )}
               </div>
 
               {/* Price Info */}
-              <div className="space-y-2 flex-grow">
+              <div className="flex-grow space-y-2">
                 <div className="flex items-center justify-between">
                   <span className="text-xs text-gray-400">Price</span>
-                  <span className="font-bold text-white text-sm">
-                    ${crypto.currentPrice.toLocaleString(undefined, {
+                  <span className="text-sm font-bold text-white">
+                    $
+                    {crypto.currentPrice.toLocaleString(undefined, {
                       minimumFractionDigits: 2,
                       maximumFractionDigits: 2,
                     })}
@@ -131,8 +142,10 @@ export function CryptoSelector({ value, onChange, className }: CryptoSelectorPro
                   <span className="text-xs text-gray-400">24h Change</span>
                   <div
                     className={cn(
-                      'flex items-center gap-1 text-xs font-medium px-2 py-1 rounded',
-                      crypto.priceChange24h >= 0 ? 'text-green-400 bg-green-500/10' : 'text-red-400 bg-red-500/10'
+                      'flex items-center gap-1 rounded px-2 py-1 text-xs font-medium',
+                      crypto.priceChange24h >= 0
+                        ? 'bg-green-500/10 text-green-400'
+                        : 'bg-red-500/10 text-red-400'
                     )}
                   >
                     {crypto.priceChange24h >= 0 ? (
@@ -150,11 +163,10 @@ export function CryptoSelector({ value, onChange, className }: CryptoSelectorPro
       </div>
 
       {filteredCryptos.length === 0 && (
-        <div className="text-center text-gray-400 py-8">
+        <div className="py-8 text-center text-gray-400">
           No cryptocurrencies found matching "{searchQuery}"
         </div>
       )}
     </div>
   );
 }
-

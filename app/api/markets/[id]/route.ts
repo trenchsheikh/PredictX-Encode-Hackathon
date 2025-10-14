@@ -7,9 +7,9 @@ export async function GET(
 ) {
   try {
     await connectDatabase();
-    
+
     const marketId = params.id;
-    
+
     // TODO: Implement actual database query
     // For now, return placeholder data
     const market = {
@@ -21,14 +21,14 @@ export async function GET(
       createdAt: Date.now(),
       expiresAt: Date.now() + 7 * 24 * 60 * 60 * 1000, // 7 days from now
     };
-    
+
     return NextResponse.json({
       success: true,
       data: market,
     });
   } catch (error: any) {
     console.error('Error fetching market:', error);
-    
+
     return NextResponse.json(
       {
         success: false,

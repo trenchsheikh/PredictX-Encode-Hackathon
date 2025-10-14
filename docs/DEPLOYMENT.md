@@ -3,17 +3,20 @@
 ## 🚀 Quick Deployment Steps
 
 ### 1. Prepare Your Repository
+
 - [ ] Push your code to GitHub
 - [ ] Ensure all dependencies are in `package.json`
 - [ ] Test locally with `npm run build`
 
 ### 2. Connect to Vercel
+
 1. Go to [vercel.com](https://vercel.com) and sign up/login
 2. Click "New Project"
 3. Import your GitHub repository
 4. Vercel will auto-detect Next.js settings
 
 ### 3. Configure Environment Variables
+
 In your Vercel project dashboard, go to Settings > Environment Variables and add:
 
 ```
@@ -24,18 +27,19 @@ NEXT_PUBLIC_RPC_URL=https://bsc-dataseed.binance.org/
 ```
 
 ### 4. Deploy
-- Click "Deploy" 
+
+- Click "Deploy"
 - Wait for build to complete
 - Your app will be live at `https://your-project.vercel.app`
 
 ## 🔧 Required Environment Variables
 
-| Variable | Description | Example |
-|----------|-------------|---------|
-| `NEXT_PUBLIC_PRIVY_APP_ID` | Your Privy application ID | `clx1234567890` |
-| `NEXT_PUBLIC_VAULT_CONTRACT_ADDRESS` | Deployed vault contract | `0x1234...5678` |
-| `NEXT_PUBLIC_CHAIN_ID` | BNB Chain ID | `56` (mainnet) |
-| `NEXT_PUBLIC_RPC_URL` | BNB Chain RPC URL | `https://bsc-dataseed.binance.org/` |
+| Variable                             | Description               | Example                             |
+| ------------------------------------ | ------------------------- | ----------------------------------- |
+| `NEXT_PUBLIC_PRIVY_APP_ID`           | Your Privy application ID | `clx1234567890`                     |
+| `NEXT_PUBLIC_VAULT_CONTRACT_ADDRESS` | Deployed vault contract   | `0x1234...5678`                     |
+| `NEXT_PUBLIC_CHAIN_ID`               | BNB Chain ID              | `56` (mainnet)                      |
+| `NEXT_PUBLIC_RPC_URL`                | BNB Chain RPC URL         | `https://bsc-dataseed.binance.org/` |
 
 ## 🎯 Getting Your Privy App ID
 
@@ -48,28 +52,33 @@ NEXT_PUBLIC_RPC_URL=https://bsc-dataseed.binance.org/
 ## 📱 Domain Configuration
 
 ### Custom Domain (Optional)
+
 1. Go to Project Settings > Domains
 2. Add your custom domain
 3. Update DNS records as instructed
 4. Wait for SSL certificate
 
 ### Subdomain
+
 - Default: `your-project.vercel.app`
 - Custom: `your-domain.com`
 
 ## 🔍 Troubleshooting
 
 ### Build Failures
+
 - Check all dependencies are in `package.json`
 - Ensure TypeScript errors are resolved
 - Verify environment variables are set
 
 ### Runtime Errors
+
 - Check browser console for errors
 - Verify Privy App ID is correct
 - Ensure contract addresses are valid
 
 ### Performance Issues
+
 - Enable Vercel Analytics
 - Check Core Web Vitals
 - Optimize images and assets
@@ -87,6 +96,7 @@ NEXT_PUBLIC_RPC_URL=https://bsc-dataseed.binance.org/
 ## 🔄 Continuous Deployment
 
 Vercel automatically deploys when you push to:
+
 - `main` branch → Production
 - Other branches → Preview deployments
 
@@ -99,6 +109,7 @@ Vercel automatically deploys when you push to:
 ## 🆘 Support
 
 If you encounter issues:
+
 1. Check Vercel deployment logs
 2. Verify environment variables
 3. Test locally first

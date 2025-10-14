@@ -2,10 +2,11 @@ import mongoose from 'mongoose';
 
 export async function connectDatabase(): Promise<void> {
   try {
-    const mongoUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/darkbet';
-    
+    const mongoUri =
+      process.env.MONGODB_URI || 'mongodb://localhost:27017/darkbet';
+
     await mongoose.connect(mongoUri);
-    
+
     console.log('✅ MongoDB connected successfully');
     console.log(`📊 Database: ${mongoose.connection.name}`);
   } catch (error) {
@@ -18,7 +19,6 @@ mongoose.connection.on('disconnected', () => {
   console.log('⚠️  MongoDB disconnected');
 });
 
-mongoose.connection.on('error', (error) => {
+mongoose.connection.on('error', error => {
   console.error('❌ MongoDB error:', error);
 });
-

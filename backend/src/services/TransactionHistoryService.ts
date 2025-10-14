@@ -54,7 +54,7 @@ class TransactionHistoryService {
 
       await transaction.save();
       console.log(`📝 Recorded ${type} transaction: ${txHash}`);
-      
+
       return transaction;
     } catch (error) {
       console.error('❌ Failed to record transaction:', error);
@@ -65,11 +65,13 @@ class TransactionHistoryService {
   /**
    * Get transaction history for a specific market
    */
-  async getMarketTransactionHistory(marketId: number): Promise<TransactionHistory> {
+  async getMarketTransactionHistory(
+    marketId: number
+  ): Promise<TransactionHistory> {
     try {
-      const transactions = await Transaction.find({ marketId })
+      const transactions = (await Transaction.find({ marketId })
         .sort({ timestamp: -1 })
-        .lean() as any[];
+        .lean()) as any[];
 
       // Calculate summary
       const totalVolume = transactions
@@ -77,17 +79,14 @@ class TransactionHistoryService {
         .reduce((sum, tx) => sum + parseFloat(tx.amount || '0'), 0)
         .toString();
 
-      const userBets = transactions.filter(tx => 
-        tx.type === 'commit' || tx.type === 'reveal'
+      const userBets = transactions.filter(
+        tx => tx.type === 'commit' || tx.type === 'reveal'
       ).length;
 
-      const userClaims = transactions.filter(tx => 
-        tx.type === 'claim'
-      ).length;
+      const userClaims = transactions.filter(tx => tx.type === 'claim').length;
 
-      const marketCreator = transactions.find(tx => 
-        tx.type === 'create'
-      )?.userAddress || '';
+      const marketCreator =
+        transactions.find(tx => tx.type === 'create')?.userAddress || '';
 
       return {
         marketId,
@@ -101,7 +100,10 @@ class TransactionHistoryService {
         },
       };
     } catch (error) {
-      console.error(`❌ Failed to get transaction history for market ${marketId}:`, error);
+      console.error(
+        `❌ Failed to get transaction history for market ${marketId}:`,
+        error
+      );
       throw error;
     }
   }
@@ -109,12 +111,15 @@ class TransactionHistoryService {
   /**
    * Get transaction history for a specific user
    */
-  async getUserTransactionHistory(userAddress: string, limit: number = 50): Promise<ITransaction[]> {
+  async getUserTransactionHistory(
+    userAddress: string,
+    limit: number = 50
+  ): Promise<ITransaction[]> {
     try {
-      return await Transaction.find({ userAddress })
+      return (await Transaction.find({ userAddress })
         .sort({ timestamp: -1 })
         .limit(limit)
-        .lean() as any[];
+        .lean()) as any[];
     } catch (error) {
       console.error(`❌ Failed to get user transaction history:`, error);
       throw error;
@@ -127,13 +132,16 @@ class TransactionHistoryService {
   async getTransactionSummary(marketId: number): Promise<TransactionSummary[]> {
     try {
       const transactions = await Transaction.find({ marketId }).lean();
-      
-      const summaryMap = new Map<string, {
-        count: number;
-        totalAmount: number;
-        totalGasUsed: number;
-        successCount: number;
-      }>();
+
+      const summaryMap = new Map<
+        string,
+        {
+          count: number;
+          totalAmount: number;
+          totalGasUsed: number;
+          successCount: number;
+        }
+      >();
 
       transactions.forEach(tx => {
         const key = tx.type;
@@ -158,7 +166,8 @@ class TransactionHistoryService {
         count: data.count,
         totalAmount: data.totalAmount.toString(),
         totalGasUsed: data.totalGasUsed,
-        successRate: data.count > 0 ? (data.successCount / data.count) * 100 : 0,
+        successRate:
+          data.count > 0 ? (data.successCount / data.count) * 100 : 0,
       }));
     } catch (error) {
       console.error(`❌ Failed to get transaction summary:`, error);
@@ -170,16 +179,16 @@ class TransactionHistoryService {
    * Update transaction status
    */
   async updateTransactionStatus(
-    txHash: string, 
+    txHash: string,
     status: 'pending' | 'confirmed' | 'failed',
     gasUsed?: number
   ): Promise<void> {
     try {
       await Transaction.updateOne(
         { txHash },
-        { 
+        {
           status,
-          ...(gasUsed && { gasUsed })
+          ...(gasUsed && { gasUsed }),
         }
       );
     } catch (error) {
@@ -193,10 +202,10 @@ class TransactionHistoryService {
    */
   async getRecentTransactions(limit: number = 20): Promise<ITransaction[]> {
     try {
-      return await Transaction.find()
+      return (await Transaction.find()
         .sort({ timestamp: -1 })
         .limit(limit)
-        .lean() as any[];
+        .lean()) as any[];
     } catch (error) {
       console.error('❌ Failed to get recent transactions:', error);
       throw error;
@@ -208,7 +217,7 @@ class TransactionHistoryService {
    */
   async getTransactionByHash(txHash: string): Promise<ITransaction | null> {
     try {
-      return await Transaction.findOne({ txHash }).lean() as any;
+      return (await Transaction.findOne({ txHash }).lean()) as any;
     } catch (error) {
       console.error('❌ Failed to get transaction by hash:', error);
       throw error;

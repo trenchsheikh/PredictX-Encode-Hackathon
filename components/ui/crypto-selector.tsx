@@ -22,45 +22,49 @@ interface CryptoSelectorProps {
   className?: string;
 }
 
-export function CryptoSelector({ 
-  options, 
-  value, 
-  onValueChange, 
-  placeholder = "Select cryptocurrency",
-  className 
+export function CryptoSelector({
+  options,
+  value,
+  onValueChange,
+  placeholder = 'Select cryptocurrency',
+  className,
 }: CryptoSelectorProps) {
   const [isOpen, setIsOpen] = useState(false);
-  
+
   const selectedOption = options.find(option => option.id === value);
 
   return (
-    <div className={cn("relative", className)}>
+    <div className={cn('relative', className)}>
       <motion.button
         whileTap={{ scale: 0.98 }}
         onClick={() => setIsOpen(!isOpen)}
         className={cn(
-          "w-full flex items-center justify-between p-4 rounded-xl bg-gradient-to-r from-gray-900/60 to-gray-800/40",
-          "border border-gray-700/50 backdrop-blur-sm text-left",
-          "hover:border-yellow-500/30 hover:shadow-lg hover:shadow-yellow-500/10 transition-all duration-300",
-          "focus:outline-none focus:ring-2 focus:ring-yellow-500/20"
+          'flex w-full items-center justify-between rounded-xl bg-gradient-to-r from-gray-900/60 to-gray-800/40 p-4',
+          'border border-gray-700/50 text-left backdrop-blur-sm',
+          'transition-all duration-300 hover:border-yellow-500/30 hover:shadow-lg hover:shadow-yellow-500/10',
+          'focus:outline-none focus:ring-2 focus:ring-yellow-500/20'
         )}
       >
         <div className="flex items-center">
           {selectedOption ? (
             <div>
-              <div className="text-white font-medium">{selectedOption.name}</div>
-              <div className="text-sm text-gray-400">{selectedOption.symbol}</div>
+              <div className="font-medium text-white">
+                {selectedOption.name}
+              </div>
+              <div className="text-sm text-gray-400">
+                {selectedOption.symbol}
+              </div>
             </div>
           ) : (
             <span className="text-gray-400">{placeholder}</span>
           )}
         </div>
-        
+
         <motion.div
           animate={{ rotate: isOpen ? 180 : 0 }}
           transition={{ duration: 0.2 }}
         >
-          <ChevronDown className="w-5 h-5 text-gray-400" />
+          <ChevronDown className="h-5 w-5 text-gray-400" />
         </motion.div>
       </motion.button>
 
@@ -71,9 +75,9 @@ export function CryptoSelector({
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -10, scale: 0.95 }}
             transition={{ duration: 0.2 }}
-            className="absolute top-full left-0 right-0 mt-2 z-50"
+            className="absolute left-0 right-0 top-full z-50 mt-2"
           >
-            <div className="bg-gray-900/95 backdrop-blur-sm border border-gray-700/50 rounded-xl shadow-2xl overflow-hidden">
+            <div className="overflow-hidden rounded-xl border border-gray-700/50 bg-gray-900/95 shadow-2xl backdrop-blur-sm">
               <div className="max-h-64 overflow-y-auto">
                 {options.map((option, index) => (
                   <motion.button
@@ -88,38 +92,51 @@ export function CryptoSelector({
                       setIsOpen(false);
                     }}
                     className={cn(
-                      "w-full flex items-center justify-between p-4 text-left transition-colors duration-200",
-                      "hover:bg-yellow-500/10",
-                      value === option.id ? "bg-yellow-500/20" : ""
+                      'flex w-full items-center justify-between p-4 text-left transition-colors duration-200',
+                      'hover:bg-yellow-500/10',
+                      value === option.id ? 'bg-yellow-500/20' : ''
                     )}
                   >
-                    <div className="flex items-center justify-between w-full">
+                    <div className="flex w-full items-center justify-between">
                       <div>
-                        <div className="text-white font-medium">{option.name}</div>
-                        <div className="text-sm text-gray-400">{option.symbol}</div>
+                        <div className="font-medium text-white">
+                          {option.name}
+                        </div>
+                        <div className="text-sm text-gray-400">
+                          {option.symbol}
+                        </div>
                         {option.price && (
                           <div className="text-xs text-gray-500">
                             ${option.price.toLocaleString()}
                             {option.change && (
-                              <span className={cn(
-                                "ml-1",
-                                option.change >= 0 ? "text-green-400" : "text-red-400"
-                              )}>
-                                {option.change >= 0 ? '+' : ''}{option.change.toFixed(2)}%
+                              <span
+                                className={cn(
+                                  'ml-1',
+                                  option.change >= 0
+                                    ? 'text-green-400'
+                                    : 'text-red-400'
+                                )}
+                              >
+                                {option.change >= 0 ? '+' : ''}
+                                {option.change.toFixed(2)}%
                               </span>
                             )}
                           </div>
                         )}
                       </div>
                     </div>
-                    
+
                     {value === option.id && (
                       <motion.div
                         initial={{ scale: 0 }}
                         animate={{ scale: 1 }}
-                        transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                        transition={{
+                          type: 'spring',
+                          stiffness: 500,
+                          damping: 30,
+                        }}
                       >
-                        <Check className="w-5 h-5 text-yellow-400" />
+                        <Check className="h-5 w-5 text-yellow-400" />
                       </motion.div>
                     )}
                   </motion.button>

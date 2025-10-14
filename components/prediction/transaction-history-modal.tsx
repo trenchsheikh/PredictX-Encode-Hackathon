@@ -1,22 +1,27 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
-import { 
-  ExternalLink, 
-  Copy, 
-  CheckCircle, 
-  XCircle, 
+import {
+  ExternalLink,
+  Copy,
+  CheckCircle,
+  XCircle,
   Clock,
   DollarSign,
   Users,
   TrendingUp,
   TrendingDown,
   Calendar,
-  Hash
+  Hash,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -51,11 +56,11 @@ interface TransactionHistory {
   };
 }
 
-export function TransactionHistoryModal({ 
-  open, 
-  onOpenChange, 
-  predictionId, 
-  predictionTitle 
+export function TransactionHistoryModal({
+  open,
+  onOpenChange,
+  predictionId,
+  predictionTitle,
 }: TransactionHistoryModalProps) {
   const [history, setHistory] = useState<TransactionHistory | null>(null);
   const [loading, setLoading] = useState(false);
@@ -72,7 +77,7 @@ export function TransactionHistoryModal({
     try {
       const response = await fetch(`/api/transactions/market/${predictionId}`);
       const data = await response.json();
-      
+
       if (data.success) {
         setHistory(data.data);
       }
@@ -158,9 +163,9 @@ export function TransactionHistoryModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-h-[90vh] max-w-4xl overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+          <DialogTitle className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-2xl font-bold text-transparent">
             Transaction History
           </DialogTitle>
           <div className="text-sm text-gray-600 dark:text-gray-400">
@@ -171,38 +176,52 @@ export function TransactionHistoryModal({
         {loading ? (
           <div className="flex items-center justify-center py-8">
             <div className="text-center">
-              <Clock className="h-8 w-8 mx-auto mb-2 animate-spin text-purple-500" />
-              <div className="text-sm text-gray-500">Loading transaction history...</div>
+              <Clock className="mx-auto mb-2 h-8 w-8 animate-spin text-purple-500" />
+              <div className="text-sm text-gray-500">
+                Loading transaction history...
+              </div>
             </div>
           </div>
         ) : history ? (
           <div className="space-y-6">
             {/* Summary Stats */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
               <Card>
                 <CardContent className="p-4 text-center">
-                  <div className="text-2xl font-bold text-blue-600">{history.summary.totalTransactions}</div>
-                  <div className="text-sm text-gray-500">Total Transactions</div>
+                  <div className="text-2xl font-bold text-blue-600">
+                    {history.summary.totalTransactions}
+                  </div>
+                  <div className="text-sm text-gray-500">
+                    Total Transactions
+                  </div>
                 </CardContent>
               </Card>
-              
+
               <Card>
                 <CardContent className="p-4 text-center">
-                  <div className="text-2xl font-bold text-green-600">{formatBNB(history.summary.totalVolume)}</div>
-                  <div className="text-sm text-gray-500">Total Volume (BNB)</div>
+                  <div className="text-2xl font-bold text-green-600">
+                    {formatBNB(history.summary.totalVolume)}
+                  </div>
+                  <div className="text-sm text-gray-500">
+                    Total Volume (BNB)
+                  </div>
                 </CardContent>
               </Card>
-              
+
               <Card>
                 <CardContent className="p-4 text-center">
-                  <div className="text-2xl font-bold text-purple-600">{history.summary.userBets}</div>
+                  <div className="text-2xl font-bold text-purple-600">
+                    {history.summary.userBets}
+                  </div>
                   <div className="text-sm text-gray-500">User Bets</div>
                 </CardContent>
               </Card>
-              
+
               <Card>
                 <CardContent className="p-4 text-center">
-                  <div className="text-2xl font-bold text-orange-600">{history.summary.userClaims}</div>
+                  <div className="text-2xl font-bold text-orange-600">
+                    {history.summary.userClaims}
+                  </div>
                   <div className="text-sm text-gray-500">Claims</div>
                 </CardContent>
               </Card>
@@ -212,7 +231,7 @@ export function TransactionHistoryModal({
             <div className="space-y-3">
               <div className="text-lg font-semibold">Transaction Details</div>
               {history.transactions.map((tx, index) => (
-                <Card key={index} className="hover:shadow-md transition-shadow">
+                <Card key={index} className="transition-shadow hover:shadow-md">
                   <CardContent className="p-4">
                     <div className="flex items-start justify-between">
                       <div className="flex items-center gap-3">
@@ -224,10 +243,12 @@ export function TransactionHistoryModal({
                             </Badge>
                             <div className="flex items-center gap-1">
                               {getStatusIcon(tx.status)}
-                              <span className="text-xs text-gray-500">{tx.status}</span>
+                              <span className="text-xs text-gray-500">
+                                {tx.status}
+                              </span>
                             </div>
                           </div>
-                          <div className="text-sm text-gray-600 mt-1">
+                          <div className="mt-1 text-sm text-gray-600">
                             {formatAddress(tx.userAddress)}
                           </div>
                           <div className="text-xs text-gray-500">
@@ -235,7 +256,7 @@ export function TransactionHistoryModal({
                           </div>
                         </div>
                       </div>
-                      
+
                       <div className="text-right">
                         {tx.amount && (
                           <div className="text-sm font-medium">
@@ -254,11 +275,11 @@ export function TransactionHistoryModal({
                         )}
                       </div>
                     </div>
-                    
+
                     {/* Transaction Hash */}
-                    <div className="mt-3 pt-3 border-t flex items-center justify-between">
+                    <div className="mt-3 flex items-center justify-between border-t pt-3">
                       <div className="flex items-center gap-2">
-                        <code className="text-xs bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">
+                        <code className="rounded bg-gray-100 px-2 py-1 text-xs dark:bg-gray-800">
                           {tx.txHash.slice(0, 8)}...{tx.txHash.slice(-8)}
                         </code>
                         <Button
@@ -270,13 +291,20 @@ export function TransactionHistoryModal({
                           <Copy className="h-3 w-3" />
                         </Button>
                         {copied === tx.txHash && (
-                          <span className="text-xs text-green-500">Copied!</span>
+                          <span className="text-xs text-green-500">
+                            Copied!
+                          </span>
                         )}
                       </div>
                       <Button
                         size="sm"
                         variant="ghost"
-                        onClick={() => window.open(`https://testnet.bscscan.com/tx/${tx.txHash}`, '_blank')}
+                        onClick={() =>
+                          window.open(
+                            `https://testnet.bscscan.com/tx/${tx.txHash}`,
+                            '_blank'
+                          )
+                        }
                         className="h-6 w-6 p-0"
                       >
                         <ExternalLink className="h-3 w-3" />
@@ -288,16 +316,14 @@ export function TransactionHistoryModal({
             </div>
           </div>
         ) : (
-          <div className="text-center py-8 text-gray-500">
-            <Clock className="h-8 w-8 mx-auto mb-2 text-gray-400" />
+          <div className="py-8 text-center text-gray-500">
+            <Clock className="mx-auto mb-2 h-8 w-8 text-gray-400" />
             <div>No transaction history found</div>
           </div>
         )}
 
-        <div className="flex justify-end pt-4 border-t">
-          <Button onClick={() => onOpenChange(false)}>
-            Close
-          </Button>
+        <div className="flex justify-end border-t pt-4">
+          <Button onClick={() => onOpenChange(false)}>Close</Button>
         </div>
       </DialogContent>
     </Dialog>

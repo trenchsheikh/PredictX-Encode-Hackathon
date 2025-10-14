@@ -35,7 +35,9 @@ export function InteractiveGridPattern({
   fillOpacity = 0.1,
 }: InteractiveGridPatternProps) {
   const svgRef = useRef<SVGSVGElement>(null);
-  const [hoveredSquare, setHoveredSquare] = useState<[number, number] | null>(null);
+  const [hoveredSquare, setHoveredSquare] = useState<[number, number] | null>(
+    null
+  );
   const [squaresState, setSquaresState] = useState<number[][]>(squares);
 
   const generateSquares = () => {
@@ -79,14 +81,16 @@ export function InteractiveGridPattern({
   const handleSquareClick = (x: number, y: number) => {
     setSquaresState(prev => {
       const newSquares = [...prev];
-      const existingIndex = newSquares.findIndex(([sx, sy]) => sx === x && sy === y);
-      
+      const existingIndex = newSquares.findIndex(
+        ([sx, sy]) => sx === x && sy === y
+      );
+
       if (existingIndex >= 0) {
         newSquares.splice(existingIndex, 1);
       } else {
         newSquares.push([x, y]);
       }
-      
+
       return newSquares;
     });
   };
@@ -94,7 +98,7 @@ export function InteractiveGridPattern({
   return (
     <svg
       ref={svgRef}
-      className={cn('w-full h-full', className)}
+      className={cn('h-full w-full', className)}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
     >
@@ -115,7 +119,7 @@ export function InteractiveGridPattern({
           />
         </pattern>
       </defs>
-      
+
       <rect
         width="100%"
         height="100%"
@@ -123,7 +127,7 @@ export function InteractiveGridPattern({
         x={xOffset}
         y={yOffset}
       />
-      
+
       {squaresState.map(([x, y], index) => (
         <rect
           key={index}
@@ -133,11 +137,11 @@ export function InteractiveGridPattern({
           height={size}
           fill={fillColor}
           fillOpacity={fillOpacity}
-          className="transition-all duration-200 hover:fill-opacity-30"
+          className="hover:fill-opacity-30 transition-all duration-200"
           onClick={() => handleSquareClick(x, y)}
         />
       ))}
-      
+
       {hoveredSquare && (
         <rect
           x={hoveredSquare[0] * (size + gap) + xOffset}
@@ -152,5 +156,3 @@ export function InteractiveGridPattern({
     </svg>
   );
 }
-
-

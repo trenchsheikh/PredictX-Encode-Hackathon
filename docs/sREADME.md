@@ -4,12 +4,12 @@ Complete decentralized prediction market with commit-reveal privacy and FPMM pri
 
 ## 📊 Project Status
 
-| Component | Status | Version |
-|-----------|--------|---------|
-| Frontend | ✅ Complete | v1.0 |
-| Smart Contracts | ✅ Complete | v1.0 |
-| Backend API | ✅ Complete | v1.0 |
-| Deployment | ⏳ Pending Testnet | - |
+| Component       | Status             | Version |
+| --------------- | ------------------ | ------- |
+| Frontend        | ✅ Complete        | v1.0    |
+| Smart Contracts | ✅ Complete        | v1.0    |
+| Backend API     | ✅ Complete        | v1.0    |
+| Deployment      | ⏳ Pending Testnet | -       |
 
 ## 🏗️ Architecture
 
@@ -39,22 +39,26 @@ Complete decentralized prediction market with commit-reveal privacy and FPMM pri
 ## 🎯 Key Features
 
 ### 🔒 Darkpool Betting (Commit-Reveal)
+
 - Users commit bets privately
 - No front-running or copycat betting
 - Fair price discovery
 - Privacy until reveal
 
 ### 📈 FPMM Pricing
+
 - Fixed Product Market Maker
 - Dynamic pricing based on pool ratios
 - Fair and transparent
 
 ### ⚡ Real-Time Sync
+
 - Backend listens to blockchain events
 - Automatic MongoDB cache updates
 - Fast API queries
 
 ### 🛡️ Security
+
 - OpenZeppelin contracts
 - Reentrancy protection
 - Pausable contracts
@@ -104,6 +108,7 @@ darkbet/
 ## 🚀 Quick Start
 
 ### Prerequisites
+
 - Node.js 18+
 - MongoDB (local or Atlas)
 - MetaMask with BSC Testnet
@@ -170,14 +175,14 @@ Visit: http://localhost:3000
 
 ## 📚 Documentation
 
-| Document | Description |
-|----------|-------------|
-| [Deployment Guide](DEPLOYMENT_GUIDE.md) | Step-by-step deployment |
-| [Milestone 2 Summary](MILESTONE_2_COMPLETE.md) | What was built |
-| [Contracts README](contracts/README.md) | Smart contract docs |
-| [Backend README](backend/README.md) | Backend API docs |
-| [Frontend Audit](reports/frontend-audit.md) | Frontend analysis |
-| [Implementation Plan](plans/implementation-plan.md) | Architecture plan |
+| Document                                            | Description             |
+| --------------------------------------------------- | ----------------------- |
+| [Deployment Guide](DEPLOYMENT_GUIDE.md)             | Step-by-step deployment |
+| [Milestone 2 Summary](MILESTONE_2_COMPLETE.md)      | What was built          |
+| [Contracts README](contracts/README.md)             | Smart contract docs     |
+| [Backend README](backend/README.md)                 | Backend API docs        |
+| [Frontend Audit](reports/frontend-audit.md)         | Frontend analysis       |
+| [Implementation Plan](plans/implementation-plan.md) | Architecture plan       |
 
 ## 🧪 Testing
 
@@ -209,6 +214,7 @@ npm run dev
 ```
 
 Test features:
+
 - Connect wallet (Privy)
 - Create market
 - Commit bet
@@ -218,6 +224,7 @@ Test features:
 ## 🔧 Tech Stack
 
 ### Frontend
+
 - Next.js 14
 - React 18
 - TypeScript
@@ -227,12 +234,14 @@ Test features:
 - Ethers.js
 
 ### Smart Contracts
+
 - Solidity 0.8.24
 - Hardhat
 - OpenZeppelin
 - Ethers.js v6
 
 ### Backend
+
 - Node.js
 - Express.js
 - TypeScript
@@ -240,6 +249,7 @@ Test features:
 - Ethers.js v6
 
 ### Blockchain
+
 - BNB Smart Chain (BSC)
 - Testnet (97)
 - Mainnet (56) - future
@@ -291,14 +301,14 @@ npm run verify:testnet
 
 ## 📊 API Endpoints
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/markets` | List all markets |
-| GET | `/api/markets/:id` | Get single market |
-| POST | `/api/markets` | Create market (info) |
-| POST | `/api/markets/:id/commit` | Index commitment |
-| POST | `/api/markets/:id/reveal` | Index revealed bet |
-| POST | `/api/markets/:id/resolve` | Index resolution |
+| Method | Endpoint                   | Description          |
+| ------ | -------------------------- | -------------------- |
+| GET    | `/api/markets`             | List all markets     |
+| GET    | `/api/markets/:id`         | Get single market    |
+| POST   | `/api/markets`             | Create market (info) |
+| POST   | `/api/markets/:id/commit`  | Index commitment     |
+| POST   | `/api/markets/:id/reveal`  | Index revealed bet   |
+| POST   | `/api/markets/:id/resolve` | Index resolution     |
 
 ## 🔐 Security
 
@@ -314,17 +324,21 @@ npm run verify:testnet
 ## 🐛 Troubleshooting
 
 ### "Wrong network"
+
 - Switch MetaMask to BSC Testnet (Chain ID: 97)
 
 ### "Contract addresses not found"
+
 - Deploy contracts first
 - Check `/deployments/bscTestnet/contracts.json`
 
 ### "MongoDB connection failed"
+
 - Ensure MongoDB is running
 - Check `MONGODB_URI` in `.env`
 
 ### "No blockchain events"
+
 - Verify RPC URL is correct
 - Check contract addresses
 - Ensure event listeners started
@@ -351,6 +365,7 @@ MIT License - See LICENSE file
 ## 📞 Support
 
 For help:
+
 1. Check documentation in `/docs/`
 2. Review troubleshooting in `DEPLOYMENT_GUIDE.md`
 3. Check contract events on BSCScan
@@ -375,4 +390,3 @@ For help:
 ---
 
 🎲 **DarkBet** - The future of private prediction markets
-

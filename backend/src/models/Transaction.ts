@@ -19,10 +19,10 @@ export interface ITransaction extends Document {
 const TransactionSchema = new Schema<ITransaction>({
   marketId: { type: Number, required: true, index: true },
   userAddress: { type: String, required: true, index: true },
-  type: { 
-    type: String, 
-    required: true, 
-    enum: ['commit', 'reveal', 'claim', 'create', 'resolve'] 
+  type: {
+    type: String,
+    required: true,
+    enum: ['commit', 'reveal', 'claim', 'create', 'resolve'],
   },
   amount: { type: String },
   outcome: { type: Boolean },
@@ -32,13 +32,13 @@ const TransactionSchema = new Schema<ITransaction>({
   timestamp: { type: Number, required: true },
   gasUsed: { type: Number },
   gasPrice: { type: String },
-  status: { 
-    type: String, 
-    required: true, 
+  status: {
+    type: String,
+    required: true,
     enum: ['pending', 'confirmed', 'failed'],
-    default: 'pending'
+    default: 'pending',
   },
-  createdAt: { type: Date, default: Date.now }
+  createdAt: { type: Date, default: Date.now },
 });
 
 // Indexes for efficient querying
@@ -46,4 +46,7 @@ TransactionSchema.index({ marketId: 1, userAddress: 1 });
 TransactionSchema.index({ txHash: 1 });
 TransactionSchema.index({ createdAt: -1 });
 
-export const Transaction = mongoose.model<ITransaction>('Transaction', TransactionSchema);
+export const Transaction = mongoose.model<ITransaction>(
+  'Transaction',
+  TransactionSchema
+);
