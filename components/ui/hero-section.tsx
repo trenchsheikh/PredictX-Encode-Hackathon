@@ -1,8 +1,10 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { TrendingUp, Zap, Shield, Star } from 'lucide-react';
+import { TrendingUp, Zap, Shield, Star, Loader2 } from 'lucide-react';
 import { AnimatedButton } from './animated-button';
+import { useState, useEffect } from 'react';
+import { api } from '@/lib/api-client';
 
 interface HeroSectionProps {
   onCreateClick: () => void;
@@ -10,7 +12,67 @@ interface HeroSectionProps {
   isAuthenticated: boolean;
 }
 
+interface PlatformStats {
+  totalVolume: number;
+  activeMarkets: number;
+  participants: number;
+}
+
 export function HeroSection({ onCreateClick, onCryptoClick, isAuthenticated }: HeroSectionProps) {
+  const [stats, setStats] = useState<PlatformStats>({
+    totalVolume: 0,
+    activeMarkets: 0,
+    participants: 0,
+  });
+  const [loading, setLoading] = useState(true);
+
+  // Helper function to format numbers
+  const formatNumber = (num: number): string => {
+    if (num >= 1000000) {
+      return (num / 1000000).toFixed(1) + 'M';
+    } else if (num >= 1000) {
+      return (num / 1000).toFixed(1) + 'K';
+    }
+    return num.toString();
+  };
+
+  // Fetch real platform statistics
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        setLoading(true);
+        
+        // Fetch markets to get active markets count and total volume
+        const marketsResponse = await api.markets.getMarkets();
+        const markets = marketsResponse.data || [];
+        
+        // Calculate active markets (status 0 = active)
+        const activeMarkets = markets.filter((market: any) => market.status === 0).length;
+        
+        // Calculate total volume from all markets
+        const totalVolume = markets.reduce((sum: number, market: any) => {
+          return sum + parseFloat(market.totalPool || '0');
+        }, 0);
+        
+        // Fetch leaderboard to get participants count
+        const leaderboardResponse = await api.leaderboard.getLeaderboard({ limit: 1000 });
+        const participants = leaderboardResponse.data?.totalUsers || 0;
+        
+        setStats({
+          totalVolume,
+          activeMarkets,
+          participants,
+        });
+      } catch (error) {
+        console.error('Error fetching platform stats:', error);
+        // Keep default values on error
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchStats();
+  }, []);
   const features = [
     { icon: Shield, text: 'Fully On-Chain', color: 'text-yellow-400' },
     { icon: Zap, text: 'AI-Driven Results', color: 'text-white' },
@@ -144,9 +206,21 @@ export function HeroSection({ onCreateClick, onCryptoClick, isAuthenticated }: H
           className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto"
         >
           {[
-            { label: 'Total Volume', value: '$2.4M', icon: TrendingUp },
-            { label: 'Active Markets', value: '127', icon: Zap },
-            { label: 'Participants', value: '1.2K', icon: Shield },
+            { 
+              label: 'Total Volume', 
+              value: loading ? '...' : `${formatNumber(stats.totalVolume)} BNB`, 
+              icon: TrendingUp 
+            },
+            { 
+              label: 'Active Markets', 
+              value: loading ? '...' : formatNumber(stats.activeMarkets), 
+              icon: Zap 
+            },
+            { 
+              label: 'Participants', 
+              value: loading ? '...' : formatNumber(stats.participants), 
+              icon: Shield 
+            },
           ].map((stat, index) => {
             const Icon = stat.icon;
             return (
@@ -159,7 +233,13 @@ export function HeroSection({ onCreateClick, onCryptoClick, isAuthenticated }: H
                 className="text-center p-6 rounded-xl bg-gray-900/30 backdrop-blur-sm border border-gray-700/30"
               >
                 <Icon className="w-8 h-8 text-yellow-400 mx-auto mb-3" />
-                <div className="text-3xl font-heading text-white mb-1">{stat.value}</div>
+                <div className="text-3xl font-heading text-white mb-1 flex items-center justify-center">
+                  {loading ? (
+                    <Loader2 className="w-6 h-6 animate-spin text-yellow-400" />
+                  ) : (
+                    stat.value
+                  )}
+                </div>
                 <div className="text-gray-400 font-caption">{stat.label}</div>
               </motion.div>
             );
