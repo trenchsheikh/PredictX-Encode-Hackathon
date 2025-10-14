@@ -1,109 +1,209 @@
-# DarkBet Vercel Deployment Guide
+# DarkBet Deployment Guide
 
-## 🚀 Quick Deployment Steps
+This guide covers deploying DarkBet to production using Vercel (frontend) and Render (backend).
 
-### 1. Prepare Your Repository
-- [ ] Push your code to GitHub
-- [ ] Ensure all dependencies are in `package.json`
-- [ ] Test locally with `npm run build`
+## 🚀 Prerequisites
 
-### 2. Connect to Vercel
-1. Go to [vercel.com](https://vercel.com) and sign up/login
-2. Click "New Project"
-3. Import your GitHub repository
-4. Vercel will auto-detect Next.js settings
+- GitHub repository with your code
+- MongoDB Atlas account
+- Vercel account
+- Render account
+- BNB Smart Chain Testnet RPC URL
+- Privy App ID
 
-### 3. Configure Environment Variables
-In your Vercel project dashboard, go to Settings > Environment Variables and add:
+## 📋 Pre-Deployment Checklist
 
-```
-NEXT_PUBLIC_PRIVY_APP_ID=your_privy_app_id_here
-NEXT_PUBLIC_VAULT_CONTRACT_ADDRESS=your_contract_address
-NEXT_PUBLIC_CHAIN_ID=56
-NEXT_PUBLIC_RPC_URL=https://bsc-dataseed.binance.org/
+- [ ] Smart contracts deployed to BNB Smart Chain Testnet
+- [ ] Contract addresses noted
+- [ ] MongoDB database created
+- [ ] Privy app created and configured
+- [ ] Admin private key ready (with BNB for gas fees)
+
+## 🔧 Backend Deployment (Render)
+
+### 1. Connect Repository
+1. Go to [Render Dashboard](https://dashboard.render.com)
+2. Click "New +" → "Web Service"
+3. Connect your GitHub repository
+4. Select the repository
+
+### 2. Configure Service
+- **Name**: `darkbet-backend`
+- **Environment**: `Node`
+- **Build Command**: `cd backend && npm install && npm run build`
+- **Start Command**: `cd backend && npm start`
+- **Root Directory**: Leave empty (we'll set it in build command)
+
+### 3. Environment Variables
+Add these environment variables in Render:
+
+```env
+MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/darkbet
+BSC_TESTNET_RPC_URL=https://data-seed-prefork-1-s1.binance.org:8545
+ADMIN_PRIVATE_KEY=your_admin_private_key_here
+PREDICTION_CONTRACT_ADDRESS=0x...
+VAULT_CONTRACT_ADDRESS=0x...
+NODE_ENV=production
+PORT=3001
 ```
 
 ### 4. Deploy
-- Click "Deploy" 
-- Wait for build to complete
-- Your app will be live at `https://your-project.vercel.app`
+1. Click "Create Web Service"
+2. Wait for deployment to complete
+3. Note the Render URL (e.g., `https://darkbet.onrender.com`)
 
-## 🔧 Required Environment Variables
+## 🌐 Frontend Deployment (Vercel)
 
-| Variable | Description | Example |
-|----------|-------------|---------|
-| `NEXT_PUBLIC_PRIVY_APP_ID` | Your Privy application ID | `clx1234567890` |
-| `NEXT_PUBLIC_VAULT_CONTRACT_ADDRESS` | Deployed vault contract | `0x1234...5678` |
-| `NEXT_PUBLIC_CHAIN_ID` | BNB Chain ID | `56` (mainnet) |
-| `NEXT_PUBLIC_RPC_URL` | BNB Chain RPC URL | `https://bsc-dataseed.binance.org/` |
+### 1. Connect Repository
+1. Go to [Vercel Dashboard](https://vercel.com/dashboard)
+2. Click "New Project"
+3. Import your GitHub repository
 
-## 🎯 Getting Your Privy App ID
+### 2. Configure Project
+- **Framework Preset**: Next.js
+- **Root Directory**: Leave empty (root)
+- **Build Command**: `npm run build`
+- **Output Directory**: `.next`
 
-1. Visit [privy.io](https://privy.io)
-2. Create account or login
-3. Create new application
-4. Copy App ID from dashboard
-5. Add to Vercel environment variables
+### 3. Environment Variables
+Add these environment variables in Vercel:
 
-## 📱 Domain Configuration
+```env
+NEXT_PUBLIC_PRIVY_APP_ID=your_privy_app_id_here
+NEXT_PUBLIC_PREDICTION_CONTRACT_ADDRESS=0x...
+NEXT_PUBLIC_VAULT_CONTRACT_ADDRESS=0x...
+NEXT_PUBLIC_BACKEND_URL=https://your-render-app.onrender.com
+```
 
-### Custom Domain (Optional)
-1. Go to Project Settings > Domains
-2. Add your custom domain
-3. Update DNS records as instructed
-4. Wait for SSL certificate
+### 4. Deploy
+1. Click "Deploy"
+2. Wait for deployment to complete
+3. Note the Vercel URL (e.g., `https://darkbet.vercel.app`)
 
-### Subdomain
-- Default: `your-project.vercel.app`
-- Custom: `your-domain.com`
+## 🔄 Post-Deployment
 
-## 🔍 Troubleshooting
+### 1. Update CORS Settings
+The backend should automatically allow your Vercel domain. If you encounter CORS issues:
 
-### Build Failures
-- Check all dependencies are in `package.json`
-- Ensure TypeScript errors are resolved
-- Verify environment variables are set
+1. Go to your Render backend dashboard
+2. Check the logs for CORS errors
+3. Update the CORS configuration in `backend/src/server.ts` if needed
 
-### Runtime Errors
-- Check browser console for errors
-- Verify Privy App ID is correct
-- Ensure contract addresses are valid
+### 2. Test the Application
+1. Visit your Vercel URL
+2. Connect a wallet
+3. Try creating a prediction market
+4. Check that data loads correctly
 
-### Performance Issues
-- Enable Vercel Analytics
-- Check Core Web Vitals
-- Optimize images and assets
+### 3. Monitor Logs
+- **Vercel**: Check function logs in the Vercel dashboard
+- **Render**: Check application logs in the Render dashboard
 
-## 📊 Post-Deployment Checklist
+## 🛠️ Troubleshooting
 
-- [ ] App loads without errors
-- [ ] Wallet connection works
-- [ ] All pages are accessible
-- [ ] Mobile responsive
-- [ ] Favicon displays correctly
-- [ ] Environment variables working
-- [ ] Analytics tracking (if enabled)
+### Common Issues
 
-## 🔄 Continuous Deployment
+#### CORS Errors
+```
+Access to fetch at 'https://darkbet.onrender.com/markets' from origin 'https://darkbet.vercel.app' has been blocked by CORS policy
+```
 
-Vercel automatically deploys when you push to:
-- `main` branch → Production
-- Other branches → Preview deployments
+**Solution**: Update CORS configuration in backend to include your Vercel domain.
 
-## 📈 Monitoring
+#### Database Connection Issues
+```
+MongoServerError: connection timed out
+```
 
-- **Vercel Analytics**: Built-in performance monitoring
-- **Function Logs**: Check serverless function logs
-- **Build Logs**: Monitor deployment process
+**Solution**: 
+1. Check MongoDB Atlas IP whitelist
+2. Verify connection string
+3. Check network connectivity
 
-## 🆘 Support
+#### Contract Not Found
+```
+Error: Contract not found at address 0x...
+```
 
-If you encounter issues:
-1. Check Vercel deployment logs
-2. Verify environment variables
-3. Test locally first
-4. Contact Vercel support if needed
+**Solution**:
+1. Verify contract addresses are correct
+2. Ensure contracts are deployed to the correct network
+3. Check that admin private key has access
+
+#### Privy Connection Issues
+```
+Privy: Invalid app ID
+```
+
+**Solution**:
+1. Verify Privy App ID is correct
+2. Check Privy app configuration
+3. Ensure domain is whitelisted in Privy dashboard
+
+### Debug Mode
+
+To enable debug logging:
+
+1. **Backend**: Set `NODE_ENV=development` in Render environment variables
+2. **Frontend**: Check browser console for API client debug logs
+
+## 📊 Monitoring
+
+### Health Checks
+- **Backend**: `https://your-render-app.onrender.com/health`
+- **Frontend**: Check Vercel function logs
+
+### Key Metrics to Monitor
+- API response times
+- Database connection status
+- Smart contract interaction success rates
+- User wallet connection success rates
+
+## 🔄 Updates and Maintenance
+
+### Updating the Application
+1. Push changes to your GitHub repository
+2. Vercel and Render will automatically redeploy
+3. Monitor logs for any issues
+
+### Database Maintenance
+- Regular backups via MongoDB Atlas
+- Monitor connection pool usage
+- Check for slow queries
+
+### Smart Contract Updates
+- Deploy new contracts to testnet first
+- Update contract addresses in both frontend and backend
+- Test thoroughly before mainnet deployment
+
+## 🚨 Emergency Procedures
+
+### If Backend is Down
+1. Check Render dashboard for service status
+2. Review application logs
+3. Restart service if necessary
+4. Check database connectivity
+
+### If Frontend is Down
+1. Check Vercel dashboard for deployment status
+2. Review function logs
+3. Check environment variables
+4. Redeploy if necessary
+
+### If Database is Down
+1. Check MongoDB Atlas status
+2. Verify connection string
+3. Check IP whitelist
+4. Contact MongoDB support if needed
+
+## 📞 Support
+
+For deployment issues:
+- Check the troubleshooting section above
+- Review application logs
+- Create an issue in the GitHub repository
+- Check Vercel and Render documentation
 
 ---
 
-**Your DarkBet app is now ready for production! 🎉**
+**Remember**: Always test thoroughly in development before deploying to production!
