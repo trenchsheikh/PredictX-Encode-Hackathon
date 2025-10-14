@@ -1,33 +1,33 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { connectDatabase } from '@/lib/database';
+
+const RENDER_BACKEND_URL = 'https://darkbet.onrender.com';
 
 export async function GET(request: NextRequest) {
   try {
-    await connectDatabase();
-    
     const { searchParams } = new URL(request.url);
-    const timeframe = searchParams.get('timeframe') || 'all';
-    const limit = parseInt(searchParams.get('limit') || '50');
+    const queryString = searchParams.toString();
+    const url = `${RENDER_BACKEND_URL}/api/users/leaderboard${queryString ? `?${queryString}` : ''}`;
     
-    // TODO: Implement actual database query
-    // For now, return empty leaderboard to prevent errors
-    const leaderboard: any[] = [];
-    
-    return NextResponse.json({
-      success: true,
-      data: {
-        leaderboard,
-        timeframe,
-        totalUsers: 0,
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
       },
     });
+    
+    if (!response.ok) {
+      throw new Error(`Backend responded with status: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    return NextResponse.json(data);
   } catch (error: any) {
-    console.error('Error fetching leaderboard:', error);
+    console.error('Error proxying to backend:', error);
     
     return NextResponse.json(
       {
         success: false,
-        error: 'Failed to fetch leaderboard',
+        error: 'Failed to fetch leaderboard from backend',
       },
       { status: 500 }
     );

@@ -87,6 +87,7 @@
 - [ ] Verify MongoDB connection string
 - [ ] Test Privy App ID configuration
 - [ ] Confirm AI service API keys
+- [ ] Set Render backend URL in Vercel environment variables
 
 ### Testing
 - [ ] Test wallet connection flow

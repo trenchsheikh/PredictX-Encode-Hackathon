@@ -1,34 +1,33 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { connectDatabase } from '@/lib/database';
 
-// Import the Market model (we'll need to create this)
-// For now, we'll use a placeholder response
+const RENDER_BACKEND_URL = 'https://darkbet.onrender.com';
 
 export async function GET(request: NextRequest) {
   try {
-    await connectDatabase();
-    
     const { searchParams } = new URL(request.url);
-    const status = searchParams.get('status');
-    const category = searchParams.get('category');
-    const limit = searchParams.get('limit');
-    const offset = searchParams.get('offset');
+    const queryString = searchParams.toString();
+    const url = `${RENDER_BACKEND_URL}/api/markets${queryString ? `?${queryString}` : ''}`;
     
-    // TODO: Implement actual database query
-    // For now, return empty array to prevent errors
-    const markets: any[] = [];
-    
-    return NextResponse.json({
-      success: true,
-      data: markets,
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
     });
+    
+    if (!response.ok) {
+      throw new Error(`Backend responded with status: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    return NextResponse.json(data);
   } catch (error: any) {
-    console.error('Error fetching markets:', error);
+    console.error('Error proxying to backend:', error);
     
     return NextResponse.json(
       {
         success: false,
-        error: 'Failed to fetch markets',
+        error: 'Failed to fetch markets from backend',
       },
       { status: 500 }
     );
@@ -37,28 +36,30 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    await connectDatabase();
-    
     const body = await request.json();
+    const url = `${RENDER_BACKEND_URL}/api/markets`;
     
-    // TODO: Implement market creation
-    // For now, return success with placeholder data
-    
-    return NextResponse.json({
-      success: true,
-      data: {
-        id: Date.now().toString(),
-        ...body,
-        createdAt: Date.now(),
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
       },
+      body: JSON.stringify(body),
     });
+    
+    if (!response.ok) {
+      throw new Error(`Backend responded with status: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    return NextResponse.json(data);
   } catch (error: any) {
-    console.error('Error creating market:', error);
+    console.error('Error proxying to backend:', error);
     
     return NextResponse.json(
       {
         success: false,
-        error: 'Failed to create market',
+        error: 'Failed to create market on backend',
       },
       { status: 500 }
     );

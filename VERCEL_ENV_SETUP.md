@@ -34,9 +34,11 @@ NEXT_PUBLIC_PREDICTION_CONTRACT_ADDRESS=0x...
 NEXT_PUBLIC_VAULT_CONTRACT_ADDRESS=0x...
 ```
 
-### 6. Backend Configuration (if using external backend)
+### 6. Backend Configuration (Render backend)
 ```
-NEXT_PUBLIC_BACKEND_URL=https://your-backend.vercel.app
+NEXT_PUBLIC_BACKEND_URL=https://your-backend.onrender.com
+# OR use NEXT_PUBLIC_API_URL to override
+NEXT_PUBLIC_API_URL=https://your-backend.onrender.com/api
 ```
 
 ## Optional Environment Variables

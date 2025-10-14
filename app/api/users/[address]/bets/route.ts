@@ -1,36 +1,35 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { connectDatabase } from '@/lib/database';
+
+const RENDER_BACKEND_URL = 'https://darkbet.onrender.com';
 
 export async function GET(
   request: NextRequest,
   { params }: { params: { address: string } }
 ) {
   try {
-    await connectDatabase();
-    
     const userAddress = params.address;
+    const url = `${RENDER_BACKEND_URL}/api/users/${userAddress}/bets`;
     
-    // TODO: Implement actual database query
-    // For now, return empty data to prevent errors
-    const userBets = {
-      address: userAddress,
-      totalBets: 0,
-      commitments: 0,
-      revealedBets: 0,
-      bets: [],
-    };
-    
-    return NextResponse.json({
-      success: true,
-      data: userBets,
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
     });
+    
+    if (!response.ok) {
+      throw new Error(`Backend responded with status: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    return NextResponse.json(data);
   } catch (error: any) {
-    console.error('Error fetching user bets:', error);
+    console.error('Error proxying to backend:', error);
     
     return NextResponse.json(
       {
         success: false,
-        error: 'Failed to fetch user bets',
+        error: 'Failed to fetch user bets from backend',
       },
       { status: 500 }
     );

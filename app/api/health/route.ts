@@ -1,26 +1,31 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { connectDatabase } from '@/lib/database';
+
+const RENDER_BACKEND_URL = 'https://darkbet.onrender.com';
 
 export async function GET(request: NextRequest) {
   try {
-    // Connect to database
-    await connectDatabase();
+    const url = `${RENDER_BACKEND_URL}/health`;
     
-    return NextResponse.json({
-      success: true,
-      data: {
-        status: 'healthy',
-        timestamp: Date.now(),
-        environment: process.env.NODE_ENV || 'development',
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
       },
     });
+    
+    if (!response.ok) {
+      throw new Error(`Backend responded with status: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    return NextResponse.json(data);
   } catch (error: any) {
-    console.error('Health check failed:', error);
+    console.error('Error proxying to backend:', error);
     
     return NextResponse.json(
       {
         success: false,
-        error: 'Health check failed',
+        error: 'Failed to check backend health',
         data: {
           status: 'unhealthy',
           timestamp: Date.now(),
