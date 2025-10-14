@@ -1,0 +1,43 @@
+{
+  "name": "darkbet-backend",
+  "version": "1.0.0",
+  "description": "DarkBet Backend API - Node.js + Express + MongoDB",
+  "main": "dist/server.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "dev": "nodemon src/server.ts",
+    "test": "echo \"No tests yet\" && exit 0",
+    "fix-null-outcomes": "ts-node scripts/fix-null-outcomes.ts"
+  },
+  "keywords": [
+    "darkbet",
+    "prediction-market",
+    "blockchain",
+    "api"
+  ],
+  "author": "DarkBet Team",
+  "license": "MIT",
+  "dependencies": {
+    "@radix-ui/react-label": "^2.1.7",
+    "@radix-ui/react-tabs": "^1.1.13",
+    "axios": "^1.7.9",
+    "class-variance-authority": "^0.7.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "ethers": "^6.13.4",
+    "express": "^4.21.2",
+    "framer-motion": "^12.23.24",
+    "lucide-react": "^0.545.0",
+    "mongoose": "^8.9.3",
+    "recharts": "^3.2.1"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.10.2",
+    "nodemon": "^3.1.9",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.2"
+  }
+}

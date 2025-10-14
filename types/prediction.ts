@@ -48,13 +48,14 @@ export interface UserBet {
   id: string;
   predictionId: string;
   user: string;
-  outcome: 'yes' | 'no';
+  outcome: 'yes' | 'no' | 'unknown';
   shares: number;
   amount: number;
   price: number;
   createdAt: number;
   claimed: boolean;
   payout?: number;
+  revealed?: boolean;
 }
 
 export interface CreatePredictionData {

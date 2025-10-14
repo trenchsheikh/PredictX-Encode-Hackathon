@@ -211,14 +211,14 @@ export default function HowItWorksPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-yellow-400 via-yellow-500 to-yellow-600">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800">
       <div className="mx-auto max-w-7xl px-6 py-16 lg:px-8">
         {/* Header */}
         <div className="text-center mb-16">
-                 <h1 className="text-4xl font-bold tracking-tight text-black sm:text-6xl mb-6">
-                   {t('how_darkbet_works')}
-                 </h1>
-          <p className="text-lg leading-8 text-black/80 max-w-3xl mx-auto">
+          <h1 className="text-4xl font-bold tracking-tight text-white sm:text-6xl mb-6 font-brand-large gradient-text-brand">
+            {t('how_darkbet_works')}
+          </h1>
+          <p className="text-lg leading-8 text-gray-300 max-w-3xl mx-auto">
             {t('platform_description')}
           </p>
         </div>
@@ -345,18 +345,18 @@ export default function HowItWorksPage() {
             <div key={step.number} className="relative">
               <div className="flex items-start gap-8">
                 <div className="flex-shrink-0">
-                  <div className="w-16 h-16 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center text-white font-bold text-xl">
+                  <div className="w-16 h-16 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-full flex items-center justify-center text-black font-bold text-xl">
                     {step.number}
                   </div>
                 </div>
                 
                  <div className="flex-1">
                    <div className="flex items-center gap-3 mb-4">
-                     <step.icon className="h-8 w-8 text-primary" />
-                     <h2 className="text-3xl font-bold text-black">{step.title}</h2>
+                     <step.icon className="h-8 w-8 text-yellow-400" />
+                     <h2 className="text-3xl font-bold text-white font-heading">{step.title}</h2>
                    </div>
                    
-                   <p className="text-lg text-black mb-6">{step.description}</p>
+                   <p className="text-lg text-gray-300 mb-6">{step.description}</p>
                   
                    {/* Step-specific content */}
                    {step.details && (
@@ -398,10 +398,10 @@ export default function HowItWorksPage() {
                    {/* Categories for step 1 */}
                    {step.categories && (
                      <div className="mt-6">
-                       <h3 className="text-lg font-semibold text-black mb-4">Supported Categories</h3>
+                       <h3 className="text-lg font-semibold text-white mb-4 font-heading">Supported Categories</h3>
                        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                          {step.categories.map((category, catIndex) => (
-                           <div key={catIndex} className="flex items-center gap-2 p-3 rounded-lg bg-black/90 border border-black">
+                           <div key={catIndex} className="flex items-center gap-2 p-3 rounded-lg bg-gray-800/60 backdrop-blur-sm border border-gray-700/50">
                              <span className="text-lg">{category.icon}</span>
                              <span className="text-sm font-medium text-white">{category.name}</span>
                            </div>
@@ -436,18 +436,18 @@ export default function HowItWorksPage() {
                    {/* Sources for step 3 */}
                    {step.sources && (
                      <div className="mt-6">
-                       <h3 className="text-lg font-semibold text-black mb-4">
+                       <h3 className="text-lg font-semibold text-white mb-4 font-heading">
                          🔍 Verification Sources (Masked)
                        </h3>
-                       <p className="text-sm text-black mb-4">
+                       <p className="text-sm text-gray-300 mb-4">
                          We use industry-leading APIs for verification (sources masked for security):
                        </p>
                        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                          {step.sources.map((source, sourceIndex) => (
-                           <div key={sourceIndex} className="flex items-center justify-between p-3 rounded-lg bg-black/90 border border-black">
+                           <div key={sourceIndex} className="flex items-center justify-between p-3 rounded-lg bg-gray-800/60 backdrop-blur-sm border border-gray-700/50">
                              <span className="text-sm font-medium text-white">{source.category}</span>
                              <div className="flex items-center gap-1">
-                               <span className="text-xs text-gray-200">
+                               <span className="text-xs text-gray-300">
                                  {source.count} {source.premium ? 'Premium' : source.optional ? 'Optional' : 'sources'}
                                </span>
                                {source.premium && <Badge variant="warning" className="text-xs">Premium</Badge>}
@@ -461,24 +461,24 @@ export default function HowItWorksPage() {
                    {/* Example for step 2 */}
                    {step.example && (
                      <div className="mt-6">
-                       <h3 className="text-lg font-semibold text-black mb-4">Example:</h3>
-                       <Card className="bg-black/90 border-black">
+                       <h3 className="text-lg font-semibold text-white mb-4 font-heading">Example:</h3>
+                       <Card className="bg-gray-800/60 backdrop-blur-sm border border-gray-700/50">
                          <CardContent className="p-4">
-                           <p className="text-sm text-gray-200">
+                           <p className="text-sm text-gray-300">
                              {step.example.description}
                            </p>
                          </CardContent>
                        </Card>
                      </div>
                    )}
-                  
+                   
                    {/* Fee example for step 4 */}
                    {step.feeExample && (
                      <div className="mt-6">
-                       <h3 className="text-lg font-semibold text-black mb-4">Platform Fee Structure</h3>
-                       <Card className="bg-black/90 border-black">
+                       <h3 className="text-lg font-semibold text-white mb-4 font-heading">Platform Fee Structure</h3>
+                       <Card className="bg-gray-800/60 backdrop-blur-sm border border-gray-700/50">
                          <CardContent className="p-4">
-                           <p className="text-sm text-gray-200 mb-3">
+                           <p className="text-sm text-gray-300 mb-3">
                              10% platform fee applies to both prize claims AND bet cancellations
                            </p>
                            <div className="space-y-1 text-sm text-white">
@@ -486,11 +486,11 @@ export default function HowItWorksPage() {
                                <span>Gross Winnings:</span>
                                <span className="font-medium">{step.feeExample.gross}</span>
                              </div>
-                             <div className="flex justify-between text-gray-200">
+                             <div className="flex justify-between text-gray-300">
                                <span>Platform Fee (10%):</span>
                                <span>-{step.feeExample.fee}</span>
                              </div>
-                             <div className="flex justify-between text-green-400 font-semibold border-t border-white/20 pt-1">
+                             <div className="flex justify-between text-green-400 font-semibold border-t border-gray-600/50 pt-1">
                                <span>Net Payout:</span>
                                <span>{step.feeExample.net} ✨</span>
                              </div>
@@ -551,11 +551,11 @@ export default function HowItWorksPage() {
 
          {/* Call to Action */}
          <div className="text-center mt-16">
-           <h2 className="text-2xl font-bold text-black mb-4">Ready to Start Predicting?</h2>
-           <p className="text-black mb-6">
+           <h2 className="text-2xl font-bold text-white mb-4 font-heading">Ready to Start Predicting?</h2>
+           <p className="text-gray-300 mb-6">
              Connect your wallet and create your first prediction market today
            </p>
-           <Button size="lg" className="bg-black hover:bg-black/90 text-white">
+           <Button size="lg" className="bg-gradient-to-r from-yellow-400 to-yellow-600 hover:from-yellow-500 hover:to-yellow-700 text-black font-semibold">
              <Target className="h-5 w-5 mr-2" />
              Explore Markets
              <ArrowRight className="h-4 w-4 ml-2" />
