@@ -3,7 +3,7 @@
  * Base URL: /api (proxied to backend server)
  */
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || '/api';
 
 export interface APIResponse<T> {
   success: boolean;

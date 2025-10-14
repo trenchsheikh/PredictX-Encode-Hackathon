@@ -16,7 +16,7 @@ import { ShimmeringText } from '@/components/ui/shimmering-text';
 import { AppleHelloEffect } from '@/components/ui/apple-hello-effect';
 import { InteractiveGridPattern } from '@/components/ui/interactive-grid-pattern';
 import { TransactionStatus } from '@/components/ui/transaction-status';
-import { Prediction, FilterOptions, CreatePredictionData } from '@/types/prediction';
+import { Prediction, FilterOptions, CreatePredictionData, PredictionCategory, PredictionStatus } from '@/types/prediction';
 import { Plus, TrendingUp, Users, Clock, Zap, Star, Trophy, Flame, Target, BarChart3, TrendingDown, ArrowUp, ArrowDown, Eye, Shield, Lock, Loader2, RefreshCw, AlertCircle, CheckCircle } from 'lucide-react';
 import { HeroSection } from '@/components/ui/hero-section';
 import { AnimatedCard } from '@/components/ui/animated-card';
@@ -83,8 +83,8 @@ export default function HomePage() {
         title: market.title,
         description: market.description,
         summary: market.summary || market.description,
-        category: mapCategory(market.category),
-        status: mapStatus(market.status),
+        category: mapCategory(market.category) as PredictionCategory,
+        status: mapStatus(market.status) as PredictionStatus,
         createdAt: new Date(market.createdAt).getTime(),
         expiresAt: new Date(market.expiresAt).getTime(),
         creator: market.creator,
@@ -230,7 +230,7 @@ export default function HomePage() {
       const result = await contract.createMarket(
         data.title,
         data.description,
-        data.summary,
+        data.summary || data.description,
         data.resolutionInstructions || '',
         category,
         expiresAtTimestamp,

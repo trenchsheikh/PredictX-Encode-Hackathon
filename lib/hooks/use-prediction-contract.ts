@@ -79,7 +79,7 @@ export function usePredictionContract() {
         address: wallet.address,
         type: wallet.walletClientType,
         chainId: wallet.chainId,
-        availableMethods: Object.keys(wallet).filter(key => typeof wallet[key] === 'function')
+        availableMethods: Object.keys(wallet).filter(key => typeof (wallet as any)[key] === 'function')
       });
       
       // Try multiple methods to get the signer
@@ -92,18 +92,19 @@ export function usePredictionContract() {
         if (typeof wallet.getEthereumProvider === 'function') {
           try {
             console.log('🔍 Using Privy getEthereumProvider...');
-            const provider = await wallet.getEthereumProvider();
-            console.log('✅ Provider obtained from Privy');
-            
-            const ethersProvider = new ethers.BrowserProvider(provider);
-            
+          const provider = await wallet.getEthereumProvider();
+          console.log('✅ Provider obtained from Privy');
+          
+          const ethersProvider = new ethers.BrowserProvider(provider);
+          
             // Switch network if needed
-            if (wallet.chainId !== '0x61' && wallet.chainId !== 97 && wallet.chainId !== 'eip155:97') {
+            const chainIdStr = wallet.chainId?.toString();
+            if (chainIdStr !== '0x61' && chainIdStr !== '97' && chainIdStr !== 'eip155:97') {
               console.log('🔍 Switching to BSC Testnet...', { currentChainId: wallet.chainId });
               try {
                 await wallet.switchChain(97);
-                console.log('✅ Switched to BSC Testnet');
-              } catch (switchError: any) {
+              console.log('✅ Switched to BSC Testnet');
+            } catch (switchError: any) {
                 console.warn('⚠️ Failed to switch chain:', switchError.message);
                 // Try alternative method
                 try {
@@ -114,11 +115,11 @@ export function usePredictionContract() {
                   console.warn('⚠️ Alternative switch also failed:', altError.message);
                   // Continue anyway, user can switch manually
                 }
-              }
-            } else {
-              console.log('✅ Already on BSC Testnet');
             }
-            
+          } else {
+            console.log('✅ Already on BSC Testnet');
+          }
+          
             signer = await ethersProvider.getSigner();
             console.log('✅ Signer obtained via Privy');
           } catch (privyError: any) {
@@ -130,19 +131,19 @@ export function usePredictionContract() {
         if (!signer && typeof window !== 'undefined' && window.ethereum) {
           try {
             console.log('🔍 Fallback to window.ethereum...');
-            const provider = new ethers.BrowserProvider(window.ethereum);
-            
+          const provider = new ethers.BrowserProvider(window.ethereum);
+          
             // Request accounts
-            await window.ethereum.request({ method: 'eth_requestAccounts' });
-            
+          await window.ethereum.request({ method: 'eth_requestAccounts' });
+          
             // Switch network if needed
-            const network = await provider.getNetwork();
+          const network = await provider.getNetwork();
             console.log('🔍 Current network:', { chainId: network.chainId, name: network.name });
-            if (Number(network.chainId) !== 97) {
+          if (Number(network.chainId) !== 97) {
               console.log('🔍 Switching to BSC Testnet via window.ethereum...');
               try {
-                await window.ethereum.request({
-                  method: 'wallet_switchEthereumChain',
+            await window.ethereum.request({
+              method: 'wallet_switchEthereumChain',
                   params: [{ chainId: '0x61' }], // BSC Testnet
                 });
                 console.log('✅ Switched to BSC Testnet');
@@ -185,11 +186,12 @@ export function usePredictionContract() {
       }
       
       // Method 3: Try Privy embedded wallet
-      if (!signer && wallet.walletClientType === 'privy' && typeof wallet.getEthersProvider === 'function') {
+      if (!signer && wallet.walletClientType === 'privy' && typeof wallet.getEthereumProvider === 'function') {
         try {
           console.log('🔍 Trying Privy embedded wallet...');
-          const provider = await wallet.getEthersProvider();
-          signer = await provider.getSigner();
+          const provider = await wallet.getEthereumProvider();
+          const ethersProvider = new ethers.BrowserProvider(provider);
+          signer = await ethersProvider.getSigner();
           console.log('✅ Signer obtained via Privy embedded wallet');
         } catch (privyError: any) {
           console.warn('⚠️ Privy embedded wallet failed:', privyError.message);
@@ -199,8 +201,8 @@ export function usePredictionContract() {
       // Method 4: Try any available method on the wallet object
       if (!signer) {
         console.log('🔍 Trying any available signer method...');
-        const methods = Object.keys(wallet).filter(key => 
-          typeof wallet[key] === 'function' && 
+        const methods = Object.keys(wallet).filter(key =>
+          typeof (wallet as any)[key] === 'function' &&
           (key.includes('signer') || key.includes('provider') || key.includes('ethereum'))
         );
         
@@ -209,7 +211,7 @@ export function usePredictionContract() {
         for (const method of methods) {
           try {
             console.log(`🔍 Trying wallet.${method}...`);
-            const result = await wallet[method]();
+            const result = await (wallet as any)[method]();
             console.log(`Result from wallet.${method}:`, result);
             
             if (result && typeof result.getSigner === 'function') {
@@ -283,7 +285,7 @@ export function usePredictionContract() {
       }
       
       if (!signer) {
-        throw new Error(`Unable to get signer from wallet type: ${wallet.walletClientType}. Available methods: ${Object.keys(wallet).filter(key => typeof wallet[key] === 'function').join(', ')}`);
+        throw new Error(`Unable to get signer from wallet type: ${wallet.walletClientType}. Available methods: ${Object.keys(wallet).filter(key => typeof (wallet as any)[key] === 'function').join(', ')}`);
       }
       
       // Verify signer
@@ -303,8 +305,8 @@ export function usePredictionContract() {
           throw new Error('Signer does not have getAddress method. Signer type: ' + typeof signer);
         }
       }
-      
-      return signer;
+        
+        return signer;
     } catch (err: any) {
       console.error('❌ Failed to get signer:', err);
       const errorMsg = `Failed to get wallet signer: ${err.message}`;
@@ -341,16 +343,16 @@ export function usePredictionContract() {
       }
 
       console.log('🔍 Getting signer...');
-      const signer = await getSigner();
-      if (!signer) {
+    const signer = await getSigner();
+    if (!signer) {
         const errorMsg = 'Failed to get wallet signer. Please check your wallet connection.';
         console.error('❌', errorMsg);
         setError(errorMsg);
-        return null;
-      }
+      return null;
+    }
       console.log('✅ Signer obtained');
-      
-      if (contractABI.length === 0) {
+    
+    if (contractABI.length === 0) {
         const errorMsg = 'Contract ABI not loaded. Please refresh the page and try again.';
         console.error('❌', errorMsg);
         setError(errorMsg);
@@ -363,7 +365,7 @@ export function usePredictionContract() {
       
       // First try to get chainId from wallet
       const wallet = wallets[0];
-      let currentChainId = wallet.chainId;
+      let currentChainId: string | number = wallet.chainId;
       
       // Convert chainId to number if it's in different formats
       if (typeof currentChainId === 'string') {
@@ -383,9 +385,9 @@ export function usePredictionContract() {
         const errorMsg = `Please switch to BSC Testnet (Chain ID: 97). Current: ${currentChainId || 'Unknown'}`;
         console.error('❌', errorMsg);
         setError(errorMsg);
-        return null;
-      }
-      
+      return null;
+    }
+
       // Also try the provider-based check as backup
       try {
         const networkCheck = await checkNetwork();
@@ -724,8 +726,13 @@ export function usePredictionContract() {
 
         let userAddress;
         try {
-          userAddress = await contract.signer.getAddress();
-          console.log('User address from signer:', userAddress);
+          // Check if signer has getAddress method
+          if (contract.signer && typeof (contract.signer as any).getAddress === 'function') {
+            userAddress = await (contract.signer as any).getAddress();
+            console.log('User address from signer:', userAddress);
+          } else {
+            throw new Error('Signer does not have getAddress method');
+          }
         } catch (addressError: any) {
           console.warn('Failed to get address from signer:', addressError.message);
           // Fallback to wallet address
@@ -894,7 +901,7 @@ export function usePredictionContract() {
       // Get user address safely
       let userAddress: string;
       try {
-        userAddress = await contract.signer.getAddress();
+        userAddress = await (contract.signer as any).getAddress();
       } catch (addressError: any) {
         console.error('Failed to get user address from signer:', addressError);
         

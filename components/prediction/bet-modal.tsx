@@ -26,7 +26,7 @@ export function BetModal({ open, onOpenChange, prediction, outcome, onConfirm }:
   const isYes = outcome === 'yes';
   const currentPrice = isYes ? prediction.yesPrice : prediction.noPrice;
   const estimatedShares = numAmount / currentPrice;
-  const potentialPayout = calculatePayout(numAmount, currentPrice);
+  const potentialPayout = calculatePayout(estimatedShares, isYes ? prediction.yesShares : prediction.noShares, prediction.totalPool);
   const roi = numAmount > 0 ? ((potentialPayout - numAmount) / numAmount * 100) : 0;
 
   const minBet = 0.001;

@@ -13,7 +13,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { CreatePredictionData, PredictionCategory } from '@/types/prediction';
 import { formatBNB } from '@/lib/utils';
-import { Bot, Plus, X, Calendar, DollarSign, Target, Sparkles } from 'lucide-react';
+import { Bot, Plus, X, Calendar, DollarSign, Target, Sparkles, Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useI18n } from '@/components/providers/privy-provider';
 import { getAIService, getDefaultAIConfig, initializeAI } from '@/lib/ai-service';

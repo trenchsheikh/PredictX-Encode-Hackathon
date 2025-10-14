@@ -67,7 +67,7 @@ export function CompletedPrediction({ prediction, onViewHistory }: CompletedPred
 
   const getStatusIcon = () => {
     if (prediction.status === 'resolved') {
-      return prediction.outcome ? (
+      return prediction.resolution?.outcome === 'yes' ? (
         <CheckCircle className="h-5 w-5 text-green-500" />
       ) : (
         <XCircle className="h-5 w-5 text-red-500" />
@@ -78,14 +78,14 @@ export function CompletedPrediction({ prediction, onViewHistory }: CompletedPred
 
   const getStatusText = () => {
     if (prediction.status === 'resolved') {
-      return prediction.outcome ? 'YES Won' : 'NO Won';
+      return prediction.resolution?.outcome === 'yes' ? 'YES Won' : 'NO Won';
     }
     return 'Expired';
   };
 
   const getStatusColor = () => {
     if (prediction.status === 'resolved') {
-      return prediction.outcome 
+      return prediction.resolution?.outcome === 'yes'
         ? 'bg-green-500/20 text-green-700 border-green-500/30'
         : 'bg-red-500/20 text-red-700 border-red-500/30';
     }
@@ -133,7 +133,7 @@ export function CompletedPrediction({ prediction, onViewHistory }: CompletedPred
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <div className="text-center p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
             <DollarSign className="h-4 w-4 mx-auto mb-1 text-gray-500" />
-            <div className="text-sm font-medium">{formatBNB(prediction.totalPool)} BNB</div>
+            <div className="text-sm font-medium">{formatBNB(prediction.totalPool.toString())} BNB</div>
             <div className="text-xs text-gray-500">Total Pool</div>
           </div>
           
@@ -145,25 +145,25 @@ export function CompletedPrediction({ prediction, onViewHistory }: CompletedPred
           
           <div className="text-center p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
             <TrendingUp className="h-4 w-4 mx-auto mb-1 text-green-500" />
-            <div className="text-sm font-medium">{formatBNB(prediction.yesPool)} BNB</div>
+            <div className="text-sm font-medium">{formatBNB(prediction.yesPool.toString())} BNB</div>
             <div className="text-xs text-gray-500">YES Pool</div>
           </div>
           
           <div className="text-center p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
             <TrendingDown className="h-4 w-4 mx-auto mb-1 text-red-500" />
-            <div className="text-sm font-medium">{formatBNB(prediction.noPool)} BNB</div>
+            <div className="text-sm font-medium">{formatBNB(prediction.noPool.toString())} BNB</div>
             <div className="text-xs text-gray-500">NO Pool</div>
           </div>
         </div>
 
         {/* Resolution Info */}
-        {prediction.status === 'resolved' && prediction.resolutionReasoning && (
+        {prediction.status === 'resolved' && prediction.resolution?.reasoning && (
           <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
             <div className="text-sm font-medium text-blue-900 dark:text-blue-100 mb-2">
               Resolution Reasoning:
             </div>
             <div className="text-sm text-blue-800 dark:text-blue-200">
-              {prediction.resolutionReasoning}
+              {prediction.resolution.reasoning}
             </div>
           </div>
         )}
@@ -207,15 +207,6 @@ export function CompletedPrediction({ prediction, onViewHistory }: CompletedPred
             {loading ? 'Loading...' : 'View History'}
           </Button>
           
-          {prediction.txHash && (
-            <Button
-              onClick={() => window.open(`https://testnet.bscscan.com/tx/${prediction.txHash}`, '_blank')}
-              variant="outline"
-              size="sm"
-            >
-              <ExternalLink className="h-4 w-4" />
-            </Button>
-          )}
         </div>
 
         {/* Expiration Info */}

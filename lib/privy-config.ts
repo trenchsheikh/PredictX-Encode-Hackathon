@@ -11,7 +11,9 @@ export const privyClientConfig: PrivyClientConfig = {
   },
   loginMethods: ['wallet', 'email', 'sms', 'google', 'twitter', 'discord'],
   embeddedWallets: {
-    createOnLogin: 'users-without-wallets',
+    ethereum: {
+      createOnLogin: 'users-without-wallets',
+    },
   },
   supportedChains: [bscTestnet],
   defaultChain: bscTestnet,
