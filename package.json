@@ -24,6 +24,7 @@
     "ethers": "^6.15.0",
     "framer-motion": "^10.16.0",
     "lucide-react": "^0.383.0",
+    "mongoose": "^8.19.1",
     "next": "14.0.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

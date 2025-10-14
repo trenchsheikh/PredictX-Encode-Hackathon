@@ -3,7 +3,7 @@
  * Base URL: /api (proxied to backend server)
  */
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || '/api';
 
 export interface APIResponse<T> {
   success: boolean;
@@ -156,7 +156,13 @@ export const userAPI = {
    * Get user's bets
    */
   async getUserBets(userAddress: string) {
-    return apiFetch<any[]>(`/users/${userAddress}/bets`, { method: 'GET' });
+    return apiFetch<{
+      address: string;
+      totalBets: number;
+      commitments: number;
+      revealedBets: number;
+      bets: any[];
+    }>(`/users/${userAddress}/bets`, { method: 'GET' });
   },
 
   /**

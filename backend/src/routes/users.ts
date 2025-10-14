@@ -24,12 +24,10 @@ router.get('/:address/bets', async (req: Request, res: Response) => {
     }).lean();
 
     // Get market details for each bet
-    const marketIds = [
-      ...new Set([
-        ...commitments.map(c => c.marketId),
-        ...revealedBets.map(b => b.marketId)
-      ])
-    ];
+    const marketIds = Array.from(new Set([
+      ...commitments.map(c => c.marketId),
+      ...revealedBets.map(b => b.marketId)
+    ]));
 
     const markets = await Market.find({ 
       marketId: { $in: marketIds } 

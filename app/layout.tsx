@@ -7,6 +7,7 @@ import { AnimatedFooter } from '@/components/layout/animated-footer';
 import { AnimatedBackground } from '@/components/ui/animated-background';
 import { PageTransition } from '@/components/ui/page-transition';
 import { IntroProvider } from '@/components/providers/intro-provider';
+import { ErrorBoundary } from '@/components/ui/error-boundary';
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -70,9 +71,11 @@ export default function RootLayout({
               
               <AnimatedHeader />
               <main className="flex-1 relative z-10">
-                <PageTransition>
-                  {children}
-                </PageTransition>
+                <ErrorBoundary>
+                  <PageTransition>
+                    {children}
+                  </PageTransition>
+                </ErrorBoundary>
               </main>
               <AnimatedFooter />
             </div>

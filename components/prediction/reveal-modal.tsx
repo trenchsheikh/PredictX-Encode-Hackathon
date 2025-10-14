@@ -149,10 +149,10 @@ export function RevealModal({ open, onOpenChange, prediction, commitData, onConf
             {prediction.status === 'resolved' && (
               <div className="flex items-center gap-2 text-sm">
                 <span className="text-muted-foreground">Outcome:</span>
-                <Badge variant={prediction.outcome === 'yes' ? "default" : "destructive"}>
-                  {prediction.outcome?.toUpperCase()}
+                <Badge variant={prediction.resolution?.outcome === 'yes' ? "default" : "destructive"}>
+                  {prediction.resolution?.outcome?.toUpperCase()}
                 </Badge>
-                {prediction.outcome === commitData.outcome ? (
+                {prediction.resolution?.outcome === commitData.outcome ? (
                   <span className="text-green-500 flex items-center gap-1">
                     <CheckCircle2 className="w-4 h-4" />
                     You won!

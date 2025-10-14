@@ -5,7 +5,7 @@ import { usePrivy, useWallets } from '@privy-io/react-auth';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { UserBet, Prediction } from '@/types/prediction';
+import { UserBet, Prediction, PredictionCategory, PredictionStatus } from '@/types/prediction';
 import { formatBNB, formatTimeRemaining, calculatePayout, formatAddress } from '@/lib/utils';
 import { Wallet, TrendingUp, TrendingDown, Clock, DollarSign, ExternalLink, Eye, Loader2, AlertCircle, CheckCircle } from 'lucide-react';
 import { StatsDashboard } from '@/components/ui/stats-dashboard';
@@ -70,12 +70,12 @@ export default function MyBetsPage() {
       }
 
       // Map backend data to frontend UserBet format
-      const bets: UserBet[] = (response.data.bets || []).map((bet: any) => {
+      const bets: UserBet[] = (response.data?.bets || []).map((bet: any) => {
         const isRevealed = bet.type === 'bet' && bet.outcome !== undefined;
         return {
           id: bet.txHash || `${bet.marketId}-${Date.now()}`,
           predictionId: bet.marketId.toString(),
-          user: response.data.address,
+          user: response.data?.address || user?.wallet?.address || '',
           outcome: isRevealed ? (bet.outcome ? 'yes' : 'no') : 'unknown',
           shares: bet.shares ? parseFloat(ethers.formatEther(bet.shares)) : 0,
           amount: parseFloat(ethers.formatEther(bet.amount)),
@@ -90,7 +90,7 @@ export default function MyBetsPage() {
       setUserBets(bets);
 
       // Fetch associated market data
-      const marketIds = [...new Set(bets.map(b => b.predictionId))];
+      const marketIds = Array.from(new Set(bets.map(b => b.predictionId)));
       const marketData: { [id: string]: Prediction } = {};
 
       for (const marketId of marketIds) {
@@ -102,8 +102,8 @@ export default function MyBetsPage() {
             title: market.title,
             description: market.description,
             summary: market.summary || market.description,
-            category: mapCategory(market.category),
-            status: mapStatus(market.status),
+            category: mapCategory(market.category) as PredictionCategory,
+            status: mapStatus(market.status) as PredictionStatus,
             createdAt: new Date(market.createdAt).getTime(),
             expiresAt: new Date(market.expiresAt).getTime(),
             creator: market.creator,
@@ -117,8 +117,12 @@ export default function MyBetsPage() {
             noShares: parseFloat(ethers.formatEther(market.noShares || '0')),
             participants: market.participants || 0,
             isHot: false,
-            outcome: market.outcome === true ? 'yes' : market.outcome === false ? 'no' : undefined,
-            resolutionReasoning: market.resolutionReasoning,
+            resolution: market.outcome !== undefined ? {
+              outcome: market.outcome === true ? 'yes' : 'no',
+              resolvedAt: new Date(market.resolvedAt || Date.now()).getTime(),
+              reasoning: market.resolutionReasoning || 'Market resolved',
+              evidence: []
+            } : undefined,
           };
         }
       }
@@ -163,7 +167,7 @@ export default function MyBetsPage() {
 
   // Check refunds when bets are loaded
   useEffect(() => {
-    if (userBets.length > 0 && contract.checkRefundAvailability) {
+    if (userBets.length > 0 && typeof contract.checkRefundAvailability === 'function') {
       checkAllRefunds();
     }
   }, [userBets, contract.checkRefundAvailability]);
@@ -270,7 +274,7 @@ export default function MyBetsPage() {
         // Test Privy wallet methods
         console.log('🔍 Testing Privy wallet methods...');
         console.log('Wallet object:', wallet);
-        console.log('Available methods:', Object.keys(wallet).filter(key => typeof wallet[key] === 'function'));
+        console.log('Available methods:', Object.keys(wallet).filter(key => typeof (wallet as any)[key] === 'function'));
         
         // Test different signer creation methods
         let signerCreated = false;
@@ -309,15 +313,15 @@ export default function MyBetsPage() {
         // Method 3: Try any other method on the wallet
         if (!signerCreated) {
           console.log('🔍 Trying other wallet methods...');
-          const methods = Object.keys(wallet).filter(key => 
-            typeof wallet[key] === 'function' && 
+          const methods = Object.keys(wallet).filter(key =>
+            typeof (wallet as any)[key] === 'function' &&
             (key.includes('provider') || key.includes('ethereum') || key.includes('signer'))
           );
           
           for (const method of methods) {
             try {
               console.log(`🔍 Trying wallet.${method}()...`);
-              const result = await wallet[method]();
+              const result = await (wallet as any)[method]();
               console.log(`Result from wallet.${method}:`, result);
               
               if (result && typeof result.getSigner === 'function') {
@@ -563,10 +567,10 @@ export default function MyBetsPage() {
     const prediction = predictions[bet.predictionId];
     if (!prediction) return;
 
-    const isWinning = prediction.outcome === bet.outcome;
+    const isWinning = prediction.resolution?.outcome === bet.outcome;
     const canClaim = prediction.status === 'resolved' && isWinning && !bet.claimed;
-    const canRefund = !bet.revealed && (prediction.status === 'cancelled' || 
-      (prediction.status === 'resolved' && prediction.outcome === null));
+    const canRefund = !bet.revealed && (prediction.status === 'cancelled' ||
+      (prediction.status === 'resolved' && !prediction.resolution));
 
     const claimType = canClaim ? 'winnings' : 'refund';
     const claimAmount = canClaim ? calculatePotentialPayout(bet, prediction) : bet.amount;
@@ -662,12 +666,12 @@ export default function MyBetsPage() {
    * Calculate potential payout for a bet
    */
   const calculatePotentialPayout = (bet: UserBet, prediction: Prediction): number => {
-    if (prediction.status !== 'resolved' || !prediction.outcome) return 0;
+    if (prediction.status !== 'resolved' || !prediction.resolution?.outcome) return 0;
     
-    const isWinning = prediction.outcome === bet.outcome;
+    const isWinning = prediction.resolution.outcome === bet.outcome;
     if (!isWinning) return 0;
 
-    const totalWinningShares = prediction.outcome === 'yes' ? prediction.yesShares : prediction.noShares;
+    const totalWinningShares = prediction.resolution.outcome === 'yes' ? prediction.yesShares : prediction.noShares;
     if (totalWinningShares === 0) return 0;
 
     // Calculate payout: (user shares / total winning shares) * total pool * 0.9 (10% platform fee)
@@ -797,7 +801,7 @@ export default function MyBetsPage() {
           totalWinnings={totalPayout}
           winRate={resolvedBets > 0 ? (userBets.filter(bet => {
             const prediction = predictions[bet.predictionId];
-            return prediction?.status === 'resolved' && prediction.outcome === bet.outcome;
+            return prediction?.status === 'resolved' && prediction.resolution?.outcome === bet.outcome;
           }).length / resolvedBets) * 100 : 0}
           activeBets={activeBets}
         />
@@ -874,8 +878,8 @@ export default function MyBetsPage() {
               const prediction = predictions[bet.predictionId];
               if (!prediction) return null;
 
-              const OutcomeIcon = getOutcomeIcon(bet.outcome);
-              const isWinning = prediction.outcome === bet.outcome;
+              const OutcomeIcon = bet.outcome === 'unknown' ? Clock : getOutcomeIcon(bet.outcome as 'yes' | 'no');
+              const isWinning = prediction.resolution?.outcome === bet.outcome;
               const isExpired = new Date().getTime() > prediction.expiresAt;
               
               // Check if bet is revealed (use revealed property or check outcome)
@@ -910,7 +914,7 @@ export default function MyBetsPage() {
                 revealed: bet.revealed,
                 isRevealed,
                 predictionStatus: prediction.status,
-                predictionOutcome: prediction.outcome,
+                predictionOutcome: prediction.resolution?.outcome,
                 isWinning,
                 isExpired,
                 canClaim,
@@ -980,7 +984,7 @@ export default function MyBetsPage() {
                           <div>
                             <div className="text-xs text-gray-400">{t('potential_payout')}</div>
                             <div className="text-sm font-medium text-white">
-                              {prediction.status === 'resolved' && prediction.outcome 
+                              {prediction.status === 'resolved' && prediction.resolution?.outcome 
                                 ? formatBNB(calculatePotentialPayout(bet, prediction))
                                 : formatBNB(calculatePayout(bet.shares, 
                                     bet.outcome === 'yes' ? prediction.yesShares : prediction.noShares, 
@@ -992,14 +996,14 @@ export default function MyBetsPage() {
                         </div>
 
                         {/* Resolution Info */}
-                        {prediction.status === 'resolved' && prediction.outcome !== undefined && (
+                        {prediction.status === 'resolved' && prediction.resolution?.outcome !== undefined && (
                           <div className="mt-4 p-3 rounded-lg bg-yellow-500/20 border border-yellow-500/30">
                             <div className="text-sm font-medium mb-1 text-white">
-                              Resolution: {prediction.outcome ? 'YES' : 'NO'}
+                              Resolution: {prediction.resolution.outcome === 'yes' ? 'YES' : 'NO'}
                             </div>
-                            {prediction.resolutionReasoning && (
+                            {prediction.resolution?.reasoning && (
                               <div className="text-xs text-gray-200">
-                                {prediction.resolutionReasoning}
+                                {prediction.resolution.reasoning}
                               </div>
                             )}
                           </div>
