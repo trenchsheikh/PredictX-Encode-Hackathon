@@ -156,7 +156,13 @@ export const userAPI = {
    * Get user's bets
    */
   async getUserBets(userAddress: string) {
-    return apiFetch<any[]>(`/users/${userAddress}/bets`, { method: 'GET' });
+    return apiFetch<{
+      address: string;
+      totalBets: number;
+      commitments: number;
+      revealedBets: number;
+      bets: any[];
+    }>(`/users/${userAddress}/bets`, { method: 'GET' });
   },
 
   /**
