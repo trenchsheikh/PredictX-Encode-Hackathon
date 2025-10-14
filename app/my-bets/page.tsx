@@ -70,12 +70,12 @@ export default function MyBetsPage() {
       }
 
       // Map backend data to frontend UserBet format
-      const bets: UserBet[] = (response.data.bets || []).map((bet: any) => {
+      const bets: UserBet[] = (response.data?.bets || []).map((bet: any) => {
         const isRevealed = bet.type === 'bet' && bet.outcome !== undefined;
         return {
           id: bet.txHash || `${bet.marketId}-${Date.now()}`,
           predictionId: bet.marketId.toString(),
-          user: response.data.address,
+          user: response.data?.address || user.wallet.address,
           outcome: isRevealed ? (bet.outcome ? 'yes' : 'no') : 'unknown',
           shares: bet.shares ? parseFloat(ethers.formatEther(bet.shares)) : 0,
           amount: parseFloat(ethers.formatEther(bet.amount)),
