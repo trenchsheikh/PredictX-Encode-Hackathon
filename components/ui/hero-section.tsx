@@ -88,7 +88,7 @@ export function HeroSection({
       text: t('features.fully_onchain'),
       color: 'text-yellow-400',
     },
-    { icon: Zap, text: t('features.ai_driven'), color: 'text-white' },
+    { icon: Zap, text: t('features.ai_driven'), color: 'text-yellow-400' },
     {
       icon: TrendingUp,
       text: t('features.realtime_markets'),
