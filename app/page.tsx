@@ -196,7 +196,7 @@ export default function HomePage() {
     if (!prediction) return;
 
     if (!authenticated) {
-      alert(t('errors.wallet_required'));
+      console.info(t('errors.wallet_required'));
       return;
     }
 
@@ -257,7 +257,7 @@ export default function HomePage() {
       // Refresh markets
       await fetchMarkets();
 
-      alert(t('success.bet_placed'));
+      console.info(t('success.bet_placed'));
     } catch (err: any) {
       console.error('Bet failed:', err);
       throw new Error(getErrorMessage(err));
@@ -269,7 +269,7 @@ export default function HomePage() {
    */
   const handleCreatePrediction = async (data: CreatePredictionData) => {
     if (!authenticated || !user?.wallet?.address) {
-      alert(t('errors.wallet_required'));
+      console.info(t('errors.wallet_required'));
       return;
     }
 
@@ -322,10 +322,9 @@ export default function HomePage() {
       await fetchMarkets();
 
       setShowCreateModal(false);
-      alert(t('success.prediction_created'));
+      console.info(t('success.prediction_created'));
     } catch (err: any) {
       console.error('Create prediction failed:', err);
-      alert(getErrorMessage(err));
     }
   };
 
@@ -334,7 +333,7 @@ export default function HomePage() {
    */
   const handleCreateCryptoPrediction = async (data: CryptoPredictionData) => {
     if (!authenticated || !user?.wallet?.address) {
-      alert(t('errors.wallet_required'));
+      console.info(t('errors.wallet_required'));
       return;
     }
 
@@ -375,10 +374,9 @@ export default function HomePage() {
       await fetchMarkets();
 
       setShowCryptoModal(false);
-      alert(t('success.crypto_prediction_created'));
+      console.info(t('success.crypto_prediction_created'));
     } catch (err: any) {
       console.error('Create crypto prediction failed:', err);
-      alert(getErrorMessage(err));
     }
   };
 

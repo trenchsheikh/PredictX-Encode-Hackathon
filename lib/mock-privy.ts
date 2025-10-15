@@ -87,7 +87,7 @@ export function usePrivy(): PrivyAuthState {
   const sendCode = async (email: string) => {
     // Simulate sending OTP
     console.log(`Sending OTP to ${email}`);
-    alert(`OTP sent to ${email} (This is a mock implementation)`);
+    console.info(`OTP sent to ${email} (This is a mock implementation)`);
   };
 
   const loginWithCode = async (code: string) => {
@@ -99,7 +99,7 @@ export function usePrivy(): PrivyAuthState {
         email: { address: 'user@example.com' },
       });
     } else {
-      alert('Invalid code. Try 123456');
+      console.info('Invalid code. Try 123456');
     }
   };
 
@@ -139,7 +139,7 @@ export function useLoginWithEmail() {
 export function useSendTransaction() {
   const sendTransaction = async (tx: any) => {
     console.log('Mock transaction:', tx);
-    alert(`Mock transaction sent: ${JSON.stringify(tx, null, 2)}`);
+    console.info(`Mock transaction sent: ${JSON.stringify(tx, null, 2)}`);
   };
   return { sendTransaction };
 }
