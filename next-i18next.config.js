@@ -2,7 +2,7 @@ module.exports = {
   i18n: {
     defaultLocale: 'zh',
     locales: ['zh', 'en'],
-    localeDetection: false, // Disable automatic locale detection
+    localeDetection: false,
   },
   fallbackLng: {
     default: ['zh'],

@@ -9,5 +9,16 @@
   "bracketSpacing": true,
   "bracketSameLine": false,
   "arrowParens": "avoid",
-  "plugins": ["prettier-plugin-tailwindcss"]
+  "plugins": ["prettier-plugin-tailwindcss", "prettier-plugin-solidity"],
+  "overrides": [
+    {
+      "files": "**/*.sol",
+      "options": {
+        "parser": "slang",
+        "tabWidth": 4,
+        "singleQuote": false,
+        "bracketSpacing": false
+      }
+    }
+  ]
 }

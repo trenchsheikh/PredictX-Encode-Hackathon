@@ -2,14 +2,14 @@
   "network": "bscTestnet",
   "chainId": 97,
   "deployer": "0x46f5305784cfc77AEEa92Be4E8461E7051743bbe",
-  "timestamp": "2025-10-13T23:49:23.128Z",
+  "timestamp": "2025-10-15T13:18:14.760Z",
   "contracts": {
     "Vault": {
-      "address": "0x9D4f9aFed1572a7947a1f6619111d3FfED66db17",
+      "address": "0x4E439804Cab88d0099b2d8eB4A525d5b2Af41918",
       "abi": "Vault.json"
     },
     "PredictionMarket": {
-      "address": "0x672e13Cc6196c784EF3bf0762A18d2645F0f12ca",
+      "address": "0x4FE574a75FE0fF53a0fbb6d8dD4Cda638E2fcB6E",
       "abi": "PredictionMarket.json"
     }
   }

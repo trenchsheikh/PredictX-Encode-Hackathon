@@ -13,7 +13,6 @@ describe('PredictionMarket', function () {
     let user2: SignerWithAddress;
     let user3: SignerWithAddress;
 
-    const MIN_BET = ethers.parseEther('0.001');
     const TYPICAL_BET = ethers.parseEther('0.01');
 
     beforeEach(async function () {
@@ -57,13 +56,13 @@ describe('PredictionMarket', function () {
         });
 
         it('Should fail if expiration is too soon', async function () {
-            const expiresAt = (await time.latest()) + 1800; // 30 minutes
+            const expiresAt = (await time.latest()) + 300; // 5 minutes
 
             await expect(
                 predictionMarket
                     .connect(user1)
                     .createMarket('Test Market', 'Description', expiresAt, 1)
-            ).to.be.revertedWith('Must expire at least 1 hour from now');
+            ).to.be.revertedWith('Must expire at least 15 minutes from now');
         });
 
         it('Should fail if expiration is too far', async function () {
@@ -110,11 +109,9 @@ describe('PredictionMarket', function () {
             // User wants to bet YES with salt "secret123"
             const outcome = true;
             const salt = ethers.id('secret123');
-            const commitHash = ethers.keccak256(
-                ethers.AbiCoder.defaultAbiCoder().encode(
-                    ['bool', 'bytes32', 'address'],
-                    [outcome, salt, user1.address]
-                )
+            const commitHash = ethers.solidityPackedKeccak256(
+                ['bool', 'bytes32', 'address'],
+                [outcome, salt, user1.address]
             );
 
             const tx = await predictionMarket
@@ -137,7 +134,10 @@ describe('PredictionMarket', function () {
         });
 
         it('Should fail to commit with insufficient amount', async function () {
-            const commitHash = ethers.keccak256(ethers.toUtf8Bytes('test'));
+            const commitHash = ethers.solidityPackedKeccak256(
+                ['bytes'],
+                [ethers.toUtf8Bytes('test')]
+            );
 
             await expect(
                 predictionMarket
@@ -149,7 +149,10 @@ describe('PredictionMarket', function () {
         });
 
         it('Should fail to commit twice', async function () {
-            const commitHash = ethers.keccak256(ethers.toUtf8Bytes('test'));
+            const commitHash = ethers.solidityPackedKeccak256(
+                ['bytes'],
+                [ethers.toUtf8Bytes('test')]
+            );
 
             await predictionMarket
                 .connect(user1)
@@ -170,11 +173,9 @@ describe('PredictionMarket', function () {
             // Commit
             const outcome = true;
             const salt = ethers.id('secret123');
-            const commitHash = ethers.keccak256(
-                ethers.AbiCoder.defaultAbiCoder().encode(
-                    ['bool', 'bytes32', 'address'],
-                    [outcome, salt, user1.address]
-                )
+            const commitHash = ethers.solidityPackedKeccak256(
+                ['bool', 'bytes32', 'address'],
+                [outcome, salt, user1.address]
             );
 
             await predictionMarket
@@ -206,11 +207,9 @@ describe('PredictionMarket', function () {
             const outcome = true;
             const salt = ethers.id('secret123');
             const wrongSalt = ethers.id('wrongsecret');
-            const commitHash = ethers.keccak256(
-                ethers.AbiCoder.defaultAbiCoder().encode(
-                    ['bool', 'bytes32', 'address'],
-                    [outcome, salt, user1.address]
-                )
+            const commitHash = ethers.solidityPackedKeccak256(
+                ['bool', 'bytes32', 'address'],
+                [outcome, salt, user1.address]
             );
 
             await predictionMarket
@@ -229,11 +228,9 @@ describe('PredictionMarket', function () {
         it('Should fail to reveal with wrong outcome', async function () {
             const outcome = true;
             const salt = ethers.id('secret123');
-            const commitHash = ethers.keccak256(
-                ethers.AbiCoder.defaultAbiCoder().encode(
-                    ['bool', 'bytes32', 'address'],
-                    [outcome, salt, user1.address]
-                )
+            const commitHash = ethers.solidityPackedKeccak256(
+                ['bool', 'bytes32', 'address'],
+                [outcome, salt, user1.address]
             );
 
             await predictionMarket
@@ -252,11 +249,9 @@ describe('PredictionMarket', function () {
         it('Should update market pools after reveal', async function () {
             const outcome = true;
             const salt = ethers.id('secret123');
-            const commitHash = ethers.keccak256(
-                ethers.AbiCoder.defaultAbiCoder().encode(
-                    ['bool', 'bytes32', 'address'],
-                    [outcome, salt, user1.address]
-                )
+            const commitHash = ethers.solidityPackedKeccak256(
+                ['bool', 'bytes32', 'address'],
+                [outcome, salt, user1.address]
             );
 
             await predictionMarket
@@ -291,20 +286,16 @@ describe('PredictionMarket', function () {
             // Place some bets
             const outcome1 = true;
             const salt1 = ethers.id('secret1');
-            const commitHash1 = ethers.keccak256(
-                ethers.AbiCoder.defaultAbiCoder().encode(
-                    ['bool', 'bytes32', 'address'],
-                    [outcome1, salt1, user1.address]
-                )
+            const commitHash1 = ethers.solidityPackedKeccak256(
+                ['bool', 'bytes32', 'address'],
+                [outcome1, salt1, user1.address]
             );
 
             const outcome2 = false;
             const salt2 = ethers.id('secret2');
-            const commitHash2 = ethers.keccak256(
-                ethers.AbiCoder.defaultAbiCoder().encode(
-                    ['bool', 'bytes32', 'address'],
-                    [outcome2, salt2, user2.address]
-                )
+            const commitHash2 = ethers.solidityPackedKeccak256(
+                ['bool', 'bytes32', 'address'],
+                [outcome2, salt2, user2.address]
             );
 
             await predictionMarket
@@ -380,20 +371,16 @@ describe('PredictionMarket', function () {
             // User1 bets YES, User2 bets NO
             const outcome1 = true;
             const salt1 = ethers.id('secret1');
-            const commitHash1 = ethers.keccak256(
-                ethers.AbiCoder.defaultAbiCoder().encode(
-                    ['bool', 'bytes32', 'address'],
-                    [outcome1, salt1, user1.address]
-                )
+            const commitHash1 = ethers.solidityPackedKeccak256(
+                ['bool', 'bytes32', 'address'],
+                [outcome1, salt1, user1.address]
             );
 
             const outcome2 = false;
             const salt2 = ethers.id('secret2');
-            const commitHash2 = ethers.keccak256(
-                ethers.AbiCoder.defaultAbiCoder().encode(
-                    ['bool', 'bytes32', 'address'],
-                    [outcome2, salt2, user2.address]
-                )
+            const commitHash2 = ethers.solidityPackedKeccak256(
+                ['bool', 'bytes32', 'address'],
+                [outcome2, salt2, user2.address]
             );
 
             await predictionMarket

@@ -269,15 +269,23 @@ contract PredictionMarket is Ownable, ReentrancyGuard, Pausable {
 
         // Calculate shares using FPMM
         if (market.yesShares == 0 && market.noShares == 0) {
-            // First bet: initialize pools
-            shares = (amount * PRICE_PRECISION) / 0.01 ether; // 1 share per 0.01 BNB
+            // First bet: initialize with fixed price 0.01 ether per share
+            shares = (amount * PRICE_PRECISION) / 0.01 ether;
         } else {
             // FPMM pricing: shares = amount / price
-            // Price = outcomePool / totalShares
+            // price = (outcomePool / totalShares) scaled by PRICE_PRECISION
             uint256 totalShares = market.yesShares + market.noShares;
-            uint256 outcomePool = outcome ? market.yesPool : market.noPool;
-            uint256 price = (outcomePool * PRICE_PRECISION) / totalShares;
-            shares = (amount * PRICE_PRECISION) / price;
+            if (totalShares == 0) {
+                // Guard: fallback to initial pricing
+                shares = (amount * PRICE_PRECISION) / 0.01 ether;
+            } else {
+                uint256 outcomePool = outcome ? market.yesPool : market.noPool;
+                // When outcome pool is zero (first bet on this side), use initial price
+                uint256 price = outcomePool == 0
+                    ? 0.01 ether
+                    : (outcomePool * PRICE_PRECISION) / totalShares;
+                shares = (amount * PRICE_PRECISION) / price;
+            }
         }
 
         // Update market state
@@ -289,6 +297,9 @@ contract PredictionMarket is Ownable, ReentrancyGuard, Pausable {
             market.noPool += amount;
             market.noShares += shares;
         }
+
+        // Track participants before overwriting bet storage
+        uint256 previousAmount = bets[marketId][msg.sender].amount;
 
         // Store bet
         bets[marketId][msg.sender] = Bet({
@@ -305,8 +316,8 @@ contract PredictionMarket is Ownable, ReentrancyGuard, Pausable {
         commitment.revealed = true;
         pendingReveals[marketId]--;
 
-        // Track participants
-        if (bets[marketId][msg.sender].amount == 0) {
+        // Track participants (only on first reveal for this user)
+        if (previousAmount == 0) {
             marketParticipants[marketId].push(msg.sender);
             market.participants++;
         }

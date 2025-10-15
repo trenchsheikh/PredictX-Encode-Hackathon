@@ -265,7 +265,7 @@ export function CreateBetModal({
       console.error('AI analysis failed:', error);
       // Fallback to mock analysis if AI fails
       const fallbackAnalysis = {
-        title: `Will ${watchedDescription.split(' ').slice(0, 3).join(' ')} happen?`,
+        title: watchedDescription.trim(),
         description: watchedDescription.slice(0, 150),
         summary: `This prediction market allows participants to bet on whether ${watchedDescription}. If YES wins, the stated outcome will have occurred. If NO wins, the stated outcome will not have occurred.`,
         category: watchedCategory,
@@ -301,9 +301,7 @@ export function CreateBetModal({
   const onFormSubmit = (data: CreatePredictionData) => {
     const predictionData: CreatePredictionData = {
       ...data,
-      title:
-        aiGenerated?.title ||
-        `Will ${data.description.split(' ').slice(0, 3).join(' ')} happen?`,
+      title: aiGenerated?.title || data.description.trim(),
       summary: generateAnalysis ? aiGenerated?.summary : undefined,
       options,
     };
