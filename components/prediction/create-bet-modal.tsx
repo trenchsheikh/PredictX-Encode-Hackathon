@@ -36,7 +36,7 @@ import {
   Loader2,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { useI18n } from '@/components/providers/privy-provider';
+import { useI18n } from '@/components/providers/i18n-provider';
 import {
   getAIService,
   getDefaultAIConfig,
@@ -78,17 +78,18 @@ interface CreateBetModalProps {
   onSubmit: (data: CreatePredictionData) => void;
 }
 
-const categories: { value: PredictionCategory; label: string; icon: string }[] =
-  [
-    { value: 'sports', label: 'Sports', icon: '⚽' },
-    { value: 'crypto', label: 'Crypto', icon: '₿' },
-    { value: 'politics', label: 'Politics', icon: '🏛️' },
-    { value: 'entertainment', label: 'Entertainment', icon: '🎬' },
-    { value: 'weather', label: 'Weather', icon: '🌤️' },
-    { value: 'finance', label: 'Finance', icon: '💰' },
-    { value: 'technology', label: 'Technology', icon: '💻' },
-    { value: 'custom', label: 'Custom', icon: '🎯' },
-  ];
+const getCategories = (
+  t: any
+): { value: PredictionCategory; label: string; icon: string }[] => [
+  { value: 'sports', label: t('categories.sports'), icon: '⚽' },
+  { value: 'crypto', label: t('categories.crypto'), icon: '₿' },
+  { value: 'politics', label: t('categories.politics'), icon: '🏛️' },
+  { value: 'entertainment', label: t('categories.entertainment'), icon: '🎬' },
+  { value: 'weather', label: t('categories.weather'), icon: '🌤️' },
+  { value: 'finance', label: t('categories.finance'), icon: '💰' },
+  { value: 'technology', label: t('categories.technology'), icon: '💻' },
+  { value: 'custom', label: t('categories.custom'), icon: '🎯' },
+];
 
 // Crypto options will be fetched from API
 
@@ -98,6 +99,7 @@ export function CreateBetModal({
   onSubmit,
 }: CreateBetModalProps) {
   const { t } = useI18n();
+  const categories = getCategories(t);
   const [aiGenerated, setAiGenerated] = useState<{
     title: string;
     description: string;
@@ -326,10 +328,10 @@ export function CreateBetModal({
         <DialogHeader>
           <DialogTitle className="font-heading flex items-center gap-2 text-white">
             <Target className="h-5 w-5 text-yellow-400" />
-            {t('create_prediction_market')}
+            {t('create_prediction.title')}
           </DialogTitle>
           <DialogDescription className="text-gray-300">
-            {t('create_prediction_description')}
+            {t('create_prediction.description')}
           </DialogDescription>
         </DialogHeader>
 
@@ -340,11 +342,11 @@ export function CreateBetModal({
               <div className="flex items-center gap-2 text-sm">
                 <DollarSign className="h-4 w-4 text-yellow-400" />
                 <span className="font-medium text-white">
-                  {t('wallet_required')}
+                  {t('create_prediction.wallet_required')}
                 </span>
               </div>
               <p className="mt-1 text-xs text-gray-300">
-                {t('connect_wallet_to_create')}
+                {t('create_prediction.connect_wallet_to_create')}
               </p>
             </CardContent>
           </Card>
@@ -352,7 +354,7 @@ export function CreateBetModal({
           {/* Bet Type Selection */}
           <div className="space-y-2">
             <label className="text-sm font-medium text-white">
-              {t('bet_type')} *
+              {t('create_prediction.bet_type')} *
             </label>
             <div className="grid grid-cols-2 gap-4">
               <Card
@@ -366,10 +368,10 @@ export function CreateBetModal({
               >
                 <CardContent className="p-4">
                   <div className="text-sm font-medium text-white">
-                    {t('custom_bet')}
+                    {t('create_prediction.custom_bet')}
                   </div>
                   <div className="text-xs text-gray-300">
-                    {t('manual_resolution')}
+                    {t('create_prediction.manual_resolution')}
                   </div>
                 </CardContent>
               </Card>
@@ -384,10 +386,10 @@ export function CreateBetModal({
               >
                 <CardContent className="p-4">
                   <div className="text-sm font-medium text-white">
-                    {t('auto_verified_outcome')}
+                    {t('create_prediction.auto_verified_outcome')}
                   </div>
                   <div className="text-xs text-gray-300">
-                    {t('price_oracle')}
+                    {t('create_prediction.price_oracle')}
                   </div>
                 </CardContent>
               </Card>
@@ -397,11 +399,11 @@ export function CreateBetModal({
           {/* Bet Description */}
           <div className="space-y-2">
             <label className="text-sm font-medium text-white">
-              {t('bet_description')} *
+              {t('create_prediction.bet_description')} *
             </label>
             <Textarea
               {...register('description')}
-              placeholder={t('describe_prediction')}
+              placeholder={t('create_prediction.describe_prediction')}
               className="min-h-[100px] border-gray-700/50 bg-gray-800/60 text-white placeholder:text-gray-400 focus:border-yellow-400/50 focus:ring-yellow-400/20"
             />
             {errors.description && (
@@ -414,7 +416,7 @@ export function CreateBetModal({
           {/* Category Selection */}
           <div className="space-y-2">
             <label className="text-sm font-medium text-white">
-              {t('category')} *
+              {t('create_prediction.category')} *
             </label>
             <Select
               value={watch('category')}
@@ -423,7 +425,9 @@ export function CreateBetModal({
               }
             >
               <SelectTrigger className="border-gray-700/50 bg-gray-800/60 text-white focus:border-yellow-400/50 focus:ring-yellow-400/20">
-                <SelectValue placeholder="Select a category" />
+                <SelectValue
+                  placeholder={t('create_prediction.select_category')}
+                />
               </SelectTrigger>
               <SelectContent className="border-gray-700/50 bg-gray-800">
                 {categories.map(category => (
@@ -451,13 +455,13 @@ export function CreateBetModal({
           {watch('category') === 'crypto' && (
             <div className="space-y-2">
               <label className="text-sm font-medium text-white">
-                Select Cryptocurrency
+                {t('crypto_prediction.select_crypto')}
               </label>
               {cryptoLoading ? (
                 <div className="flex items-center justify-center p-8">
                   <Loader2 className="mr-2 h-6 w-6 animate-spin text-yellow-400" />
                   <span className="text-gray-400">
-                    Loading cryptocurrencies...
+                    {t('crypto_prediction.loading_cryptocurrencies')}
                   </span>
                 </div>
               ) : (
@@ -465,7 +469,7 @@ export function CreateBetModal({
                   options={cryptoOptions}
                   value={selectedCrypto}
                   onValueChange={setSelectedCrypto}
-                  placeholder="Choose a cryptocurrency to predict about"
+                  placeholder={t('crypto_prediction.choose_crypto_placeholder')}
                 />
               )}
             </div>
@@ -476,7 +480,7 @@ export function CreateBetModal({
             <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <label className="text-sm font-medium text-white">
-                  {t('ai_resolution_instructions')}
+                  {t('create_prediction.ai_resolution_instructions')}
                 </label>
                 <Button
                   type="button"
@@ -487,7 +491,9 @@ export function CreateBetModal({
                   className="flex items-center gap-2 border-gray-700/50 bg-gray-800/60 text-white transition-all duration-200 hover:bg-gray-800/80"
                 >
                   <Bot className="h-4 w-4" />
-                  {isAnalyzing ? t('analyzing') : t('analyze')}
+                  {isAnalyzing
+                    ? t('create_prediction.analyzing')
+                    : t('create_prediction.analyze')}
                 </Button>
               </div>
 
@@ -504,7 +510,7 @@ export function CreateBetModal({
                   htmlFor="generateAnalysis"
                   className="flex-1 cursor-pointer text-sm text-white"
                 >
-                  Generate detailed analysis (unbiased summary for card)
+                  {t('create_prediction.generate_analysis_checkbox')}
                 </label>
               </div>
 
@@ -513,12 +519,14 @@ export function CreateBetModal({
                   <CardHeader className="pb-2">
                     <CardTitle className="flex items-center gap-2 text-sm text-yellow-400">
                       <Sparkles className="h-4 w-4 text-yellow-400" />
-                      {t('ai_generated')}
+                      {t('create_prediction.ai_generated')}
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-3">
                     <div>
-                      <div className="text-xs text-gray-400">{t('title')}</div>
+                      <div className="text-xs text-gray-400">
+                        {t('create_prediction.title_label')}
+                      </div>
                       <div className="text-sm font-medium text-white">
                         {aiGenerated.title}
                       </div>
@@ -541,7 +549,7 @@ export function CreateBetModal({
                     )}
                     <div>
                       <div className="text-xs text-gray-400">
-                        {t('resolution_instructions')}
+                        {t('create_prediction.resolution_instructions')}
                       </div>
                       <div className="text-sm text-gray-300">
                         {aiGenerated.resolutionInstructions}
@@ -574,7 +582,7 @@ export function CreateBetModal({
           {/* Options */}
           <div className="space-y-2">
             <label className="text-sm font-medium text-white">
-              {t('options')} * (min 2)
+              {t('create_prediction.options')} * (min 2)
             </label>
             <div className="space-y-2">
               {options.map((option, index) => (
@@ -609,7 +617,7 @@ export function CreateBetModal({
                 className="w-full border-gray-700/50 bg-gray-800/60 text-white transition-all duration-200 hover:bg-gray-800/80"
               >
                 <Plus className="mr-2 h-4 w-4" />
-                {t('add_option')}
+                {t('create_prediction.add_option')}
               </Button>
             </div>
           </div>
@@ -618,7 +626,7 @@ export function CreateBetModal({
           <div className="space-y-2">
             <label className="flex items-center gap-2 text-sm font-medium text-white">
               <Calendar className="h-4 w-4 text-yellow-400" />
-              Bet Expiration Date *
+              {t('create_prediction.bet_expiration_date')} *
             </label>
             <Input
               type="datetime-local"
@@ -638,8 +646,7 @@ export function CreateBetModal({
               </p>
             )}
             <p className="text-xs text-gray-400">
-              Set when this prediction market will close and be resolved
-              (minimum 15 minutes)
+              {t('create_prediction.set_expiration_help')}
             </p>
           </div>
 
@@ -648,15 +655,17 @@ export function CreateBetModal({
             <CardHeader className="pb-2">
               <CardTitle className="flex items-center gap-2 text-sm text-yellow-400">
                 <Target className="h-4 w-4 text-yellow-400" />
-                {t('place_initial_bet')}
+                {t('create_prediction.place_initial_bet')}
               </CardTitle>
-              <p className="text-xs text-gray-300">{t('prevent_spam')}</p>
+              <p className="text-xs text-gray-300">
+                {t('create_prediction.prevent_spam')}
+              </p>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-white">
-                    {t('your_prediction')} *
+                    {t('create_prediction.your_prediction')} *
                   </label>
                   <Select
                     value={watch('userPrediction')}
@@ -672,20 +681,20 @@ export function CreateBetModal({
                         value="yes"
                         className="text-white hover:bg-gray-700/50"
                       >
-                        YES
+                        {t('prediction_card.yes')}
                       </SelectItem>
                       <SelectItem
                         value="no"
                         className="text-white hover:bg-gray-700/50"
                       >
-                        NO
+                        {t('prediction_card.no')}
                       </SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-white">
-                    {t('bnb_amount')} *
+                    {t('create_prediction.bnb_amount')} *
                   </label>
                   <Input
                     type="number"
@@ -703,7 +712,7 @@ export function CreateBetModal({
                 </div>
               </div>
               <div className="text-center text-sm text-gray-300">
-                {t('click_create_will_prompt').replace(
+                {t('create_prediction.click_create_will_prompt').replace(
                   '{amount}',
                   formatBNB(watch('bnbAmount'))
                 )}
@@ -719,7 +728,7 @@ export function CreateBetModal({
               onClick={handleClose}
               className="border-gray-700/50 bg-gray-800/60 text-white transition-all duration-200 hover:bg-gray-800/80"
             >
-              {t('cancel')}
+              {t('create_prediction.cancel')}
             </AnimatedButton>
             <AnimatedButton
               type="submit"
@@ -727,7 +736,9 @@ export function CreateBetModal({
               loading={isSubmitting}
               className="bg-gradient-to-r from-yellow-400 to-yellow-600 font-semibold text-black shadow-md transition-all duration-200 hover:from-yellow-500 hover:to-yellow-700 hover:shadow-lg"
             >
-              {isSubmitting ? t('creating') : t('create_bet')}
+              {isSubmitting
+                ? t('create_prediction.creating')
+                : t('create_prediction.create_bet')}
             </AnimatedButton>
           </div>
         </form>

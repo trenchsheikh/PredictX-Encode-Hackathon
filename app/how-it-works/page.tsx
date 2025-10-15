@@ -19,102 +19,93 @@ import {
   Lock,
   Eye,
 } from 'lucide-react';
-import { useI18n } from '@/components/providers/privy-provider';
+import { useI18n } from '@/components/providers/i18n-provider';
+import { cn } from '@/lib/utils';
 
 export default function HowItWorksPage() {
   const { t } = useI18n();
   const steps = [
     {
       number: 1,
-      title: 'Creating Predictions',
+      title: t('how_it_works.creating_predictions'),
       icon: Target,
-      description:
-        'Simply describe what you want to bet on - AI will handle the rest',
+      description: t('how_it_works.creating_predictions_description'),
       details: [
         {
           step: 'Step 1',
-          title: 'Describe Your Prediction',
-          description:
-            'Simply describe what you want to bet on - AI will handle the rest',
+          title: t('how_it_works.step1_title'),
+          description: t('how_it_works.step1_description'),
         },
         {
           step: 'Step 2',
-          title: 'AI Generates Smart Title',
-          description:
-            'Our AI analyzes your description and creates a clear, searchable title optimized for the platform',
+          title: t('how_it_works.step2_title'),
+          description: t('how_it_works.step2_description'),
         },
         {
           step: 'Step 3',
-          title: 'Automatic Deadline & Category',
-          description:
-            'AI suggests intelligent deadlines (match times for sports, market close for crypto) and assigns the right category',
+          title: t('how_it_works.step3_title'),
+          description: t('how_it_works.step3_description'),
         },
       ],
       categories: [
-        { name: 'Sports', icon: '⚽' },
-        { name: 'Crypto', icon: '₿' },
-        { name: 'Politics', icon: '🏛️' },
-        { name: 'Entertainment', icon: '🎬' },
-        { name: 'Weather', icon: '🌤️' },
-        { name: 'Finance', icon: '💰' },
-        { name: 'Technology', icon: '💻' },
-        { name: 'Custom', icon: '🎯' },
+        { name: t('categories.sports'), icon: '⚽' },
+        { name: t('categories.crypto'), icon: '₿' },
+        { name: t('categories.politics'), icon: '🏛️' },
+        { name: t('categories.entertainment'), icon: '🎬' },
+        { name: t('categories.weather'), icon: '🌤️' },
+        { name: t('categories.finance'), icon: '💰' },
+        { name: t('categories.technology'), icon: '💻' },
+        { name: t('categories.custom'), icon: '🎯' },
       ],
     },
     {
       number: 2,
-      title: 'Dynamic Market Pricing (AMM)',
+      title: t('how_it_works.dynamic_market_pricing'),
       icon: TrendingUp,
-      description:
-        'BNBPredict uses a Fixed Product Market Maker (FPMM) for fair, dynamic pricing',
+      description: t('how_it_works.dynamic_pricing_description'),
       details: [
         {
-          title: '📊 How Prices Work',
+          title: t('how_it_works.how_prices_work'),
           items: [
-            'Prices determined by pool balance ratios',
-            'YES price + NO price = 0.01 BNB always',
-            'More bets on one side = higher price for that outcome',
-            'Each bet shifts the market slightly',
+            t('how_it_works.price_mechanism_1'),
+            t('how_it_works.price_mechanism_2'),
+            t('how_it_works.price_mechanism_3'),
+            t('how_it_works.price_mechanism_4'),
           ],
         },
         {
-          title: '💰 Betting Options',
+          title: t('how_it_works.betting_options'),
           items: [
-            'Default: Buy 1 share at current market price',
-            'Custom: Enter any BNB amount, get calculated shares',
-            'Real-time quotes with 30-second validity',
-            'Shares = Amount Paid ÷ Current Price',
+            t('how_it_works.betting_default'),
+            t('how_it_works.betting_custom'),
+            t('how_it_works.betting_realtime'),
+            t('how_it_works.betting_formula'),
           ],
         },
       ],
       example: {
-        description:
-          "If YES is trading at 0.006 BNB and you bet 0.01 BNB, you'll receive ~1.67 shares. If YES wins, each share pays 0.01 BNB (total: 0.0167 BNB payout).",
+        description: t('how_it_works.pricing_example'),
       },
     },
     {
       number: 3,
-      title: 'AI-Powered Resolution',
+      title: t('how_it_works.ai_powered_resolution'),
       icon: Bot,
-      description:
-        'When bets expire, our multi-layer verification system automatically determines the outcome',
+      description: t('how_it_works.ai_resolution_description'),
       layers: [
         {
-          title: 'Layer 1: Deterministic Checks',
-          description:
-            'Price oracles and on-chain data provide instant, verifiable results for crypto/token bets',
+          title: t('how_it_works.layer1_title'),
+          description: t('how_it_works.layer1_description'),
           icon: Database,
         },
         {
-          title: 'Layer 2: Evidence Gathering',
-          description:
-            'Category-specific APIs fetch real data: weather data for weather bets, sports scores for sports bets, news for political events',
+          title: t('how_it_works.layer2_title'),
+          description: t('how_it_works.layer2_description'),
           icon: ExternalLink,
         },
         {
-          title: 'Layer 3: AI Analysis',
-          description:
-            'Advanced AI analyzes gathered evidence and makes final determination with reasoning',
+          title: t('how_it_works.layer3_title'),
+          description: t('how_it_works.layer3_description'),
           icon: Sparkles,
         },
       ],
@@ -131,27 +122,26 @@ export default function HowItWorksPage() {
     },
     {
       number: 4,
-      title: 'Claiming Your Winnings',
+      title: t('how_it_works.claiming_winnings'),
       icon: DollarSign,
-      description:
-        'Winners split the total pool proportionally with automatic fee deduction',
+      description: t('how_it_works.claiming_description'),
       details: [
         {
-          title: 'How Payouts Work',
+          title: t('how_it_works.how_payouts_work'),
           items: [
-            'Winners split the total pool proportionally',
-            'Payout = (Your Shares ÷ Total Winning Shares) × Total Pool',
-            '10% platform fee automatically deducted',
-            'You receive 90% of gross winnings in BNB',
+            t('how_it_works.payout_mechanism_1'),
+            t('how_it_works.payout_mechanism_2'),
+            t('how_it_works.payout_mechanism_3'),
+            t('how_it_works.payout_mechanism_4'),
           ],
         },
         {
-          title: 'Security Features',
+          title: t('how_it_works.security_features'),
           items: [
-            'Secure vault wallet holds all funds',
-            'On-chain transaction verification',
-            '30-second claim cooldown prevents duplicates',
-            'View transaction on BSCScan after claiming',
+            t('how_it_works.security_vault'),
+            t('how_it_works.security_verification'),
+            t('how_it_works.security_cooldown'),
+            t('how_it_works.security_bscscan'),
           ],
         },
       ],
@@ -163,36 +153,32 @@ export default function HowItWorksPage() {
     },
     {
       number: 5,
-      title: 'Creator Participation & Cancellation',
+      title: t('how_it_works.creator_participation'),
       icon: Users,
-      description:
-        'To ensure quality predictions and prevent spam, creators must actively participate',
+      description: t('how_it_works.creator_description'),
       details: [
         {
-          title: 'Mandatory Creator Stake',
-          description:
-            'Creators must bet on their own prediction when creating a market. This prevents spam and ensures creators have confidence in their predictions.',
+          title: t('how_it_works.mandatory_creator_stake'),
+          description: t('how_it_works.mandatory_stake_description'),
         },
         {
-          title: 'Bet Cancellation Policy',
-          description:
-            "If you're the only participant in your bet, you can cancel it and receive a refund:",
+          title: t('how_it_works.bet_cancellation_policy'),
+          description: t('how_it_works.cancellation_description'),
           items: [
-            'Only available when creator is sole participant',
-            '10% platform fee applies to cancellations',
-            'Instant refund sent to your wallet',
-            'Cancel button disappears once another user joins',
+            t('how_it_works.cancellation_1'),
+            t('how_it_works.cancellation_2'),
+            t('how_it_works.cancellation_3'),
+            t('how_it_works.cancellation_4'),
           ],
         },
         {
-          title: 'Fully Automated Resolution',
-          description:
-            'All bets resolve automatically - no manual intervention required',
+          title: t('how_it_works.fully_automated_resolution'),
+          description: t('how_it_works.automated_description'),
           items: [
-            'AI analyzes evidence from 25+ verification APIs',
-            'Price oracles provide instant crypto/token results',
-            'Multi-layer validation ensures accuracy',
-            'Winners claim prizes manually (10% fee applies)',
+            t('how_it_works.automated_1'),
+            t('how_it_works.automated_2'),
+            t('how_it_works.automated_3'),
+            t('how_it_works.automated_4'),
           ],
         },
       ],
@@ -201,23 +187,23 @@ export default function HowItWorksPage() {
 
   const securityFeatures = [
     {
-      title: 'Blockchain Security',
+      title: t('how_it_works.blockchain_security'),
       icon: Lock,
       items: [
-        'All transactions on BNB Smart Chain',
-        'Verifiable on BSCScan',
-        'Multi-wallet support via Privy',
-        'Automatic network switching',
+        t('how_it_works.blockchain_1'),
+        t('how_it_works.blockchain_2'),
+        t('how_it_works.blockchain_3'),
+        t('how_it_works.blockchain_4'),
       ],
     },
     {
-      title: 'Smart Protections',
+      title: t('how_it_works.smart_protections'),
       icon: Shield,
       items: [
-        'Server-side price calculations',
-        'Zero client trust model',
-        'Rate limiting on claims',
-        'Database rollback support',
+        t('how_it_works.smart_1'),
+        t('how_it_works.smart_2'),
+        t('how_it_works.smart_3'),
+        t('how_it_works.smart_4'),
       ],
     },
   ];
@@ -243,11 +229,10 @@ export default function HowItWorksPage() {
                 <Target className="h-8 w-8 text-black" />
               </div>
               <h2 className="mb-2 text-2xl font-bold text-white">
-                Platform Overview
+                {t('how_it_works.platform_overview')}
               </h2>
               <p className="text-gray-200">
-                DarkBet is a decentralized prediction market where you can
-                create and participate in bets on real-world events
+                {t('how_it_works.platform_description')}
               </p>
             </div>
 
@@ -449,7 +434,7 @@ export default function HowItWorksPage() {
                   {step.categories && (
                     <div className="mt-6">
                       <h3 className="font-heading mb-4 text-lg font-semibold text-white">
-                        Supported Categories
+                        {t('how_it_works.supported_categories')}
                       </h3>
                       <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
                         {step.categories.map((category, catIndex) => (
@@ -497,11 +482,10 @@ export default function HowItWorksPage() {
                   {step.sources && (
                     <div className="mt-6">
                       <h3 className="font-heading mb-4 text-lg font-semibold text-white">
-                        🔍 Verification Sources (Masked)
+                        {t('how_it_works.verification_sources')}
                       </h3>
                       <p className="mb-4 text-sm text-gray-300">
-                        We use industry-leading APIs for verification (sources
-                        masked for security):
+                        {t('how_it_works.verification_description')}
                       </p>
                       <div className="grid grid-cols-2 gap-2 sm:gap-3 md:grid-cols-4">
                         {step.sources.map((source, sourceIndex) => (
@@ -537,7 +521,7 @@ export default function HowItWorksPage() {
                   {step.example && (
                     <div className="mt-6">
                       <h3 className="font-heading mb-4 text-lg font-semibold text-white">
-                        Example:
+                        {t('common.example')}:
                       </h3>
                       <Card className="border border-gray-700/50 bg-gray-800/60 backdrop-blur-sm">
                         <CardContent className="p-4">
@@ -553,27 +537,26 @@ export default function HowItWorksPage() {
                   {step.feeExample && (
                     <div className="mt-6">
                       <h3 className="font-heading mb-4 text-lg font-semibold text-white">
-                        Platform Fee Structure
+                        {t('how_it_works.platform_fee_structure')}
                       </h3>
                       <Card className="border border-gray-700/50 bg-gray-800/60 backdrop-blur-sm">
                         <CardContent className="p-4">
                           <p className="mb-3 text-sm text-gray-300">
-                            10% platform fee applies to both prize claims AND
-                            bet cancellations
+                            {t('how_it_works.fee_description')}
                           </p>
                           <div className="space-y-1 text-sm text-white">
                             <div className="flex justify-between">
-                              <span>Gross Winnings:</span>
+                              <span>{t('how_it_works.gross_winnings')}</span>
                               <span className="font-medium">
                                 {step.feeExample.gross}
                               </span>
                             </div>
                             <div className="flex justify-between text-gray-300">
-                              <span>Platform Fee (10%):</span>
+                              <span>{t('how_it_works.platform_fee')}</span>
                               <span>-{step.feeExample.fee}</span>
                             </div>
                             <div className="flex justify-between border-t border-gray-600/50 pt-1 font-semibold text-green-400">
-                              <span>Net Payout:</span>
+                              <span>{t('how_it_works.net_payout')}</span>
                               <span>{step.feeExample.net} ✨</span>
                             </div>
                           </div>
@@ -592,7 +575,7 @@ export default function HowItWorksPage() {
           <CardHeader>
             <CardTitle className="flex items-center justify-center gap-2 text-center text-2xl font-bold text-white">
               <Shield className="h-6 w-6 text-yellow-400" />
-              Security & Transparency
+              {t('how_it_works.security_transparency')}
             </CardTitle>
           </CardHeader>
           <CardContent className="p-4 sm:p-8">
@@ -625,12 +608,10 @@ export default function HowItWorksPage() {
                 <Eye className="mt-0.5 h-5 w-5 flex-shrink-0 text-yellow-400" />
                 <div>
                   <p className="mb-1 text-sm font-medium text-white">
-                    All API keys and sensitive data are masked
+                    {t('how_it_works.api_keys_masked')}
                   </p>
                   <p className="text-xs text-gray-200">
-                    We never expose internal credentials, vault wallet
-                    addresses, or verification source endpoints to protect
-                    platform integrity.
+                    {t('how_it_works.api_keys_description')}
                   </p>
                 </div>
               </div>
@@ -641,17 +622,17 @@ export default function HowItWorksPage() {
         {/* Call to Action */}
         <div className="mt-16 text-center">
           <h2 className="font-heading mb-4 text-2xl font-bold text-white">
-            Ready to Start Predicting?
+            {t('how_it_works.ready_to_start')}
           </h2>
           <p className="mb-6 text-gray-300">
-            Connect your wallet and create your first prediction market today
+            {t('how_it_works.ready_description')}
           </p>
           <Button
             size="lg"
             className="bg-gradient-to-r from-yellow-400 to-yellow-600 font-semibold text-black hover:from-yellow-500 hover:to-yellow-700"
           >
             <Target className="mr-2 h-5 w-5" />
-            Explore Markets
+            {t('how_it_works.explore_markets')}
             <ArrowRight className="ml-2 h-4 w-4" />
           </Button>
         </div>

@@ -96,9 +96,9 @@ export function BetModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="border-gray-700/50 bg-black backdrop-blur-md sm:max-w-[500px]">
+      <DialogContent className="border border-gray-700/50 bg-gray-900/95 shadow-2xl backdrop-blur-md sm:max-w-[500px]">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2 text-white">
+          <DialogTitle className="font-heading flex items-center gap-2 text-white">
             {isYes ? (
               <TrendingUp className="h-5 w-5 text-green-400" />
             ) : (
@@ -113,13 +113,15 @@ export function BetModal({
 
         <div className="space-y-4 py-4">
           {/* Current Odds */}
-          <div className="flex items-center justify-between rounded-lg border border-gray-700/50 bg-gray-800/60 p-3">
+          <div className="flex items-center justify-between rounded-xl border border-gray-700/50 bg-gray-800/60 p-4 backdrop-blur-sm">
             <span className="text-sm text-gray-400">Current Odds</span>
             <div className="flex items-center gap-2">
               <Badge
-                variant={isYes ? 'default' : 'destructive'}
                 className={
-                  isYes ? 'bg-green-600 text-white' : 'bg-red-600 text-white'
+                  isYes
+                    ? 'border-green-500/30 bg-green-500/20 text-green-400'
+                    : 'border-red-500/30 bg-red-500/20 text-red-400'
+                }
                 }
               >
                 {isYes ? 'YES' : 'NO'}
@@ -131,7 +133,7 @@ export function BetModal({
           </div>
 
           {/* Amount Input */}
-          <div className="space-y-2">
+          <div className="space-y-3">
             <label className="text-sm font-medium text-white">
               Bet Amount (BNB)
             </label>
@@ -147,7 +149,7 @@ export function BetModal({
               max={maxBet}
               step="0.001"
               disabled={loading}
-              className="border-gray-700/50 bg-black text-white placeholder:text-gray-500 focus:border-yellow-400/50 focus:ring-yellow-400/20"
+              className="border-gray-700/50 bg-gray-800/60 text-white placeholder:text-gray-400 focus:border-yellow-400/50 focus:ring-yellow-400/20"
             />
 
             {/* Quick Amount Buttons */}
@@ -160,7 +162,7 @@ export function BetModal({
                   size="sm"
                   onClick={() => handleQuickAmount(value)}
                   disabled={loading}
-                  className="flex-1 border-gray-600/50 bg-black text-gray-300 hover:bg-gray-800 hover:text-white"
+                  className="flex-1 border-gray-700/50 bg-gray-800/60 text-white transition-all duration-200 hover:border-yellow-400/50 hover:bg-gray-800/80"
                 >
                   {value} BNB
                 </Button>
@@ -178,7 +180,7 @@ export function BetModal({
 
           {/* Bet Summary */}
           {numAmount > 0 && !error && (
-            <div className="space-y-2 rounded-lg border border-gray-700/50 bg-black p-4">
+            <div className="space-y-3 rounded-xl border border-gray-700/50 bg-gray-800/60 p-4 backdrop-blur-sm">
               <div className="flex justify-between text-sm">
                 <span className="text-gray-400">Estimated Shares</span>
                 <span className="font-medium text-white">
@@ -200,7 +202,7 @@ export function BetModal({
                   {roi.toFixed(2)}%
                 </span>
               </div>
-              <div className="flex justify-between border-t border-gray-700/50 pt-2 text-sm">
+              <div className="flex justify-between border-t border-gray-600/50 pt-2 text-sm">
                 <span className="text-gray-400">Platform Fee (10%)</span>
                 <span className="font-medium text-white">
                   {formatBNB(numAmount * 0.1)}
@@ -210,37 +212,30 @@ export function BetModal({
           )}
 
           {/* Info Banner */}
-          <div className="space-y-3 rounded-lg border border-blue-500/20 bg-blue-500/10 p-3">
-            <div className="flex items-start gap-2">
-              <Info className="mt-0.5 h-4 w-4 flex-shrink-0 text-yellow-400" />
-              <div className="text-xs text-gray-300">
-                <p>
-                  <strong className="text-yellow-400">Darkpool Betting:</strong>{' '}
-                  Your bet choice will be hidden until you reveal it after
-                  market expiration.
-                </p>
-              </div>
-            </div>
-            <div className="flex items-start gap-2">
-              <Info className="mt-0.5 h-4 w-4 flex-shrink-0 text-yellow-400" />
-              <div className="text-xs text-gray-300">
-                <p>
-                  <strong className="text-yellow-400">Important:</strong> Save
-                  your reveal secret! You must reveal within 1 hour after market
-                  expiration to claim winnings.
-                </p>
-              </div>
+          <div className="flex items-start gap-2 rounded-xl border border-blue-500/20 bg-blue-500/10 p-4">
+            <Info className="mt-0.5 h-4 w-4 flex-shrink-0 text-blue-400" />
+            <div className="space-y-1 text-xs text-gray-300">
+              <p>
+                <strong className="text-white">Darkpool Betting:</strong> Your
+                bet choice will be hidden until you reveal it after market
+                expiration.
+              </p>
+              <p>
+                <strong className="text-white">Important:</strong> Save your
+                reveal secret! You must reveal within 1 hour after market
+                expiration to claim winnings.
+              </p>
             </div>
           </div>
         </div>
 
-        <DialogFooter className="gap-2">
+        <DialogFooter className="gap-3">
           <Button
             type="button"
             variant="outline"
             onClick={() => onOpenChange(false)}
             disabled={loading}
-            className="border-gray-600/50 bg-black text-gray-300 hover:bg-gray-800 hover:text-white"
+            className="border-gray-700/50 bg-gray-800/60 text-white transition-all duration-200 hover:border-gray-600/50 hover:bg-gray-800/80"
           >
             Cancel
           </Button>
@@ -248,11 +243,11 @@ export function BetModal({
             type="button"
             onClick={handleConfirm}
             disabled={loading || !amount || !!error}
-            className={
+            className={`font-semibold transition-all duration-200 ${
               isYes
-                ? 'bg-green-600 text-white hover:bg-green-700'
-                : 'bg-red-600 text-white hover:bg-red-700'
-            }
+                ? 'bg-gradient-to-r from-green-500 to-green-600 text-white shadow-lg hover:from-green-600 hover:to-green-700 hover:shadow-green-500/25'
+                : 'bg-gradient-to-r from-red-500 to-red-600 text-white shadow-lg hover:from-red-600 hover:to-red-700 hover:shadow-red-500/25'
+            }`}
           >
             {loading ? 'Placing Bet...' : `Bet ${formatBNB(numAmount)}`}
           </Button>

@@ -20,7 +20,7 @@ import {
   XCircle,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { useI18n } from '@/components/providers/privy-provider';
+import { useI18n } from '@/components/providers/i18n-provider';
 
 interface PredictionCardProps {
   prediction: Prediction;
@@ -108,7 +108,9 @@ export function PredictionCard({
             </h3>
           </div>
           <div className="text-right">
-            <div className="text-xs text-gray-300">Pool</div>
+            <div className="text-xs text-gray-300">
+              {t('prediction_card.pool')}
+            </div>
             <div className="text-sm font-bold text-white">
               {prediction.totalPool.toFixed(2)} BNB
             </div>
@@ -130,7 +132,9 @@ export function PredictionCard({
             >
               <span className="flex items-center gap-1">
                 <Info className="h-3 w-3" />
-                {isExpanded ? 'Hide Analysis' : 'View Detailed Analysis'}
+                {isExpanded
+                  ? t('prediction_card.hide_analysis')
+                  : t('prediction_card.view_detailed_analysis')}
               </span>
               {isExpanded ? (
                 <ChevronUp className="h-3 w-3" />
@@ -142,7 +146,7 @@ export function PredictionCard({
               <div className="mt-2 rounded-lg border border-yellow-500/30 bg-yellow-500/10 p-3">
                 <div className="mb-2 flex items-center gap-1 text-xs font-medium text-yellow-400">
                   <Info className="h-3 w-3" />
-                  Unbiased Market Analysis
+                  {t('prediction_card.unbiased_market_analysis')}
                 </div>
                 <p className="whitespace-pre-wrap text-xs leading-relaxed text-gray-200">
                   {prediction.summary}
@@ -155,7 +159,9 @@ export function PredictionCard({
         {/* Odds Display - Betting Style */}
         <div className="mb-3 grid grid-cols-2 gap-2">
           <div className="rounded-lg border border-green-700 bg-green-600 p-3 text-center">
-            <div className="mb-1 text-xs text-white">YES</div>
+            <div className="mb-1 text-xs text-white">
+              {t('prediction_card.yes')}
+            </div>
             <div className="text-lg font-bold text-white">
               {prediction.yesPrice.toFixed(3)}
             </div>
@@ -164,7 +170,9 @@ export function PredictionCard({
             </div>
           </div>
           <div className="rounded-lg border border-red-700 bg-red-600 p-3 text-center">
-            <div className="mb-1 text-xs text-white">NO</div>
+            <div className="mb-1 text-xs text-white">
+              {t('prediction_card.no')}
+            </div>
             <div className="text-lg font-bold text-white">
               {prediction.noPrice.toFixed(3)}
             </div>
@@ -180,11 +188,11 @@ export function PredictionCard({
             <div className="flex items-center justify-between">
               <div>
                 <div className="text-sm font-medium text-black">
-                  {t('your_bet')}
+                  {t('prediction_card.your_bet')}
                 </div>
                 <div className="text-xs text-black">
                   {userBet.outcome.toUpperCase()} • {userBet.shares.toFixed(2)}{' '}
-                  shares
+                  {t('prediction_card.shares')}
                 </div>
               </div>
             </div>
@@ -201,7 +209,7 @@ export function PredictionCard({
               disabled={isLoading}
             >
               <ArrowUp className="mr-1 h-3 w-3" />
-              YES
+              {t('prediction_card.yes')}
             </Button>
             <Button
               size="sm"
@@ -210,7 +218,7 @@ export function PredictionCard({
               disabled={isLoading}
             >
               <ArrowDown className="mr-1 h-3 w-3" />
-              NO
+              {t('prediction_card.no')}
             </Button>
           </div>
         )}
@@ -226,7 +234,7 @@ export function PredictionCard({
                 onClick={() => onViewHistory(prediction.id)}
               >
                 <History className="mr-2 h-3 w-3" />
-                View History
+                {t('prediction_card.view_history')}
               </Button>
             </div>
           )}
@@ -235,7 +243,8 @@ export function PredictionCard({
         {prediction.resolution && (
           <div className="mb-3 rounded-lg border border-yellow-600 bg-yellow-500 p-3">
             <div className="mb-1 text-sm font-medium text-black">
-              {t('resolved')}: {prediction.resolution.outcome.toUpperCase()}
+              {t('prediction_card.resolved')}:{' '}
+              {prediction.resolution.outcome.toUpperCase()}
             </div>
             <div className="text-xs text-black">
               {prediction.resolution.reasoning}
@@ -254,7 +263,7 @@ export function PredictionCard({
             <span>
               {prediction.status === 'resolved' ||
               prediction.status === 'cancelled'
-                ? 'Expired'
+                ? t('prediction_card.expired')
                 : formatTimeRemaining(prediction.expiresAt)}
             </span>
           </div>

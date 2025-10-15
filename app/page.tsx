@@ -52,7 +52,7 @@ import { HeroSection } from '@/components/ui/hero-section';
 import { AnimatedCard } from '@/components/ui/animated-card';
 import { AnimatedButton } from '@/components/ui/animated-button';
 import { AnimatedBackground } from '@/components/ui/animated-background';
-import { useI18n } from '@/components/providers/privy-provider';
+import { useI18n } from '@/components/providers/i18n-provider';
 import { cn } from '@/lib/utils';
 import { api, getErrorMessage } from '@/lib/api-client';
 import { usePredictionContract } from '@/lib/hooks/use-prediction-contract';
@@ -196,7 +196,7 @@ export default function HomePage() {
     if (!prediction) return;
 
     if (!authenticated) {
-      alert('Please connect your wallet to place a bet');
+      alert(t('errors.wallet_required'));
       return;
     }
 
@@ -257,9 +257,7 @@ export default function HomePage() {
       // Refresh markets
       await fetchMarkets();
 
-      alert(
-        'Bet placed successfully! Remember to reveal after market expiration.'
-      );
+      alert(t('success.bet_placed'));
     } catch (err: any) {
       console.error('Bet failed:', err);
       throw new Error(getErrorMessage(err));
@@ -271,7 +269,7 @@ export default function HomePage() {
    */
   const handleCreatePrediction = async (data: CreatePredictionData) => {
     if (!authenticated || !user?.wallet?.address) {
-      alert('Please connect your wallet to create a prediction');
+      alert(t('errors.wallet_required'));
       return;
     }
 
@@ -324,7 +322,7 @@ export default function HomePage() {
       await fetchMarkets();
 
       setShowCreateModal(false);
-      alert('Prediction created successfully!');
+      alert(t('success.prediction_created'));
     } catch (err: any) {
       console.error('Create prediction failed:', err);
       alert(getErrorMessage(err));
@@ -336,7 +334,7 @@ export default function HomePage() {
    */
   const handleCreateCryptoPrediction = async (data: CryptoPredictionData) => {
     if (!authenticated || !user?.wallet?.address) {
-      alert('Please connect your wallet to create a prediction');
+      alert(t('errors.wallet_required'));
       return;
     }
 
@@ -377,7 +375,7 @@ export default function HomePage() {
       await fetchMarkets();
 
       setShowCryptoModal(false);
-      alert('Crypto prediction created successfully!');
+      alert(t('success.crypto_prediction_created'));
     } catch (err: any) {
       console.error('Create crypto prediction failed:', err);
       alert(getErrorMessage(err));
@@ -597,7 +595,7 @@ export default function HomePage() {
                   className="ml-auto border-red-400/70 bg-red-500/10 text-red-100 hover:border-red-400 hover:bg-red-500/30"
                 >
                   <RefreshCw className="mr-2 h-4 w-4" />
-                  Retry
+                  {t('errors.retry')}
                 </Button>
               </div>
             </CardContent>
@@ -612,12 +610,14 @@ export default function HomePage() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <BarChart3 className="h-6 w-6 text-yellow-400" />
-              <h2 className="font-heading text-2xl text-white">All Markets</h2>
+              <h2 className="font-heading text-2xl text-white">
+                {t('markets.all_markets')}
+              </h2>
               <Badge
                 variant="outline"
                 className="border-yellow-400/50 bg-yellow-400/10 text-yellow-400"
               >
-                {filteredPredictions.length} markets
+                {filteredPredictions.length} {t('markets.markets_count')}
               </Badge>
             </div>
           </div>
@@ -641,10 +641,10 @@ export default function HomePage() {
                   <TrendingUp className="h-12 w-12 text-yellow-400" />
                 </div>
                 <h3 className="font-heading mb-2 text-lg text-white">
-                  {t('no_predictions_found')}
+                  {t('markets.no_predictions_found')}
                 </h3>
                 <p className="mb-4 text-gray-300">
-                  {t('try_adjusting_filters')}
+                  {t('markets.try_adjusting_filters')}
                 </p>
                 <Button
                   onClick={() => setShowCreateModal(true)}
@@ -652,7 +652,7 @@ export default function HomePage() {
                   disabled={!authenticated}
                 >
                   <Plus className="mr-2 h-4 w-4" />
-                  {t('create_first_prediction')}
+                  {t('markets.create_first_prediction')}
                 </Button>
               </CardContent>
             </Card>
@@ -684,7 +684,7 @@ export default function HomePage() {
             <div className="mb-6 flex items-center gap-3">
               <CheckCircle className="h-6 w-6 text-green-400" />
               <h2 className="font-heading text-2xl text-white">
-                Completed Predictions
+                {t('markets.completed_predictions')}
               </h2>
             </div>
 

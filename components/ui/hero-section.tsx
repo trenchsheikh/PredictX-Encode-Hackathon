@@ -5,6 +5,7 @@ import { TrendingUp, Zap, Shield, Star, Loader2 } from 'lucide-react';
 import { AnimatedButton } from './animated-button';
 import { useState, useEffect } from 'react';
 import { api } from '@/lib/api-client';
+import { useI18n } from '@/components/providers/i18n-provider';
 
 interface HeroSectionProps {
   onCreateClick: () => void;
@@ -21,6 +22,7 @@ export function HeroSection({
   onCreateClick,
   onCryptoClick,
 }: HeroSectionProps) {
+  const { t } = useI18n();
   const [stats, setStats] = useState<PlatformStats>({
     totalVolume: 0,
     activeMarkets: 0,
@@ -80,9 +82,17 @@ export function HeroSection({
     fetchStats();
   }, []);
   const features = [
-    { icon: Shield, text: 'Fully On-Chain', color: 'text-yellow-400' },
-    { icon: Zap, text: 'AI-Driven Results', color: 'text-yellow-400' },
-    { icon: TrendingUp, text: 'Real-Time Markets', color: 'text-yellow-400' },
+    {
+      icon: Shield,
+      text: t('features.fully_onchain'),
+      color: 'text-yellow-400',
+    },
+    { icon: Zap, text: t('features.ai_driven'), color: 'text-white' },
+    {
+      icon: TrendingUp,
+      text: t('features.realtime_markets'),
+      color: 'text-yellow-400',
+    },
   ];
 
   return (
@@ -125,14 +135,13 @@ export function HeroSection({
           className="mb-8"
         >
           <h1 className="font-brand-large gradient-text-brand mb-6 text-6xl md:text-8xl">
-            DarkBet
+            {t('hero_title')}
           </h1>
           <p className="font-body mx-auto mb-4 max-w-3xl text-xl text-gray-300 md:text-2xl">
-            DarkPool Betting Platform
+            {t('hero_subtitle')}
           </p>
           <p className="font-body mx-auto max-w-3xl text-lg text-gray-400">
-            The future of prediction markets is here. Built on BNB Smart Chain
-            with AI-driven results and fully on-chain execution.
+            {t('hero_description')}
           </p>
         </motion.div>
 
@@ -145,13 +154,10 @@ export function HeroSection({
         >
           <div className="mx-auto max-w-4xl rounded-2xl border border-gray-700/50 bg-gray-900/40 p-6 backdrop-blur-sm">
             <h3 className="font-heading mb-3 text-center text-lg text-yellow-400">
-              What is DarkPool Betting?
+              {t('what_is_darkpool')}
             </h3>
             <p className="text-center leading-relaxed text-gray-300">
-              DarkPool Betting combines the privacy and efficiency of dark pools
-              with prediction markets. Your bets remain hidden until resolution,
-              preventing market manipulation while ensuring fair, AI-driven
-              outcomes on the BNB Smart Chain.
+              {t('darkpool_explanation')}
             </p>
           </div>
         </motion.div>
@@ -194,7 +200,7 @@ export function HeroSection({
             className="px-8 py-4 text-lg"
           >
             <Star className="mr-2 h-5 w-5" />
-            Start DarkPool Betting
+            {t('cta.start_darkpool_betting')}
           </AnimatedButton>
 
           <AnimatedButton
@@ -204,7 +210,7 @@ export function HeroSection({
             className="px-8 py-4 text-lg"
           >
             <TrendingUp className="mr-2 h-5 w-5" />
-            Crypto DarkPool
+            {t('cta.crypto_darkpool')}
           </AnimatedButton>
         </motion.div>
 
@@ -217,17 +223,17 @@ export function HeroSection({
         >
           {[
             {
-              label: 'Total Volume',
+              label: t('stats.total_volume'),
               value: loading ? '...' : `${formatNumber(stats.totalVolume)} BNB`,
               icon: TrendingUp,
             },
             {
-              label: 'Active Markets',
+              label: t('stats.active_markets'),
               value: loading ? '...' : formatNumber(stats.activeMarkets),
               icon: Zap,
             },
             {
-              label: 'Participants',
+              label: t('stats.participants'),
               value: loading ? '...' : formatNumber(stats.participants),
               icon: Shield,
             },
