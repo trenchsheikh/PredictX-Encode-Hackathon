@@ -49,7 +49,7 @@ export function Filters({
       {/* Filter Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <h3 className="text-lg font-semibold text-black">Filter Markets</h3>
+          <h3 className="text-lg font-semibold text-white">Filter Markets</h3>
           {hasActiveFilters && (
             <Button
               variant="ghost"
@@ -62,7 +62,7 @@ export function Filters({
             </Button>
           )}
         </div>
-        <div className="text-sm font-medium text-black">
+        <div className="text-sm font-medium text-white">
           {totalCount} markets
         </div>
       </div>

@@ -8,20 +8,24 @@ import { useI18n } from '@/components/providers/i18n-provider';
 import { AnimatedButton } from '@/components/ui/animated-button';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Globe, Wallet, TrendingUp, Zap, Shield } from 'lucide-react';
-import { cn } from '@/lib/utils';
 
 const navigation = [
   { key: 'nav_home', href: '/', icon: TrendingUp },
   { key: 'nav_my_bets', href: '/my-bets', icon: Wallet },
   { key: 'nav_how', href: '/how-it-works', icon: Shield },
-  { key: 'nav_leaderboard', href: '/leaderboard', icon: Zap },
+  // { key: 'nav_leaderboard', href: '/leaderboard', icon: Zap },
 ];
 
 export function AnimatedHeader() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const { locale, setLocale, t } = useI18n();
   const { ready, authenticated, user, login, logout } = usePrivy();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Track scroll for header background effect
   useEffect(() => {
@@ -41,7 +45,7 @@ export function AnimatedHeader() {
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6, ease: 'easeOut' }}
-      className="relative sticky top-0 z-50"
+      className="sticky top-0 z-50"
     >
       {/* Animated Background */}
       <motion.div
@@ -54,30 +58,37 @@ export function AnimatedHeader() {
         className="absolute inset-0 border-b border-yellow-500/20 backdrop-blur-md"
       />
 
-      {/* Animated particles background */}
-      <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        {Array.from({ length: 20 }).map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute h-1 w-1 rounded-full bg-yellow-400/30"
-            animate={{
-              x: [0, 100, 0],
-              y: [0, -100, 0],
-              opacity: [0, 1, 0],
-            }}
-            transition={{
-              duration: 8 + i * 0.5,
-              repeat: Infinity,
-              delay: i * 0.2,
-              ease: 'easeInOut',
-            }}
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-            }}
-          />
-        ))}
-      </div>
+      {/* Animated particles background - only render after hydration */}
+      {mounted && (
+        <div className="pointer-events-none absolute inset-0 overflow-hidden">
+          {Array.from({ length: 20 }).map((_, i) => {
+            const leftPosition = ((i * 13.7) % 100) + i * 0.1;
+            const topPosition = ((i * 7.3) % 100) + i * 0.05;
+
+            return (
+              <motion.div
+                key={i}
+                className="absolute h-1 w-1 rounded-full bg-yellow-400/30"
+                animate={{
+                  x: [0, 100, 0],
+                  y: [0, -100, 0],
+                  opacity: [0, 1, 0],
+                }}
+                transition={{
+                  duration: 8 + i * 0.5,
+                  repeat: Infinity,
+                  delay: i * 0.2,
+                  ease: 'easeInOut',
+                }}
+                style={{
+                  left: `${leftPosition}%`,
+                  top: `${topPosition}%`,
+                }}
+              />
+            );
+          })}
+        </div>
+      )}
 
       <nav className="relative z-10 mx-auto mb-4 mt-4 flex max-w-7xl items-center justify-between rounded-xl border border-gray-700/30 bg-gray-900/80 p-3 shadow-xl backdrop-blur-md lg:px-6">
         {/* Logo */}
@@ -214,14 +225,14 @@ export function AnimatedHeader() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 lg:hidden"
+            className="fixed inset-0 z-50 bg-black/60 lg:hidden"
           >
             <motion.div
               initial={{ x: '100%' }}
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className="fixed inset-y-0 right-0 w-full max-w-sm border-l border-gray-700/50 bg-gradient-to-b from-gray-900 to-gray-800 shadow-2xl backdrop-blur-md"
+              className="fixed inset-y-0 right-0 w-full max-w-sm border-l border-gray-700/50 bg-black shadow-2xl"
             >
               <div className="flex items-center justify-between border-b border-gray-700/30 p-4">
                 <Link

@@ -5,13 +5,13 @@ interface IMarketDocument extends IMarket, Document {}
 
 const marketSchema = new Schema<IMarketDocument>(
   {
-    marketId: { type: Number, required: true, unique: true, index: true },
+    marketId: { type: Number, required: true, unique: true },
     title: { type: String, required: true },
     description: { type: String, required: true },
-    creator: { type: String, required: true, index: true },
+    creator: { type: String, required: true },
     createdAt: { type: Date, required: true },
-    expiresAt: { type: Date, required: true, index: true },
-    category: { type: Number, required: true, index: true },
+    expiresAt: { type: Date, required: true },
+    category: { type: Number, required: true },
     totalPool: { type: String, default: '0' },
     yesPool: { type: String, default: '0' },
     noPool: { type: String, default: '0' },
@@ -27,7 +27,6 @@ const marketSchema = new Schema<IMarketDocument>(
         MarketStatus.Cancelled,
       ],
       default: MarketStatus.Active,
-      index: true,
     },
     outcome: { type: Boolean },
     resolutionReasoning: { type: String },
@@ -41,5 +40,8 @@ const marketSchema = new Schema<IMarketDocument>(
 // Indexes for efficient queries
 marketSchema.index({ status: 1, expiresAt: 1 });
 marketSchema.index({ creator: 1, createdAt: -1 });
+// Standalone indexes for individual field queries
+marketSchema.index({ expiresAt: 1 });
+marketSchema.index({ category: 1 });
 
 export const Market = mongoose.model<IMarketDocument>('Market', marketSchema);

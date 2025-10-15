@@ -810,7 +810,7 @@ export default function MyBetsPage() {
       {/* Page-specific background */}
       <AnimatedBackground variant="particles" />
 
-      <div className="relative z-10 mx-auto max-w-7xl px-6 py-16 lg:px-8">
+      <div className="relative z-10 mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-16 lg:px-8">
         {/* Header */}
         <div className="mb-8">
           <h1 className="font-display mb-2 text-4xl text-white">
@@ -819,8 +819,8 @@ export default function MyBetsPage() {
           <p className="font-body text-gray-300">{t('my_bets.subtitle')}</p>
 
           {/* Connection Status */}
-          <div className="mt-4 rounded-xl border border-gray-700/50 bg-gray-900/60 p-4 backdrop-blur-sm">
-            <div className="flex items-center justify-between">
+          <div className="mt-4 rounded-xl border border-gray-700/50 bg-gray-900/60 p-3 backdrop-blur-sm sm:p-4">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <div className="flex items-center gap-2 text-sm">
                 <div
                   className={`h-2 w-2 rounded-full ${contract.error ? 'bg-red-500' : 'bg-green-500'}`}
@@ -831,7 +831,7 @@ export default function MyBetsPage() {
                     : 'Connected to BSC Testnet'}
                 </span>
               </div>
-              <div className="flex gap-2">
+              <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
                 <Button
                   onClick={testBackendConnection}
                   size="sm"
@@ -939,7 +939,7 @@ export default function MyBetsPage() {
         {/* Tabs */}
         <div className="mb-6">
           <div className="border-b border-black">
-            <nav className="-mb-px flex space-x-8">
+            <nav className="-mb-px flex flex-wrap sm:space-x-8">
               {[
                 {
                   key: 'all',
@@ -963,8 +963,8 @@ export default function MyBetsPage() {
                   className={cn(
                     'whitespace-nowrap border-b-2 px-1 py-2 text-sm font-medium',
                     activeTab === tab.key
-                      ? 'border-black text-black'
-                      : 'border-transparent text-black/60 hover:border-black/30 hover:text-black'
+                      ? 'border-white text-white'
+                      : 'border-transparent text-white/60 hover:border-white/30 hover:text-white'
                   )}
                 >
                   {tab.label}
@@ -1080,8 +1080,8 @@ export default function MyBetsPage() {
                   key={bet.id}
                   className="border-black bg-black/90 transition-shadow hover:shadow-lg"
                 >
-                  <CardContent className="p-6">
-                    <div className="flex items-start justify-between">
+                  <CardContent className="p-4 sm:p-6">
+                    <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                       <div className="min-w-0 flex-1">
                         <div className="mb-2 flex items-center gap-2">
                           <Badge
@@ -1105,7 +1105,7 @@ export default function MyBetsPage() {
                           {prediction.title}
                         </h3>
 
-                        <div className="mb-4 flex items-center gap-4 text-sm text-gray-300">
+                        <div className="mb-4 flex flex-wrap items-center gap-3 text-sm text-gray-300 sm:gap-4">
                           <div className="flex items-center gap-1">
                             <Clock className="h-4 w-4" />
                             <span>
@@ -1136,7 +1136,7 @@ export default function MyBetsPage() {
                         </div>
 
                         {/* Bet Details */}
-                        <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+                        <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4">
                           <div>
                             <div className="text-xs text-gray-400">
                               {t('my_bets.shares')}
@@ -1204,7 +1204,7 @@ export default function MyBetsPage() {
                       </div>
 
                       {/* Action Buttons */}
-                      <div className="ml-4 flex flex-shrink-0 flex-col gap-2">
+                      <div className="flex flex-col gap-2 sm:ml-4 sm:flex-shrink-0">
                         {/* Reveal button for unrevealed bets */}
                         {!isRevealed &&
                           hasUnrevealedCommit(bet.predictionId) &&

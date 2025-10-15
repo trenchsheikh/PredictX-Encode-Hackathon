@@ -2,9 +2,11 @@ import { NextRequest, NextResponse } from 'next/server';
 
 const RENDER_BACKEND_URL = 'https://darkbet.onrender.com';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url);
+    const searchParams = request.nextUrl.searchParams;
     const queryString = searchParams.toString();
     const url = `${RENDER_BACKEND_URL}/api/users/leaderboard${queryString ? `?${queryString}` : ''}`;
 

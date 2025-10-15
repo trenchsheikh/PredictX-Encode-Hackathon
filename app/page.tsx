@@ -393,7 +393,7 @@ export default function HomePage() {
   };
 
   return (
-    <div className="relative min-h-screen overflow-hidden">
+    <div className="relative overflow-hidden">
       {/* Page-specific background */}
       <AnimatedBackground variant="grid" />
 
@@ -578,23 +578,23 @@ export default function HomePage() {
       <HeroSection
         onCreateClick={() => setShowCreateModal(true)}
         onCryptoClick={() => setShowCryptoModal(true)}
-        isAuthenticated={authenticated}
       />
 
       {/* Error Banner */}
       {error && (
         <div className="relative z-10 mx-auto mb-6 max-w-7xl px-6 lg:px-8">
-          <Card className="border-red-500/50 bg-red-500/20 backdrop-blur-sm">
+          <Card className="border-red-500/50 bg-red-900/30 backdrop-blur-sm">
             <CardContent className="p-4">
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-3">
                 <AlertCircle className="h-5 w-5 text-red-400" />
-                <p className="font-medium text-red-200">{error}</p>
+                <p className="font-medium text-red-100">{error}</p>
                 <Button
                   size="sm"
                   variant="outline"
                   onClick={fetchMarkets}
-                  className="ml-auto border-red-400/50 text-red-200 hover:bg-red-500/20"
+                  className="ml-auto border-red-400/70 bg-red-500/10 text-red-100 hover:border-red-400 hover:bg-red-500/30"
                 >
+                  <RefreshCw className="mr-2 h-4 w-4" />
                   {t('errors.retry')}
                 </Button>
               </div>

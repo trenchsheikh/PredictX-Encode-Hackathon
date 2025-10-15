@@ -27,7 +27,7 @@ const TransactionSchema = new Schema<ITransaction>({
   amount: { type: String },
   outcome: { type: Boolean },
   shares: { type: String },
-  txHash: { type: String, required: true, unique: true, index: true },
+  txHash: { type: String, required: true, unique: true },
   blockNumber: { type: Number, required: true },
   timestamp: { type: Number, required: true },
   gasUsed: { type: Number },
@@ -43,7 +43,6 @@ const TransactionSchema = new Schema<ITransaction>({
 
 // Indexes for efficient querying
 TransactionSchema.index({ marketId: 1, userAddress: 1 });
-TransactionSchema.index({ txHash: 1 });
 TransactionSchema.index({ createdAt: -1 });
 
 export const Transaction = mongoose.model<ITransaction>(

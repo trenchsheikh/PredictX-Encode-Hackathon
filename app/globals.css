@@ -2,8 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
-
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -102,8 +100,8 @@
   /* Professional Typography */
   .font-display {
     font-family:
-      var(--font-poppins),
-      'Poppins',
+      var(--font-geist-sans),
+      'Geist Sans',
       system-ui,
       -apple-system,
       sans-serif;
@@ -114,8 +112,8 @@
 
   .font-heading {
     font-family:
-      var(--font-poppins),
-      'Poppins',
+      var(--font-geist-sans),
+      'Geist Sans',
       system-ui,
       -apple-system,
       sans-serif;
@@ -126,8 +124,8 @@
 
   .font-body {
     font-family:
-      var(--font-inter),
-      'Inter',
+      var(--font-geist-sans),
+      'Geist Sans',
       system-ui,
       -apple-system,
       sans-serif;
@@ -137,8 +135,8 @@
 
   .font-caption {
     font-family:
-      var(--font-inter),
-      'Inter',
+      var(--font-geist-sans),
+      'Geist Sans',
       system-ui,
       -apple-system,
       sans-serif;
@@ -150,8 +148,8 @@
   /* Clean brand typography */
   .font-brand {
     font-family:
-      var(--font-poppins),
-      'Poppins',
+      var(--font-geist-sans),
+      'Geist Sans',
       system-ui,
       -apple-system,
       sans-serif;
@@ -162,8 +160,8 @@
 
   .font-brand-large {
     font-family:
-      var(--font-poppins),
-      'Poppins',
+      var(--font-geist-sans),
+      'Geist Sans',
       system-ui,
       -apple-system,
       sans-serif;

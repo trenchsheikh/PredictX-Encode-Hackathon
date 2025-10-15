@@ -1,30 +1,15 @@
 import type { Metadata } from 'next';
-import { Inter, Poppins } from 'next/font/google';
+import { GeistSans } from 'geist/font/sans';
 import './globals.css';
 import { PrivyProviderWrapper } from '@/components/providers/privy-provider';
 import { AnimatedHeader } from '@/components/layout/animated-header';
-import { AnimatedFooter } from '@/components/layout/animated-footer';
 import { AnimatedBackground } from '@/components/ui/animated-background';
 import { PageTransition } from '@/components/ui/page-transition';
 import { IntroProvider } from '@/components/providers/intro-provider';
 import { ErrorBoundary } from '@/components/ui/error-boundary';
 
-const inter = Inter({
-  subsets: ['latin'],
-  variable: '--font-inter',
-  display: 'swap',
-});
-const poppins = Poppins({
-  subsets: ['latin'],
-  variable: '--font-poppins',
-  weight: ['300', '400', '500', '600', '700', '800'],
-  display: 'swap',
-});
-
 export const metadata: Metadata = {
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_APP_URL || 'https://darkbet.vercel.app'
-  ),
+  metadataBase: new URL('https://darkbet.fun'),
   title: 'DarkBet - DarkPool Betting Platform',
   description:
     'DarkPool Betting - The future of prediction markets. Built on BNB Smart Chain with AI-driven results and fully on-chain execution.',
@@ -41,10 +26,7 @@ export const metadata: Metadata = {
   authors: [{ name: 'DarkBet Team' }],
   icons: {
     icon: '/favicon.ico',
-    shortcut: '/favicon-16x16.png',
-    apple: '/apple-touch-icon.png',
   },
-  manifest: '/site.webmanifest',
   openGraph: {
     title: 'DarkBet - DarkPool Betting Platform',
     description:
@@ -76,12 +58,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${inter.className} ${poppins.variable} ${inter.variable}`}
-      >
+      <body className={GeistSans.className}>
         <PrivyProviderWrapper>
           <IntroProvider>
-            <div className="relative flex min-h-screen flex-col">
+            <div className="relative flex min-h-screen flex-col bg-black">
               {/* Animated Background */}
               <AnimatedBackground variant="gradient" />
 
@@ -91,7 +71,6 @@ export default function RootLayout({
                   <PageTransition>{children}</PageTransition>
                 </ErrorBoundary>
               </main>
-              <AnimatedFooter />
             </div>
           </IntroProvider>
         </PrivyProviderWrapper>

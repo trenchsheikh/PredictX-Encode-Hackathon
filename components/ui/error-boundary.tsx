@@ -62,18 +62,6 @@ export class ErrorBoundary extends React.Component<
                 We encountered an unexpected error. Please try refreshing the
                 page.
               </p>
-              {process.env.NODE_ENV === 'development' && this.state.error && (
-                <details className="text-left">
-                  <summary className="cursor-pointer text-sm text-gray-400">
-                    Error Details
-                  </summary>
-                  <pre className="mt-2 overflow-auto rounded bg-gray-900/50 p-2 text-xs text-red-400">
-                    {this.state.error.message}
-                    {'\n'}
-                    {this.state.error.stack}
-                  </pre>
-                </details>
-              )}
               <Button
                 onClick={this.resetError}
                 className="w-full bg-gradient-to-r from-yellow-400 to-yellow-600 font-semibold text-black hover:from-yellow-500 hover:to-yellow-700"
@@ -89,12 +77,4 @@ export class ErrorBoundary extends React.Component<
 
     return this.props.children;
   }
-}
-
-// Hook version for functional components
-export function useErrorHandler() {
-  return (error: Error, errorInfo?: React.ErrorInfo) => {
-    console.error('Error caught by useErrorHandler:', error, errorInfo);
-    // You can add additional error reporting here
-  };
 }

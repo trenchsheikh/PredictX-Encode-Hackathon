@@ -8,13 +8,15 @@ interface IntroProviderProps {
 }
 
 export function IntroProvider({ children }: IntroProviderProps) {
-  const [showIntro, setShowIntro] = useState(true);
+  const [showIntro, setShowIntro] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     // Check if user has seen intro before
     const hasSeenIntro = localStorage.getItem('darkbet-intro-seen');
-    if (hasSeenIntro) {
-      setShowIntro(false);
+    if (!hasSeenIntro) {
+      setShowIntro(true);
     }
   }, []);
 
@@ -25,7 +27,9 @@ export function IntroProvider({ children }: IntroProviderProps) {
 
   return (
     <>
-      {showIntro && <IntroAnimation onComplete={handleIntroComplete} />}
+      {mounted && showIntro && (
+        <IntroAnimation onComplete={handleIntroComplete} />
+      )}
       {children}
     </>
   );

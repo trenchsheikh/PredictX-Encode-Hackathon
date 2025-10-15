@@ -10,7 +10,6 @@ import { useI18n } from '@/components/providers/i18n-provider';
 interface HeroSectionProps {
   onCreateClick: () => void;
   onCryptoClick: () => void;
-  isAuthenticated: boolean;
 }
 
 interface PlatformStats {
@@ -22,7 +21,6 @@ interface PlatformStats {
 export function HeroSection({
   onCreateClick,
   onCryptoClick,
-  isAuthenticated,
 }: HeroSectionProps) {
   const { t } = useI18n();
   const [stats, setStats] = useState<PlatformStats>({
