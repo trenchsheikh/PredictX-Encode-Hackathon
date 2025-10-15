@@ -7,12 +7,22 @@ import { usePrivy } from '@privy-io/react-auth';
 import { useI18n } from '@/components/providers/i18n-provider';
 import { AnimatedButton } from '@/components/ui/animated-button';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Globe, Wallet, TrendingUp, Zap, Shield } from 'lucide-react';
+import {
+  Menu,
+  X,
+  Globe,
+  Wallet,
+  TrendingUp,
+  Zap,
+  Shield,
+  BookOpen,
+} from 'lucide-react';
 
 const navigation = [
   { key: 'nav_home', href: '/', icon: TrendingUp },
   { key: 'nav_my_bets', href: '/my-bets', icon: Wallet },
   { key: 'nav_how', href: '/how-it-works', icon: Shield },
+  { key: 'nav_docs', href: '/docs', icon: BookOpen },
   // { key: 'nav_leaderboard', href: '/leaderboard', icon: Zap },
 ];
 
@@ -37,7 +47,10 @@ export function AnimatedHeader() {
   }, []);
 
   const toggleLanguage = () => {
-    setLocale(locale === 'en' ? 'zh' : 'en');
+    const newLocale = locale === 'en' ? 'zh' : 'en';
+    setLocale(newLocale);
+    // Also update localStorage to sync with docs
+    localStorage.setItem('darkbet-locale', newLocale);
   };
 
   return (
@@ -148,7 +161,14 @@ export function AnimatedHeader() {
                   className="group flex items-center space-x-2 rounded-lg px-3 py-2 text-sm font-medium text-gray-300 transition-all duration-200 hover:bg-gray-800/50 hover:text-white"
                 >
                   <Icon className="h-4 w-4 transition-colors duration-200 group-hover:text-yellow-400" />
-                  <span>{t(item.key)}</span>
+                  <span>
+                    {mounted
+                      ? t(item.key)
+                      : item.key
+                          .replace('nav_', '')
+                          .replace('_', ' ')
+                          .replace(/\b\w/g, l => l.toUpperCase())}
+                  </span>
                 </Link>
               </motion.div>
             );
@@ -169,7 +189,7 @@ export function AnimatedHeader() {
               className="flex items-center gap-2 text-gray-300 transition-all duration-200 hover:bg-gray-800/50 hover:text-white"
             >
               <Globe className="h-4 w-4" />
-              {locale === 'en' ? '中文' : 'EN'}
+              {mounted ? (locale === 'en' ? '中文' : 'EN') : 'EN'}
             </AnimatedButton>
           </motion.div>
 
@@ -184,7 +204,7 @@ export function AnimatedHeader() {
                 className="rounded-lg bg-gray-700/50 px-4 py-2 text-gray-400"
               >
                 <Wallet className="mr-2 h-4 w-4" />
-                {t('connecting')}
+                {mounted ? t('connecting') : 'Connecting...'}
               </AnimatedButton>
             ) : authenticated ? (
               <div className="flex items-center gap-2">
@@ -193,7 +213,9 @@ export function AnimatedHeader() {
                   <span className="font-caption text-sm text-green-400">
                     {user?.wallet?.address
                       ? `${user.wallet.address.slice(0, 6)}...${user.wallet.address.slice(-4)}`
-                      : t('connected')}
+                      : mounted
+                        ? t('connected')
+                        : 'Connected'}
                   </span>
                 </div>
                 <AnimatedButton
@@ -211,7 +233,7 @@ export function AnimatedHeader() {
                 className="rounded-lg bg-gradient-to-r from-yellow-400 to-yellow-600 px-4 py-2 text-black shadow-md transition-all duration-200 hover:from-yellow-500 hover:to-yellow-700 hover:shadow-lg"
               >
                 <Wallet className="mr-2 h-4 w-4" />
-                {t('connect_wallet')}
+                {mounted ? t('connect_wallet') : 'Connect Wallet'}
               </AnimatedButton>
             )}
           </motion.div>
@@ -286,7 +308,14 @@ export function AnimatedHeader() {
                           onClick={() => setMobileMenuOpen(false)}
                         >
                           <Icon className="h-5 w-5 transition-colors group-hover:text-yellow-400" />
-                          <span className="font-medium">{t(item.key)}</span>
+                          <span className="font-medium">
+                            {mounted
+                              ? t(item.key)
+                              : item.key
+                                  .replace('nav_', '')
+                                  .replace('_', ' ')
+                                  .replace(/\b\w/g, l => l.toUpperCase())}
+                          </span>
                         </Link>
                       </motion.div>
                     );
@@ -301,7 +330,7 @@ export function AnimatedHeader() {
                     className="w-full justify-start border-gray-600/50 text-gray-300 hover:text-white"
                   >
                     <Globe className="mr-2 h-4 w-4" />
-                    {locale === 'en' ? '中文' : 'EN'}
+                    {mounted ? (locale === 'en' ? '中文' : 'EN') : 'EN'}
                   </AnimatedButton>
 
                   {!ready ? (
@@ -310,7 +339,7 @@ export function AnimatedHeader() {
                       className="w-full bg-gray-700 text-gray-300"
                     >
                       <Wallet className="mr-2 h-4 w-4" />
-                      {t('connecting')}
+                      {mounted ? t('connecting') : 'Connecting...'}
                     </AnimatedButton>
                   ) : authenticated ? (
                     <div className="space-y-3">
@@ -324,7 +353,9 @@ export function AnimatedHeader() {
                         <div className="text-xs text-gray-400">
                           {user?.wallet?.address
                             ? `${user.wallet.address.slice(0, 6)}...${user.wallet.address.slice(-4)}`
-                            : t('connected')}
+                            : mounted
+                              ? t('connected')
+                              : 'Connected'}
                         </div>
                       </div>
                       <AnimatedButton
@@ -342,7 +373,7 @@ export function AnimatedHeader() {
                       className="w-full bg-gradient-to-r from-yellow-400 to-yellow-600 text-black"
                     >
                       <Wallet className="mr-2 h-4 w-4" />
-                      {t('connect_wallet')}
+                      {mounted ? t('connect_wallet') : 'Connect Wallet'}
                     </AnimatedButton>
                   )}
                 </div>

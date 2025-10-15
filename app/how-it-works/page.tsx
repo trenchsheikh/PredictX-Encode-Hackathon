@@ -506,11 +506,6 @@ export default function HowItWorksPage() {
                                     ? 'Optional'
                                     : 'sources'}
                               </span>
-                              {source.premium && (
-                                <Badge variant="warning" className="text-xs">
-                                  Premium
-                                </Badge>
-                              )}
                             </div>
                           </div>
                         ))}

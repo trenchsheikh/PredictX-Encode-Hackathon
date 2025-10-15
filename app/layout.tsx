@@ -4,7 +4,6 @@ import './globals.css';
 import { PrivyProviderWrapper } from '@/components/providers/privy-provider';
 import { AnimatedHeader } from '@/components/layout/animated-header';
 import { AnimatedBackground } from '@/components/ui/animated-background';
-import { PageTransition } from '@/components/ui/page-transition';
 import { IntroProvider } from '@/components/providers/intro-provider';
 import { ErrorBoundary } from '@/components/ui/error-boundary';
 
@@ -67,9 +66,7 @@ export default function RootLayout({
 
               <AnimatedHeader />
               <main className="relative z-10 flex-1">
-                <ErrorBoundary>
-                  <PageTransition>{children}</PageTransition>
-                </ErrorBoundary>
+                <ErrorBoundary>{children}</ErrorBoundary>
               </main>
             </div>
           </IntroProvider>
