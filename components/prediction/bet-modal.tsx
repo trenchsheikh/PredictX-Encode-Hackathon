@@ -122,7 +122,6 @@ export function BetModal({
                     ? 'border-green-500/30 bg-green-500/20 text-green-400'
                     : 'border-red-500/30 bg-red-500/20 text-red-400'
                 }
-                }
               >
                 {isYes ? 'YES' : 'NO'}
               </Badge>
