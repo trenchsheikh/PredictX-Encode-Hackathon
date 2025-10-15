@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { GeistSans } from 'geist/font/sans';
+import './critical.css';
 import './globals.css';
 import { PrivyProviderWrapper } from '@/components/providers/privy-provider';
 import { I18nProvider } from '@/components/providers/i18n-provider';
@@ -8,6 +9,7 @@ import { AnimatedBackground } from '@/components/ui/animated-background';
 import { PageTransition } from '@/components/ui/page-transition';
 import { IntroProvider } from '@/components/providers/intro-provider';
 import { ErrorBoundary } from '@/components/ui/error-boundary';
+import { PerformanceMonitor } from '@/components/ui/performance-monitor';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://darkbet.fun'),
@@ -59,6 +61,15 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        {/* Preconnect to external domains for faster loading */}
+        <link rel="preconnect" href="https://auth.privy.io" />
+        <link rel="preconnect" href="https://explorer-api.walletconnect.com" />
+        <link rel="preconnect" href="https://api.coingecko.com" />
+        <link rel="dns-prefetch" href="https://auth.privy.io" />
+        <link rel="dns-prefetch" href="https://explorer-api.walletconnect.com" />
+        <link rel="dns-prefetch" href="https://api.coingecko.com" />
+      </head>
       <body className={GeistSans.className}>
         <I18nProvider>
           <PrivyProviderWrapper>
@@ -73,6 +84,7 @@ export default function RootLayout({
                     <PageTransition>{children}</PageTransition>
                   </ErrorBoundary>
                 </main>
+                <PerformanceMonitor />
               </div>
             </IntroProvider>
           </PrivyProviderWrapper>
