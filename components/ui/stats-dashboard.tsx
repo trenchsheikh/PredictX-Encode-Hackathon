@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import { StatsCard } from './stats-card';
 import { TrendingUp, DollarSign, Target, Trophy } from 'lucide-react';
+import { formatBNB } from '@/lib/utils';
 
 interface StatsDashboardProps {
   totalBets: number;
@@ -26,7 +27,7 @@ export function StatsDashboard({
     },
     {
       title: 'Total Winnings',
-      value: `${totalWinnings.toFixed(4)} BNB`,
+      value: formatBNB(totalWinnings),
       icon: DollarSign,
       trend: { value: 8, isPositive: true },
     },

@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { formatBNB } from '@/lib/utils';
 import {
   CheckCircle,
   XCircle,
@@ -105,10 +106,7 @@ export function CompletedPrediction({
     });
   };
 
-  const formatBNB = (value: string) => {
-    const num = parseFloat(value);
-    return num.toFixed(6);
-  };
+  // Use the shared formatBNB function from utils
 
   return (
     <Card className="w-full">

@@ -112,7 +112,7 @@ export function PredictionCard({
               {t('prediction_card.pool')}
             </div>
             <div className="text-sm font-bold text-white">
-              {prediction.totalPool.toFixed(2)} BNB
+              {formatBNB(prediction.totalPool)}
             </div>
           </div>
         </div>
@@ -166,7 +166,7 @@ export function PredictionCard({
               {prediction.yesPrice.toFixed(3)}
             </div>
             <div className="text-xs text-gray-200">
-              {prediction.yesPool.toFixed(2)} BNB
+              {formatBNB(prediction.yesPool)}
             </div>
           </div>
           <div className="rounded-lg border border-red-700 bg-red-600 p-3 text-center">
@@ -177,7 +177,7 @@ export function PredictionCard({
               {prediction.noPrice.toFixed(3)}
             </div>
             <div className="text-xs text-gray-200">
-              {prediction.noPool.toFixed(2)} BNB
+              {formatBNB(prediction.noPool)}
             </div>
           </div>
         </div>

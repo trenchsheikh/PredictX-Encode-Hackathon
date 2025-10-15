@@ -7,7 +7,19 @@ export function cn(...inputs: ClassValue[]) {
 
 export function formatBNB(amount: number | string): string {
   const num = typeof amount === 'string' ? parseFloat(amount) : amount;
-  return `${num.toFixed(4)} BNB`;
+  
+  // Format with appropriate decimal places based on value
+  if (num >= 1000) {
+    return `${num.toFixed(0)} BNB`;
+  } else if (num >= 100) {
+    return `${num.toFixed(0)} BNB`;
+  } else if (num >= 1) {
+    return `${num.toFixed(2)} BNB`;
+  } else if (num >= 0.01) {
+    return `${num.toFixed(3)} BNB`;
+  } else {
+    return `${num.toFixed(4)} BNB`;
+  }
 }
 
 export function formatAddress(address: string): string {
