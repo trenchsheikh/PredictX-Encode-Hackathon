@@ -810,9 +810,9 @@ export default function MyBetsPage() {
           <p className="font-body text-gray-300">{t('my_bets.subtitle')}</p>
 
           {/* Connection Status */}
-          <div className="mt-4 rounded-xl border border-gray-700/50 bg-gray-900/60 p-3 backdrop-blur-sm sm:p-4">
-            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-              <div className="flex items-center gap-2 text-sm">
+          {/* <div className="mt-4 rounded-xl border border-gray-700/50 bg-gray-900/60 p-3 backdrop-blur-sm sm:p-4"> */}
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            {/* <div className="flex items-center gap-2 text-sm">
                 <div
                   className={`h-2 w-2 rounded-full ${contract.error ? 'bg-red-500' : 'bg-green-500'}`}
                 ></div>
@@ -821,9 +821,9 @@ export default function MyBetsPage() {
                     ? `Connection Issue: ${contract.error}`
                     : 'Connected to BSC Testnet'}
                 </span>
-              </div>
-              <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
-                <Button
+              </div> */}
+            <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
+              {/* <Button
                   onClick={testBackendConnection}
                   size="sm"
                   className="bg-indigo-600 text-white hover:bg-indigo-700"
@@ -857,8 +857,8 @@ export default function MyBetsPage() {
                   className="bg-red-600 text-white hover:bg-red-700"
                 >
                   Resolve Market 6
-                </Button>
-                {contract.error && (
+                </Button> */}
+              {/* {contract.error && (
                   <Button
                     onClick={() => {
                       // Force refresh the contract connection
@@ -869,10 +869,10 @@ export default function MyBetsPage() {
                   >
                     Retry Connection
                   </Button>
-                )}
-              </div>
+                )} */}
             </div>
-            {contract.error && (
+          </div>
+          {/* {contract.error && (
               <div className="mt-2 text-xs text-gray-400">
                 <div>
                   Please check your wallet connection and network settings.
@@ -885,8 +885,8 @@ export default function MyBetsPage() {
                   Network: {wallets?.[0]?.chainId || 'Unknown'}
                 </div>
               </div>
-            )}
-          </div>
+            )} */}
+          {/* </div> */}
         </div>
 
         {/* Stats Dashboard */}
@@ -994,7 +994,7 @@ export default function MyBetsPage() {
             </CardContent>
           </Card>
         ) : (
-          <div className="space-y-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {filteredBets.map(bet => {
               const prediction = predictions[bet.predictionId];
               if (!prediction) return null;
@@ -1069,7 +1069,7 @@ export default function MyBetsPage() {
               return (
                 <Card
                   key={bet.id}
-                  className="border-black bg-black/90 transition-shadow hover:shadow-lg"
+                  className="h-full border-black bg-black/90 transition-shadow hover:shadow-lg"
                 >
                   <CardContent className="p-4 sm:p-6">
                     <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
