@@ -497,6 +497,52 @@ router.post('/trigger-resolution', async (req: Request, res: Response) => {
 });
 
 /**
+ * DELETE /api/markets/clear-all
+ * Clear all markets, bets, and commitments (admin only)
+ */
+router.delete('/clear-all', async (req: Request, res: Response) => {
+  try {
+    const { adminKey } = req.body;
+
+    // Verify admin key (allow both env var and default for testing)
+    if (adminKey !== process.env.ORACLE_ADMIN_KEY && adminKey !== 'admin123') {
+      return res.status(401).json({
+        success: false,
+        error: 'Invalid admin key',
+      });
+    }
+
+    // Count existing data
+    const marketCount = await Market.countDocuments();
+    const commitmentCount = await Commitment.countDocuments();
+    const betCount = await Bet.countDocuments();
+
+    console.log(`🧹 Clearing ${marketCount} markets, ${commitmentCount} commitments, ${betCount} bets`);
+
+    // Delete all data
+    const deletedBets = await Bet.deleteMany({});
+    const deletedCommitments = await Commitment.deleteMany({});
+    const deletedMarkets = await Market.deleteMany({});
+
+    res.json({
+      success: true,
+      message: 'All markets cleared successfully',
+      data: {
+        deletedMarkets: deletedMarkets.deletedCount,
+        deletedCommitments: deletedCommitments.deletedCount,
+        deletedBets: deletedBets.deletedCount,
+      },
+    });
+  } catch (error) {
+    console.error('Error clearing markets:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to clear markets',
+    });
+  }
+});
+
+/**
  * POST /api/markets/resolve-market
  * Manually resolve a specific market (bypasses database issues)
  */
