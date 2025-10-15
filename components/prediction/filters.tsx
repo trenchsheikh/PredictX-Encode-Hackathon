@@ -62,7 +62,7 @@ export function Filters({
             </Button>
           )}
         </div>
-        <div className="text-sm font-medium text-black">
+        <div className="text-sm font-medium text-white">
           {totalCount} markets
         </div>
       </div>

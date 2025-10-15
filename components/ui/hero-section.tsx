@@ -83,7 +83,7 @@ export function HeroSection({
   }, []);
   const features = [
     { icon: Shield, text: 'Fully On-Chain', color: 'text-yellow-400' },
-    { icon: Zap, text: 'AI-Driven Results', color: 'text-white' },
+    { icon: Zap, text: 'AI-Driven Results', color: 'text-yellow-400' },
     { icon: TrendingUp, text: 'Real-Time Markets', color: 'text-yellow-400' },
   ];
 

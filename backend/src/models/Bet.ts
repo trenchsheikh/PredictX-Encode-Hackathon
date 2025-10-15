@@ -5,13 +5,13 @@ interface IBetDocument extends IBet, Document {}
 
 const betSchema = new Schema<IBetDocument>(
   {
-    marketId: { type: Number, required: true, index: true },
-    user: { type: String, required: true, index: true },
+    marketId: { type: Number, required: true },
+    user: { type: String, required: true },
     outcome: { type: Boolean, required: true },
     shares: { type: String, required: true },
     amount: { type: String, required: true },
     revealedAt: { type: Date, required: true },
-    claimed: { type: Boolean, default: false, index: true },
+    claimed: { type: Boolean, default: false },
     txHash: { type: String, required: true },
   },
   {
