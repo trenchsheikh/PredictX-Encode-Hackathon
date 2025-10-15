@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { usePrivy } from '@privy-io/react-auth';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { PredictionCard } from '@/components/prediction/prediction-card';
 import { Filters } from '@/components/prediction/filters';
@@ -14,10 +14,6 @@ import {
   CryptoPredictionData,
 } from '@/components/prediction/crypto-prediction-modal';
 import { TransactionHistoryModal } from '@/components/prediction/transaction-history-modal';
-import { Particles } from '@/components/ui/particles';
-import { ShimmeringText } from '@/components/ui/shimmering-text';
-import { AppleHelloEffect } from '@/components/ui/apple-hello-effect';
-import { InteractiveGridPattern } from '@/components/ui/interactive-grid-pattern';
 import { TransactionStatus } from '@/components/ui/transaction-status';
 import {
   Prediction,
@@ -29,20 +25,7 @@ import {
 import {
   Plus,
   TrendingUp,
-  Users,
-  Clock,
-  Zap,
-  Star,
-  Trophy,
-  Flame,
-  Target,
   BarChart3,
-  TrendingDown,
-  ArrowUp,
-  ArrowDown,
-  Eye,
-  Shield,
-  Lock,
   Loader2,
   RefreshCw,
   AlertCircle,
@@ -50,10 +33,8 @@ import {
 } from 'lucide-react';
 import { HeroSection } from '@/components/ui/hero-section';
 import { AnimatedCard } from '@/components/ui/animated-card';
-import { AnimatedButton } from '@/components/ui/animated-button';
 import { AnimatedBackground } from '@/components/ui/animated-background';
 import { useI18n } from '@/components/providers/i18n-provider';
-import { cn } from '@/lib/utils';
 import { api, getErrorMessage } from '@/lib/api-client';
 import { usePredictionContract } from '@/lib/hooks/use-prediction-contract';
 import { generateCommit, storeCommitSecret } from '@/lib/commit-reveal';

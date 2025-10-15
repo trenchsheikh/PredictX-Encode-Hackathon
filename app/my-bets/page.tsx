@@ -11,28 +11,19 @@ import {
   PredictionCategory,
   PredictionStatus,
 } from '@/types/prediction';
-import {
-  formatBNB,
-  formatTimeRemaining,
-  calculatePayout,
-  formatAddress,
-} from '@/lib/utils';
+import { formatBNB, formatTimeRemaining, calculatePayout } from '@/lib/utils';
 import {
   Wallet,
   TrendingUp,
   TrendingDown,
   Clock,
   DollarSign,
-  ExternalLink,
   Eye,
   Loader2,
   AlertCircle,
-  CheckCircle,
 } from 'lucide-react';
 import { StatsDashboard } from '@/components/ui/stats-dashboard';
 import { PerformanceChart } from '@/components/ui/performance-chart';
-import { AnimatedCard } from '@/components/ui/animated-card';
-import { AnimatedButton } from '@/components/ui/animated-button';
 import { AnimatedBackground } from '@/components/ui/animated-background';
 import { cn } from '@/lib/utils';
 import { useI18n } from '@/components/providers/i18n-provider';

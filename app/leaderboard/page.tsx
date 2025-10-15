@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { formatBNB, formatAddress } from '@/lib/utils';
@@ -10,20 +10,18 @@ import {
   Medal,
   Award,
   TrendingUp,
-  Users,
   Target,
   DollarSign,
   Crown,
   Star,
   Zap,
-  Calendar,
   ExternalLink,
   Loader2,
   AlertCircle,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useI18n } from '@/components/providers/i18n-provider';
-import { api, getErrorMessage } from '@/lib/api-client';
+import { api } from '@/lib/api-client';
 
 interface LeaderboardEntry {
   rank: number;

@@ -846,21 +846,21 @@ Needs Solidity contracts for:
 ```solidity
 // PredictionMarket.sol
 function createMarket(
-    string memory title,
-    string memory description,
-    uint256 expiresAt,
-    uint8 category
+  string memory title,
+  string memory description,
+  uint256 expiresAt,
+  uint8 category
 ) external payable returns (uint256 marketId);
 
 function placeBet(
-    uint256 marketId,
-    bool outcome  // true = YES, false = NO
+  uint256 marketId,
+  bool outcome // true = YES, false = NO
 ) external payable returns (uint256 shares);
 
 function resolveMarket(
-    uint256 marketId,
-    bool outcome,
-    string memory reasoning
+  uint256 marketId,
+  bool outcome,
+  string memory reasoning
 ) external; // Only owner/AI resolver
 
 function claimWinnings(uint256 marketId) external;

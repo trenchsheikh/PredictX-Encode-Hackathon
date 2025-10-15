@@ -216,9 +216,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
-import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
-import "@openzeppelin/contracts/security/Pausable.sol";
+import '@openzeppelin/contracts/access/Ownable.sol';
+import '@openzeppelin/contracts/security/ReentrancyGuard.sol';
+import '@openzeppelin/contracts/security/Pausable.sol';
 
 /**
  * @title PredictionMarket
@@ -226,395 +226,421 @@ import "@openzeppelin/contracts/security/Pausable.sol";
  * @notice This contract manages the creation, betting, and resolution of prediction markets
  */
 contract PredictionMarket is Ownable, ReentrancyGuard, Pausable {
+  // ============ State Variables ============
 
-    // ============ State Variables ============
+  uint256 public marketIdCounter;
+  uint256 public constant PLATFORM_FEE_PERCENT = 10; // 10% fee
+  uint256 public constant MIN_BET_AMOUNT = 0.001 ether; // 0.001 BNB
+  uint256 public constant MAX_BET_AMOUNT = 100 ether; // 100 BNB
 
-    uint256 public marketIdCounter;
-    uint256 public constant PLATFORM_FEE_PERCENT = 10; // 10% fee
-    uint256 public constant MIN_BET_AMOUNT = 0.001 ether; // 0.001 BNB
-    uint256 public constant MAX_BET_AMOUNT = 100 ether; // 100 BNB
+  address public vaultAddress;
+  address public resolverAddress; // Backend resolver bot
 
-    address public vaultAddress;
-    address public resolverAddress; // Backend resolver bot
+  // ============ Structs ============
 
-    // ============ Structs ============
+  struct Market {
+    uint256 id;
+    string title;
+    string description;
+    address creator;
+    uint256 createdAt;
+    uint256 expiresAt;
+    uint8 category; // 0=sports, 1=crypto, 2=politics, etc.
+    uint256 totalPool;
+    uint256 yesPool;
+    uint256 noPool;
+    uint256 yesShares;
+    uint256 noShares;
+    uint256 participants;
+    MarketStatus status;
+    bool outcome; // true = YES wins, false = NO wins
+    string resolutionReasoning;
+  }
 
-    struct Market {
-        uint256 id;
-        string title;
-        string description;
-        address creator;
-        uint256 createdAt;
-        uint256 expiresAt;
-        uint8 category; // 0=sports, 1=crypto, 2=politics, etc.
-        uint256 totalPool;
-        uint256 yesPool;
-        uint256 noPool;
-        uint256 yesShares;
-        uint256 noShares;
-        uint256 participants;
-        MarketStatus status;
-        bool outcome; // true = YES wins, false = NO wins
-        string resolutionReasoning;
+  enum MarketStatus {
+    Active,
+    Resolved,
+    Cancelled,
+    Expired
+  }
+
+  struct Bet {
+    uint256 marketId;
+    address user;
+    bool outcome; // true = YES, false = NO
+    uint256 shares;
+    uint256 amount;
+    uint256 price;
+    uint256 timestamp;
+    bool claimed;
+  }
+
+  // ============ Mappings ============
+
+  mapping(uint256 => Market) public markets;
+  mapping(uint256 => mapping(address => Bet[])) public userBets; // marketId => user => bets
+  mapping(address => uint256[]) public userMarketIds; // user => list of market IDs
+
+  // ============ Events ============
+
+  event MarketCreated(
+    uint256 indexed marketId,
+    address indexed creator,
+    string title,
+    uint256 expiresAt,
+    uint8 category
+  );
+
+  event BetPlaced(
+    uint256 indexed marketId,
+    address indexed user,
+    bool outcome,
+    uint256 amount,
+    uint256 shares,
+    uint256 price
+  );
+
+  event MarketResolved(
+    uint256 indexed marketId,
+    bool outcome,
+    string reasoning,
+    uint256 totalPool
+  );
+
+  event WinningsClaimed(
+    uint256 indexed marketId,
+    address indexed user,
+    uint256 amount,
+    uint256 fee
+  );
+
+  event MarketCancelled(
+    uint256 indexed marketId,
+    address indexed creator,
+    uint256 refundAmount
+  );
+
+  // ============ Modifiers ============
+
+  modifier onlyResolver() {
+    require(msg.sender == resolverAddress, 'Only resolver can call');
+    _;
+  }
+
+  modifier marketExists(uint256 marketId) {
+    require(markets[marketId].id != 0, 'Market does not exist');
+    _;
+  }
+
+  modifier marketActive(uint256 marketId) {
+    require(
+      markets[marketId].status == MarketStatus.Active,
+      'Market not active'
+    );
+    require(block.timestamp < markets[marketId].expiresAt, 'Market expired');
+    _;
+  }
+
+  // ============ Constructor ============
+
+  constructor(address _vaultAddress, address _resolverAddress) {
+    vaultAddress = _vaultAddress;
+    resolverAddress = _resolverAddress;
+    marketIdCounter = 0;
+  }
+
+  // ============ Core Functions ============
+
+  /**
+   * @notice Create a new prediction market
+   * @param title Market title (max 100 chars)
+   * @param description Market description
+   * @param expiresAt Unix timestamp when market closes
+   * @param category Market category (0-7)
+   * @param initialOutcome Creator's initial bet (true=YES, false=NO)
+   * @return marketId The ID of the created market
+   */
+  function createMarket(
+    string memory title,
+    string memory description,
+    uint256 expiresAt,
+    uint8 category,
+    bool initialOutcome
+  ) external payable whenNotPaused nonReentrant returns (uint256) {
+    require(msg.value >= MIN_BET_AMOUNT, 'Initial bet too low');
+    require(msg.value <= MAX_BET_AMOUNT, 'Initial bet too high');
+    require(
+      expiresAt > block.timestamp + 1 hours,
+      'Must expire at least 1 hour from now'
+    );
+    require(
+      expiresAt < block.timestamp + 365 days,
+      'Cannot expire more than 1 year from now'
+    );
+    require(
+      bytes(title).length > 0 && bytes(title).length <= 100,
+      'Invalid title length'
+    );
+    require(category <= 7, 'Invalid category');
+
+    marketIdCounter++;
+    uint256 marketId = marketIdCounter;
+
+    // Initialize market
+    Market storage market = markets[marketId];
+    market.id = marketId;
+    market.title = title;
+    market.description = description;
+    market.creator = msg.sender;
+    market.createdAt = block.timestamp;
+    market.expiresAt = expiresAt;
+    market.category = category;
+    market.status = MarketStatus.Active;
+
+    // Place creator's initial bet
+    _placeBetInternal(marketId, msg.sender, initialOutcome, msg.value);
+
+    emit MarketCreated(marketId, msg.sender, title, expiresAt, category);
+
+    return marketId;
+  }
+
+  /**
+   * @notice Place a bet on a market
+   * @param marketId Market ID
+   * @param outcome true for YES, false for NO
+   */
+  function placeBet(
+    uint256 marketId,
+    bool outcome
+  )
+    external
+    payable
+    whenNotPaused
+    nonReentrant
+    marketExists(marketId)
+    marketActive(marketId)
+  {
+    require(msg.value >= MIN_BET_AMOUNT, 'Bet too low');
+    require(msg.value <= MAX_BET_AMOUNT, 'Bet too high');
+
+    _placeBetInternal(marketId, msg.sender, outcome, msg.value);
+
+    emit BetPlaced(
+      marketId,
+      msg.sender,
+      outcome,
+      msg.value,
+      userBets[marketId][msg.sender][userBets[marketId][msg.sender].length - 1]
+        .shares,
+      userBets[marketId][msg.sender][userBets[marketId][msg.sender].length - 1]
+        .price
+    );
+  }
+
+  /**
+   * @notice Resolve a market (only callable by resolver bot)
+   * @param marketId Market ID
+   * @param outcome true for YES wins, false for NO wins
+   * @param reasoning AI-generated resolution reasoning
+   */
+  function resolveMarket(
+    uint256 marketId,
+    bool outcome,
+    string memory reasoning
+  ) external onlyResolver marketExists(marketId) {
+    Market storage market = markets[marketId];
+    require(market.status == MarketStatus.Active, 'Market not active');
+    require(block.timestamp >= market.expiresAt, 'Market not expired yet');
+
+    market.status = MarketStatus.Resolved;
+    market.outcome = outcome;
+    market.resolutionReasoning = reasoning;
+
+    emit MarketResolved(marketId, outcome, reasoning, market.totalPool);
+  }
+
+  /**
+   * @notice Claim winnings from a resolved market
+   * @param marketId Market ID
+   */
+  function claimWinnings(
+    uint256 marketId
+  ) external nonReentrant marketExists(marketId) {
+    Market storage market = markets[marketId];
+    require(market.status == MarketStatus.Resolved, 'Market not resolved');
+
+    Bet[] storage bets = userBets[marketId][msg.sender];
+    require(bets.length > 0, 'No bets found');
+
+    uint256 totalPayout = 0;
+    uint256 totalShares = 0;
+
+    // Calculate total winning shares for user
+    for (uint256 i = 0; i < bets.length; i++) {
+      if (bets[i].outcome == market.outcome && !bets[i].claimed) {
+        totalShares += bets[i].shares;
+        bets[i].claimed = true;
+      }
     }
 
-    enum MarketStatus {
-        Active,
-        Resolved,
-        Cancelled,
-        Expired
-    }
+    require(totalShares > 0, 'No winning bets to claim');
 
-    struct Bet {
-        uint256 marketId;
-        address user;
-        bool outcome; // true = YES, false = NO
-        uint256 shares;
-        uint256 amount;
-        uint256 price;
-        uint256 timestamp;
-        bool claimed;
-    }
+    // Calculate payout: (user shares / total winning shares) * total pool * 0.9
+    uint256 totalWinningShares = market.outcome
+      ? market.yesShares
+      : market.noShares;
+    uint256 grossPayout = (totalShares * market.totalPool) / totalWinningShares;
+    uint256 fee = (grossPayout * PLATFORM_FEE_PERCENT) / 100;
+    totalPayout = grossPayout - fee;
 
-    // ============ Mappings ============
+    // Transfer payout
+    (bool success, ) = payable(msg.sender).call{ value: totalPayout }('');
+    require(success, 'Transfer failed');
 
-    mapping(uint256 => Market) public markets;
-    mapping(uint256 => mapping(address => Bet[])) public userBets; // marketId => user => bets
-    mapping(address => uint256[]) public userMarketIds; // user => list of market IDs
+    // Transfer fee to vault
+    (bool feeSuccess, ) = payable(vaultAddress).call{ value: fee }('');
+    require(feeSuccess, 'Fee transfer failed');
 
-    // ============ Events ============
+    emit WinningsClaimed(marketId, msg.sender, totalPayout, fee);
+  }
 
-    event MarketCreated(
-        uint256 indexed marketId,
-        address indexed creator,
-        string title,
-        uint256 expiresAt,
-        uint8 category
+  /**
+   * @notice Cancel market and refund creator (only if sole participant)
+   * @param marketId Market ID
+   */
+  function cancelMarket(
+    uint256 marketId
+  ) external nonReentrant marketExists(marketId) {
+    Market storage market = markets[marketId];
+    require(market.creator == msg.sender, 'Only creator can cancel');
+    require(market.status == MarketStatus.Active, 'Market not active');
+    require(
+      market.participants == 1,
+      'Cannot cancel with multiple participants'
     );
 
-    event BetPlaced(
-        uint256 indexed marketId,
-        address indexed user,
-        bool outcome,
-        uint256 amount,
-        uint256 shares,
-        uint256 price
+    market.status = MarketStatus.Cancelled;
+
+    // Refund creator (minus 10% fee)
+    uint256 refundAmount = (market.totalPool * 90) / 100;
+    uint256 fee = market.totalPool - refundAmount;
+
+    (bool success, ) = payable(msg.sender).call{ value: refundAmount }('');
+    require(success, 'Refund failed');
+
+    (bool feeSuccess, ) = payable(vaultAddress).call{ value: fee }('');
+    require(feeSuccess, 'Fee transfer failed');
+
+    emit MarketCancelled(marketId, msg.sender, refundAmount);
+  }
+
+  // ============ Internal Functions ============
+
+  function _placeBetInternal(
+    uint256 marketId,
+    address user,
+    bool outcome,
+    uint256 amount
+  ) internal {
+    Market storage market = markets[marketId];
+
+    // Calculate shares based on current pool ratio
+    uint256 shares;
+    uint256 price;
+
+    if (market.totalPool == 0) {
+      // First bet: 1 share per 0.01 BNB
+      shares = amount / 0.01 ether;
+      price = 0.01 ether;
+    } else {
+      // Calculate current price
+      uint256 totalShares = market.yesShares + market.noShares;
+      uint256 outcomePool = outcome ? market.yesPool : market.noPool;
+      price = (outcomePool * 1e18) / totalShares; // Price per share in wei
+      shares = (amount * 1e18) / price;
+    }
+
+    // Update market pools and shares
+    market.totalPool += amount;
+    if (outcome) {
+      market.yesPool += amount;
+      market.yesShares += shares;
+    } else {
+      market.noPool += amount;
+      market.noShares += shares;
+    }
+
+    // Track unique participants
+    if (userBets[marketId][user].length == 0) {
+      market.participants++;
+      userMarketIds[user].push(marketId);
+    }
+
+    // Store bet
+    userBets[marketId][user].push(
+      Bet({
+        marketId: marketId,
+        user: user,
+        outcome: outcome,
+        shares: shares,
+        amount: amount,
+        price: price,
+        timestamp: block.timestamp,
+        claimed: false
+      })
     );
+  }
 
-    event MarketResolved(
-        uint256 indexed marketId,
-        bool outcome,
-        string reasoning,
-        uint256 totalPool
+  // ============ View Functions ============
+
+  function getMarket(uint256 marketId) external view returns (Market memory) {
+    return markets[marketId];
+  }
+
+  function getUserBets(
+    uint256 marketId,
+    address user
+  ) external view returns (Bet[] memory) {
+    return userBets[marketId][user];
+  }
+
+  function getUserMarkets(
+    address user
+  ) external view returns (uint256[] memory) {
+    return userMarketIds[user];
+  }
+
+  function getMarketCount() external view returns (uint256) {
+    return marketIdCounter;
+  }
+
+  // ============ Admin Functions ============
+
+  function setVaultAddress(address _vaultAddress) external onlyOwner {
+    vaultAddress = _vaultAddress;
+  }
+
+  function setResolverAddress(address _resolverAddress) external onlyOwner {
+    resolverAddress = _resolverAddress;
+  }
+
+  function pause() external onlyOwner {
+    _pause();
+  }
+
+  function unpause() external onlyOwner {
+    _unpause();
+  }
+
+  // ============ Emergency Functions ============
+
+  function emergencyWithdraw() external onlyOwner {
+    (bool success, ) = payable(owner()).call{ value: address(this).balance }(
+      ''
     );
-
-    event WinningsClaimed(
-        uint256 indexed marketId,
-        address indexed user,
-        uint256 amount,
-        uint256 fee
-    );
-
-    event MarketCancelled(
-        uint256 indexed marketId,
-        address indexed creator,
-        uint256 refundAmount
-    );
-
-    // ============ Modifiers ============
-
-    modifier onlyResolver() {
-        require(msg.sender == resolverAddress, "Only resolver can call");
-        _;
-    }
-
-    modifier marketExists(uint256 marketId) {
-        require(markets[marketId].id != 0, "Market does not exist");
-        _;
-    }
-
-    modifier marketActive(uint256 marketId) {
-        require(markets[marketId].status == MarketStatus.Active, "Market not active");
-        require(block.timestamp < markets[marketId].expiresAt, "Market expired");
-        _;
-    }
-
-    // ============ Constructor ============
-
-    constructor(address _vaultAddress, address _resolverAddress) {
-        vaultAddress = _vaultAddress;
-        resolverAddress = _resolverAddress;
-        marketIdCounter = 0;
-    }
-
-    // ============ Core Functions ============
-
-    /**
-     * @notice Create a new prediction market
-     * @param title Market title (max 100 chars)
-     * @param description Market description
-     * @param expiresAt Unix timestamp when market closes
-     * @param category Market category (0-7)
-     * @param initialOutcome Creator's initial bet (true=YES, false=NO)
-     * @return marketId The ID of the created market
-     */
-    function createMarket(
-        string memory title,
-        string memory description,
-        uint256 expiresAt,
-        uint8 category,
-        bool initialOutcome
-    ) external payable whenNotPaused nonReentrant returns (uint256) {
-        require(msg.value >= MIN_BET_AMOUNT, "Initial bet too low");
-        require(msg.value <= MAX_BET_AMOUNT, "Initial bet too high");
-        require(expiresAt > block.timestamp + 1 hours, "Must expire at least 1 hour from now");
-        require(expiresAt < block.timestamp + 365 days, "Cannot expire more than 1 year from now");
-        require(bytes(title).length > 0 && bytes(title).length <= 100, "Invalid title length");
-        require(category <= 7, "Invalid category");
-
-        marketIdCounter++;
-        uint256 marketId = marketIdCounter;
-
-        // Initialize market
-        Market storage market = markets[marketId];
-        market.id = marketId;
-        market.title = title;
-        market.description = description;
-        market.creator = msg.sender;
-        market.createdAt = block.timestamp;
-        market.expiresAt = expiresAt;
-        market.category = category;
-        market.status = MarketStatus.Active;
-
-        // Place creator's initial bet
-        _placeBetInternal(marketId, msg.sender, initialOutcome, msg.value);
-
-        emit MarketCreated(marketId, msg.sender, title, expiresAt, category);
-
-        return marketId;
-    }
-
-    /**
-     * @notice Place a bet on a market
-     * @param marketId Market ID
-     * @param outcome true for YES, false for NO
-     */
-    function placeBet(uint256 marketId, bool outcome)
-        external
-        payable
-        whenNotPaused
-        nonReentrant
-        marketExists(marketId)
-        marketActive(marketId)
-    {
-        require(msg.value >= MIN_BET_AMOUNT, "Bet too low");
-        require(msg.value <= MAX_BET_AMOUNT, "Bet too high");
-
-        _placeBetInternal(marketId, msg.sender, outcome, msg.value);
-
-        emit BetPlaced(
-            marketId,
-            msg.sender,
-            outcome,
-            msg.value,
-            userBets[marketId][msg.sender][userBets[marketId][msg.sender].length - 1].shares,
-            userBets[marketId][msg.sender][userBets[marketId][msg.sender].length - 1].price
-        );
-    }
-
-    /**
-     * @notice Resolve a market (only callable by resolver bot)
-     * @param marketId Market ID
-     * @param outcome true for YES wins, false for NO wins
-     * @param reasoning AI-generated resolution reasoning
-     */
-    function resolveMarket(
-        uint256 marketId,
-        bool outcome,
-        string memory reasoning
-    ) external onlyResolver marketExists(marketId) {
-        Market storage market = markets[marketId];
-        require(market.status == MarketStatus.Active, "Market not active");
-        require(block.timestamp >= market.expiresAt, "Market not expired yet");
-
-        market.status = MarketStatus.Resolved;
-        market.outcome = outcome;
-        market.resolutionReasoning = reasoning;
-
-        emit MarketResolved(marketId, outcome, reasoning, market.totalPool);
-    }
-
-    /**
-     * @notice Claim winnings from a resolved market
-     * @param marketId Market ID
-     */
-    function claimWinnings(uint256 marketId)
-        external
-        nonReentrant
-        marketExists(marketId)
-    {
-        Market storage market = markets[marketId];
-        require(market.status == MarketStatus.Resolved, "Market not resolved");
-
-        Bet[] storage bets = userBets[marketId][msg.sender];
-        require(bets.length > 0, "No bets found");
-
-        uint256 totalPayout = 0;
-        uint256 totalShares = 0;
-
-        // Calculate total winning shares for user
-        for (uint256 i = 0; i < bets.length; i++) {
-            if (bets[i].outcome == market.outcome && !bets[i].claimed) {
-                totalShares += bets[i].shares;
-                bets[i].claimed = true;
-            }
-        }
-
-        require(totalShares > 0, "No winning bets to claim");
-
-        // Calculate payout: (user shares / total winning shares) * total pool * 0.9
-        uint256 totalWinningShares = market.outcome ? market.yesShares : market.noShares;
-        uint256 grossPayout = (totalShares * market.totalPool) / totalWinningShares;
-        uint256 fee = (grossPayout * PLATFORM_FEE_PERCENT) / 100;
-        totalPayout = grossPayout - fee;
-
-        // Transfer payout
-        (bool success, ) = payable(msg.sender).call{value: totalPayout}("");
-        require(success, "Transfer failed");
-
-        // Transfer fee to vault
-        (bool feeSuccess, ) = payable(vaultAddress).call{value: fee}("");
-        require(feeSuccess, "Fee transfer failed");
-
-        emit WinningsClaimed(marketId, msg.sender, totalPayout, fee);
-    }
-
-    /**
-     * @notice Cancel market and refund creator (only if sole participant)
-     * @param marketId Market ID
-     */
-    function cancelMarket(uint256 marketId)
-        external
-        nonReentrant
-        marketExists(marketId)
-    {
-        Market storage market = markets[marketId];
-        require(market.creator == msg.sender, "Only creator can cancel");
-        require(market.status == MarketStatus.Active, "Market not active");
-        require(market.participants == 1, "Cannot cancel with multiple participants");
-
-        market.status = MarketStatus.Cancelled;
-
-        // Refund creator (minus 10% fee)
-        uint256 refundAmount = (market.totalPool * 90) / 100;
-        uint256 fee = market.totalPool - refundAmount;
-
-        (bool success, ) = payable(msg.sender).call{value: refundAmount}("");
-        require(success, "Refund failed");
-
-        (bool feeSuccess, ) = payable(vaultAddress).call{value: fee}("");
-        require(feeSuccess, "Fee transfer failed");
-
-        emit MarketCancelled(marketId, msg.sender, refundAmount);
-    }
-
-    // ============ Internal Functions ============
-
-    function _placeBetInternal(
-        uint256 marketId,
-        address user,
-        bool outcome,
-        uint256 amount
-    ) internal {
-        Market storage market = markets[marketId];
-
-        // Calculate shares based on current pool ratio
-        uint256 shares;
-        uint256 price;
-
-        if (market.totalPool == 0) {
-            // First bet: 1 share per 0.01 BNB
-            shares = amount / 0.01 ether;
-            price = 0.01 ether;
-        } else {
-            // Calculate current price
-            uint256 totalShares = market.yesShares + market.noShares;
-            uint256 outcomePool = outcome ? market.yesPool : market.noPool;
-            price = (outcomePool * 1e18) / totalShares; // Price per share in wei
-            shares = (amount * 1e18) / price;
-        }
-
-        // Update market pools and shares
-        market.totalPool += amount;
-        if (outcome) {
-            market.yesPool += amount;
-            market.yesShares += shares;
-        } else {
-            market.noPool += amount;
-            market.noShares += shares;
-        }
-
-        // Track unique participants
-        if (userBets[marketId][user].length == 0) {
-            market.participants++;
-            userMarketIds[user].push(marketId);
-        }
-
-        // Store bet
-        userBets[marketId][user].push(Bet({
-            marketId: marketId,
-            user: user,
-            outcome: outcome,
-            shares: shares,
-            amount: amount,
-            price: price,
-            timestamp: block.timestamp,
-            claimed: false
-        }));
-    }
-
-    // ============ View Functions ============
-
-    function getMarket(uint256 marketId) external view returns (Market memory) {
-        return markets[marketId];
-    }
-
-    function getUserBets(uint256 marketId, address user) external view returns (Bet[] memory) {
-        return userBets[marketId][user];
-    }
-
-    function getUserMarkets(address user) external view returns (uint256[] memory) {
-        return userMarketIds[user];
-    }
-
-    function getMarketCount() external view returns (uint256) {
-        return marketIdCounter;
-    }
-
-    // ============ Admin Functions ============
-
-    function setVaultAddress(address _vaultAddress) external onlyOwner {
-        vaultAddress = _vaultAddress;
-    }
-
-    function setResolverAddress(address _resolverAddress) external onlyOwner {
-        resolverAddress = _resolverAddress;
-    }
-
-    function pause() external onlyOwner {
-        _pause();
-    }
-
-    function unpause() external onlyOwner {
-        _unpause();
-    }
-
-    // ============ Emergency Functions ============
-
-    function emergencyWithdraw() external onlyOwner {
-        (bool success, ) = payable(owner()).call{value: address(this).balance}("");
-        require(success, "Withdrawal failed");
-    }
+    require(success, 'Withdrawal failed');
+  }
 }
 ```
 
@@ -626,44 +652,43 @@ contract PredictionMarket is Ownable, ReentrancyGuard, Pausable {
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
-import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import '@openzeppelin/contracts/access/Ownable.sol';
+import '@openzeppelin/contracts/security/ReentrancyGuard.sol';
 
 /**
  * @title Vault
  * @dev Holds platform fees and manages withdrawals
  */
 contract Vault is Ownable, ReentrancyGuard {
+  event FeeReceived(address indexed from, uint256 amount);
+  event Withdrawal(address indexed to, uint256 amount);
 
-    event FeeReceived(address indexed from, uint256 amount);
-    event Withdrawal(address indexed to, uint256 amount);
+  receive() external payable {
+    emit FeeReceived(msg.sender, msg.value);
+  }
 
-    receive() external payable {
-        emit FeeReceived(msg.sender, msg.value);
-    }
+  function withdraw(uint256 amount) external onlyOwner nonReentrant {
+    require(amount <= address(this).balance, 'Insufficient balance');
 
-    function withdraw(uint256 amount) external onlyOwner nonReentrant {
-        require(amount <= address(this).balance, "Insufficient balance");
+    (bool success, ) = payable(owner()).call{ value: amount }('');
+    require(success, 'Withdrawal failed');
 
-        (bool success, ) = payable(owner()).call{value: amount}("");
-        require(success, "Withdrawal failed");
+    emit Withdrawal(owner(), amount);
+  }
 
-        emit Withdrawal(owner(), amount);
-    }
+  function withdrawAll() external onlyOwner nonReentrant {
+    uint256 balance = address(this).balance;
+    require(balance > 0, 'No balance to withdraw');
 
-    function withdrawAll() external onlyOwner nonReentrant {
-        uint256 balance = address(this).balance;
-        require(balance > 0, "No balance to withdraw");
+    (bool success, ) = payable(owner()).call{ value: balance }('');
+    require(success, 'Withdrawal failed');
 
-        (bool success, ) = payable(owner()).call{value: balance}("");
-        require(success, "Withdrawal failed");
+    emit Withdrawal(owner(), balance);
+  }
 
-        emit Withdrawal(owner(), balance);
-    }
-
-    function getBalance() external view returns (uint256) {
-        return address(this).balance;
-    }
+  function getBalance() external view returns (uint256) {
+    return address(this).balance;
+  }
 }
 ```
 
@@ -1963,7 +1988,7 @@ app.use(
 **1. Reentrancy Protection:**
 
 ```solidity
-import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import '@openzeppelin/contracts/security/ReentrancyGuard.sol';
 
 contract PredictionMarket is ReentrancyGuard {
   function claimWinnings(uint256 marketId) external nonReentrant {
