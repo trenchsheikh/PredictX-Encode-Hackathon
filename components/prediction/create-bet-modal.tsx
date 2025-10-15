@@ -67,10 +67,7 @@ const createPredictionSchema = z.object({
     .max(10, 'Maximum bet is 10 BNB'),
   expiresAt: z
     .number()
-    .min(
-      Date.now() + 300000,
-      'Expiration must be at least 5 minutes from now'
-    ),
+    .min(Date.now() + 300000, 'Expiration must be at least 5 minutes from now'),
 });
 
 interface CreateBetModalProps {

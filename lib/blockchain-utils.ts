@@ -98,7 +98,9 @@ export function getContractAddresses() {
         vault,
       };
     } else {
-      console.warn('Invalid contract addresses in environment variables, using fallback');
+      console.warn(
+        'Invalid contract addresses in environment variables, using fallback'
+      );
     }
   }
 
@@ -277,12 +279,12 @@ export async function estimateGas(
     if (!contract.target || typeof contract.target !== 'string') {
       throw new Error('Invalid contract address');
     }
-    
+
     // Check if address is valid format
     if (!/^0x[a-fA-F0-9]{40}$/.test(contract.target)) {
       throw new Error('Contract address is not a valid Ethereum address');
     }
-    
+
     const gasEstimate = await contract[method].estimateGas(...args);
     // Add 20% buffer
     return (gasEstimate * 120n) / 100n;

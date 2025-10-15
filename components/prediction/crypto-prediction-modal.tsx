@@ -92,7 +92,7 @@ export function CryptoPredictionModal({
     setIsAnalyzing(true);
     setAiError('');
     setAiGenerated(null);
-    
+
     try {
       // Initialize AI service if not already done
       try {
@@ -121,7 +121,8 @@ export function CryptoPredictionModal({
       setCustomDescription(analysis.description);
     } catch (error) {
       console.error('AI analysis failed:', error);
-      const errorMessage = error instanceof Error ? error.message : 'AI analysis failed';
+      const errorMessage =
+        error instanceof Error ? error.message : 'AI analysis failed';
       setAiError(errorMessage);
     } finally {
       setIsAnalyzing(false);
@@ -408,7 +409,10 @@ export function CryptoPredictionModal({
                         variant="outline"
                         size="sm"
                         onClick={analyzeWithAI}
-                        disabled={isAnalyzing || (!customTitle.trim() && !customDescription.trim())}
+                        disabled={
+                          isAnalyzing ||
+                          (!customTitle.trim() && !customDescription.trim())
+                        }
                         className="flex items-center gap-2 border-blue-500/50 bg-blue-500/10 text-blue-400 hover:bg-blue-500/20"
                       >
                         {isAnalyzing ? (
@@ -427,36 +431,46 @@ export function CryptoPredictionModal({
                       className="border-gray-700/50 bg-gray-800/60 text-white placeholder:text-gray-400 focus:border-yellow-400/50 focus:ring-yellow-400/20"
                     />
                     <p className="text-xs text-gray-400">
-                      💡 Enter your prediction idea here. AI will transform it into a verifiable prediction with specific criteria.
+                      💡 Enter your prediction idea here. AI will transform it
+                      into a verifiable prediction with specific criteria.
                     </p>
                     {aiGenerated && (
                       <div className="rounded-lg border border-green-500/20 bg-green-500/10 p-3">
                         <div className="flex items-center gap-2 text-sm text-green-400">
                           <Bot className="h-4 w-4" />
-                          <span className="font-medium">AI Generated Content</span>
+                          <span className="font-medium">
+                            AI Generated Content
+                          </span>
                         </div>
                         <p className="mt-1 text-xs text-green-200">
-                          Title and description have been optimized for oracle compatibility
+                          Title and description have been optimized for oracle
+                          compatibility
                         </p>
                       </div>
                     )}
-                    
+
                     {aiError && (
                       <div className="rounded-lg border border-red-500/20 bg-red-500/10 p-3">
                         <div className="flex items-center gap-2 text-sm text-red-400">
                           <AlertCircle className="h-4 w-4" />
                           <span className="font-medium">Validation Error</span>
                         </div>
-                        <p className="mt-1 text-xs text-red-200">
-                          {aiError}
-                        </p>
+                        <p className="mt-1 text-xs text-red-200">{aiError}</p>
                         <div className="mt-2 text-xs text-red-300">
                           <strong>Tips for valid predictions:</strong>
-                          <ul className="mt-1 ml-4 list-disc space-y-1">
-                            <li>Use specific price targets (e.g., "$150,000")</li>
-                            <li>Include time frames (e.g., "by end of 2024")</li>
-                            <li>Specify data sources (e.g., "using CoinGecko")</li>
-                            <li>Avoid subjective terms like "best" or "popular"</li>
+                          <ul className="ml-4 mt-1 list-disc space-y-1">
+                            <li>
+                              Use specific price targets (e.g., "$150,000")
+                            </li>
+                            <li>
+                              Include time frames (e.g., "by end of 2024")
+                            </li>
+                            <li>
+                              Specify data sources (e.g., "using CoinGecko")
+                            </li>
+                            <li>
+                              Avoid subjective terms like "best" or "popular"
+                            </li>
                           </ul>
                         </div>
                       </div>

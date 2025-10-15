@@ -477,8 +477,11 @@ export function usePredictionContract() {
             throw new Error('No ethereum provider available');
           }
         } catch (switchError: any) {
-          console.warn('⚠️ Failed to switch network automatically:', switchError.message);
-          
+          console.warn(
+            '⚠️ Failed to switch network automatically:',
+            switchError.message
+          );
+
           // Try adding the network if it doesn't exist
           if (switchError.code === 4902) {
             try {
@@ -510,7 +513,7 @@ export function usePredictionContract() {
               console.error('❌ Failed to add BSC Testnet:', addError.message);
             }
           }
-          
+
           const errorMsg = `Please switch to BSC Testnet (Chain ID: 97). Current: ${currentChainId || 'Unknown'}`;
           console.error('❌', errorMsg);
           setError(errorMsg);
