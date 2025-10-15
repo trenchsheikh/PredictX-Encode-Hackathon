@@ -580,7 +580,6 @@ export default function HomePage() {
       <HeroSection
         onCreateClick={() => setShowCreateModal(true)}
         onCryptoClick={() => setShowCryptoModal(true)}
-        isAuthenticated={authenticated}
       />
 
       {/* Error Banner */}

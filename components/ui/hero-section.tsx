@@ -9,7 +9,6 @@ import { api } from '@/lib/api-client';
 interface HeroSectionProps {
   onCreateClick: () => void;
   onCryptoClick: () => void;
-  isAuthenticated: boolean;
 }
 
 interface PlatformStats {
@@ -21,7 +20,6 @@ interface PlatformStats {
 export function HeroSection({
   onCreateClick,
   onCryptoClick,
-  isAuthenticated,
 }: HeroSectionProps) {
   const [stats, setStats] = useState<PlatformStats>({
     totalVolume: 0,
