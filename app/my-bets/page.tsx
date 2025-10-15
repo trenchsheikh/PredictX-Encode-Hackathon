@@ -739,16 +739,6 @@ export default function MyBetsPage() {
           {/* Connection Status */}
           {/* <div className="mt-4 rounded-xl border border-gray-700/50 bg-gray-900/60 p-3 backdrop-blur-sm sm:p-4"> */}
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            {/* <div className="flex items-center gap-2 text-sm">
-                <div
-                  className={`h-2 w-2 rounded-full ${contract.error ? 'bg-red-500' : 'bg-green-500'}`}
-                ></div>
-                <span className="font-caption text-white">
-                  {contract.error
-                    ? `Connection Issue: ${contract.error}`
-                    : 'Connected to BSC Testnet'}
-                </span>
-              </div> */}
             <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
                 <Button
                   onClick={switchToBSC}
@@ -770,36 +760,9 @@ export default function MyBetsPage() {
                   className="bg-red-600 text-white hover:bg-red-700"
                 >
                   Resolve Market 6
-                </Button> */}
-              {/* {contract.error && (
-                  <Button
-                    onClick={() => {
-                      // Force refresh the contract connection
-                      window.location.reload();
-                    }}
-                    size="sm"
-                    className="bg-yellow-600 text-white hover:bg-yellow-700"
-                  >
-                    Retry Connection
-                  </Button>
-                )} */}
+                </Button>
             </div>
           </div>
-          {/* {contract.error && (
-              <div className="mt-2 text-xs text-gray-400">
-                <div>
-                  Please check your wallet connection and network settings.
-                </div>
-                <div className="mt-1">
-                  <strong>Debug Info:</strong> Authenticated:{' '}
-                  {authenticated ? 'Yes' : 'No'}, Wallets:{' '}
-                  {wallets?.length || 0}, User:{' '}
-                  {user?.wallet?.address ? 'Connected' : 'Not connected'},
-                  Network: {wallets?.[0]?.chainId || 'Unknown'}
-                </div>
-              </div>
-            )} */}
-          {/* </div> */}
         </div>
 
         {/* Stats Dashboard */}
