@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { ExternalLink, Twitter, MessageCircle, Github, Globe, Shield, Zap } from 'lucide-react';
-import { useI18n } from '@/components/providers/privy-provider';
+import { useI18n } from '@/components/providers/i18n-provider';
 
 const socialLinks = [
   {

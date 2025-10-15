@@ -22,7 +22,7 @@ import {
   AlertCircle
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { useI18n } from '@/components/providers/privy-provider';
+import { useI18n } from '@/components/providers/i18n-provider';
 import { api, getErrorMessage } from '@/lib/api-client';
 
 interface LeaderboardEntry {

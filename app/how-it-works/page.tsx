@@ -21,7 +21,7 @@ import {
   Lock,
   Eye
 } from 'lucide-react';
-import { useI18n } from '@/components/providers/privy-provider';
+import { useI18n } from '@/components/providers/i18n-provider';
 import { cn } from '@/lib/utils';
 
 export default function HowItWorksPage() {

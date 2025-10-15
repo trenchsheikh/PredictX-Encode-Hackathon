@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import { ExternalLink, Twitter, MessageCircle } from 'lucide-react';
 
-import { useI18n } from '@/components/providers/privy-provider';
+import { useI18n } from '@/components/providers/i18n-provider';
 
 export function Footer() {
   const { t } = useI18n();

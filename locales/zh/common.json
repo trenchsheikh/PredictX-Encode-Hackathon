@@ -83,7 +83,7 @@
     "prevent_spam": "为防止垃圾信息，创建者必须参与自己的预测",
     "your_prediction": "您的预测",
     "bnb_amount": "BNB数量",
-    "click_create_will_prompt": "点击"创建投注"将提示您的钱包发送{amount}到金库",
+    "click_create_will_prompt": "点击\"创建投注\"将提示您的钱包发送{amount}到金库",
     "cancel": "取消",
     "creating": "创建中...",
     "create_bet": "创建投注",
