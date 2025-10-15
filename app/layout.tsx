@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { GeistSans } from 'geist/font/sans';
 import './globals.css';
 import { PrivyProviderWrapper } from '@/components/providers/privy-provider';
+import { I18nProvider } from '@/components/providers/i18n-provider';
 import { AnimatedHeader } from '@/components/layout/animated-header';
 import { AnimatedBackground } from '@/components/ui/animated-background';
 import { PageTransition } from '@/components/ui/page-transition';
@@ -59,21 +60,23 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={GeistSans.className}>
-        <PrivyProviderWrapper>
-          <IntroProvider>
-            <div className="relative flex min-h-screen flex-col bg-black">
-              {/* Animated Background */}
-              <AnimatedBackground variant="gradient" />
+        <I18nProvider>
+          <PrivyProviderWrapper>
+            <IntroProvider>
+              <div className="relative flex min-h-screen flex-col bg-black">
+                {/* Animated Background */}
+                <AnimatedBackground variant="gradient" />
 
-              <AnimatedHeader />
-              <main className="relative z-10 flex-1">
-                <ErrorBoundary>
-                  <PageTransition>{children}</PageTransition>
-                </ErrorBoundary>
-              </main>
-            </div>
-          </IntroProvider>
-        </PrivyProviderWrapper>
+                <AnimatedHeader />
+                <main className="relative z-10 flex-1">
+                  <ErrorBoundary>
+                    <PageTransition>{children}</PageTransition>
+                  </ErrorBoundary>
+                </main>
+              </div>
+            </IntroProvider>
+          </PrivyProviderWrapper>
+        </I18nProvider>
       </body>
     </html>
   );

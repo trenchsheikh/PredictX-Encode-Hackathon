@@ -21,9 +21,11 @@ const I18nContext = createContext<I18nContextType>({
 export function I18nProvider({ children }: { children: React.ReactNode }) {
   const { i18n, t } = useTranslation('common');
   const [locale, setLocaleState] = useState<Locale>('zh');
+  const [isClient, setIsClient] = useState(false);
 
-  // Initialize with Chinese as default
+  // Handle client-side mounting to prevent hydration mismatches
   useEffect(() => {
+    setIsClient(true);
     const savedLocale = localStorage.getItem('darkbet-locale') as Locale;
     const initialLocale = savedLocale || 'zh';
     setLocaleState(initialLocale);
@@ -33,7 +35,9 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
   const setLocale = (newLocale: Locale) => {
     setLocaleState(newLocale);
     i18n.changeLanguage(newLocale);
-    localStorage.setItem('darkbet-locale', newLocale);
+    if (isClient) {
+      localStorage.setItem('darkbet-locale', newLocale);
+    }
   };
 
   const value = {
