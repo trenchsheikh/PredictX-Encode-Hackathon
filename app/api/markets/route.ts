@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const RENDER_BACKEND_URL = 'https://darkbet.onrender.com';
+const RENDER_BACKEND_URL = process.env.BACKEND_URL || 'http://localhost:3001';
 export const dynamic = 'force-dynamic';
 
 export async function GET(request: NextRequest) {

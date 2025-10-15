@@ -1,38 +1,35 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { connectDatabase } from '@/lib/database';
+
+const RENDER_BACKEND_URL = process.env.BACKEND_URL || 'http://localhost:3001';
 
 export async function GET(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
   try {
-    await connectDatabase();
-
     const marketId = params.id;
+    const url = `${RENDER_BACKEND_URL}/api/markets/${marketId}`;
 
-    // TODO: Implement actual database query
-    // For now, return placeholder data
-    const market = {
-      id: marketId,
-      title: 'Sample Market',
-      description: 'This is a sample market',
-      status: 'active',
-      category: 'crypto',
-      createdAt: Date.now(),
-      expiresAt: Date.now() + 7 * 24 * 60 * 60 * 1000, // 7 days from now
-    };
-
-    return NextResponse.json({
-      success: true,
-      data: market,
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
     });
+
+    if (!response.ok) {
+      throw new Error(`Backend responded with status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return NextResponse.json(data);
   } catch (error: any) {
     console.error('Error fetching market:', error);
 
     return NextResponse.json(
       {
         success: false,
-        error: 'Failed to fetch market',
+        error: 'Failed to fetch market from backend',
       },
       { status: 500 }
     );
