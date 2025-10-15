@@ -796,6 +796,75 @@ export default function MyBetsPage() {
     bet => predictions[bet.predictionId]?.status === 'resolved'
   ).length;
 
+  /**
+   * Generate real performance data based on user's betting history
+   */
+  const generatePerformanceData = () => {
+    if (userBets.length === 0) {
+      return [
+        { date: 'This Week', winnings: 0, bets: 0 }
+      ];
+    }
+
+    // Group bets by week
+    const weeklyData: { [key: string]: { winnings: number; bets: number; weekStart: Date } } = {};
+    
+    userBets.forEach(bet => {
+      const betDate = new Date(bet.timestamp);
+      const weekStart = new Date(betDate);
+      weekStart.setDate(betDate.getDate() - betDate.getDay()); // Start of week (Sunday)
+      weekStart.setHours(0, 0, 0, 0);
+      
+      const weekKey = weekStart.toISOString().split('T')[0];
+      
+      if (!weeklyData[weekKey]) {
+        weeklyData[weekKey] = { winnings: 0, bets: 0, weekStart };
+      }
+      
+      weeklyData[weekKey].bets += 1;
+      
+      // Calculate winnings for resolved bets
+      if (bet.status === 'resolved' && bet.outcome === 'won') {
+        const payout = bet.payout || 0;
+        weeklyData[weekKey].winnings += payout;
+      }
+    });
+
+    // Convert to array and sort by date
+    const performanceData = Object.values(weeklyData)
+      .sort((a, b) => a.weekStart.getTime() - b.weekStart.getTime())
+      .map((data, index) => ({
+        date: index === Object.keys(weeklyData).length - 1 ? 'This Week' : `Week ${index + 1}`,
+        winnings: data.winnings,
+        bets: data.bets,
+      }));
+
+    // If we have data, ensure we show at least 4 weeks for better visualization
+    if (performanceData.length > 0) {
+      const currentWeek = performanceData[performanceData.length - 1];
+      const weeksToShow = Math.max(4, performanceData.length);
+      
+      const result = [];
+      for (let i = 0; i < weeksToShow; i++) {
+        if (i < performanceData.length - 1) {
+          result.push(performanceData[i]);
+        } else if (i === performanceData.length - 1) {
+          result.push(currentWeek);
+        } else {
+          // Fill in empty weeks with zero data
+          result.push({
+            date: `Week ${i + 1}`,
+            winnings: 0,
+            bets: 0,
+          });
+        }
+      }
+      return result;
+    }
+
+    return performanceData;
+  };
+
   return (
     <div className="relative min-h-screen">
       {/* Page-specific background */}
@@ -912,17 +981,7 @@ export default function MyBetsPage() {
         {/* Performance Chart */}
         <div className="mb-8">
           <PerformanceChart
-            data={[
-              { date: 'Week 1', winnings: 0.5, bets: 2 },
-              { date: 'Week 2', winnings: 1.2, bets: 4 },
-              { date: 'Week 3', winnings: 0.8, bets: 3 },
-              { date: 'Week 4', winnings: 2.1, bets: 5 },
-              {
-                date: 'This Week',
-                winnings: totalPayout,
-                bets: userBets.length,
-              },
-            ]}
+            data={generatePerformanceData()}
             type="area"
           />
         </div>

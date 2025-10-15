@@ -53,7 +53,16 @@ export function PerformanceChart({
 
         <div className="flex items-center space-x-2 text-green-400">
           <TrendingUp className="h-4 w-4" />
-          <span className="text-sm font-medium">+12.5%</span>
+          <span className="text-sm font-medium">
+            {(() => {
+              if (data.length < 2) return '0%';
+              const current = data[data.length - 1].winnings;
+              const previous = data[data.length - 2].winnings;
+              if (previous === 0) return current > 0 ? '+100%' : '0%';
+              const change = ((current - previous) / previous) * 100;
+              return `${change >= 0 ? '+' : ''}${change.toFixed(1)}%`;
+            })()}
+          </span>
         </div>
       </div>
 
