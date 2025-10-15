@@ -45,6 +45,7 @@ BSCSCAN_API_KEY=your_bscscan_api_key
 ```
 
 **⚠️ IMPORTANT:**
+
 - Remove `0x` prefix from private key
 - Never commit `.env` to git
 - Get testnet BNB from: https://testnet.binance.org/faucet-smart
@@ -58,6 +59,7 @@ npm run deploy:testnet
 ```
 
 **Expected Output:**
+
 ```
 🚀 Starting DarkBet contracts deployment...
 📡 Network: bscTestnet (Chain ID: 97)
@@ -77,6 +79,7 @@ npm run deploy:testnet
 ```
 
 **Contract addresses will be saved to:**
+
 - `/deployments/bscTestnet/contracts.json`
 - `/deployments/bscTestnet/Vault.json` (ABI)
 - `/deployments/bscTestnet/PredictionMarket.json` (ABI)
@@ -94,6 +97,7 @@ npx hardhat verify --network bscTestnet 0xYOUR_PREDICTION_MARKET_ADDRESS 0xYOUR_
 ```
 
 **Check verification:**
+
 - Visit: https://testnet.bscscan.com/address/0xYOUR_CONTRACT_ADDRESS
 - Should see green checkmark ✓
 
@@ -189,6 +193,7 @@ npm start
 ```
 
 **Expected Output:**
+
 ```
 🚀 Starting DarkBet Backend API...
 
@@ -215,6 +220,7 @@ npm start
 ```
 
 **Test the API:**
+
 ```bash
 # Health check
 curl http://localhost:3001/health
@@ -294,10 +300,12 @@ Visit: http://localhost:3000
 ### Contracts
 
 **"Insufficient funds for gas"**
+
 - Get testnet BNB from faucet
 - Check balance: add BSC Testnet to MetaMask
 
 **"Contract verification failed"**
+
 - Make sure constructor args are correct
 - Wait a few minutes and retry
 - Check BSCScan for error message
@@ -305,14 +313,17 @@ Visit: http://localhost:3000
 ### Backend
 
 **"Contract addresses not found"**
+
 - Run deployment first: `cd contracts && npm run deploy:testnet`
 - Check `/deployments/bscTestnet/contracts.json` exists
 
 **"MongoDB connection failed"**
+
 - Ensure MongoDB is running: `mongosh`
 - Check connection string in `.env`
 
 **"No blockchain events"**
+
 - Verify RPC URL is correct
 - Check contract addresses match deployed contracts
 - Ensure event listeners started (check logs)
@@ -320,10 +331,12 @@ Visit: http://localhost:3000
 ### Frontend
 
 **"Wrong network"**
+
 - Switch MetaMask to BSC Testnet
 - Chain ID should be 97
 
 **"Transaction failed"**
+
 - Check you have enough BNB for gas
 - Ensure contract addresses are correct in `.env`
 
@@ -345,6 +358,7 @@ pm2 logs darkbet-api
 ### Smart Contract Events
 
 Check on BSCScan:
+
 - Go to: https://testnet.bscscan.com/address/0xYOUR_CONTRACT_ADDRESS
 - Click "Events" tab
 - Should see all emitted events
@@ -381,6 +395,7 @@ db.markets.countDocuments()
 4. Deploy
 
 **Environment Variables:**
+
 - `MONGODB_URI`
 - `BSC_RPC_URL` (mainnet for production!)
 - `NETWORK`
@@ -424,12 +439,14 @@ After successful testnet deployment:
 ## 🤝 Need Help?
 
 **Resources:**
+
 - Hardhat docs: https://hardhat.org/
 - BSC docs: https://docs.bnbchain.org/
 - MongoDB docs: https://docs.mongodb.com/
 - Privy docs: https://docs.privy.io/
 
 **Check logs:**
+
 - Backend: `npm run dev` (shows all logs)
 - Contracts: Check BSCScan events
 - Database: `mongosh` → inspect collections
@@ -438,4 +455,3 @@ After successful testnet deployment:
 
 **Status:** ✅ All code complete, ready for deployment testing  
 **Last Updated:** October 13, 2025
-

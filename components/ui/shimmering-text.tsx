@@ -21,7 +21,7 @@ export function ShimmeringText({
     <span
       className={cn(
         'relative inline-block bg-gradient-to-r from-transparent via-current to-transparent bg-clip-text text-transparent',
-        'bg-[length:200%_100%] animate-shimmer',
+        'animate-shimmer bg-[length:200%_100%]',
         className
       )}
       style={{
@@ -34,5 +34,3 @@ export function ShimmeringText({
     </span>
   );
 }
-
-

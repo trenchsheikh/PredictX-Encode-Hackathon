@@ -77,7 +77,7 @@ export function AnimatedBeam({
 
   return (
     <svg
-      className={cn('absolute inset-0 pointer-events-none', className)}
+      className={cn('pointer-events-none absolute inset-0', className)}
       width="100%"
       height="100%"
     >
@@ -88,7 +88,7 @@ export function AnimatedBeam({
           <stop offset="100%" stopColor={gradientStopColor} stopOpacity="0" />
         </linearGradient>
       </defs>
-      
+
       <path
         ref={pathRef}
         d={pathD}
@@ -99,7 +99,7 @@ export function AnimatedBeam({
         className="transition-opacity duration-300"
         style={{ opacity: isVisible ? 1 : 0 }}
       />
-      
+
       <path
         d={pathD}
         fill="none"
@@ -116,5 +116,3 @@ export function AnimatedBeam({
     </svg>
   );
 }
-
-

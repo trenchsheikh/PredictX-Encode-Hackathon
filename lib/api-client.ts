@@ -4,9 +4,12 @@
  */
 
 // Always use local API routes in production to ensure proper proxying
-const API_BASE_URL = process.env.NODE_ENV === 'production' 
-  ? '/api' 
-  : (process.env.NEXT_PUBLIC_API_URL || process.env.NEXT_PUBLIC_BACKEND_URL || '/api');
+const API_BASE_URL =
+  process.env.NODE_ENV === 'production'
+    ? '/api'
+    : process.env.NEXT_PUBLIC_API_URL ||
+      process.env.NEXT_PUBLIC_BACKEND_URL ||
+      '/api';
 
 // Debug logging
 if (typeof window !== 'undefined') {
@@ -14,7 +17,7 @@ if (typeof window !== 'undefined') {
     NODE_ENV: process.env.NODE_ENV,
     NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
     NEXT_PUBLIC_BACKEND_URL: process.env.NEXT_PUBLIC_BACKEND_URL,
-    API_BASE_URL: API_BASE_URL
+    API_BASE_URL: API_BASE_URL,
   });
 }
 
@@ -34,7 +37,7 @@ async function apiFetch<T>(
 ): Promise<APIResponse<T>> {
   try {
     const url = `${API_BASE_URL}${endpoint}`;
-    
+
     const response = await fetch(url, {
       ...options,
       headers: {
@@ -117,12 +120,15 @@ export const marketAPI = {
   /**
    * Submit a bet commit
    */
-  async commitBet(marketId: string, commitData: {
-    userAddress: string;
-    commitHash: string;
-    amount: string;
-    txHash: string;
-  }) {
+  async commitBet(
+    marketId: string,
+    commitData: {
+      userAddress: string;
+      commitHash: string;
+      amount: string;
+      txHash: string;
+    }
+  ) {
     return apiFetch<any>(`/markets/${marketId}/commit`, {
       method: 'POST',
       body: JSON.stringify(commitData),
@@ -132,13 +138,16 @@ export const marketAPI = {
   /**
    * Reveal a bet
    */
-  async revealBet(marketId: string, revealData: {
-    userAddress: string;
-    outcome: 'yes' | 'no';
-    salt: string;
-    amount: string;
-    txHash: string;
-  }) {
+  async revealBet(
+    marketId: string,
+    revealData: {
+      userAddress: string;
+      outcome: 'yes' | 'no';
+      salt: string;
+      amount: string;
+      txHash: string;
+    }
+  ) {
     return apiFetch<any>(`/markets/${marketId}/reveal`, {
       method: 'POST',
       body: JSON.stringify(revealData),
@@ -148,12 +157,15 @@ export const marketAPI = {
   /**
    * Resolve a market (oracle/admin only)
    */
-  async resolveMarket(marketId: string, resolutionData: {
-    outcome: 'yes' | 'no';
-    reasoning: string;
-    oracleAddress: string;
-    txHash: string;
-  }) {
+  async resolveMarket(
+    marketId: string,
+    resolutionData: {
+      outcome: 'yes' | 'no';
+      reasoning: string;
+      oracleAddress: string;
+      txHash: string;
+    }
+  ) {
     return apiFetch<any>(`/markets/${marketId}/resolve`, {
       method: 'POST',
       body: JSON.stringify(resolutionData),
@@ -211,7 +223,9 @@ export const leaderboardAPI = {
  */
 export const healthAPI = {
   async check() {
-    return apiFetch<{ status: string; timestamp: number }>('/health', { method: 'GET' });
+    return apiFetch<{ status: string; timestamp: number }>('/health', {
+      method: 'GET',
+    });
   },
 };
 
@@ -244,4 +258,3 @@ export const api = {
 };
 
 export default api;
-

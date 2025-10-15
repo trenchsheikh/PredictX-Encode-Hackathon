@@ -37,12 +37,14 @@ AI_API_KEY=
 ## Contract Addresses
 
 These will be filled in once you deploy your smart contracts:
+
 - `NEXT_PUBLIC_VAULT_CONTRACT_ADDRESS` - Address of your vault contract
 - `NEXT_PUBLIC_PREDICTION_CONTRACT_ADDRESS` - Address of your prediction contract
 
 ## For Vercel Deployment
 
 Set these environment variables in your Vercel dashboard:
+
 1. Go to your project settings
 2. Navigate to "Environment Variables"
 3. Add each variable with its production value

@@ -21,7 +21,7 @@ export interface Prediction {
   isHot: boolean;
 }
 
-export type PredictionCategory = 
+export type PredictionCategory =
   | 'sports'
   | 'crypto'
   | 'politics'
@@ -31,11 +31,7 @@ export type PredictionCategory =
   | 'technology'
   | 'custom';
 
-export type PredictionStatus = 
-  | 'active'
-  | 'resolved'
-  | 'cancelled'
-  | 'expired';
+export type PredictionStatus = 'active' | 'resolved' | 'cancelled' | 'expired';
 
 export interface PredictionResolution {
   outcome: 'yes' | 'no';
@@ -79,5 +75,3 @@ export interface FilterOptions {
   maxPrice?: number;
   isHot?: boolean;
 }
-
-

@@ -5,6 +5,7 @@ This guide explains how to set up real AI functionality for the DarkBet predicti
 ## Overview
 
 The AI integration automatically analyzes prediction descriptions and generates:
+
 - **Smart titles** - Clear, concise prediction titles
 - **Categories** - Appropriate categorization (sports, crypto, politics, etc.)
 - **Expiration dates** - Reasonable timeframes based on the prediction type
@@ -14,6 +15,7 @@ The AI integration automatically analyzes prediction descriptions and generates:
 ## Supported AI Providers
 
 ### 1. OpenAI (Recommended)
+
 ```bash
 NEXT_PUBLIC_AI_PROVIDER=openai
 NEXT_PUBLIC_AI_API_KEY=sk-your-openai-api-key
@@ -22,6 +24,7 @@ NEXT_PUBLIC_AI_MODEL=gpt-3.5-turbo
 ```
 
 ### 2. Anthropic Claude
+
 ```bash
 NEXT_PUBLIC_AI_PROVIDER=anthropic
 NEXT_PUBLIC_AI_API_KEY=sk-ant-your-anthropic-api-key
@@ -30,6 +33,7 @@ NEXT_PUBLIC_AI_MODEL=claude-3-sonnet-20240229
 ```
 
 ### 3. Custom API
+
 ```bash
 NEXT_PUBLIC_AI_PROVIDER=custom
 NEXT_PUBLIC_AI_API_KEY=your-custom-api-key
@@ -41,6 +45,7 @@ NEXT_PUBLIC_AI_BASE_URL=https://your-api.com/analyze
 ### Step 1: Get an API Key
 
 **For OpenAI:**
+
 1. Go to [OpenAI Platform](https://platform.openai.com/)
 2. Create an account or sign in
 3. Navigate to API Keys section
@@ -48,6 +53,7 @@ NEXT_PUBLIC_AI_BASE_URL=https://your-api.com/analyze
 5. Copy the key (starts with `sk-`)
 
 **For Anthropic:**
+
 1. Go to [Anthropic Console](https://console.anthropic.com/)
 2. Create an account or sign in
 3. Navigate to API Keys section
@@ -90,6 +96,7 @@ NEXT_PUBLIC_AI_MODEL=gpt-3.5-turbo
 ### Fallback Behavior
 
 If the AI service fails:
+
 - The system falls back to a simple mock analysis
 - Users can still create predictions manually
 - No functionality is lost
@@ -112,7 +119,17 @@ Update the category validation in `components/prediction/create-bet-modal.tsx`:
 
 ```typescript
 const createPredictionSchema = z.object({
-  category: z.enum(['sports', 'crypto', 'politics', 'entertainment', 'weather', 'finance', 'technology', 'custom', 'your-new-category']),
+  category: z.enum([
+    'sports',
+    'crypto',
+    'politics',
+    'entertainment',
+    'weather',
+    'finance',
+    'technology',
+    'custom',
+    'your-new-category',
+  ]),
   // ...
 });
 ```
@@ -147,15 +164,18 @@ To integrate with your own AI API:
 ### Common Issues
 
 **"AI service not initialized" error:**
+
 - Check that `NEXT_PUBLIC_AI_API_KEY` is set correctly
 - Verify the API key is valid and has sufficient credits
 
 **"Failed to parse AI response" error:**
+
 - The AI response format might be unexpected
 - Check the AI service logs for the actual response
 - Consider updating the prompt for better JSON formatting
 
 **Slow AI responses:**
+
 - Try using a faster model (e.g., `gpt-3.5-turbo` instead of `gpt-4`)
 - Check your internet connection
 - Consider implementing a loading state
@@ -184,6 +204,7 @@ This will log AI requests and responses to the browser console.
 ### Other Platforms
 
 Ensure your hosting platform supports:
+
 - Environment variable configuration
 - HTTPS (required for most AI APIs)
 - Node.js runtime
@@ -191,13 +212,16 @@ Ensure your hosting platform supports:
 ## Cost Estimation
 
 ### OpenAI Pricing (as of 2024)
+
 - **GPT-3.5-turbo**: ~$0.001 per prediction analysis
 - **GPT-4**: ~$0.01 per prediction analysis
 
 ### Anthropic Pricing (as of 2024)
+
 - **Claude-3-sonnet**: ~$0.003 per prediction analysis
 
 ### Usage Optimization
+
 - Use GPT-3.5-turbo for cost efficiency
 - Implement caching for repeated analyses
 - Consider rate limiting for high-traffic scenarios
@@ -205,6 +229,7 @@ Ensure your hosting platform supports:
 ## Support
 
 If you encounter issues:
+
 1. Check the browser console for error messages
 2. Verify your API key and configuration
 3. Test with a simple prediction description

@@ -41,29 +41,64 @@ export class BlockchainService {
     console.log('👂 Starting blockchain event listeners...');
 
     // Listen to MarketCreated events
-    this.predictionMarket.on('MarketCreated', async (marketId, creator, title, expiresAt, category, event) => {
-      await this.handleMarketCreated(marketId, creator, title, expiresAt, category, event);
-    });
+    this.predictionMarket.on(
+      'MarketCreated',
+      async (marketId, creator, title, expiresAt, category, event) => {
+        await this.handleMarketCreated(
+          marketId,
+          creator,
+          title,
+          expiresAt,
+          category,
+          event
+        );
+      }
+    );
 
     // Listen to BetCommitted events
-    this.predictionMarket.on('BetCommitted', async (marketId, user, commitHash, amount, event) => {
-      await this.handleBetCommitted(marketId, user, commitHash, amount, event);
-    });
+    this.predictionMarket.on(
+      'BetCommitted',
+      async (marketId, user, commitHash, amount, event) => {
+        await this.handleBetCommitted(
+          marketId,
+          user,
+          commitHash,
+          amount,
+          event
+        );
+      }
+    );
 
     // Listen to BetRevealed events
-    this.predictionMarket.on('BetRevealed', async (marketId, user, outcome, amount, shares, event) => {
-      await this.handleBetRevealed(marketId, user, outcome, amount, shares, event);
-    });
+    this.predictionMarket.on(
+      'BetRevealed',
+      async (marketId, user, outcome, amount, shares, event) => {
+        await this.handleBetRevealed(
+          marketId,
+          user,
+          outcome,
+          amount,
+          shares,
+          event
+        );
+      }
+    );
 
     // Listen to MarketResolved events
-    this.predictionMarket.on('MarketResolved', async (marketId, outcome, reasoning, event) => {
-      await this.handleMarketResolved(marketId, outcome, reasoning, event);
-    });
+    this.predictionMarket.on(
+      'MarketResolved',
+      async (marketId, outcome, reasoning, event) => {
+        await this.handleMarketResolved(marketId, outcome, reasoning, event);
+      }
+    );
 
     // Listen to WinningsClaimed events
-    this.predictionMarket.on('WinningsClaimed', async (marketId, user, amount, event) => {
-      await this.handleWinningsClaimed(marketId, user, amount, event);
-    });
+    this.predictionMarket.on(
+      'WinningsClaimed',
+      async (marketId, user, amount, event) => {
+        await this.handleWinningsClaimed(marketId, user, amount, event);
+      }
+    );
 
     this.isListening = true;
     console.log('✅ Event listeners started successfully');
@@ -82,7 +117,11 @@ export class BlockchainService {
   /**
    * Resolve a market (requires admin wallet)
    */
-  async resolveMarket(marketId: number, outcome: boolean, reasoning: string): Promise<string> {
+  async resolveMarket(
+    marketId: number,
+    outcome: boolean,
+    reasoning: string
+  ): Promise<string> {
     try {
       // Get admin wallet from environment
       const adminPrivateKey = process.env.ADMIN_PRIVATE_KEY;
@@ -94,7 +133,11 @@ export class BlockchainService {
       const contractWithSigner = this.predictionMarket.connect(adminWallet);
 
       // Call resolveMarket function
-      const tx = await (contractWithSigner as any).resolveMarket(marketId, outcome, reasoning);
+      const tx = await (contractWithSigner as any).resolveMarket(
+        marketId,
+        outcome,
+        reasoning
+      );
       const receipt = await tx.wait();
 
       console.log(`✅ Market ${marketId} resolved: ${outcome ? 'YES' : 'NO'}`);
@@ -167,7 +210,10 @@ export class BlockchainService {
         noShares: marketData.noShares.toString(),
         participants: Number(marketData.participants),
         status: Number(marketData.status),
-        txHash: (event as any).transactionHash || (event as any).log?.transactionHash || 'unknown', // Get txHash from event
+        txHash:
+          (event as any).transactionHash ||
+          (event as any).log?.transactionHash ||
+          'unknown', // Get txHash from event
       });
 
       await market.save();
@@ -175,10 +221,13 @@ export class BlockchainService {
 
       // Record transaction
       try {
-        const txHash = (event as any).transactionHash || (event as any).log?.transactionHash || 'unknown';
+        const txHash =
+          (event as any).transactionHash ||
+          (event as any).log?.transactionHash ||
+          'unknown';
         const blockNumber = (event as any).blockNumber || 0;
         const timestamp = Number(marketData.createdAt) * 1000;
-        
+
         await transactionHistoryService.recordTransaction(
           Number(marketId),
           creator,
@@ -203,7 +252,9 @@ export class BlockchainService {
     event: EventLog
   ): Promise<void> {
     try {
-      console.log(`📢 BetCommitted: Market ${marketId}, User ${user.slice(0, 10)}...`);
+      console.log(
+        `📢 BetCommitted: Market ${marketId}, User ${user.slice(0, 10)}...`
+      );
 
       const commitment = new Commitment({
         marketId: Number(marketId),
@@ -212,7 +263,10 @@ export class BlockchainService {
         amount: amount.toString(),
         timestamp: new Date(),
         revealed: false,
-        txHash: (event as any).transactionHash || (event as any).log?.transactionHash || 'unknown',
+        txHash:
+          (event as any).transactionHash ||
+          (event as any).log?.transactionHash ||
+          'unknown',
       });
 
       await commitment.save();
@@ -220,10 +274,13 @@ export class BlockchainService {
 
       // Record transaction
       try {
-        const txHash = (event as any).transactionHash || (event as any).log?.transactionHash || 'unknown';
+        const txHash =
+          (event as any).transactionHash ||
+          (event as any).log?.transactionHash ||
+          'unknown';
         const blockNumber = (event as any).blockNumber || 0;
         const timestamp = Date.now();
-        
+
         await transactionHistoryService.recordTransaction(
           Number(marketId),
           user,
@@ -253,7 +310,9 @@ export class BlockchainService {
     event: EventLog
   ): Promise<void> {
     try {
-      console.log(`📢 BetRevealed: Market ${marketId}, User ${user.slice(0, 10)}..., Outcome ${outcome ? 'YES' : 'NO'}`);
+      console.log(
+        `📢 BetRevealed: Market ${marketId}, User ${user.slice(0, 10)}..., Outcome ${outcome ? 'YES' : 'NO'}`
+      );
 
       // Update commitment to revealed
       await Commitment.updateOne(
@@ -270,7 +329,10 @@ export class BlockchainService {
         amount: amount.toString(),
         revealedAt: new Date(),
         claimed: false,
-        txHash: (event as any).transactionHash || (event as any).log?.transactionHash || 'unknown',
+        txHash:
+          (event as any).transactionHash ||
+          (event as any).log?.transactionHash ||
+          'unknown',
       });
 
       await bet.save();
@@ -295,10 +357,13 @@ export class BlockchainService {
 
       // Record transaction
       try {
-        const txHash = (event as any).transactionHash || (event as any).log?.transactionHash || 'unknown';
+        const txHash =
+          (event as any).transactionHash ||
+          (event as any).log?.transactionHash ||
+          'unknown';
         const blockNumber = (event as any).blockNumber || 0;
         const timestamp = Date.now();
-        
+
         await transactionHistoryService.recordTransaction(
           Number(marketId),
           user,
@@ -306,10 +371,10 @@ export class BlockchainService {
           txHash,
           blockNumber,
           timestamp,
-          { 
+          {
             amount: amount.toString(),
             outcome,
-            shares: shares.toString()
+            shares: shares.toString(),
           }
         );
       } catch (error) {
@@ -327,7 +392,9 @@ export class BlockchainService {
     event: EventLog
   ): Promise<void> {
     try {
-      console.log(`📢 MarketResolved: ${marketId} - Outcome: ${outcome ? 'YES' : 'NO'}`);
+      console.log(
+        `📢 MarketResolved: ${marketId} - Outcome: ${outcome ? 'YES' : 'NO'}`
+      );
 
       await Market.updateOne(
         { marketId: Number(marketId) },
@@ -344,10 +411,13 @@ export class BlockchainService {
 
       // Record transaction
       try {
-        const txHash = (event as any).transactionHash || (event as any).log?.transactionHash || 'unknown';
+        const txHash =
+          (event as any).transactionHash ||
+          (event as any).log?.transactionHash ||
+          'unknown';
         const blockNumber = (event as any).blockNumber || 0;
         const timestamp = Date.now();
-        
+
         await transactionHistoryService.recordTransaction(
           Number(marketId),
           'system', // Market resolution is system-initiated
@@ -372,7 +442,9 @@ export class BlockchainService {
     event: EventLog
   ): Promise<void> {
     try {
-      console.log(`📢 WinningsClaimed: Market ${marketId}, User ${user.slice(0, 10)}..., Amount ${ethers.formatEther(amount)} BNB`);
+      console.log(
+        `📢 WinningsClaimed: Market ${marketId}, User ${user.slice(0, 10)}..., Amount ${ethers.formatEther(amount)} BNB`
+      );
 
       await Bet.updateOne(
         { marketId: Number(marketId), user },
@@ -383,10 +455,13 @@ export class BlockchainService {
 
       // Record transaction
       try {
-        const txHash = (event as any).transactionHash || (event as any).log?.transactionHash || 'unknown';
+        const txHash =
+          (event as any).transactionHash ||
+          (event as any).log?.transactionHash ||
+          'unknown';
         const blockNumber = (event as any).blockNumber || 0;
         const timestamp = Date.now();
-        
+
         await transactionHistoryService.recordTransaction(
           Number(marketId),
           user,
@@ -421,40 +496,77 @@ export class BlockchainService {
 
       // Get MarketCreated events
       const marketCreatedFilter = this.predictionMarket.filters.MarketCreated();
-      const marketCreatedEvents = await this.predictionMarket.queryFilter(marketCreatedFilter, start, end);
+      const marketCreatedEvents = await this.predictionMarket.queryFilter(
+        marketCreatedFilter,
+        start,
+        end
+      );
 
       for (const event of marketCreatedEvents) {
         if (event instanceof EventLog) {
           const [marketId, creator, title, expiresAt, category] = event.args;
-          await this.handleMarketCreated(marketId, creator, title, expiresAt, category, event);
+          await this.handleMarketCreated(
+            marketId,
+            creator,
+            title,
+            expiresAt,
+            category,
+            event
+          );
         }
       }
 
       // Get BetCommitted events
       const betCommittedFilter = this.predictionMarket.filters.BetCommitted();
-      const betCommittedEvents = await this.predictionMarket.queryFilter(betCommittedFilter, start, end);
+      const betCommittedEvents = await this.predictionMarket.queryFilter(
+        betCommittedFilter,
+        start,
+        end
+      );
 
       for (const event of betCommittedEvents) {
         if (event instanceof EventLog) {
           const [marketId, user, commitHash, amount] = event.args;
-          await this.handleBetCommitted(marketId, user, commitHash, amount, event);
+          await this.handleBetCommitted(
+            marketId,
+            user,
+            commitHash,
+            amount,
+            event
+          );
         }
       }
 
       // Get BetRevealed events
       const betRevealedFilter = this.predictionMarket.filters.BetRevealed();
-      const betRevealedEvents = await this.predictionMarket.queryFilter(betRevealedFilter, start, end);
+      const betRevealedEvents = await this.predictionMarket.queryFilter(
+        betRevealedFilter,
+        start,
+        end
+      );
 
       for (const event of betRevealedEvents) {
         if (event instanceof EventLog) {
           const [marketId, user, outcome, amount, shares] = event.args;
-          await this.handleBetRevealed(marketId, user, outcome, amount, shares, event);
+          await this.handleBetRevealed(
+            marketId,
+            user,
+            outcome,
+            amount,
+            shares,
+            event
+          );
         }
       }
 
       // Get MarketResolved events
-      const marketResolvedFilter = this.predictionMarket.filters.MarketResolved();
-      const marketResolvedEvents = await this.predictionMarket.queryFilter(marketResolvedFilter, start, end);
+      const marketResolvedFilter =
+        this.predictionMarket.filters.MarketResolved();
+      const marketResolvedEvents = await this.predictionMarket.queryFilter(
+        marketResolvedFilter,
+        start,
+        end
+      );
 
       for (const event of marketResolvedEvents) {
         if (event instanceof EventLog) {
@@ -470,4 +582,3 @@ export class BlockchainService {
 
 // Export singleton instance
 export const blockchainService = new BlockchainService();
-

@@ -21,9 +21,10 @@ export async function connectDatabase() {
       bufferCommands: false,
     };
 
-    const mongoUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/darkbet';
-    
-    cached.promise = mongoose.connect(mongoUri, opts).then((mongoose) => {
+    const mongoUri =
+      process.env.MONGODB_URI || 'mongodb://localhost:27017/darkbet';
+
+    cached.promise = mongoose.connect(mongoUri, opts).then(mongoose => {
       console.log('✅ MongoDB connected successfully');
       return mongoose;
     });

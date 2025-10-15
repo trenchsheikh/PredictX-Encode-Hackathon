@@ -18,7 +18,17 @@ const marketSchema = new Schema<IMarketDocument>(
     yesShares: { type: String, default: '0' },
     noShares: { type: String, default: '0' },
     participants: { type: Number, default: 0 },
-    status: { type: Number, enum: [MarketStatus.Active, MarketStatus.Resolving, MarketStatus.Resolved, MarketStatus.Cancelled], default: MarketStatus.Active, index: true },
+    status: {
+      type: Number,
+      enum: [
+        MarketStatus.Active,
+        MarketStatus.Resolving,
+        MarketStatus.Resolved,
+        MarketStatus.Cancelled,
+      ],
+      default: MarketStatus.Active,
+      index: true,
+    },
     outcome: { type: Boolean },
     resolutionReasoning: { type: String },
     txHash: { type: String, required: true },
@@ -33,4 +43,3 @@ marketSchema.index({ status: 1, expiresAt: 1 });
 marketSchema.index({ creator: 1, createdAt: -1 });
 
 export const Market = mongoose.model<IMarketDocument>('Market', marketSchema);
-

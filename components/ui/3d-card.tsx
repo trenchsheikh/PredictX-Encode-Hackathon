@@ -21,13 +21,13 @@ export function Card3D({ children, className, intensity = 0.1 }: Card3DProps) {
     const rect = cardRef.current.getBoundingClientRect();
     const centerX = rect.left + rect.width / 2;
     const centerY = rect.top + rect.height / 2;
-    
+
     const mouseX = e.clientX - centerX;
     const mouseY = e.clientY - centerY;
-    
+
     const rotateXValue = (mouseY / rect.height) * intensity * 100;
     const rotateYValue = (mouseX / rect.width) * intensity * 100;
-    
+
     setRotateX(rotateXValue);
     setRotateY(rotateYValue);
   };
@@ -63,4 +63,3 @@ export function Card3D({ children, className, intensity = 0.1 }: Card3DProps) {
     </div>
   );
 }
-

@@ -10,14 +10,19 @@ const router = Router();
 router.get('/market/:marketId', async (req: Request, res: Response) => {
   try {
     const { marketId } = req.params;
-    const history = await transactionHistoryService.getMarketTransactionHistory(parseInt(marketId));
+    const history = await transactionHistoryService.getMarketTransactionHistory(
+      parseInt(marketId)
+    );
 
     res.json({
       success: true,
       data: history,
     });
   } catch (error: any) {
-    console.error(`Failed to get transaction history for market ${req.params.marketId}:`, error);
+    console.error(
+      `Failed to get transaction history for market ${req.params.marketId}:`,
+      error
+    );
     res.status(500).json({
       success: false,
       error: error.message || 'Failed to get transaction history',
@@ -33,8 +38,9 @@ router.get('/user/:address', async (req: Request, res: Response) => {
   try {
     const { address } = req.params;
     const limit = parseInt(req.query.limit as string) || 50;
-    
-    const transactions = await transactionHistoryService.getUserTransactionHistory(address, limit);
+
+    const transactions =
+      await transactionHistoryService.getUserTransactionHistory(address, limit);
 
     res.json({
       success: true,
@@ -59,7 +65,8 @@ router.get('/user/:address', async (req: Request, res: Response) => {
 router.get('/recent', async (req: Request, res: Response) => {
   try {
     const limit = parseInt(req.query.limit as string) || 20;
-    const transactions = await transactionHistoryService.getRecentTransactions(limit);
+    const transactions =
+      await transactionHistoryService.getRecentTransactions(limit);
 
     res.json({
       success: true,
@@ -84,7 +91,9 @@ router.get('/recent', async (req: Request, res: Response) => {
 router.get('/summary/:marketId', async (req: Request, res: Response) => {
   try {
     const { marketId } = req.params;
-    const summary = await transactionHistoryService.getTransactionSummary(parseInt(marketId));
+    const summary = await transactionHistoryService.getTransactionSummary(
+      parseInt(marketId)
+    );
 
     res.json({
       success: true,
@@ -94,7 +103,10 @@ router.get('/summary/:marketId', async (req: Request, res: Response) => {
       },
     });
   } catch (error: any) {
-    console.error(`Failed to get transaction summary for market ${req.params.marketId}:`, error);
+    console.error(
+      `Failed to get transaction summary for market ${req.params.marketId}:`,
+      error
+    );
     res.status(500).json({
       success: false,
       error: error.message || 'Failed to get transaction summary',
@@ -109,7 +121,8 @@ router.get('/summary/:marketId', async (req: Request, res: Response) => {
 router.get('/:txHash', async (req: Request, res: Response) => {
   try {
     const { txHash } = req.params;
-    const transaction = await transactionHistoryService.getTransactionByHash(txHash);
+    const transaction =
+      await transactionHistoryService.getTransactionByHash(txHash);
 
     if (!transaction) {
       return res.status(404).json({
