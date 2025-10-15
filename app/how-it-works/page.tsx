@@ -214,10 +214,10 @@ export default function HowItWorksPage() {
         {/* Header */}
         <div className="mb-16 text-center">
           <h1 className="font-brand-large gradient-text-brand mb-6 text-4xl font-bold tracking-tight text-white sm:text-6xl">
-            {t('how_darkbet_works')}
+            {t('how_it_works.how_darkbet_works')}
           </h1>
           <p className="mx-auto max-w-3xl text-lg leading-8 text-gray-300">
-            {t('platform_description')}
+            {t('how_it_works.platform_description')}
           </p>
         </div>
 
@@ -242,10 +242,10 @@ export default function HowItWorksPage() {
                   <Database className="h-6 w-6 text-black" />
                 </div>
                 <h3 className="mb-2 text-lg font-semibold text-white">
-                  {t('blockchain_based')}
+                  {t('how_it_works.blockchain_based')}
                 </h3>
                 <p className="text-sm text-gray-200">
-                  {t('blockchain_description')}
+                  {t('how_it_works.blockchain_description')}
                 </p>
               </div>
 
@@ -254,9 +254,11 @@ export default function HowItWorksPage() {
                   <Bot className="h-6 w-6 text-black" />
                 </div>
                 <h3 className="mb-2 text-lg font-semibold text-white">
-                  🤖 {t('ai_powered')}
+                  {t('how_it_works.ai_powered')}
                 </h3>
-                <p className="text-sm text-gray-200">{t('ai_description')}</p>
+                <p className="text-sm text-gray-200">
+                  {t('how_it_works.ai_description')}
+                </p>
               </div>
 
               <div className="text-center">
@@ -264,10 +266,10 @@ export default function HowItWorksPage() {
                   <Zap className="h-6 w-6 text-black" />
                 </div>
                 <h3 className="mb-2 text-lg font-semibold text-white">
-                  ⚡ {t('real_time')}
+                  {t('how_it_works.real_time')}
                 </h3>
                 <p className="text-sm text-gray-200">
-                  {t('real_time_description')}
+                  {t('how_it_works.real_time_description')}
                 </p>
               </div>
             </div>
@@ -282,10 +284,10 @@ export default function HowItWorksPage() {
                 <Eye className="h-8 w-8 text-black" />
               </div>
               <h2 className="mb-2 text-2xl font-bold text-white">
-                {t('dark_pools_title')}
+                {t('how_it_works.dark_pools_title')}
               </h2>
               <p className="mx-auto max-w-4xl text-gray-200">
-                {t('dark_pools_description')}
+                {t('how_it_works.dark_pools_description')}
               </p>
             </div>
 
@@ -295,10 +297,10 @@ export default function HowItWorksPage() {
                   <Lock className="h-6 w-6 text-white" />
                 </div>
                 <h3 className="mb-2 text-lg font-semibold text-white">
-                  {t('privacy')}
+                  {t('how_it_works.privacy')}
                 </h3>
                 <p className="text-sm text-gray-200">
-                  {t('privacy_description')}
+                  {t('how_it_works.privacy_description')}
                 </p>
               </div>
 
@@ -307,10 +309,10 @@ export default function HowItWorksPage() {
                   <Shield className="h-6 w-6 text-white" />
                 </div>
                 <h3 className="mb-2 text-lg font-semibold text-white">
-                  {t('anti_manipulation')}
+                  {t('how_it_works.anti_manipulation')}
                 </h3>
                 <p className="text-sm text-gray-200">
-                  {t('anti_manipulation_description')}
+                  {t('how_it_works.anti_manipulation_description')}
                 </p>
               </div>
 
@@ -319,25 +321,25 @@ export default function HowItWorksPage() {
                   <Users className="h-6 w-6 text-white" />
                 </div>
                 <h3 className="mb-2 text-lg font-semibold text-white">
-                  {t('clean_slate')}
+                  {t('how_it_works.clean_slate')}
                 </h3>
                 <p className="text-sm text-gray-200">
-                  {t('clean_slate_description')}
+                  {t('how_it_works.clean_slate_description')}
                 </p>
               </div>
             </div>
 
             <div className="rounded-lg border border-yellow-500/30 bg-black/50 p-4 sm:p-6">
               <h3 className="mb-4 text-center text-lg font-semibold text-white">
-                {t('dark_pools_comparison_title')}
+                {t('how_it_works.dark_pools_comparison_title')}
               </h3>
               <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                 <div>
                   <h4 className="text-md mb-2 font-medium text-red-400">
-                    ❌ {t('traditional_markets_title')}
+                    ❌ {t('how_it_works.traditional_markets_title')}
                   </h4>
                   <ul className="space-y-1 text-sm text-gray-200">
-                    {t('traditional_markets_points')
+                    {t('how_it_works.traditional_markets_points')
                       .split('|')
                       .map((point, index) => (
                         <li key={index}>• {point}</li>
@@ -346,10 +348,10 @@ export default function HowItWorksPage() {
                 </div>
                 <div>
                   <h4 className="text-md mb-2 font-medium text-green-400">
-                    ✅ {t('darkbet_dark_pools_title')}
+                    ✅ {t('how_it_works.darkbet_dark_pools_title')}
                   </h4>
                   <ul className="space-y-1 text-sm text-gray-200">
-                    {t('darkbet_dark_pools_points')
+                    {t('how_it_works.darkbet_dark_pools_points')
                       .split('|')
                       .map((point, index) => (
                         <li key={index}>• {point}</li>
