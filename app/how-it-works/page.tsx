@@ -11,9 +11,7 @@ import {
   Shield,
   Zap,
   Users,
-  Clock,
   CheckCircle,
-  AlertCircle,
   ExternalLink,
   ArrowRight,
   Sparkles,
@@ -22,7 +20,6 @@ import {
   Eye,
 } from 'lucide-react';
 import { useI18n } from '@/components/providers/privy-provider';
-import { cn } from '@/lib/utils';
 
 export default function HowItWorksPage() {
   const { t } = useI18n();
@@ -204,7 +201,7 @@ export default function HowItWorksPage() {
 
   const securityFeatures = [
     {
-      title: '🔐 Blockchain Security',
+      title: 'Blockchain Security',
       icon: Lock,
       items: [
         'All transactions on BNB Smart Chain',
@@ -214,7 +211,7 @@ export default function HowItWorksPage() {
       ],
     },
     {
-      title: '🛡️ Smart Protections',
+      title: 'Smart Protections',
       icon: Shield,
       items: [
         'Server-side price calculations',
@@ -227,7 +224,7 @@ export default function HowItWorksPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800">
-      <div className="mx-auto max-w-7xl px-6 py-16 lg:px-8">
+      <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-16 lg:px-8">
         {/* Header */}
         <div className="mb-16 text-center">
           <h1 className="font-brand-large gradient-text-brand mb-6 text-4xl font-bold tracking-tight text-white sm:text-6xl">
@@ -240,7 +237,7 @@ export default function HowItWorksPage() {
 
         {/* Platform Overview */}
         <Card className="mb-16 border-black bg-black/90">
-          <CardContent className="p-8">
+          <CardContent className="p-4 sm:p-8">
             <div className="mb-8 text-center">
               <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-yellow-500">
                 <Target className="h-8 w-8 text-black" />
@@ -254,13 +251,13 @@ export default function HowItWorksPage() {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+            <div className="grid grid-cols-1 gap-4 sm:gap-6 md:grid-cols-3">
               <div className="text-center">
                 <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-yellow-500">
                   <Database className="h-6 w-6 text-black" />
                 </div>
                 <h3 className="mb-2 text-lg font-semibold text-white">
-                  🔗 {t('blockchain_based')}
+                  {t('blockchain_based')}
                 </h3>
                 <p className="text-sm text-gray-200">
                   {t('blockchain_description')}
@@ -294,7 +291,7 @@ export default function HowItWorksPage() {
 
         {/* Dark Pools Section */}
         <Card className="mb-16 border-black bg-black/90">
-          <CardContent className="p-8">
+          <CardContent className="p-4 sm:p-8">
             <div className="mb-8 text-center">
               <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-yellow-500">
                 <Eye className="h-8 w-8 text-black" />
@@ -307,7 +304,7 @@ export default function HowItWorksPage() {
               </p>
             </div>
 
-            <div className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-3">
+            <div className="mb-8 grid grid-cols-1 gap-4 sm:gap-6 md:grid-cols-3">
               <div className="rounded-lg border border-yellow-500/30 bg-yellow-500/20 p-6 text-center">
                 <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-yellow-500">
                   <Lock className="h-6 w-6 text-white" />
@@ -345,7 +342,7 @@ export default function HowItWorksPage() {
               </div>
             </div>
 
-            <div className="rounded-lg border border-yellow-500/30 bg-black/50 p-6">
+            <div className="rounded-lg border border-yellow-500/30 bg-black/50 p-4 sm:p-6">
               <h3 className="mb-4 text-center text-lg font-semibold text-white">
                 {t('dark_pools_comparison_title')}
               </h3>
@@ -381,22 +378,22 @@ export default function HowItWorksPage() {
         <div className="space-y-16">
           {steps.map((step, index) => (
             <div key={step.number} className="relative">
-              <div className="flex items-start gap-8">
+              <div className="flex flex-col items-start gap-4 sm:flex-row sm:gap-8">
                 <div className="flex-shrink-0">
-                  <div className="flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-yellow-400 to-yellow-600 text-xl font-bold text-black">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-yellow-400 to-yellow-600 text-xl font-bold text-black sm:h-16 sm:w-16">
                     {step.number}
                   </div>
                 </div>
 
                 <div className="flex-1">
-                  <div className="mb-4 flex items-center gap-3">
+                  <div className="mb-3 flex items-center gap-3 sm:mb-4">
                     <step.icon className="h-8 w-8 text-yellow-400" />
-                    <h2 className="font-heading text-3xl font-bold text-white">
+                    <h2 className="font-heading text-2xl font-bold text-white sm:text-3xl">
                       {step.title}
                     </h2>
                   </div>
 
-                  <p className="mb-6 text-lg text-gray-300">
+                  <p className="mb-6 text-base text-gray-300 sm:text-lg">
                     {step.description}
                   </p>
 
@@ -408,7 +405,7 @@ export default function HowItWorksPage() {
                           key={detailIndex}
                           className="border-l-4 border-black border-l-primary bg-black/90"
                         >
-                          <CardContent className="p-6">
+                          <CardContent className="p-4 sm:p-6">
                             <div className="flex items-start gap-4">
                               <div className="flex-shrink-0">
                                 <Badge
@@ -479,7 +476,7 @@ export default function HowItWorksPage() {
                             key={layerIndex}
                             className="border-black bg-black/90 text-center"
                           >
-                            <CardContent className="p-6">
+                            <CardContent className="p-4 sm:p-6">
                               <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-yellow-500">
                                 <layer.icon className="h-6 w-6 text-black" />
                               </div>
@@ -506,7 +503,7 @@ export default function HowItWorksPage() {
                         We use industry-leading APIs for verification (sources
                         masked for security):
                       </p>
-                      <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+                      <div className="grid grid-cols-2 gap-2 sm:gap-3 md:grid-cols-4">
                         {step.sources.map((source, sourceIndex) => (
                           <div
                             key={sourceIndex}
@@ -598,8 +595,8 @@ export default function HowItWorksPage() {
               Security & Transparency
             </CardTitle>
           </CardHeader>
-          <CardContent className="p-8">
-            <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+          <CardContent className="p-4 sm:p-8">
+            <div className="grid grid-cols-1 gap-6 sm:gap-8 md:grid-cols-2">
               {securityFeatures.map((feature, index) => (
                 <div key={index}>
                   <div className="mb-4 flex items-center gap-3">

@@ -9,9 +9,7 @@ import { IntroProvider } from '@/components/providers/intro-provider';
 import { ErrorBoundary } from '@/components/ui/error-boundary';
 
 export const metadata: Metadata = {
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_APP_URL || 'https://darkbet.vercel.app'
-  ),
+  metadataBase: new URL('https://darkbet.fun'),
   title: 'DarkBet - DarkPool Betting Platform',
   description:
     'DarkPool Betting - The future of prediction markets. Built on BNB Smart Chain with AI-driven results and fully on-chain execution.',

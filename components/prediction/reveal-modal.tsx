@@ -97,7 +97,7 @@ export function RevealModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="border-gray-800 bg-black sm:max-w-[550px]">
+      <DialogContent className="border-gray-800 bg-black p-4 sm:max-w-[550px] sm:p-6">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2 text-white">
             <Eye className="h-5 w-5 text-yellow-500" />

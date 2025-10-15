@@ -172,15 +172,15 @@ export function TransactionStatus({
   // Dialog version
   return (
     <Dialog open={showDialog} onOpenChange={onClose}>
-      <DialogContent className="border-gray-700/50 bg-black backdrop-blur-md sm:max-w-[500px]">
+      <DialogContent className="border-gray-700/50 bg-black p-4 backdrop-blur-md sm:max-w-[500px] sm:p-6">
         <DialogHeader>
-          <div className="flex flex-col items-center space-y-4 py-4 text-center">
+          <div className="flex flex-col items-center space-y-3 py-2 text-center sm:space-y-4 sm:py-4">
             {config.icon}
             <div>
-              <DialogTitle className="mb-2 text-xl text-white">
+              <DialogTitle className="mb-2 text-lg text-white sm:text-xl">
                 {config.title}
               </DialogTitle>
-              <DialogDescription className="text-sm text-gray-300">
+              <DialogDescription className="max-h-32 overflow-auto whitespace-pre-wrap break-all text-xs text-gray-300 sm:max-h-40 sm:text-sm">
                 {config.description}
               </DialogDescription>
             </div>
@@ -193,8 +193,8 @@ export function TransactionStatus({
               <label className="text-sm font-medium text-white">
                 Transaction Hash
               </label>
-              <div className="flex items-center gap-2">
-                <code className="flex-1 break-all rounded border border-gray-700/50 bg-black px-3 py-2 text-xs text-white">
+              <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+                <code className="w-full break-all rounded border border-gray-700/50 bg-black px-3 py-2 text-xs text-white">
                   {txHash}
                 </code>
                 <Button
@@ -236,7 +236,9 @@ export function TransactionStatus({
               <AlertTriangle className="mt-0.5 h-4 w-4 flex-shrink-0 text-red-400" />
               <div className="text-sm text-red-400">
                 <p className="mb-1 font-semibold">Error Details:</p>
-                <p className="text-xs">{error}</p>
+                <p className="max-h-48 overflow-auto whitespace-pre-wrap break-all text-xs">
+                  {error}
+                </p>
               </div>
             </div>
           )}

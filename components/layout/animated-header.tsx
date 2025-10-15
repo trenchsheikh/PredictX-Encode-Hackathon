@@ -225,14 +225,14 @@ export function AnimatedHeader() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 lg:hidden"
+            className="fixed inset-0 z-50 bg-black/60 lg:hidden"
           >
             <motion.div
               initial={{ x: '100%' }}
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className="fixed inset-y-0 right-0 w-full max-w-sm border-l border-gray-700/50 bg-gradient-to-b from-gray-900 to-gray-800 shadow-2xl backdrop-blur-md"
+              className="fixed inset-y-0 right-0 w-full max-w-sm border-l border-gray-700/50 bg-black shadow-2xl"
             >
               <div className="flex items-center justify-between border-b border-gray-700/30 p-4">
                 <Link
