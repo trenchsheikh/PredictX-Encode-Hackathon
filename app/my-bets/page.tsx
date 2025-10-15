@@ -941,7 +941,7 @@ export default function MyBetsPage() {
         {/* Tabs */}
         <div className="mb-6">
           <div className="border-b border-black">
-            <nav className="-mb-px flex flex-wrap gap-4 sm:space-x-8">
+            <nav className="-mb-px flex flex-wrap sm:space-x-8">
               {[
                 { key: 'all', label: t('all_bets'), count: userBets.length },
                 { key: 'active', label: t('active'), count: activeBets },

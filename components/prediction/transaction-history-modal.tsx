@@ -161,7 +161,7 @@ export function TransactionHistoryModal({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-h-[90vh] max-w-4xl overflow-y-auto bg-black p-4 text-white sm:p-6">
         <DialogHeader>
-          <DialogTitle className="text-xl font-bold text-transparent text-white sm:text-2xl">
+          <DialogTitle className="text-xl font-bold text-white sm:text-2xl">
             Transaction History
           </DialogTitle>
           <div className="text-xs text-gray-400 sm:text-sm">
