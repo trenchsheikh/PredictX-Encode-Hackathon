@@ -460,10 +460,62 @@ export function usePredictionContract() {
 
       // Check if we're on BSC Testnet (chainId 97)
       if (currentChainId !== 97) {
-        const errorMsg = `Please switch to BSC Testnet (Chain ID: 97). Current: ${currentChainId || 'Unknown'}`;
-        console.error('❌', errorMsg);
-        setError(errorMsg);
-        return null;
+        console.log('🔄 Attempting to switch to BSC Testnet...');
+        try {
+          // Try to switch network automatically
+          if (typeof window !== 'undefined' && window.ethereum) {
+            await window.ethereum.request({
+              method: 'wallet_switchEthereumChain',
+              params: [{ chainId: '0x61' }], // BSC Testnet
+            });
+            console.log('✅ Successfully switched to BSC Testnet');
+            // Wait a moment for the network switch to complete
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            // Retry getting the signer after network switch
+            return await getSigner();
+          } else {
+            throw new Error('No ethereum provider available');
+          }
+        } catch (switchError: any) {
+          console.warn('⚠️ Failed to switch network automatically:', switchError.message);
+          
+          // Try adding the network if it doesn't exist
+          if (switchError.code === 4902) {
+            try {
+              console.log('🔍 Adding BSC Testnet network...');
+              await window.ethereum.request({
+                method: 'wallet_addEthereumChain',
+                params: [
+                  {
+                    chainId: '0x61',
+                    chainName: 'BSC Testnet',
+                    nativeCurrency: {
+                      name: 'BNB',
+                      symbol: 'BNB',
+                      decimals: 18,
+                    },
+                    rpcUrls: [
+                      'https://data-seed-prebsc-1-s1.binance.org:8545/',
+                    ],
+                    blockExplorerUrls: ['https://testnet.bscscan.com/'],
+                  },
+                ],
+              });
+              console.log('✅ Added BSC Testnet network');
+              // Wait a moment for the network to be added
+              await new Promise(resolve => setTimeout(resolve, 1000));
+              // Retry getting the signer after adding network
+              return await getSigner();
+            } catch (addError: any) {
+              console.error('❌ Failed to add BSC Testnet:', addError.message);
+            }
+          }
+          
+          const errorMsg = `Please switch to BSC Testnet (Chain ID: 97). Current: ${currentChainId || 'Unknown'}`;
+          console.error('❌', errorMsg);
+          setError(errorMsg);
+          return null;
+        }
       }
 
       // Also try the provider-based check as backup

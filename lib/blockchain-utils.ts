@@ -90,10 +90,16 @@ export function getContractAddresses() {
   const vault = process.env.NEXT_PUBLIC_VAULT_CONTRACT_ADDRESS;
 
   if (predictionMarket && vault) {
-    return {
-      predictionMarket,
-      vault,
-    };
+    console.log('Using environment variables for contract addresses');
+    // Validate addresses are proper Ethereum addresses
+    if (isValidAddress(predictionMarket) && isValidAddress(vault)) {
+      return {
+        predictionMarket,
+        vault,
+      };
+    } else {
+      console.warn('Invalid contract addresses in environment variables, using fallback');
+    }
   }
 
   // Fallback to hardcoded addresses from deployment
@@ -101,17 +107,30 @@ export function getContractAddresses() {
     'Environment variables not set, using hardcoded contract addresses'
   );
   return {
-    predictionMarket: '0x672e13Cc6196c784EF3bf0762A18d2645F0f12ca',
-    vault: '0x9D4f9aFed1572a7947a1f6619111d3FfED66db17',
+    predictionMarket: '0x7282D4d20e072d1e0Ab344916BA7DF2B66162e8E',
+    vault: '0xbB37B8A3fB2691AB44e561df427C6D63F684535E',
   };
 }
 
 /**
- * Format timestamp for datetime-local input
+ * Validate if an address is a proper Ethereum address
+ */
+function isValidAddress(address: string): boolean {
+  return /^0x[a-fA-F0-9]{40}$/.test(address);
+}
+
+/**
+ * Format timestamp for datetime-local input (local time)
  */
 export function formatDateTimeLocal(timestamp: number): string {
   const date = new Date(timestamp);
-  return date.toISOString().slice(0, 16);
+  // Get local time in YYYY-MM-DDTHH:MM format
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  return `${year}-${month}-${day}T${hours}:${minutes}`;
 }
 
 /**
@@ -254,12 +273,22 @@ export async function estimateGas(
   args: any[]
 ): Promise<bigint> {
   try {
+    // Validate contract address before estimation
+    if (!contract.target || typeof contract.target !== 'string') {
+      throw new Error('Invalid contract address');
+    }
+    
+    // Check if address is valid format
+    if (!/^0x[a-fA-F0-9]{40}$/.test(contract.target)) {
+      throw new Error('Contract address is not a valid Ethereum address');
+    }
+    
     const gasEstimate = await contract[method].estimateGas(...args);
     // Add 20% buffer
     return (gasEstimate * 120n) / 100n;
   } catch (error) {
     console.error('Gas estimation failed:', error);
-    // Return default gas limit
+    // Return default gas limit for BSC
     return 500000n;
   }
 }

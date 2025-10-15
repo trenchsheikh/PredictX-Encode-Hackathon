@@ -18,15 +18,22 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { CryptoSelector, CryptoData } from './crypto-selector';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   TrendingUp,
   TrendingDown,
   Calendar,
   DollarSign,
   AlertCircle,
+  Bot,
+  Loader2,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { formatDateTimeLocal } from '@/lib/blockchain-utils';
+import {
+  getAIService,
+  getDefaultAIConfig,
+  initializeAI,
+} from '@/lib/ai-service';
 
 interface CryptoPredictionModalProps {
   open: boolean;
@@ -57,18 +64,68 @@ export function CryptoPredictionModal({
   const [targetPrice, setTargetPrice] = useState<string>('');
   const [operator, setOperator] = useState<'above' | 'below'>('above');
   const [deadline, setDeadline] = useState<string>(
-    new Date(Date.now() + 900000).toISOString().slice(0, 16)
+    formatDateTimeLocal(Date.now() + 300000)
   );
   const [customTitle, setCustomTitle] = useState<string>('');
   const [customDescription, setCustomDescription] = useState<string>('');
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [aiGenerated, setAiGenerated] = useState<{
+    title: string;
+    description: string;
+  } | null>(null);
+  const [aiError, setAiError] = useState<string>('');
 
   const handleReset = () => {
     setSelectedCrypto(null);
     setTargetPrice('');
     setOperator('above');
-    setDeadline(new Date(Date.now() + 900000).toISOString().slice(0, 16));
+    setDeadline(formatDateTimeLocal(Date.now() + 300000));
     setCustomTitle('');
     setCustomDescription('');
+    setAiGenerated(null);
+    setAiError('');
+  };
+
+  const analyzeWithAI = async () => {
+    if (!customTitle.trim() && !customDescription.trim()) return;
+
+    setIsAnalyzing(true);
+    setAiError('');
+    setAiGenerated(null);
+    
+    try {
+      // Initialize AI service if not already done
+      try {
+        getAIService();
+      } catch {
+        // Initialize with default config from environment variables
+        const config = getDefaultAIConfig();
+        initializeAI(config);
+      }
+
+      const aiService = getAIService();
+      // Combine title and description as user suggestion
+      const userSuggestion = `${customTitle}${customDescription ? ` - ${customDescription}` : ''}`;
+      const analysis = await aiService.analyzePrediction(
+        userSuggestion,
+        'crypto'
+      );
+
+      setAiGenerated({
+        title: analysis.title,
+        description: analysis.description,
+      });
+
+      // Auto-fill the form with AI-generated content
+      setCustomTitle(analysis.title);
+      setCustomDescription(analysis.description);
+    } catch (error) {
+      console.error('AI analysis failed:', error);
+      const errorMessage = error instanceof Error ? error.message : 'AI analysis failed';
+      setAiError(errorMessage);
+    } finally {
+      setIsAnalyzing(false);
+    }
   };
 
   const handleSubmitForm = () => {
@@ -118,8 +175,8 @@ export function CryptoPredictionModal({
     return false;
   };
 
-  // Calculate minimum deadline (15 minutes from now)
-  const minDeadline = new Date(Date.now() + 900000).toISOString().slice(0, 16);
+  // Calculate minimum deadline (5 minutes from now)
+  const minDeadline = formatDateTimeLocal(Date.now() + 300000);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -160,26 +217,53 @@ export function CryptoPredictionModal({
                 </Label>
               </div>
 
-              <Tabs
-                value={predictionType}
-                onValueChange={v => setPredictionType(v as any)}
-              >
-                <TabsList className="grid w-full grid-cols-2 border border-gray-700/50 bg-gray-800/60">
-                  <TabsTrigger
-                    value="price_target"
-                    className="text-gray-300 data-[state=active]:bg-yellow-400 data-[state=active]:text-black"
+              {/* Prediction Type Selection */}
+              <div className="space-y-3">
+                <Label
+                  htmlFor="predictionType"
+                  className="font-medium text-white"
+                >
+                  Prediction Type
+                </Label>
+                <Select
+                  value={predictionType}
+                  onValueChange={v => {
+                    console.log('Prediction type changed to:', v);
+                    setPredictionType(v as any);
+                  }}
+                >
+                  <SelectTrigger
+                    id="predictionType"
+                    className="border-gray-700/50 bg-gray-800/60 text-white focus:border-yellow-400/50 focus:ring-yellow-400/20"
                   >
-                    Price Target
-                  </TabsTrigger>
-                  <TabsTrigger
-                    value="custom"
-                    className="text-gray-300 data-[state=active]:bg-yellow-400 data-[state=active]:text-black"
-                  >
-                    Custom Prediction
-                  </TabsTrigger>
-                </TabsList>
+                    <SelectValue placeholder="Select prediction type..." />
+                  </SelectTrigger>
+                  <SelectContent className="border-gray-700/50 bg-gray-800">
+                    <SelectItem
+                      value="price_target"
+                      className="text-white hover:bg-gray-700/50"
+                    >
+                      <div className="flex items-center gap-2">
+                        <DollarSign className="h-4 w-4 text-yellow-400" />
+                        <span>Price Target</span>
+                      </div>
+                    </SelectItem>
+                    <SelectItem
+                      value="custom"
+                      className="text-white hover:bg-gray-700/50"
+                    >
+                      <div className="flex items-center gap-2">
+                        <Bot className="h-4 w-4 text-blue-400" />
+                        <span>Custom Prediction</span>
+                      </div>
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
 
-                <TabsContent value="price_target" className="mt-6 space-y-6">
+              {/* Conditional Content Based on Prediction Type */}
+              {predictionType === 'price_target' && (
+                <div className="mt-6 space-y-6">
                   {/* Current Price Display */}
                   <div className="rounded-xl border border-gray-700/50 bg-gray-800/60 p-6 backdrop-blur-sm">
                     <div className="flex items-center justify-between">
@@ -217,17 +301,20 @@ export function CryptoPredictionModal({
                       htmlFor="operator"
                       className="font-medium text-white"
                     >
-                      Prediction Type
+                      Direction
                     </Label>
                     <Select
                       value={operator}
-                      onValueChange={v => setOperator(v as any)}
+                      onValueChange={v => {
+                        console.log('Operator changed to:', v);
+                        setOperator(v as any);
+                      }}
                     >
                       <SelectTrigger
                         id="operator"
                         className="border-gray-700/50 bg-gray-800/60 text-white focus:border-yellow-400/50 focus:ring-yellow-400/20"
                       >
-                        <SelectValue />
+                        <SelectValue placeholder="Select direction..." />
                       </SelectTrigger>
                       <SelectContent className="border-gray-700/50 bg-gray-800">
                         <SelectItem
@@ -290,9 +377,11 @@ export function CryptoPredictionModal({
                       </div>
                     )}
                   </div>
-                </TabsContent>
+                </div>
+              )}
 
-                <TabsContent value="custom" className="mt-6 space-y-6">
+              {predictionType === 'custom' && (
+                <div className="mt-6 space-y-6">
                   <div className="flex items-start gap-3 rounded-xl border border-blue-500/20 bg-blue-500/10 p-4">
                     <AlertCircle className="mt-0.5 h-5 w-5 flex-shrink-0 text-blue-400" />
                     <div className="text-sm text-blue-200">
@@ -307,19 +396,71 @@ export function CryptoPredictionModal({
                   </div>
 
                   <div className="space-y-3">
-                    <Label
-                      htmlFor="customTitle"
-                      className="font-medium text-white"
-                    >
-                      Prediction Title
-                    </Label>
+                    <div className="flex items-center justify-between">
+                      <Label
+                        htmlFor="customTitle"
+                        className="font-medium text-white"
+                      >
+                        Prediction Title
+                      </Label>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={analyzeWithAI}
+                        disabled={isAnalyzing || (!customTitle.trim() && !customDescription.trim())}
+                        className="flex items-center gap-2 border-blue-500/50 bg-blue-500/10 text-blue-400 hover:bg-blue-500/20"
+                      >
+                        {isAnalyzing ? (
+                          <Loader2 className="h-4 w-4 animate-spin" />
+                        ) : (
+                          <Bot className="h-4 w-4" />
+                        )}
+                        {isAnalyzing ? 'Analyzing...' : 'AI Generate'}
+                      </Button>
+                    </div>
                     <Input
                       id="customTitle"
-                      placeholder={`e.g., "Will ${selectedCrypto.name} flip Bitcoin in market cap?"`}
+                      placeholder={`e.g., "${selectedCrypto.name} will reach $150,000" or "${selectedCrypto.name} will be popular"`}
                       value={customTitle}
                       onChange={e => setCustomTitle(e.target.value)}
                       className="border-gray-700/50 bg-gray-800/60 text-white placeholder:text-gray-400 focus:border-yellow-400/50 focus:ring-yellow-400/20"
                     />
+                    <p className="text-xs text-gray-400">
+                      💡 Enter your prediction idea here. AI will transform it into a verifiable prediction with specific criteria.
+                    </p>
+                    {aiGenerated && (
+                      <div className="rounded-lg border border-green-500/20 bg-green-500/10 p-3">
+                        <div className="flex items-center gap-2 text-sm text-green-400">
+                          <Bot className="h-4 w-4" />
+                          <span className="font-medium">AI Generated Content</span>
+                        </div>
+                        <p className="mt-1 text-xs text-green-200">
+                          Title and description have been optimized for oracle compatibility
+                        </p>
+                      </div>
+                    )}
+                    
+                    {aiError && (
+                      <div className="rounded-lg border border-red-500/20 bg-red-500/10 p-3">
+                        <div className="flex items-center gap-2 text-sm text-red-400">
+                          <AlertCircle className="h-4 w-4" />
+                          <span className="font-medium">Validation Error</span>
+                        </div>
+                        <p className="mt-1 text-xs text-red-200">
+                          {aiError}
+                        </p>
+                        <div className="mt-2 text-xs text-red-300">
+                          <strong>Tips for valid predictions:</strong>
+                          <ul className="mt-1 ml-4 list-disc space-y-1">
+                            <li>Use specific price targets (e.g., "$150,000")</li>
+                            <li>Include time frames (e.g., "by end of 2024")</li>
+                            <li>Specify data sources (e.g., "using CoinGecko")</li>
+                            <li>Avoid subjective terms like "best" or "popular"</li>
+                          </ul>
+                        </div>
+                      </div>
+                    )}
                   </div>
 
                   <div className="space-y-3">
@@ -337,8 +478,8 @@ export function CryptoPredictionModal({
                       onChange={e => setCustomDescription(e.target.value)}
                     />
                   </div>
-                </TabsContent>
-              </Tabs>
+                </div>
+              )}
 
               {/* Deadline */}
               <div className="space-y-3">
@@ -361,7 +502,7 @@ export function CryptoPredictionModal({
                   />
                 </div>
                 <div className="text-xs text-gray-400">
-                  Minimum: 15 minutes from now
+                  Minimum: 5 minutes from now
                 </div>
               </div>
             </div>

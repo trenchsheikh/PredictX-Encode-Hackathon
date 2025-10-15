@@ -25,6 +25,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { CreatePredictionData, PredictionCategory } from '@/types/prediction';
 import { formatBNB } from '@/lib/utils';
+import { formatDateTimeLocal } from '@/lib/blockchain-utils';
 import {
   Bot,
   Plus,
@@ -67,8 +68,8 @@ const createPredictionSchema = z.object({
   expiresAt: z
     .number()
     .min(
-      Date.now() + 900000,
-      'Expiration must be at least 15 minutes from now'
+      Date.now() + 300000,
+      'Expiration must be at least 5 minutes from now'
     ),
 });
 
@@ -250,7 +251,7 @@ export function CreateBetModal({
       betType: 'custom',
       userPrediction: 'yes',
       bnbAmount: 0.01,
-      expiresAt: Date.now() + 900000, // 15 minutes from now
+      expiresAt: Date.now() + 300000, // 5 minutes from now
     },
   });
 
@@ -305,7 +306,7 @@ export function CreateBetModal({
         description: watchedDescription.slice(0, 150),
         summary: `This prediction market allows participants to bet on whether ${watchedDescription}. If YES wins, the stated outcome will have occurred. If NO wins, the stated outcome will not have occurred.`,
         category: watchedCategory,
-        expiresAt: Date.now() + 900000, // 15 minutes from now
+        expiresAt: Date.now() + 300000, // 5 minutes from now
         resolutionInstructions: `Determine if ${watchedDescription} based on verifiable data sources and official records.`,
       };
 
@@ -668,10 +669,8 @@ export function CreateBetModal({
                 valueAsNumber: false,
                 setValueAs: value => new Date(value).getTime(),
               })}
-              min={new Date(Date.now() + 900000).toISOString().slice(0, 16)}
-              defaultValue={new Date(Date.now() + 900000)
-                .toISOString()
-                .slice(0, 16)}
+              min={formatDateTimeLocal(Date.now() + 300000)}
+              defaultValue={formatDateTimeLocal(Date.now() + 300000)}
               className="border-gray-700/50 bg-gray-800/60 text-white focus:border-yellow-400/50 focus:ring-yellow-400/20"
             />
             {errors.expiresAt && (

@@ -15,6 +15,10 @@ export interface CryptoData {
   marketCap: number;
   priceChange24h: number;
   timestamp: number;
+  image?: string;
+  totalVolume?: number;
+  high24h?: number;
+  low24h?: number;
 }
 
 interface CryptoSelectorProps {
@@ -31,6 +35,7 @@ export function CryptoSelector({
   const [cryptos, setCryptos] = useState<CryptoData[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
+  const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
 
   useEffect(() => {
     fetchCryptoPrices();
@@ -42,11 +47,38 @@ export function CryptoSelector({
 
   async function fetchCryptoPrices() {
     try {
-      const response = await fetch('/api/oracle/prices');
+      // Add cache busting to ensure fresh data
+      const response = await fetch(`/api/oracle/prices?t=${Date.now()}`, {
+        method: 'GET',
+        headers: {
+          'Cache-Control': 'no-cache',
+          'Pragma': 'no-cache',
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
       const data = await response.json();
 
       if (data.success && data.data.prices && data.data.prices.length > 0) {
-        setCryptos(data.data.prices);
+        // Validate that prices are recent (within last 5 minutes)
+        const now = Date.now();
+        const validPrices = data.data.prices.filter((crypto: CryptoData) => {
+          const priceAge = now - (crypto.timestamp || 0);
+          return priceAge < 5 * 60 * 1000; // 5 minutes
+        });
+
+        if (validPrices.length > 0) {
+          setCryptos(validPrices);
+          setLastUpdated(new Date());
+          console.log(`✅ Fetched ${validPrices.length} real-time crypto prices`);
+        } else {
+          console.warn('⚠️ All prices are stale, using fallback data');
+          setCryptos(getFallbackCryptoData());
+          setLastUpdated(new Date());
+        }
       } else {
         // Fallback to hardcoded crypto data if API returns empty or fails
         console.warn('API returned empty prices, using fallback data');
@@ -183,6 +215,11 @@ export function CryptoSelector({
           className="border-gray-700/50 bg-gray-800/60 pl-10 text-white placeholder:text-gray-400 focus:border-yellow-400/50 focus:ring-yellow-400/20"
         />
       </div>
+      {lastUpdated && (
+        <div className="text-xs text-gray-400">
+          📊 Real-time prices updated: {lastUpdated.toLocaleTimeString()} | Source: CoinGecko API
+        </div>
+      )}
 
       {/* Crypto Grid */}
       <div className="custom-scrollbar grid max-h-[400px] grid-cols-1 gap-4 overflow-y-auto pr-2 md:grid-cols-2 lg:grid-cols-3">
@@ -200,11 +237,30 @@ export function CryptoSelector({
             <CardContent className="flex h-full flex-col p-4">
               <div className="mb-3 flex items-center justify-between">
                 {/* Crypto Info */}
-                <div className="flex-1">
-                  <div className="text-sm font-semibold text-white">
-                    {crypto.name}
+                <div className="flex items-center space-x-2 flex-1">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-yellow-400/20 overflow-hidden">
+                    {crypto.image ? (
+                      <img 
+                        src={crypto.image} 
+                        alt={crypto.name}
+                        className="h-6 w-6 rounded-full object-cover"
+                        onError={(e) => {
+                          // Fallback to symbol if image fails to load
+                          e.currentTarget.style.display = 'none';
+                          e.currentTarget.nextElementSibling!.style.display = 'flex';
+                        }}
+                      />
+                    ) : null}
+                    <div className="h-6 w-6 flex items-center justify-center text-xs font-bold text-yellow-400">
+                      {crypto.symbol.charAt(0)}
+                    </div>
                   </div>
-                  <div className="text-xs text-gray-400">{crypto.symbol}</div>
+                  <div>
+                    <div className="text-sm font-semibold text-white">
+                      {crypto.name}
+                    </div>
+                    <div className="text-xs text-gray-400">{crypto.symbol}</div>
+                  </div>
                 </div>
 
                 {/* Selected Indicator */}

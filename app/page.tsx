@@ -5,6 +5,13 @@ import { usePrivy } from '@privy-io/react-auth';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from '@/components/ui/dialog';
 import { PredictionCard } from '@/components/prediction/prediction-card';
 import { Filters } from '@/components/prediction/filters';
 import { CreateBetModal } from '@/components/prediction/create-bet-modal';
@@ -57,6 +64,7 @@ export default function HomePage() {
   const [showCryptoModal, setShowCryptoModal] = useState(false);
   const [showBetModal, setShowBetModal] = useState(false);
   const [showHistoryModal, setShowHistoryModal] = useState(false);
+  const [showOracleErrorModal, setShowOracleErrorModal] = useState(false);
   const [selectedPrediction, setSelectedPrediction] =
     useState<Prediction | null>(null);
   const [selectedOutcome, setSelectedOutcome] = useState<'yes' | 'no'>('yes');
@@ -246,7 +254,7 @@ export default function HomePage() {
   };
 
   /**
-   * Handle create prediction
+   * Handle create prediction - Currently disabled, redirect to Crypto DarkPool
    */
   const handleCreatePrediction = async (data: CreatePredictionData) => {
     if (!authenticated || !user?.wallet?.address) {
@@ -254,59 +262,9 @@ export default function HomePage() {
       return;
     }
 
-    try {
-      const userAddress = user.wallet.address;
-      const category = [
-        'sports',
-        'crypto',
-        'politics',
-        'entertainment',
-        'weather',
-        'finance',
-        'technology',
-        'custom',
-      ].indexOf(data.category);
-      const expiresAtTimestamp = Math.floor(data.expiresAt / 1000); // Convert to seconds
-
-      // Call smart contract to create market
-      const result = await contract.createMarket(
-        data.title,
-        data.description,
-        data.summary || data.description,
-        data.resolutionInstructions || '',
-        category,
-        expiresAtTimestamp,
-        data.bnbAmount.toString()
-      );
-
-      if (!result.success || !result.txHash) {
-        // Get the actual error from the contract hook
-        const actualError = contract.error || 'Transaction failed';
-        console.error('Contract error:', contract.error);
-        throw new Error(actualError);
-      }
-
-      // Call backend API to index the market
-      await api.markets.createMarket({
-        title: data.title,
-        description: data.description,
-        category: data.category,
-        expiresAt: data.expiresAt,
-        initialLiquidity: ethers
-          .parseEther(data.bnbAmount.toString())
-          .toString(),
-        userAddress,
-        txHash: result.txHash,
-      });
-
-      // Refresh markets
-      await fetchMarkets();
-
-      setShowCreateModal(false);
-      console.info(t('success.prediction_created'));
-    } catch (err: any) {
-      console.error('Create prediction failed:', err);
-    }
+    // Close the create modal and show oracle error modal
+    setShowCreateModal(false);
+    setShowOracleErrorModal(true);
   };
 
   /**
@@ -323,15 +281,31 @@ export default function HomePage() {
       const category = 7; // Crypto category
       const expiresAtTimestamp = Math.floor(data.deadline / 1000); // Convert to seconds
 
+      console.log('🔍 Creating crypto prediction with parameters:');
+      console.log('  Title:', data.title);
+      console.log('  Description:', data.description);
+      console.log('  ExpiresAt (seconds):', expiresAtTimestamp);
+      console.log('  Category:', category);
+      console.log('  Current timestamp (seconds):', Math.floor(Date.now() / 1000));
+      console.log('  Time until expiry (minutes):', (expiresAtTimestamp - Math.floor(Date.now() / 1000)) / 60);
+
+      // Check if contract is paused
+      try {
+        const isPaused = await contract.paused();
+        console.log('  Contract paused:', isPaused);
+        if (isPaused) {
+          throw new Error('Contract is currently paused');
+        }
+      } catch (pauseError) {
+        console.warn('Could not check pause status:', pauseError.message);
+      }
+
       // Call smart contract to create market
       const result = await contract.createMarket(
         data.title,
         data.description,
-        data.description, // Use description as summary
-        '', // No resolution instructions for auto-verified
-        category,
         expiresAtTimestamp,
-        '0' // No initial liquidity for crypto predictions
+        category
       );
 
       if (!result.success || !result.txHash) {
@@ -736,6 +710,74 @@ export default function HomePage() {
           onClose={contract.resetTxState}
         />
       )}
+
+      {/* Oracle Error Modal */}
+      <Dialog open={showOracleErrorModal} onOpenChange={setShowOracleErrorModal}>
+        <DialogContent className="max-w-md border border-orange-500/50 bg-gray-900/95 shadow-2xl backdrop-blur-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2 text-orange-400">
+              <AlertCircle className="h-5 w-5" />
+              Oracle Not Available
+            </DialogTitle>
+            <DialogDescription className="text-gray-300">
+              Regular prediction markets are temporarily disabled
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="space-y-4">
+            <div className="rounded-lg border border-orange-500/20 bg-orange-500/10 p-4">
+              <div className="flex items-start gap-3">
+                <AlertCircle className="mt-0.5 h-5 w-5 flex-shrink-0 text-orange-400" />
+                <div className="space-y-2">
+                  <p className="text-sm text-orange-200">
+                    <strong>Oracle system is under development.</strong> We don't have a way to automatically resolve regular prediction outcomes yet.
+                  </p>
+                  <p className="text-sm text-orange-200">
+                    However, you can create <strong>crypto predictions</strong> that are automatically verified using real-time price data!
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="space-y-3">
+              <h4 className="font-medium text-white">Try Crypto DarkPool instead:</h4>
+              <ul className="space-y-2 text-sm text-gray-300">
+                <li className="flex items-center gap-2">
+                  <CheckCircle className="h-4 w-4 text-green-400" />
+                  <span>Automatic price verification</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle className="h-4 w-4 text-green-400" />
+                  <span>Real-time crypto data</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle className="h-4 w-4 text-green-400" />
+                  <span>No manual resolution needed</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="flex gap-3 pt-4">
+            <Button
+              variant="outline"
+              onClick={() => setShowOracleErrorModal(false)}
+              className="flex-1 border-gray-700/50 bg-gray-800/60 text-white hover:bg-gray-800/80"
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={() => {
+                setShowOracleErrorModal(false);
+                setShowCryptoModal(true);
+              }}
+              className="flex-1 bg-gradient-to-r from-yellow-400 to-yellow-600 font-semibold text-black shadow-md hover:from-yellow-500 hover:to-yellow-700"
+            >
+              Open Crypto DarkPool
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
