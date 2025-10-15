@@ -9,7 +9,6 @@ import { AnimatedBackground } from '@/components/ui/animated-background';
 import { PageTransition } from '@/components/ui/page-transition';
 import { IntroProvider } from '@/components/providers/intro-provider';
 import { ErrorBoundary } from '@/components/ui/error-boundary';
-import { PerformanceMonitor } from '@/components/ui/performance-monitor';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://darkbet.fun'),
@@ -67,7 +66,10 @@ export default function RootLayout({
         <link rel="preconnect" href="https://explorer-api.walletconnect.com" />
         <link rel="preconnect" href="https://api.coingecko.com" />
         <link rel="dns-prefetch" href="https://auth.privy.io" />
-        <link rel="dns-prefetch" href="https://explorer-api.walletconnect.com" />
+        <link
+          rel="dns-prefetch"
+          href="https://explorer-api.walletconnect.com"
+        />
         <link rel="dns-prefetch" href="https://api.coingecko.com" />
       </head>
       <body className={GeistSans.className}>
@@ -84,7 +86,6 @@ export default function RootLayout({
                     <PageTransition>{children}</PageTransition>
                   </ErrorBoundary>
                 </main>
-                <PerformanceMonitor />
               </div>
             </IntroProvider>
           </PrivyProviderWrapper>
