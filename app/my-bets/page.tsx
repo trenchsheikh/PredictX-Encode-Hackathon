@@ -14,7 +14,7 @@ import { AnimatedCard } from '@/components/ui/animated-card';
 import { AnimatedButton } from '@/components/ui/animated-button';
 import { AnimatedBackground } from '@/components/ui/animated-background';
 import { cn } from '@/lib/utils';
-import { useI18n } from '@/components/providers/privy-provider';
+import { useI18n } from '@/components/providers/i18n-provider';
 import { api, getErrorMessage } from '@/lib/api-client';
 import { usePredictionContract } from '@/lib/hooks/use-prediction-contract';
 import { getCommitSecret, hasUnrevealedCommit, canReveal, clearCommitSecret } from '@/lib/commit-reveal';
@@ -686,10 +686,10 @@ export default function MyBetsPage() {
               <Wallet className="h-8 w-8 text-black" />
             </div>
             <h2 className="text-2xl font-bold text-white mb-2">
-              {t('connect_wallet')}
+              {t('my_bets.title')}
             </h2>
             <p className="text-gray-200 mb-6">
-              {t('connect_wallet_to_create')}
+              {t('my_bets.subtitle')}
             </p>
             <Button className="bg-white hover:bg-gray-200 text-black">
               <Wallet className="h-4 w-4 mr-2" />
@@ -714,9 +714,9 @@ export default function MyBetsPage() {
       <div className="mx-auto max-w-7xl px-6 py-16 lg:px-8 relative z-10">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-4xl font-display text-white mb-2">{t('my_bets')}</h1>
+          <h1 className="text-4xl font-display text-white mb-2">{t('my_bets.title')}</h1>
           <p className="text-gray-300 font-body">
-            {t('track_investments')}
+            {t('my_bets.subtitle')}
           </p>
           
           {/* Connection Status */}
@@ -822,9 +822,9 @@ export default function MyBetsPage() {
           <div className="border-b border-black">
             <nav className="-mb-px flex space-x-8">
               {[
-                { key: 'all', label: t('all_bets'), count: userBets.length },
-                { key: 'active', label: t('active'), count: activeBets },
-                { key: 'resolved', label: t('resolved'), count: resolvedBets },
+                { key: 'all', label: t('my_bets.all_bets'), count: userBets.length },
+                { key: 'active', label: t('my_bets.active'), count: activeBets },
+                { key: 'resolved', label: t('my_bets.resolved_bets'), count: resolvedBets },
               ].map((tab) => (
                 <button
                   key={tab.key}
@@ -854,18 +854,18 @@ export default function MyBetsPage() {
                 <TrendingUp className="h-12 w-12 text-black" />
               </div>
               <h3 className="text-lg font-medium text-white mb-2">
-                {t('no_bets_found')}
+                {t('my_bets.no_bets_found')}
               </h3>
               <p className="text-gray-200 mb-4">
                 {activeTab === 'all' 
-                  ? t('no_bets_yet')
+                  ? t('my_bets.no_bets_yet')
                   : activeTab === 'active' 
-                    ? t('no_active_bets')
-                    : t('no_resolved_bets')
+                    ? t('my_bets.no_active_bets')
+                    : t('my_bets.no_resolved_bets')
                 }
               </p>
               <Button className="bg-white hover:bg-gray-200 text-black">
-                {t('explore_markets')}
+                {t('my_bets.explore_markets')}
               </Button>
             </CardContent>
           </Card>
@@ -951,8 +951,8 @@ export default function MyBetsPage() {
                             <Clock className="h-4 w-4" />
                             <span>
                               {prediction.status === 'active' 
-                                ? `${t('expires_in')} ${formatTimeRemaining(prediction.expiresAt)}`
-                                : `${t('resolved_on')} ${new Date(prediction.resolution?.resolvedAt || prediction.expiresAt).toLocaleDateString()}`
+                                ? `${t('my_bets.expires_in')} ${formatTimeRemaining(prediction.expiresAt)}`
+                                : `${t('my_bets.resolved_on')} ${new Date(prediction.resolution?.resolvedAt || prediction.expiresAt).toLocaleDateString()}`
                               }
                             </span>
                           </div>
@@ -967,19 +967,19 @@ export default function MyBetsPage() {
                         {/* Bet Details */}
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                           <div>
-                            <div className="text-xs text-gray-400">{t('shares')}</div>
+                            <div className="text-xs text-gray-400">{t('my_bets.shares')}</div>
                             <div className="text-sm font-medium text-white">{bet.shares.toFixed(2)}</div>
                           </div>
                           <div>
-                            <div className="text-xs text-gray-400">{t('amount')}</div>
+                            <div className="text-xs text-gray-400">{t('my_bets.amount')}</div>
                             <div className="text-sm font-medium text-white">{formatBNB(bet.amount)}</div>
                           </div>
                           <div>
-                            <div className="text-xs text-gray-400">{t('price')}</div>
+                            <div className="text-xs text-gray-400">{t('my_bets.price')}</div>
                             <div className="text-sm font-medium text-white">{bet.price.toFixed(4)}</div>
                           </div>
                           <div>
-                            <div className="text-xs text-gray-400">{t('potential_payout')}</div>
+                            <div className="text-xs text-gray-400">{t('prediction_card.potential_payout')}</div>
                             <div className="text-sm font-medium text-white">
                               {prediction.status === 'resolved' && prediction.resolution?.outcome 
                                 ? formatBNB(calculatePotentialPayout(bet, prediction))

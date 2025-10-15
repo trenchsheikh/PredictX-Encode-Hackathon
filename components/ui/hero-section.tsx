@@ -5,6 +5,7 @@ import { TrendingUp, Zap, Shield, Star, Loader2 } from 'lucide-react';
 import { AnimatedButton } from './animated-button';
 import { useState, useEffect } from 'react';
 import { api } from '@/lib/api-client';
+import { useI18n } from '@/components/providers/i18n-provider';
 
 interface HeroSectionProps {
   onCreateClick: () => void;
@@ -19,6 +20,7 @@ interface PlatformStats {
 }
 
 export function HeroSection({ onCreateClick, onCryptoClick, isAuthenticated }: HeroSectionProps) {
+  const { t } = useI18n();
   const [stats, setStats] = useState<PlatformStats>({
     totalVolume: 0,
     activeMarkets: 0,
@@ -74,9 +76,9 @@ export function HeroSection({ onCreateClick, onCryptoClick, isAuthenticated }: H
     fetchStats();
   }, []);
   const features = [
-    { icon: Shield, text: 'Fully On-Chain', color: 'text-yellow-400' },
-    { icon: Zap, text: 'AI-Driven Results', color: 'text-white' },
-    { icon: TrendingUp, text: 'Real-Time Markets', color: 'text-yellow-400' },
+    { icon: Shield, text: t('features.fully_onchain'), color: 'text-yellow-400' },
+    { icon: Zap, text: t('features.ai_driven'), color: 'text-white' },
+    { icon: TrendingUp, text: t('features.realtime_markets'), color: 'text-yellow-400' },
   ];
 
   return (
@@ -119,13 +121,13 @@ export function HeroSection({ onCreateClick, onCryptoClick, isAuthenticated }: H
           className="mb-8"
         >
           <h1 className="text-6xl md:text-8xl font-brand-large mb-6 gradient-text-brand">
-            DarkBet
+            {t('hero_title')}
           </h1>
           <p className="text-xl md:text-2xl font-body text-gray-300 max-w-3xl mx-auto mb-4">
-            DarkPool Betting Platform
+            {t('hero_subtitle')}
           </p>
           <p className="text-lg font-body text-gray-400 max-w-3xl mx-auto">
-            The future of prediction markets is here. Built on BNB Smart Chain with AI-driven results and fully on-chain execution.
+            {t('hero_description')}
           </p>
         </motion.div>
 
@@ -137,11 +139,9 @@ export function HeroSection({ onCreateClick, onCryptoClick, isAuthenticated }: H
           className="mb-8"
         >
           <div className="max-w-4xl mx-auto p-6 rounded-2xl bg-gray-900/40 backdrop-blur-sm border border-gray-700/50">
-            <h3 className="text-lg font-heading text-yellow-400 mb-3 text-center">What is DarkPool Betting?</h3>
+            <h3 className="text-lg font-heading text-yellow-400 mb-3 text-center">{t('what_is_darkpool')}</h3>
             <p className="text-gray-300 text-center leading-relaxed">
-              DarkPool Betting combines the privacy and efficiency of dark pools with prediction markets. 
-              Your bets remain hidden until resolution, preventing market manipulation while ensuring fair, 
-              AI-driven outcomes on the BNB Smart Chain.
+              {t('darkpool_explanation')}
             </p>
           </div>
         </motion.div>
@@ -184,7 +184,7 @@ export function HeroSection({ onCreateClick, onCryptoClick, isAuthenticated }: H
             className="px-8 py-4 text-lg"
           >
             <Star className="w-5 h-5 mr-2" />
-            Start DarkPool Betting
+            {t('cta.start_darkpool_betting')}
           </AnimatedButton>
           
           <AnimatedButton
@@ -194,7 +194,7 @@ export function HeroSection({ onCreateClick, onCryptoClick, isAuthenticated }: H
             className="px-8 py-4 text-lg"
           >
             <TrendingUp className="w-5 h-5 mr-2" />
-            Crypto DarkPool
+            {t('cta.crypto_darkpool')}
           </AnimatedButton>
         </motion.div>
 
@@ -207,17 +207,17 @@ export function HeroSection({ onCreateClick, onCryptoClick, isAuthenticated }: H
         >
           {[
             { 
-              label: 'Total Volume', 
+              label: t('stats.total_volume'), 
               value: loading ? '...' : `${formatNumber(stats.totalVolume)} BNB`, 
               icon: TrendingUp 
             },
             { 
-              label: 'Active Markets', 
+              label: t('stats.active_markets'), 
               value: loading ? '...' : formatNumber(stats.activeMarkets), 
               icon: Zap 
             },
             { 
-              label: 'Participants', 
+              label: t('stats.participants'), 
               value: loading ? '...' : formatNumber(stats.participants), 
               icon: Shield 
             },

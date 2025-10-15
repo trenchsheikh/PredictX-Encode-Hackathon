@@ -1,0 +1,242 @@
+{
+  "nav_home": "Home",
+  "nav_my_bets": "My Bets",
+  "nav_how": "How it Works",
+  "nav_leaderboard": "Leaderboard",
+  "connect_wallet": "Connect Wallet",
+  "disconnect": "Disconnect",
+  "connecting": "Connecting...",
+  "connected": "Connected",
+  
+  "hero_title": "DarkBet",
+  "hero_subtitle": "DarkPool Betting Platform",
+  "hero_description": "The future of prediction markets is here. Built on BNB Smart Chain with AI-driven results and fully on-chain execution.",
+  "what_is_darkpool": "What is DarkPool Betting?",
+  "darkpool_explanation": "DarkPool Betting combines the privacy and efficiency of dark pools with prediction markets. Your bets remain hidden until resolution, preventing market manipulation while ensuring fair, AI-driven outcomes on the BNB Smart Chain.",
+  
+  "features": {
+    "fully_onchain": "Fully On-Chain",
+    "ai_driven": "AI-Driven Results",
+    "realtime_markets": "Real-Time Markets"
+  },
+  
+  "cta": {
+    "start_darkpool_betting": "Start DarkPool Betting",
+    "crypto_darkpool": "Crypto DarkPool"
+  },
+  
+  "stats": {
+    "total_volume": "Total Volume",
+    "active_markets": "Active Markets",
+    "participants": "Participants"
+  },
+  
+  "markets": {
+    "all_markets": "All Markets",
+    "markets_count": "markets",
+    "no_predictions_found": "No predictions found",
+    "try_adjusting_filters": "Try adjusting your filters or create the first prediction!",
+    "create_first_prediction": "Create First Prediction",
+    "completed_predictions": "Completed Predictions"
+  },
+  
+  "prediction_card": {
+    "pool": "Pool",
+    "yes": "YES",
+    "no": "NO",
+    "your_bet": "Your Bet",
+    "shares": "shares",
+    "view_detailed_analysis": "View Detailed Analysis",
+    "hide_analysis": "Hide Analysis",
+    "unbiased_market_analysis": "Unbiased Market Analysis",
+    "resolved": "Resolved",
+    "expired": "Expired",
+    "hot": "HOT",
+    "view_history": "View History",
+    "expires_in": "Expires in",
+    "expired": "Expired"
+  },
+  
+  "create_prediction": {
+    "title": "Create Prediction Market",
+    "description": "Create a prediction market with automated or manual resolution",
+    "wallet_required": "Wallet Required",
+    "connect_wallet_to_create": "Connect your wallet to create predictions",
+    "bet_type": "Bet Type",
+    "custom_bet": "Custom Bet",
+    "manual_resolution": "Manual resolution",
+    "auto_verified_outcome": "Auto-verified outcome",
+    "price_oracle": "Price Oracle",
+    "bet_description": "Bet Description",
+    "describe_prediction": "Describe your prediction. AI will auto-generate the bet title.",
+    "category": "Category",
+    "select_category": "Select a category",
+    "ai_resolution_instructions": "AI Resolution Instructions",
+    "analyze": "Analyze",
+    "analyzing": "Analyzing...",
+    "ai_generated": "AI Generated",
+    "title_label": "Title",
+    "resolution_instructions": "Resolution Instructions",
+    "options": "Options",
+    "add_option": "Add Option",
+    "place_initial_bet": "Place Your Initial Bet (Required)",
+    "prevent_spam": "To prevent spam, creators must participate in their own prediction",
+    "your_prediction": "Your Prediction",
+    "bnb_amount": "BNB Amount",
+    "click_create_will_prompt": "Clicking \"Create Bet\" will prompt your wallet to send {amount} to the vault",
+    "cancel": "Cancel",
+    "creating": "Creating...",
+    "create_bet": "Create Bet",
+    "bet_expiration_date": "Bet Expiration Date",
+    "set_expiration_help": "Set when this prediction market will close and be resolved (minimum 15 minutes)",
+    "generate_analysis_checkbox": "Generate detailed analysis (unbiased summary for card)"
+  },
+  
+  "categories": {
+    "sports": "Sports",
+    "crypto": "Crypto",
+    "politics": "Politics",
+    "entertainment": "Entertainment",
+    "weather": "Weather",
+    "finance": "Finance",
+    "technology": "Technology",
+    "custom": "Custom"
+  },
+  
+  "bet_modal": {
+    "place_bet": "Place Bet",
+    "bet_amount": "Bet Amount",
+    "minimum_bet": "Minimum bet",
+    "maximum_bet": "Maximum bet",
+    "confirm_bet": "Confirm Bet",
+    "betting_on": "Betting on",
+    "outcome": "Outcome",
+    "price": "Price",
+    "potential_payout": "Potential Payout",
+    "transaction_fee": "Transaction Fee",
+    "total_cost": "Total Cost"
+  },
+  
+  "crypto_prediction": {
+    "title": "Crypto Prediction",
+    "select_crypto": "Select Cryptocurrency",
+    "choose_crypto_placeholder": "Choose a cryptocurrency to predict about",
+    "loading_cryptocurrencies": "Loading cryptocurrencies...",
+    "price_target": "Price Target",
+    "current_price": "Current Price",
+    "deadline": "Deadline",
+    "create_crypto_prediction": "Create Crypto Prediction"
+  },
+  
+  "filters": {
+    "all_categories": "All Categories",
+    "all_status": "All Status",
+    "hot_only": "Hot Only",
+    "time_range": "Time Range",
+    "last_24h": "Last 24h",
+    "last_7d": "Last 7d",
+    "last_30d": "Last 30d",
+    "clear_filters": "Clear Filters"
+  },
+  
+  "my_bets": {
+    "title": "My Bets",
+    "subtitle": "Track your prediction market investments and winnings",
+    "total_invested": "Total Invested",
+    "total_payout": "Total Payout",
+    "active_bets": "Active Bets",
+    "resolved_bets": "Resolved Bets",
+    "all_bets": "All Bets",
+    "no_bets_found": "No bets found",
+    "no_active_bets": "You don't have any active bets.",
+    "no_resolved_bets": "You don't have any resolved bets.",
+    "no_bets_yet": "You haven't placed any bets yet. Start by exploring the prediction markets!",
+    "explore_markets": "Explore Markets",
+    "expires_in": "Expires in",
+    "resolved_on": "Resolved on",
+    "shares": "Shares",
+    "amount": "Amount",
+    "price": "Price",
+    "resolution": "Resolution",
+    "claim": "Claim",
+    "claimed": "Claimed",
+    "won": "Won",
+    "lost": "Lost",
+    "active": "Active"
+  },
+  
+  "how_it_works": {
+    "title": "How DarkBet Works",
+    "platform_overview": "Platform Overview",
+    "platform_description": "DarkBet is a decentralized prediction market where you can create and participate in bets on real-world events",
+    "blockchain_based": "Blockchain-Based",
+    "blockchain_description": "All transactions happen on BNB Smart Chain with native BNB tokens for maximum transparency",
+    "ai_powered": "AI-Powered",
+    "ai_description": "Advanced AI generates bet titles, suggests deadlines, and resolves outcomes using real-world data",
+    "real_time": "Real-Time",
+    "real_time_description": "Live activity feed and instant updates when bets are created, joined, or resolved"
+  },
+  
+  "leaderboard": {
+    "title": "Leaderboard",
+    "subtitle": "Top performers on DarkBet prediction markets",
+    "total_players": "Total Players",
+    "total_winnings": "Total Winnings",
+    "avg_win_rate": "Avg Win Rate",
+    "timeframe": "Timeframe",
+    "all_time": "All Time",
+    "days_7": "7 Days",
+    "days_30": "30 Days",
+    "days_90": "90 Days",
+    "category": "Category",
+    "all_categories": "All Categories",
+    "sort_by": "Sort By",
+    "total_winnings_sort": "Total Winnings",
+    "win_rate_sort": "Win Rate",
+    "total_volume_sort": "Total Volume",
+    "total_bets_sort": "Total Bets",
+    "winnings": "Winnings",
+    "win_rate": "Win Rate",
+    "bets": "Bets",
+    "volume": "Volume",
+    "view": "View",
+    "more_features_coming": "More Features Coming Soon",
+    "working_on_features": "We're working on adding more detailed analytics, historical data, and advanced filtering options.",
+    "historical_charts": "Historical Charts",
+    "advanced_filters": "Advanced Filters",
+    "portfolio_tracking": "Portfolio Tracking",
+    "achievement_system": "Achievement System"
+  },
+  
+  "transaction_history": {
+    "title": "Transaction History",
+    "no_transactions": "No transactions found",
+    "transaction_id": "Transaction ID",
+    "type": "Type",
+    "amount": "Amount",
+    "status": "Status",
+    "timestamp": "Timestamp",
+    "pending": "Pending",
+    "confirmed": "Confirmed",
+    "failed": "Failed"
+  },
+  
+  "errors": {
+    "wallet_required": "Please connect your wallet to place a bet",
+    "transaction_failed": "Transaction failed",
+    "insufficient_funds": "Insufficient funds",
+    "network_error": "Network error",
+    "unknown_error": "Unknown error",
+    "retry": "Retry"
+  },
+  
+  "success": {
+    "bet_placed": "Bet placed successfully! Remember to reveal after market expiration.",
+    "prediction_created": "Prediction created successfully!",
+    "crypto_prediction_created": "Crypto prediction created successfully!"
+  },
+  
+  "footer": {
+    "all_rights_reserved": "All Rights Reserved."
+  }
+}

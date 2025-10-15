@@ -8,7 +8,7 @@ import { Prediction } from '@/types/prediction';
 import { formatBNB, formatTimeRemaining } from '@/lib/utils';
 import { Clock, Users, ArrowUp, ArrowDown, Flame, ChevronDown, ChevronUp, Info, History, CheckCircle, XCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { useI18n } from '@/components/providers/privy-provider';
+import { useI18n } from '@/components/providers/i18n-provider';
 
 interface PredictionCardProps {
   prediction: Prediction;
@@ -88,7 +88,7 @@ export function PredictionCard({ prediction, onBet, onViewHistory, userBets }: P
             </h3>
           </div>
           <div className="text-right">
-            <div className="text-xs text-gray-300">Pool</div>
+            <div className="text-xs text-gray-300">{t('prediction_card.pool')}</div>
             <div className="text-sm font-bold text-white">
               {prediction.totalPool.toFixed(2)} BNB
             </div>
@@ -110,7 +110,7 @@ export function PredictionCard({ prediction, onBet, onViewHistory, userBets }: P
             >
               <span className="flex items-center gap-1">
                 <Info className="h-3 w-3" />
-                {isExpanded ? 'Hide Analysis' : 'View Detailed Analysis'}
+                {isExpanded ? t('prediction_card.hide_analysis') : t('prediction_card.view_detailed_analysis')}
               </span>
               {isExpanded ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />}
             </Button>
@@ -118,7 +118,7 @@ export function PredictionCard({ prediction, onBet, onViewHistory, userBets }: P
               <div className="mt-2 p-3 rounded-lg bg-yellow-500/10 border border-yellow-500/30">
                 <div className="text-xs font-medium text-yellow-400 mb-2 flex items-center gap-1">
                   <Info className="h-3 w-3" />
-                  Unbiased Market Analysis
+                  {t('prediction_card.unbiased_market_analysis')}
                 </div>
                 <p className="text-xs text-gray-200 leading-relaxed whitespace-pre-wrap">
                   {prediction.summary}
@@ -131,7 +131,7 @@ export function PredictionCard({ prediction, onBet, onViewHistory, userBets }: P
         {/* Odds Display - Betting Style */}
         <div className="grid grid-cols-2 gap-2 mb-3">
           <div className="bg-green-600 border border-green-700 rounded-lg p-3 text-center">
-            <div className="text-xs text-white mb-1">YES</div>
+            <div className="text-xs text-white mb-1">{t('prediction_card.yes')}</div>
             <div className="text-lg font-bold text-white">
               {prediction.yesPrice.toFixed(3)}
             </div>
@@ -140,7 +140,7 @@ export function PredictionCard({ prediction, onBet, onViewHistory, userBets }: P
             </div>
           </div>
           <div className="bg-red-600 border border-red-700 rounded-lg p-3 text-center">
-            <div className="text-xs text-white mb-1">NO</div>
+            <div className="text-xs text-white mb-1">{t('prediction_card.no')}</div>
             <div className="text-lg font-bold text-white">
               {prediction.noPrice.toFixed(3)}
             </div>
@@ -155,9 +155,9 @@ export function PredictionCard({ prediction, onBet, onViewHistory, userBets }: P
           <div className="p-3 rounded-lg bg-yellow-500 border border-yellow-600 mb-3">
             <div className="flex items-center justify-between">
               <div>
-                <div className="text-sm font-medium text-black">{t('your_bet')}</div>
+                <div className="text-sm font-medium text-black">{t('prediction_card.your_bet')}</div>
                 <div className="text-xs text-black">
-                  {userBet.outcome.toUpperCase()} • {userBet.shares.toFixed(2)} shares
+                  {userBet.outcome.toUpperCase()} • {userBet.shares.toFixed(2)} {t('prediction_card.shares')}
                 </div>
               </div>
             </div>
@@ -174,7 +174,7 @@ export function PredictionCard({ prediction, onBet, onViewHistory, userBets }: P
               disabled={isLoading}
             >
               <ArrowUp className="h-3 w-3 mr-1" />
-              YES
+              {t('prediction_card.yes')}
             </Button>
             <Button
               size="sm"
@@ -183,7 +183,7 @@ export function PredictionCard({ prediction, onBet, onViewHistory, userBets }: P
               disabled={isLoading}
             >
               <ArrowDown className="h-3 w-3 mr-1" />
-              NO
+              {t('prediction_card.no')}
             </Button>
           </div>
         )}
@@ -197,7 +197,7 @@ export function PredictionCard({ prediction, onBet, onViewHistory, userBets }: P
               onClick={() => onViewHistory(prediction.id)}
             >
               <History className="h-3 w-3 mr-2" />
-              View History
+              {t('prediction_card.view_history')}
             </Button>
           </div>
         )}
@@ -206,7 +206,7 @@ export function PredictionCard({ prediction, onBet, onViewHistory, userBets }: P
         {prediction.resolution && (
           <div className="p-3 rounded-lg bg-yellow-500 border border-yellow-600 mb-3">
             <div className="text-sm font-medium text-black mb-1">
-              {t('resolved')}: {prediction.resolution.outcome.toUpperCase()}
+              {t('prediction_card.resolved')}: {prediction.resolution.outcome.toUpperCase()}
             </div>
             <div className="text-xs text-black">
               {prediction.resolution.reasoning}
@@ -224,7 +224,7 @@ export function PredictionCard({ prediction, onBet, onViewHistory, userBets }: P
             <Clock className="h-3 w-3" />
             <span>
               {(prediction.status === 'resolved' || prediction.status === 'cancelled') 
-                ? 'Expired' 
+                ? t('prediction_card.expired') 
                 : formatTimeRemaining(prediction.expiresAt)
               }
             </span>
