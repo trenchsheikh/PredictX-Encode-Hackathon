@@ -282,12 +282,12 @@ export default function MyBetsPage() {
     console.log('Wallets:', wallets);
 
     if (!authenticated) {
-      alert('Please connect your wallet first');
+      console.info('Please connect your wallet first');
       return;
     }
 
     if (!wallets || wallets.length === 0) {
-      alert('No wallet found. Please connect your wallet.');
+      console.info('No wallet found. Please connect your wallet.');
       return;
     }
 
@@ -297,12 +297,12 @@ export default function MyBetsPage() {
     try {
       // Test if contract hook is working
       if (contract.error) {
-        alert(`❌ Contract error: ${contract.error}`);
+        console.error(`Contract error: ${contract.error}`);
         return;
       }
 
       if (contract.loading) {
-        alert('⏳ Contract is loading, please wait...');
+        console.info('Contract is loading, please wait...');
         return;
       }
 
@@ -430,7 +430,7 @@ export default function MyBetsPage() {
       if (!response.ok) {
         const errorText = await response.text();
         console.error('Backend response error:', response.status, errorText);
-        alert(`❌ Backend error (${response.status}): ${errorText}`);
+        console.error(`Backend error (${response.status}): ${errorText}`);
         return;
       }
 
@@ -489,7 +489,7 @@ export default function MyBetsPage() {
    */
   const switchToBSC = async () => {
     if (!wallets || wallets.length === 0) {
-      alert('No wallet found');
+      console.info('No wallet found');
       return;
     }
 
@@ -503,7 +503,7 @@ export default function MyBetsPage() {
       if (typeof wallet.switchChain === 'function') {
         await wallet.switchChain(97);
         console.log('✅ Switched via Privy');
-        alert('✅ Switched to BSC Testnet!');
+        console.info('Switched to BSC Testnet!');
         return;
       }
 
@@ -514,12 +514,12 @@ export default function MyBetsPage() {
           params: [{ chainId: '0x61' }],
         });
         console.log('✅ Switched via window.ethereum');
-        alert('✅ Switched to BSC Testnet!');
+        console.info('Switched to BSC Testnet!');
         return;
       }
 
-      alert(
-        '❌ Unable to switch network. Please switch manually in your wallet.'
+      console.info(
+        'Unable to switch network. Please switch manually in your wallet.'
       );
     } catch (error: any) {
       console.error('Network switch failed:', error);
@@ -538,15 +538,15 @@ export default function MyBetsPage() {
               },
             ],
           });
-          alert('✅ Added and switched to BSC Testnet!');
+          console.info('Added and switched to BSC Testnet!');
         } catch (addError: any) {
           console.error('Failed to add network:', addError);
-          alert(
-            '❌ Failed to add BSC Testnet. Please add it manually in your wallet.'
+          console.info(
+            'Failed to add BSC Testnet. Please add it manually in your wallet.'
           );
         }
       } else {
-        alert(`❌ Failed to switch network: ${error.message}`);
+        console.error(`Failed to switch network: ${error.message}`);
       }
     }
   };
@@ -573,7 +573,7 @@ export default function MyBetsPage() {
     const commitData = getCommitSecret(predictionId);
 
     if (!prediction || !commitData) {
-      alert(
+      console.info(
         'Reveal data not found. Make sure you placed this bet on this device.'
       );
       return;
@@ -620,10 +620,10 @@ export default function MyBetsPage() {
       await fetchUserBets();
 
       setShowRevealModal(false);
-      alert('Bet revealed successfully!');
+      console.info('Bet revealed successfully!');
     } catch (err: any) {
       console.error('Reveal failed:', err);
-      alert(getErrorMessage(err));
+      console.error(getErrorMessage(err));
     }
   };
 
@@ -679,10 +679,10 @@ export default function MyBetsPage() {
       // Refresh bets
       await fetchUserBets();
 
-      alert(`Winnings claimed! Amount: ${result.amount} BNB`);
+      console.info(`Winnings claimed! Amount: ${result.amount} BNB`);
     } catch (err: any) {
       console.error('Claim failed:', err);
-      alert(getErrorMessage(err));
+      console.error(getErrorMessage(err));
     }
   };
 
@@ -713,11 +713,11 @@ export default function MyBetsPage() {
       // Refresh bets
       await fetchUserBets();
 
-      alert(`Refund claimed! Amount: ${result.amount} BNB`);
+      console.info(`Refund claimed! Amount: ${result.amount} BNB`);
     } catch (err: any) {
       console.error('Refund failed:', err);
       const errorMsg = getErrorMessage(err);
-      alert(`Refund failed: ${errorMsg}`);
+      console.error(`Refund failed: ${errorMsg}`);
     }
   };
 
