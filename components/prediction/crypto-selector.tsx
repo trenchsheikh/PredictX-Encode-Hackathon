@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { TrendingUp, TrendingDown, Loader2, Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
+import { logger } from '@/lib/logger';
 
 export interface CryptoData {
   id: string;
@@ -70,14 +71,14 @@ export function CryptoSelector({
           // Use real-time data from CoinGecko
           setCryptos(data.data.prices);
           setLastUpdated(new Date());
-          console.log(
-            `✅ Fetched ${data.data.prices.length} real-time crypto prices from CoinGecko`
+          logger.api(
+            `Fetched ${data.data.prices.length} real-time crypto prices from CoinGecko`
           );
         } else if (data.data.source === 'Fallback Data') {
           // Use fallback data but warn user
           setCryptos(data.data.prices);
           setLastUpdated(new Date());
-          console.warn('⚠️ Using fallback crypto prices - real-time data unavailable');
+          logger.warn('Using fallback crypto prices - real-time data unavailable');
         } else {
           // Check if prices are recent (within last 15 minutes for more tolerance)
           const now = Date.now();
@@ -89,22 +90,22 @@ export function CryptoSelector({
           if (validPrices.length > 0) {
             setCryptos(validPrices);
             setLastUpdated(new Date());
-            console.log(
-              `✅ Using ${validPrices.length} recent crypto prices (${Math.round((now - validPrices[0].timestamp) / 1000)}s old)`
+            logger.api(
+              `Using ${validPrices.length} recent crypto prices (${Math.round((now - validPrices[0].timestamp) / 1000)}s old)`
             );
           } else {
-            console.warn('⚠️ All prices are stale, using fallback data');
+            logger.warn('All prices are stale, using fallback data');
             setCryptos(getFallbackCryptoData());
             setLastUpdated(new Date());
           }
         }
       } else {
         // Fallback to hardcoded crypto data if API returns empty or fails
-        console.warn('API returned empty prices, using fallback data');
+        logger.warn('API returned empty prices, using fallback data');
         setCryptos(getFallbackCryptoData());
       }
     } catch (error) {
-      console.error('Failed to fetch crypto prices:', error);
+      logger.error('Failed to fetch crypto prices:', error);
       // Use fallback data on error
       setCryptos(getFallbackCryptoData());
     } finally {

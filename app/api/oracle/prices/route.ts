@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { logger } from '@/lib/logger';
 
 // CoinGecko API configuration
 const COINGECKO_API_URL = 'https://api.coingecko.com/api/v3';
@@ -48,8 +49,9 @@ export async function GET(request: NextRequest) {
       low24h: coin.low_24h,
     }));
 
-    console.log(
-      `✅ Fetched ${prices.length} real-time crypto prices from CoinGecko at ${new Date().toISOString()}`
+    logger.api(
+      `Fetched ${prices.length} real-time crypto prices from CoinGecko`,
+      { timestamp: new Date().toISOString() }
     );
 
     return NextResponse.json({
@@ -64,7 +66,7 @@ export async function GET(request: NextRequest) {
       },
     });
   } catch (error: any) {
-    console.error('Error fetching crypto prices from CoinGecko:', error);
+    logger.error('Error fetching crypto prices from CoinGecko:', error);
 
     // Fallback to static data if API fails
     const fallbackPrices = [
@@ -139,7 +141,7 @@ export async function GET(request: NextRequest) {
       },
     ];
 
-    console.warn('⚠️ Using fallback crypto prices due to API error');
+    logger.warn('Using fallback crypto prices due to API error');
 
     return NextResponse.json({
       success: true,

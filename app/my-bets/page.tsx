@@ -167,7 +167,9 @@ export default function MyBetsPage() {
 
       setPredictions(marketData);
     } catch (err: any) {
-      console.error('Failed to fetch user bets:', err);
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Failed to fetch user bets:', err);
+      }
       setError(getErrorMessage(err));
     } finally {
       setLoading(false);
@@ -256,160 +258,14 @@ export default function MyBetsPage() {
    * Test backend connection
    */
   const testBackendConnection = async () => {
-    try {
-      console.log('🔍 Testing backend connection to: /api');
-
-      const response = await fetch('/api/health');
-      const result = await response.json();
-
-      if (response.ok) {
-        console.log('✅ Backend connection successful:', result);
-      } else {
-        console.error('❌ Backend connection failed:', result);
-      }
-    } catch (error: any) {
-      console.error('❌ Backend connection error:', error);
-    }
+    // Debug function removed for production safety
   };
 
   /**
    * Test wallet connection
    */
   const testWalletConnection = async () => {
-    console.log('🧪 Testing wallet connection...');
-    console.log('Authenticated:', authenticated);
-    console.log('User:', user);
-    console.log('Wallets:', wallets);
-
-    if (!authenticated) {
-      console.info('Please connect your wallet first');
-      return;
-    }
-
-    if (!wallets || wallets.length === 0) {
-      console.info('No wallet found. Please connect your wallet.');
-      return;
-    }
-
-    const wallet = wallets[0];
-    console.log('Testing wallet:', wallet);
-
-    try {
-      // Test if contract hook is working
-      if (contract.error) {
-        console.error(`Contract error: ${contract.error}`);
-        return;
-      }
-
-      if (contract.loading) {
-        console.info('Contract is loading, please wait...');
-        return;
-      }
-
-      // Test if we can create a signer (this tests the core wallet connection)
-      try {
-        // Import the contract hook's getSigner function
-        const { getContractAddresses } = await import('@/lib/blockchain-utils');
-        const { ethers } = await import('ethers');
-
-        // Test if we can get contract addresses
-        const addresses = getContractAddresses();
-        console.log('✅ Contract addresses loaded:', addresses);
-
-        // Test Privy wallet methods
-        console.log('🔍 Testing Privy wallet methods...');
-        console.log('Wallet object:', wallet);
-        console.log(
-          'Available methods:',
-          Object.keys(wallet).filter(
-            key => typeof (wallet as any)[key] === 'function'
-          )
-        );
-
-        // Test different signer creation methods
-        let signerCreated = false;
-
-        // Method 1: Try Privy's getEthereumProvider
-        if (typeof wallet.getEthereumProvider === 'function') {
-          try {
-            console.log('🔍 Trying wallet.getEthereumProvider()...');
-            const provider = await wallet.getEthereumProvider();
-            console.log('✅ Provider from Privy:', provider);
-
-            const ethersProvider = new ethers.BrowserProvider(provider);
-            const signer = await ethersProvider.getSigner();
-            const address = await signer.getAddress();
-            console.log('✅ Signer created via Privy:', address);
-            signerCreated = true;
-          } catch (privyError: any) {
-            console.warn('⚠️ Privy method failed:', privyError.message);
-          }
-        }
-
-        // Method 2: Try window.ethereum
-        if (
-          !signerCreated &&
-          typeof window !== 'undefined' &&
-          window.ethereum
-        ) {
-          try {
-            console.log('🔍 Trying window.ethereum...');
-            const provider = new ethers.BrowserProvider(window.ethereum);
-            const signer = await provider.getSigner();
-            const address = await signer.getAddress();
-            console.log('✅ Signer created via window.ethereum:', address);
-            signerCreated = true;
-          } catch (windowError: any) {
-            console.warn(
-              '⚠️ Window.ethereum method failed:',
-              windowError.message
-            );
-          }
-        }
-
-        // Method 3: Try any other method on the wallet
-        if (!signerCreated) {
-          console.log('🔍 Trying other wallet methods...');
-          const methods = Object.keys(wallet).filter(
-            key =>
-              typeof (wallet as any)[key] === 'function' &&
-              (key.includes('provider') ||
-                key.includes('ethereum') ||
-                key.includes('signer'))
-          );
-
-          for (const method of methods) {
-            try {
-              console.log(`🔍 Trying wallet.${method}()...`);
-              const result = await (wallet as any)[method]();
-              console.log(`Result from wallet.${method}:`, result);
-
-              if (result && typeof result.getSigner === 'function') {
-                const signer = await result.getSigner();
-                const address = await signer.getAddress();
-                console.log(`✅ Signer created via wallet.${method}:`, address);
-                signerCreated = true;
-                break;
-              }
-            } catch (methodError: any) {
-              console.warn(`⚠️ wallet.${method} failed:`, methodError.message);
-            }
-          }
-        }
-
-        if (signerCreated) {
-          console.log('✅ Wallet connection successful! Signer is working.');
-        } else {
-          console.error(
-            '❌ Failed to create signer with any method. Check console for details.'
-          );
-        }
-      } catch (signerError: any) {
-        console.error('Signer creation failed:', signerError);
-      }
-    } catch (error: any) {
-      console.error('Wallet test failed:', error);
-    }
+    // Debug function removed for production safety
   };
 
   /**
@@ -894,20 +750,6 @@ export default function MyBetsPage() {
                 </span>
               </div> */}
             <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
-              {/* <Button
-                  onClick={testBackendConnection}
-                  size="sm"
-                  className="bg-indigo-600 text-white hover:bg-indigo-700"
-                >
-                  Test Backend
-                </Button>
-                <Button
-                  onClick={testWalletConnection}
-                  size="sm"
-                  className="bg-blue-600 text-white hover:bg-blue-700"
-                >
-                  Test Connection
-                </Button>
                 <Button
                   onClick={switchToBSC}
                   size="sm"
@@ -1105,27 +947,29 @@ export default function MyBetsPage() {
                   ? parseFloat(refundCheck.amount)
                   : bet.amount;
 
-              // Debug logging
-              console.log('Bet Debug:', {
-                betId: bet.id,
-                predictionId: bet.predictionId,
-                outcome: bet.outcome,
-                revealed: bet.revealed,
-                isRevealed,
-                predictionStatus: prediction.status,
-                predictionOutcome: prediction.resolution?.outcome,
-                isWinning,
-                isExpired,
-                canClaim,
-                canRefund,
-                canClaimWinnings,
-                hasLost,
-                waitingForResolution,
-                canClaimAnything,
-                claimed: bet.claimed,
-                hasUnrevealedCommit: hasUnrevealedCommit(bet.predictionId),
-                canReveal: canReveal(prediction.expiresAt),
-              });
+              // Debug logging (development only)
+              if (process.env.NODE_ENV === 'development') {
+                console.log('Bet Debug:', {
+                  betId: bet.id,
+                  predictionId: bet.predictionId,
+                  outcome: bet.outcome,
+                  revealed: bet.revealed,
+                  isRevealed,
+                  predictionStatus: prediction.status,
+                  predictionOutcome: prediction.resolution?.outcome,
+                  isWinning,
+                  isExpired,
+                  canClaim,
+                  canRefund,
+                  canClaimWinnings,
+                  hasLost,
+                  waitingForResolution,
+                  canClaimAnything,
+                  claimed: bet.claimed,
+                  hasUnrevealedCommit: hasUnrevealedCommit(bet.predictionId),
+                  canReveal: canReveal(prediction.expiresAt),
+                });
+              }
 
               return (
                 <Card
