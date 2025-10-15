@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
       {
         method: 'GET',
         headers: {
-          'Accept': 'application/json',
+          Accept: 'application/json',
           'Content-Type': 'application/json',
           ...(COINGECKO_API_KEY && { 'x-cg-demo-api-key': COINGECKO_API_KEY }),
         },
@@ -22,7 +22,9 @@ export async function GET(request: NextRequest) {
     );
 
     if (!response.ok) {
-      throw new Error(`CoinGecko API responded with status: ${response.status}`);
+      throw new Error(
+        `CoinGecko API responded with status: ${response.status}`
+      );
     }
 
     const data = await response.json();
@@ -42,7 +44,9 @@ export async function GET(request: NextRequest) {
       low24h: coin.low_24h,
     }));
 
-    console.log(`✅ Fetched ${prices.length} real-time crypto prices from CoinGecko`);
+    console.log(
+      `✅ Fetched ${prices.length} real-time crypto prices from CoinGecko`
+    );
 
     return NextResponse.json({
       success: true,
@@ -53,7 +57,6 @@ export async function GET(request: NextRequest) {
         count: prices.length,
       },
     });
-
   } catch (error: any) {
     console.error('Error fetching crypto prices from CoinGecko:', error);
 
@@ -80,7 +83,8 @@ export async function GET(request: NextRequest) {
         marketCap: 384000000000,
         priceChange24h: 2.5,
         timestamp: Date.now(),
-        image: 'https://assets.coingecko.com/coins/images/279/large/ethereum.png',
+        image:
+          'https://assets.coingecko.com/coins/images/279/large/ethereum.png',
         totalVolume: 8000000000,
         high24h: 3250,
         low24h: 3150,
@@ -93,7 +97,8 @@ export async function GET(request: NextRequest) {
         marketCap: 164041749103,
         priceChange24h: -0.56,
         timestamp: Date.now(),
-        image: 'https://assets.coingecko.com/coins/images/825/large/bnb-icon2_2x.png',
+        image:
+          'https://assets.coingecko.com/coins/images/825/large/bnb-icon2_2x.png',
         totalVolume: 2000000000,
         high24h: 1200,
         low24h: 1150,
@@ -106,7 +111,8 @@ export async function GET(request: NextRequest) {
         marketCap: 41000000000,
         priceChange24h: -2.3,
         timestamp: Date.now(),
-        image: 'https://assets.coingecko.com/coins/images/4128/large/solana.png',
+        image:
+          'https://assets.coingecko.com/coins/images/4128/large/solana.png',
         totalVolume: 1500000000,
         high24h: 98,
         low24h: 92,
@@ -119,7 +125,8 @@ export async function GET(request: NextRequest) {
         marketCap: 16000000000,
         priceChange24h: 3.1,
         timestamp: Date.now(),
-        image: 'https://assets.coingecko.com/coins/images/975/large/cardano.png',
+        image:
+          'https://assets.coingecko.com/coins/images/975/large/cardano.png',
         totalVolume: 500000000,
         high24h: 0.47,
         low24h: 0.43,

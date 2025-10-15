@@ -19,7 +19,7 @@ import {
 } from 'lucide-react';
 
 const navigation = [
-  { key: 'nav_home', href: '/', icon: TrendingUp },
+  { key: 'nav_home', href: '/', icon: TrendingUp, isHome: true },
   { key: 'nav_my_bets', href: '/my-bets', icon: Wallet },
   { key: 'nav_how', href: '/how-it-works', icon: Shield },
   { key: 'nav_docs', href: '/docs', icon: BookOpen },
@@ -110,7 +110,11 @@ export function AnimatedHeader() {
           whileTap={{ scale: 0.98 }}
           className="flex lg:flex-1"
         >
-          <Link href="/" className="group flex items-center space-x-3">
+          <Link
+            href="/"
+            className="group flex items-center space-x-3"
+            prefetch={false}
+          >
             <div className="relative flex h-10 w-10 items-center justify-center overflow-hidden rounded-lg bg-gradient-to-r from-yellow-400 to-yellow-600">
               <Image
                 src="/binanceeye.jpg"
@@ -159,6 +163,7 @@ export function AnimatedHeader() {
                 <Link
                   href={item.href}
                   className="group flex items-center space-x-2 rounded-lg px-3 py-2 text-sm font-medium text-gray-300 transition-all duration-200 hover:bg-gray-800/50 hover:text-white"
+                  prefetch={item.isHome ? false : undefined}
                 >
                   <Icon className="h-4 w-4 transition-colors duration-200 group-hover:text-yellow-400" />
                   <span>
@@ -186,10 +191,12 @@ export function AnimatedHeader() {
               variant="ghost"
               size="sm"
               onClick={toggleLanguage}
-              className="flex items-center gap-2 text-gray-300 transition-all duration-200 hover:bg-gray-800/50 hover:text-white"
+              className="flex min-w-[60px] items-center gap-3 text-gray-300 transition-all duration-200 hover:bg-gray-800/50 hover:text-white"
             >
-              <Globe className="h-4 w-4" />
-              {mounted ? (locale === 'en' ? '中文' : 'EN') : 'EN'}
+              <Globe className="h-4 w-4 flex-shrink-0" />
+              <span className="whitespace-nowrap">
+                {mounted ? (locale === 'en' ? '中文' : 'EN') : 'EN'}
+              </span>
             </AnimatedButton>
           </motion.div>
 
@@ -261,6 +268,7 @@ export function AnimatedHeader() {
                   href="/"
                   className="flex items-center space-x-3"
                   onClick={() => setMobileMenuOpen(false)}
+                  prefetch={false}
                 >
                   <div className="flex h-8 w-8 items-center justify-center overflow-hidden rounded-lg bg-gradient-to-r from-yellow-400 to-yellow-600">
                     <Image
@@ -306,6 +314,7 @@ export function AnimatedHeader() {
                           href={item.href}
                           className="group flex items-center space-x-3 rounded-xl px-4 py-3 text-gray-300 transition-all duration-300 hover:bg-white/10 hover:text-white"
                           onClick={() => setMobileMenuOpen(false)}
+                          prefetch={item.isHome ? false : undefined}
                         >
                           <Icon className="h-5 w-5 transition-colors group-hover:text-yellow-400" />
                           <span className="font-medium">
@@ -329,8 +338,10 @@ export function AnimatedHeader() {
                     onClick={toggleLanguage}
                     className="w-full justify-start border-gray-600/50 text-gray-300 hover:text-white"
                   >
-                    <Globe className="mr-2 h-4 w-4" />
-                    {mounted ? (locale === 'en' ? '中文' : 'EN') : 'EN'}
+                    <Globe className="mr-3 h-4 w-4 flex-shrink-0" />
+                    <span className="whitespace-nowrap">
+                      {mounted ? (locale === 'en' ? '中文' : 'EN') : 'EN'}
+                    </span>
                   </AnimatedButton>
 
                   {!ready ? (

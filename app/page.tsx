@@ -286,26 +286,24 @@ export default function HomePage() {
       console.log('  Description:', data.description);
       console.log('  ExpiresAt (seconds):', expiresAtTimestamp);
       console.log('  Category:', category);
-      console.log('  Current timestamp (seconds):', Math.floor(Date.now() / 1000));
-      console.log('  Time until expiry (minutes):', (expiresAtTimestamp - Math.floor(Date.now() / 1000)) / 60);
-
-      // Check if contract is paused
-      try {
-        const isPaused = await contract.paused();
-        console.log('  Contract paused:', isPaused);
-        if (isPaused) {
-          throw new Error('Contract is currently paused');
-        }
-      } catch (pauseError) {
-        console.warn('Could not check pause status:', pauseError.message);
-      }
+      console.log(
+        '  Current timestamp (seconds):',
+        Math.floor(Date.now() / 1000)
+      );
+      console.log(
+        '  Time until expiry (minutes):',
+        (expiresAtTimestamp - Math.floor(Date.now() / 1000)) / 60
+      );
 
       // Call smart contract to create market
       const result = await contract.createMarket(
         data.title,
         data.description,
+        '',
+        '',
+        category,
         expiresAtTimestamp,
-        category
+        '0'
       );
 
       if (!result.success || !result.txHash) {
@@ -712,7 +710,10 @@ export default function HomePage() {
       )}
 
       {/* Oracle Error Modal */}
-      <Dialog open={showOracleErrorModal} onOpenChange={setShowOracleErrorModal}>
+      <Dialog
+        open={showOracleErrorModal}
+        onOpenChange={setShowOracleErrorModal}
+      >
         <DialogContent className="max-w-md border border-orange-500/50 bg-gray-900/95 shadow-2xl backdrop-blur-md">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2 text-orange-400">
@@ -723,24 +724,29 @@ export default function HomePage() {
               Regular prediction markets are temporarily disabled
             </DialogDescription>
           </DialogHeader>
-          
+
           <div className="space-y-4">
             <div className="rounded-lg border border-orange-500/20 bg-orange-500/10 p-4">
               <div className="flex items-start gap-3">
                 <AlertCircle className="mt-0.5 h-5 w-5 flex-shrink-0 text-orange-400" />
                 <div className="space-y-2">
                   <p className="text-sm text-orange-200">
-                    <strong>Oracle system is under development.</strong> We don't have a way to automatically resolve regular prediction outcomes yet.
+                    <strong>Oracle system is under development.</strong> We
+                    don't have a way to automatically resolve regular prediction
+                    outcomes yet.
                   </p>
                   <p className="text-sm text-orange-200">
-                    However, you can create <strong>crypto predictions</strong> that are automatically verified using real-time price data!
+                    However, you can create <strong>crypto predictions</strong>{' '}
+                    that are automatically verified using real-time price data!
                   </p>
                 </div>
               </div>
             </div>
 
             <div className="space-y-3">
-              <h4 className="font-medium text-white">Try Crypto DarkPool instead:</h4>
+              <h4 className="font-medium text-white">
+                Try Crypto DarkPool instead:
+              </h4>
               <ul className="space-y-2 text-sm text-gray-300">
                 <li className="flex items-center gap-2">
                   <CheckCircle className="h-4 w-4 text-green-400" />

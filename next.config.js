@@ -1,8 +1,5 @@
-const { i18n } = require('./next-i18next.config.js');
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  i18n,
   images: {
     remotePatterns: [
       {
@@ -19,7 +16,6 @@ const nextConfig = {
       },
     ],
   },
-  // Optimize for Vercel deployment
   output: 'standalone',
   experimental: {
     optimizePackageImports: ['lucide-react', '@radix-ui/react-icons'],

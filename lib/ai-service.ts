@@ -43,7 +43,7 @@ class AIService {
   private buildPrompt(description: string, category: string): string {
     const currentYear = new Date().getFullYear();
     const nextYear = currentYear + 1;
-    
+
     return `Create a crypto prediction from: "${description}"
 
 Requirements:
@@ -96,10 +96,13 @@ JSON only:
       const modelsResponse = await fetch(
         `https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`
       );
-      
+
       if (modelsResponse.ok) {
         const modelsData = await modelsResponse.json();
-        console.log('Available Gemini models:', modelsData.models?.map((m: any) => m.name) || 'None found');
+        console.log(
+          'Available Gemini models:',
+          modelsData.models?.map((m: any) => m.name) || 'None found'
+        );
       }
     } catch (error) {
       console.warn('Could not fetch available models:', error);
@@ -113,7 +116,7 @@ JSON only:
       'models/gemini-2.0-pro-exp',
       'models/gemini-flash-latest',
       'models/gemini-pro-latest',
-      'models/gemini-2.5-flash-lite'
+      'models/gemini-2.5-flash-lite',
     ];
 
     for (const modelName of modelsToTry) {
@@ -154,26 +157,39 @@ JSON only:
             console.error('Failed to parse JSON response:', jsonError);
             throw new Error('Invalid JSON response from Gemini API');
           }
-          
+
           // Handle different response structures
-          console.log('Full response structure:', JSON.stringify(data, null, 2));
-          
+          console.log(
+            'Full response structure:',
+            JSON.stringify(data, null, 2)
+          );
+
           // Try multiple possible response structures
           if (data.candidates && data.candidates[0]) {
             const candidate = data.candidates[0];
-            
+
             // Check if response was truncated due to MAX_TOKENS
             if (candidate.finishReason === 'MAX_TOKENS') {
               console.warn('⚠️ Response truncated due to MAX_TOKENS limit');
               // Try to extract partial content if available
-              if (candidate.content && candidate.content.parts && candidate.content.parts[0] && candidate.content.parts[0].text) {
+              if (
+                candidate.content &&
+                candidate.content.parts &&
+                candidate.content.parts[0] &&
+                candidate.content.parts[0].text
+              ) {
                 const truncatedText = candidate.content.parts[0].text;
                 console.log('Using truncated content: content.parts[0].text');
                 // Check if truncated content contains valid JSON
-                if (truncatedText.includes('{') && truncatedText.includes('}')) {
+                if (
+                  truncatedText.includes('{') &&
+                  truncatedText.includes('}')
+                ) {
                   return truncatedText;
                 } else {
-                  console.log('Truncated content is not valid JSON, using fallback');
+                  console.log(
+                    'Truncated content is not valid JSON, using fallback'
+                  );
                   return this.createFallbackResponse('crypto prediction');
                 }
               }
@@ -181,60 +197,77 @@ JSON only:
               console.log('Creating fallback response for truncated content');
               return this.createFallbackResponse('crypto prediction');
             }
-            
+
             // Structure 1: content.parts[0].text
-            if (candidate.content && candidate.content.parts && candidate.content.parts[0] && candidate.content.parts[0].text) {
+            if (
+              candidate.content &&
+              candidate.content.parts &&
+              candidate.content.parts[0] &&
+              candidate.content.parts[0].text
+            ) {
               console.log('Using structure 1: content.parts[0].text');
               return candidate.content.parts[0].text;
             }
-            
+
             // Structure 2: direct text property
             if (candidate.text) {
               console.log('Using structure 2: candidate.text');
               return candidate.text;
             }
-            
+
             // Structure 3: content.text
             if (candidate.content && candidate.content.text) {
               console.log('Using structure 3: content.text');
               return candidate.content.text;
             }
-            
+
             // Structure 4: parts array with different structure
-            if (candidate.parts && candidate.parts[0] && candidate.parts[0].text) {
+            if (
+              candidate.parts &&
+              candidate.parts[0] &&
+              candidate.parts[0].text
+            ) {
               console.log('Using structure 4: parts[0].text');
               return candidate.parts[0].text;
             }
-            
-            console.log('Candidate structure:', JSON.stringify(candidate, null, 2));
+
+            console.log(
+              'Candidate structure:',
+              JSON.stringify(candidate, null, 2)
+            );
           }
-          
+
           // Fallback structures
           if (data.text) {
             console.log('Using fallback: data.text');
             return data.text;
           }
-          
+
           if (data.content) {
             console.log('Using fallback: data.content');
             return data.content;
           }
-          
+
           if (data.response) {
             console.log('Using fallback: data.response');
             return data.response;
           }
-          
+
           console.error('Unexpected response structure:', data);
           // Try to extract any text content from the response
           const responseText = JSON.stringify(data);
-          if (responseText.includes('"text"') || responseText.includes('"content"')) {
+          if (
+            responseText.includes('"text"') ||
+            responseText.includes('"content"')
+          ) {
             console.warn('Attempting to extract text from malformed response');
             return responseText;
           }
-          
+
           // If all else fails, create a fallback response
-          console.warn('Creating fallback response due to unexpected structure');
+          console.warn(
+            'Creating fallback response due to unexpected structure'
+          );
           return this.createFallbackResponse('crypto prediction');
         } else if (response.status === 404) {
           // Model not found, try next one
@@ -249,8 +282,12 @@ JSON only:
           );
         }
       } catch (error) {
-        const errorMessage = error instanceof Error ? error.message : String(error);
-        if (errorMessage.includes('404') || errorMessage.includes('not found')) {
+        const errorMessage =
+          error instanceof Error ? error.message : String(error);
+        if (
+          errorMessage.includes('404') ||
+          errorMessage.includes('not found')
+        ) {
           console.warn(`❌ Model ${modelName} not available, trying next...`);
           continue;
         }
@@ -259,16 +296,22 @@ JSON only:
     }
 
     // If all models fail, provide a mock response for testing
-    console.warn('⚠️ All Gemini models failed, using mock response for testing');
+    console.warn(
+      '⚠️ All Gemini models failed, using mock response for testing'
+    );
     return this.getMockAIResponse(prompt);
   }
 
   private getMockAIResponse(prompt: string): string {
     // Extract the main topic from the prompt
-    const topic = prompt.toLowerCase().includes('bitcoin') ? 'Bitcoin' : 
-                  prompt.toLowerCase().includes('ethereum') ? 'Ethereum' :
-                  prompt.toLowerCase().includes('bnb') ? 'BNB' : 'cryptocurrency';
-    
+    const topic = prompt.toLowerCase().includes('bitcoin')
+      ? 'Bitcoin'
+      : prompt.toLowerCase().includes('ethereum')
+        ? 'Ethereum'
+        : prompt.toLowerCase().includes('bnb')
+          ? 'BNB'
+          : 'cryptocurrency';
+
     const mockResponse = {
       title: `Will ${topic} reach a significant milestone by end of 2024?`,
       description: `${topic} price prediction for end of 2024. Specific target with verifiable data. Uses CoinGecko for resolution.`,
@@ -276,7 +319,7 @@ JSON only:
       category: 'crypto',
       expiresInDays: 30,
       resolutionInstructions: `Determine the outcome based on ${topic}'s closing price on December 31, 2024, using CoinGecko as the data source.`,
-      suggestedOptions: ['YES', 'NO']
+      suggestedOptions: ['YES', 'NO'],
     };
 
     return JSON.stringify(mockResponse);
@@ -408,7 +451,10 @@ JSON only:
       // Validate that the prediction can be cross-validated
       const validationResult = this.validatePrediction(parsed);
       if (!validationResult.isValid) {
-        console.warn('Validation failed, but allowing for testing:', validationResult.errorMessage);
+        console.warn(
+          'Validation failed, but allowing for testing:',
+          validationResult.errorMessage
+        );
         // Temporarily allow all predictions for testing
         // throw new Error(validationResult.errorMessage);
       }
@@ -433,13 +479,16 @@ JSON only:
     } catch (error) {
       console.error('Failed to parse AI response:', error);
       // Re-throw validation errors to show to user
-      const errorMessage = error instanceof Error ? error.message : String(error);
-      if (errorMessage.includes('Cannot be cross-validated') || 
-          errorMessage.includes('No verifiable outcome') ||
-          errorMessage.includes('Subjective prediction')) {
+      const errorMessage =
+        error instanceof Error ? error.message : String(error);
+      if (
+        errorMessage.includes('Cannot be cross-validated') ||
+        errorMessage.includes('No verifiable outcome') ||
+        errorMessage.includes('Subjective prediction')
+      ) {
         throw error;
       }
-      
+
       // Fallback response for parsing errors
       return {
         title: 'AI Generated Prediction',
@@ -455,66 +504,144 @@ JSON only:
     }
   }
 
-  private validatePrediction(parsed: any): { isValid: boolean; errorMessage: string } {
+  private validatePrediction(parsed: any): {
+    isValid: boolean;
+    errorMessage: string;
+  } {
     const title = parsed.title || '';
     const description = parsed.description || '';
     const resolutionInstructions = parsed.resolutionInstructions || '';
-    const combinedText = `${title} ${description} ${resolutionInstructions}`.toLowerCase();
+    const combinedText =
+      `${title} ${description} ${resolutionInstructions}`.toLowerCase();
 
     // Check for subjective or unverifiable predictions
     const subjectiveKeywords = [
-      'best', 'worst', 'most popular', 'better than', 'more popular',
-      'favorite', 'preferred', 'opinion', 'subjective', 'personal',
-      'beautiful', 'ugly', 'amazing', 'terrible', 'superior', 'inferior'
+      'best',
+      'worst',
+      'most popular',
+      'better than',
+      'more popular',
+      'favorite',
+      'preferred',
+      'opinion',
+      'subjective',
+      'personal',
+      'beautiful',
+      'ugly',
+      'amazing',
+      'terrible',
+      'superior',
+      'inferior',
     ];
 
-    const hasSubjectiveKeywords = subjectiveKeywords.some(keyword => 
+    const hasSubjectiveKeywords = subjectiveKeywords.some(keyword =>
       combinedText.includes(keyword)
     );
 
     if (hasSubjectiveKeywords) {
       return {
         isValid: false,
-        errorMessage: 'Cannot be cross-validated: Prediction contains subjective terms that cannot be objectively verified. Please use specific, measurable criteria.'
+        errorMessage:
+          'Cannot be cross-validated: Prediction contains subjective terms that cannot be objectively verified. Please use specific, measurable criteria.',
       };
     }
 
     // Check for specific, verifiable criteria
     const verifiableKeywords = [
-      'price', 'market cap', 'volume', 'trading', 'revenue', 'earnings',
-      'users', 'downloads', 'transactions', 'blocks', 'hash rate',
-      'percentage', 'ratio', 'rate', 'amount', 'number', 'count',
-      'date', 'time', 'deadline', 'expires', 'by', 'before', 'after',
-      'reaches', 'exceeds', 'falls below', 'above', 'below', 'equals',
-      'coinbase', 'binance', 'coingecko', 'bloomberg', 'reuters',
-      'official', 'announcement', 'launch', 'release', 'upgrade',
-      '$', 'usd', 'btc', 'eth', 'bnb', 'sol', 'ada', 'xrp', 'doge',
-      'bitcoin', 'ethereum', 'binance', 'solana', 'cardano', 'ripple'
+      'price',
+      'market cap',
+      'volume',
+      'trading',
+      'revenue',
+      'earnings',
+      'users',
+      'downloads',
+      'transactions',
+      'blocks',
+      'hash rate',
+      'percentage',
+      'ratio',
+      'rate',
+      'amount',
+      'number',
+      'count',
+      'date',
+      'time',
+      'deadline',
+      'expires',
+      'by',
+      'before',
+      'after',
+      'reaches',
+      'exceeds',
+      'falls below',
+      'above',
+      'below',
+      'equals',
+      'coinbase',
+      'binance',
+      'coingecko',
+      'bloomberg',
+      'reuters',
+      'official',
+      'announcement',
+      'launch',
+      'release',
+      'upgrade',
+      '$',
+      'usd',
+      'btc',
+      'eth',
+      'bnb',
+      'sol',
+      'ada',
+      'xrp',
+      'doge',
+      'bitcoin',
+      'ethereum',
+      'binance',
+      'solana',
+      'cardano',
+      'ripple',
     ];
 
-    const hasVerifiableKeywords = verifiableKeywords.some(keyword => 
+    const hasVerifiableKeywords = verifiableKeywords.some(keyword =>
       combinedText.includes(keyword)
     );
 
     // Special case: Check for price targets with dollar signs
-    const hasPriceTarget = /\$[\d,]+/.test(combinedText) || 
-                          /\d+\s*(dollars?|usd|btc|eth|bnb)/i.test(combinedText);
+    const hasPriceTarget =
+      /\$[\d,]+/.test(combinedText) ||
+      /\d+\s*(dollars?|usd|btc|eth|bnb)/i.test(combinedText);
 
     if (!hasVerifiableKeywords && !hasPriceTarget) {
       return {
         isValid: false,
-        errorMessage: 'No verifiable outcome: Prediction must include specific, measurable criteria (price targets, dates, numbers, or official data sources) that can be objectively verified.'
+        errorMessage:
+          'No verifiable outcome: Prediction must include specific, measurable criteria (price targets, dates, numbers, or official data sources) that can be objectively verified.',
       };
     }
 
     // Check for clear resolution criteria (optional for price targets)
     const resolutionKeywords = [
-      'coingecko', 'coinmarketcap', 'bloomberg', 'reuters', 'official',
-      'closing price', 'market data', 'api', 'verification', 'data source',
-      'determine', 'based on', 'using', 'according to', 'per'
+      'coingecko',
+      'coinmarketcap',
+      'bloomberg',
+      'reuters',
+      'official',
+      'closing price',
+      'market data',
+      'api',
+      'verification',
+      'data source',
+      'determine',
+      'based on',
+      'using',
+      'according to',
+      'per',
     ];
 
-    const hasResolutionKeywords = resolutionKeywords.some(keyword => 
+    const hasResolutionKeywords = resolutionKeywords.some(keyword =>
       resolutionInstructions.toLowerCase().includes(keyword)
     );
 
@@ -522,17 +649,28 @@ JSON only:
     if (!hasResolutionKeywords && !hasPriceTarget) {
       return {
         isValid: false,
-        errorMessage: 'Missing resolution criteria: Prediction must specify how the outcome will be determined (e.g., "using CoinGecko data", "based on official announcement").'
+        errorMessage:
+          'Missing resolution criteria: Prediction must specify how the outcome will be determined (e.g., "using CoinGecko data", "based on official announcement").',
       };
     }
 
     // Check for time-bound predictions (optional for price targets)
     const timeKeywords = [
-      'by', 'before', 'after', 'until', 'within', 'deadline',
-      'end of', 'start of', 'during', 'on', 'at', 'expires'
+      'by',
+      'before',
+      'after',
+      'until',
+      'within',
+      'deadline',
+      'end of',
+      'start of',
+      'during',
+      'on',
+      'at',
+      'expires',
     ];
 
-    const hasTimeKeywords = timeKeywords.some(keyword => 
+    const hasTimeKeywords = timeKeywords.some(keyword =>
       combinedText.includes(keyword)
     );
 
@@ -540,7 +678,8 @@ JSON only:
     if (!hasTimeKeywords && !hasPriceTarget) {
       return {
         isValid: false,
-        errorMessage: 'Missing time frame: Prediction must specify when the outcome will be determined (e.g., "by end of 2024", "within 30 days").'
+        errorMessage:
+          'Missing time frame: Prediction must specify when the outcome will be determined (e.g., "by end of 2024", "within 30 days").',
       };
     }
 
@@ -549,34 +688,50 @@ JSON only:
 
   private createFallbackResponse(userInput: string): string {
     // Extract crypto and price from user input
-    const cryptoMatch = userInput.match(/(bitcoin|ethereum|eth|btc|bnb|solana|sol|cardano|ada)/i);
+    const cryptoMatch = userInput.match(
+      /(bitcoin|ethereum|eth|btc|bnb|solana|sol|cardano|ada)/i
+    );
     const priceMatch = userInput.match(/\$?(\d+(?:,\d{3})*(?:\.\d+)?[km]?)/i);
-    
+
     const crypto = cryptoMatch ? cryptoMatch[0] : 'cryptocurrency';
     const price = priceMatch ? priceMatch[1] : 'a significant price target';
-    
+
     // Get real dates
     const currentDate = new Date();
     const currentYear = currentDate.getFullYear();
     const nextYear = currentYear + 1;
-    
+
     // Determine timeframe based on user input
     const inputLower = userInput.toLowerCase();
     let targetDate: string;
     let expiresInDays: number;
-    
-    if (inputLower.includes('soon') || inputLower.includes('quick') || inputLower.includes('fast') || 
-        inputLower.includes('this month') || inputLower.includes('next month') || inputLower.includes('30 days')) {
+
+    if (
+      inputLower.includes('soon') ||
+      inputLower.includes('quick') ||
+      inputLower.includes('fast') ||
+      inputLower.includes('this month') ||
+      inputLower.includes('next month') ||
+      inputLower.includes('30 days')
+    ) {
       // Short-term
       targetDate = `December 31, ${currentYear}`;
       expiresInDays = 30;
-    } else if (inputLower.includes('next year') || inputLower.includes('2026') || 
-               inputLower.includes('long term') || inputLower.includes('eventually')) {
+    } else if (
+      inputLower.includes('next year') ||
+      inputLower.includes('2026') ||
+      inputLower.includes('long term') ||
+      inputLower.includes('eventually')
+    ) {
       // Long-term
       targetDate = `December 31, ${nextYear}`;
       expiresInDays = 365;
-    } else if (inputLower.includes('this year') || inputLower.includes('2025') || 
-               inputLower.includes('in a few months') || inputLower.includes('6 months')) {
+    } else if (
+      inputLower.includes('this year') ||
+      inputLower.includes('2025') ||
+      inputLower.includes('in a few months') ||
+      inputLower.includes('6 months')
+    ) {
       // Medium-term
       targetDate = `Q1 ${nextYear}`;
       expiresInDays = 90;
@@ -585,24 +740,30 @@ JSON only:
       targetDate = `Q1 ${nextYear}`;
       expiresInDays = 90;
     }
-    
+
     // Fun descriptions based on crypto type
     const funDescriptions: { [key: string]: string } = {
-      'bitcoin': '🚀 The king of crypto aiming for the moon! Will Bitcoin break through this major milestone?',
-      'ethereum': '⚡ The smart contract giant charging towards new heights! Can ETH power through?',
-      'eth': '⚡ The smart contract giant charging towards new heights! Can ETH power through?',
-      'btc': '🚀 The king of crypto aiming for the moon! Will Bitcoin break through this major milestone?',
-      'bnb': '🔥 Binance Coin heating up the market! Will BNB burn bright enough to reach this target?',
-      'solana': '☀️ The speed demon of crypto racing to new peaks! Can SOL outpace the competition?',
-      'sol': '☀️ The speed demon of crypto racing to new peaks! Can SOL outpace the competition?',
-      'cardano': '🎯 The academic approach to crypto reaching for the stars! Will ADA\'s research pay off?',
-      'ada': '🎯 The academic approach to crypto reaching for the stars! Will ADA\'s research pay off?',
-      'default': '🚀 Crypto rocket fuel loading! Will this digital asset blast off to new heights?'
+      bitcoin:
+        '🚀 The king of crypto aiming for the moon! Will Bitcoin break through this major milestone?',
+      ethereum:
+        '⚡ The smart contract giant charging towards new heights! Can ETH power through?',
+      eth: '⚡ The smart contract giant charging towards new heights! Can ETH power through?',
+      btc: '🚀 The king of crypto aiming for the moon! Will Bitcoin break through this major milestone?',
+      bnb: '🔥 Binance Coin heating up the market! Will BNB burn bright enough to reach this target?',
+      solana:
+        '☀️ The speed demon of crypto racing to new peaks! Can SOL outpace the competition?',
+      sol: '☀️ The speed demon of crypto racing to new peaks! Can SOL outpace the competition?',
+      cardano:
+        "🎯 The academic approach to crypto reaching for the stars! Will ADA's research pay off?",
+      ada: "🎯 The academic approach to crypto reaching for the stars! Will ADA's research pay off?",
+      default:
+        '🚀 Crypto rocket fuel loading! Will this digital asset blast off to new heights?',
     };
-    
+
     const cryptoKey = crypto.toLowerCase();
-    const funDescription = funDescriptions[cryptoKey] || funDescriptions['default'];
-    
+    const funDescription =
+      funDescriptions[cryptoKey] || funDescriptions['default'];
+
     return JSON.stringify({
       title: `Will ${crypto} reach $${price} by ${targetDate}?`,
       description: `${funDescription} Uses CoinGecko data for verification.`,
@@ -610,7 +771,7 @@ JSON only:
       category: 'crypto',
       expiresInDays: expiresInDays,
       resolutionInstructions: `Determine outcome using CoinGecko closing price data on ${targetDate}. Price must be $${price} or higher for YES to win.`,
-      suggestedOptions: ['YES', 'NO']
+      suggestedOptions: ['YES', 'NO'],
     });
   }
 }

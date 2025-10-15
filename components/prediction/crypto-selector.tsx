@@ -52,7 +52,7 @@ export function CryptoSelector({
         method: 'GET',
         headers: {
           'Cache-Control': 'no-cache',
-          'Pragma': 'no-cache',
+          Pragma: 'no-cache',
         },
       });
 
@@ -73,7 +73,9 @@ export function CryptoSelector({
         if (validPrices.length > 0) {
           setCryptos(validPrices);
           setLastUpdated(new Date());
-          console.log(`✅ Fetched ${validPrices.length} real-time crypto prices`);
+          console.log(
+            `✅ Fetched ${validPrices.length} real-time crypto prices`
+          );
         } else {
           console.warn('⚠️ All prices are stale, using fallback data');
           setCryptos(getFallbackCryptoData());
@@ -217,7 +219,8 @@ export function CryptoSelector({
       </div>
       {lastUpdated && (
         <div className="text-xs text-gray-400">
-          📊 Real-time prices updated: {lastUpdated.toLocaleTimeString()} | Source: CoinGecko API
+          📊 Real-time prices updated: {lastUpdated.toLocaleTimeString()} |
+          Source: CoinGecko API
         </div>
       )}
 
@@ -237,21 +240,23 @@ export function CryptoSelector({
             <CardContent className="flex h-full flex-col p-4">
               <div className="mb-3 flex items-center justify-between">
                 {/* Crypto Info */}
-                <div className="flex items-center space-x-2 flex-1">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-yellow-400/20 overflow-hidden">
+                <div className="flex flex-1 items-center space-x-2">
+                  <div className="flex h-8 w-8 items-center justify-center overflow-hidden rounded-full bg-yellow-400/20">
                     {crypto.image ? (
-                      <img 
-                        src={crypto.image} 
+                      <img
+                        src={crypto.image}
                         alt={crypto.name}
                         className="h-6 w-6 rounded-full object-cover"
-                        onError={(e) => {
+                        onError={e => {
                           // Fallback to symbol if image fails to load
                           e.currentTarget.style.display = 'none';
-                          e.currentTarget.nextElementSibling!.style.display = 'flex';
+                          const fallback = e.currentTarget
+                            .nextElementSibling as HTMLElement;
+                          if (fallback) fallback.style.display = 'flex';
                         }}
                       />
                     ) : null}
-                    <div className="h-6 w-6 flex items-center justify-center text-xs font-bold text-yellow-400">
+                    <div className="flex h-6 w-6 items-center justify-center text-xs font-bold text-yellow-400">
                       {crypto.symbol.charAt(0)}
                     </div>
                   </div>

@@ -3,6 +3,7 @@
 ## ✅ Changes Made
 
 ### 1. **Minimum Deadline Reduced**
+
 - **Before**: 15 minutes minimum deadline
 - **After**: 5 minutes minimum deadline
 - **Files Updated**:
@@ -11,15 +12,18 @@
   - `components/prediction/crypto-prediction-modal.tsx`
 
 ### 2. **Smart Contract Redeployed**
+
 - **Network**: BSC Testnet (Chain ID: 97)
 - **Deployer**: 0x46f5305784cfc77AEEa92Be4E8461E7051743bbe
 - **Deployment Time**: 2025-10-15T18:03:01.123Z
 
 ### 3. **New Contract Addresses**
+
 - **Vault**: `0xbB37B8A3fB2691AB44e561df427C6D63F684535E`
 - **PredictionMarket**: `0x7282D4d20e072d20e072d1e0Ab344916BA7DF2B66162e8E`
 
 ### 4. **Frontend Updated**
+
 - Contract addresses updated in `public/deployments/bscTestnet/`
 - ABI files copied to frontend
 - All references point to new contracts
