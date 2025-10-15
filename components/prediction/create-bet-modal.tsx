@@ -139,60 +139,96 @@ export function CreateBetModal({
     } catch (error) {
       console.error('Failed to fetch crypto data:', error);
       // Fallback to basic crypto options
-      setCryptoOptions([
-        {
-          id: 'bitcoin',
-          name: 'Bitcoin',
-          symbol: 'BTC',
-          icon: '₿',
-          price: 45000,
-          change: 2.5,
-        },
-        {
-          id: 'ethereum',
-          name: 'Ethereum',
-          symbol: 'ETH',
-          icon: 'Ξ',
-          price: 3200,
-          change: -1.2,
-        },
-        {
-          id: 'binancecoin',
-          name: 'BNB',
-          symbol: 'BNB',
-          icon: 'B',
-          price: 320,
-          change: 5.8,
-        },
-        {
-          id: 'cardano',
-          name: 'Cardano',
-          symbol: 'ADA',
-          icon: 'A',
-          price: 0.45,
-          change: 3.1,
-        },
-        {
-          id: 'solana',
-          name: 'Solana',
-          symbol: 'SOL',
-          icon: 'S',
-          price: 95,
-          change: -2.3,
-        },
-        {
-          id: 'matic-network',
-          name: 'Polygon',
-          symbol: 'MATIC',
-          icon: 'M',
-          price: 0.85,
-          change: 1.7,
-        },
-      ]);
+      setCryptoOptions(getFallbackCryptoOptions());
     } finally {
       setCryptoLoading(false);
     }
   };
+
+  function getFallbackCryptoOptions(): CryptoOption[] {
+    return [
+      {
+        id: 'bitcoin',
+        name: 'Bitcoin',
+        symbol: 'BTC',
+        icon: '₿',
+        price: 111461,
+        change: -0.41,
+      },
+      {
+        id: 'ethereum',
+        name: 'Ethereum',
+        symbol: 'ETH',
+        icon: 'Ξ',
+        price: 3200,
+        change: 2.5,
+      },
+      {
+        id: 'binancecoin',
+        name: 'BNB',
+        symbol: 'BNB',
+        icon: 'B',
+        price: 1178.46,
+        change: -0.56,
+      },
+      {
+        id: 'cardano',
+        name: 'Cardano',
+        symbol: 'ADA',
+        icon: 'A',
+        price: 0.45,
+        change: 3.1,
+      },
+      {
+        id: 'solana',
+        name: 'Solana',
+        symbol: 'SOL',
+        icon: 'S',
+        price: 95,
+        change: -2.3,
+      },
+      {
+        id: 'matic-network',
+        name: 'Polygon',
+        symbol: 'MATIC',
+        icon: 'M',
+        price: 0.85,
+        change: 1.7,
+      },
+      {
+        id: 'ripple',
+        name: 'XRP',
+        symbol: 'XRP',
+        icon: 'X',
+        price: 0.52,
+        change: 1.2,
+      },
+      {
+        id: 'polkadot',
+        name: 'Polkadot',
+        symbol: 'DOT',
+        icon: 'D',
+        price: 6.8,
+        change: -1.5,
+      },
+      {
+        id: 'dogecoin',
+        name: 'Dogecoin',
+        symbol: 'DOGE',
+        icon: 'D',
+        price: 0.08,
+        change: 5.2,
+      },
+      {
+        id: 'avalanche-2',
+        name: 'Avalanche',
+        symbol: 'AVAX',
+        icon: 'A',
+        price: 25.5,
+        change: -0.8,
+      },
+    ];
+  }
 
   // Fetch crypto data when component mounts
   useEffect(() => {

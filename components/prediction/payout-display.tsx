@@ -13,6 +13,7 @@ import {
   ExternalLink,
   Copy,
 } from 'lucide-react';
+import { formatBNB } from '@/lib/utils';
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
 
@@ -53,10 +54,7 @@ export function PayoutDisplay({
     outcome !== null &&
     ((outcome && userOutcome === 'yes') || (!outcome && userOutcome === 'no'));
 
-  const formatBNB = (value: string) => {
-    const num = parseFloat(value);
-    return num.toFixed(6);
-  };
+  // Use the shared formatBNB function from utils
 
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);

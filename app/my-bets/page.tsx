@@ -1149,7 +1149,7 @@ export default function MyBetsPage() {
                               {t('my_bets.price')}
                             </div>
                             <div className="text-sm font-medium text-white">
-                              {bet.price.toFixed(4)}
+                              {formatBNB(bet.price)}
                             </div>
                           </div>
                           <div>

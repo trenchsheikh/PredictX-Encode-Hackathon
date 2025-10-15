@@ -10,6 +10,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
+import { formatBNB } from '@/lib/utils';
 import {
   ExternalLink,
   Copy,
@@ -148,10 +149,7 @@ export function TransactionHistoryModal({
     });
   };
 
-  const formatBNB = (value: string) => {
-    const num = parseFloat(value);
-    return num.toFixed(6);
-  };
+  // Use the shared formatBNB function from utils
 
   const formatAddress = (address: string) => {
     return `${address.slice(0, 6)}...${address.slice(-4)}`;

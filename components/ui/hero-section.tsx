@@ -6,6 +6,7 @@ import { AnimatedButton } from './animated-button';
 import { useState, useEffect } from 'react';
 import { api } from '@/lib/api-client';
 import { useI18n } from '@/components/providers/i18n-provider';
+import { ethers } from 'ethers';
 
 interface HeroSectionProps {
   onCreateClick: () => void;
@@ -55,9 +56,9 @@ export function HeroSection({
           (market: any) => market.status === 0
         ).length;
 
-        // Calculate total volume from all markets
+        // Calculate total volume from all markets (convert from wei to BNB)
         const totalVolume = markets.reduce((sum: number, market: any) => {
-          return sum + parseFloat(market.totalPool || '0');
+          return sum + parseFloat(ethers.formatEther(market.totalPool || '0'));
         }, 0);
 
         // Fetch leaderboard to get participants count
