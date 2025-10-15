@@ -810,7 +810,7 @@ export default function MyBetsPage() {
     const weeklyData: { [key: string]: { winnings: number; bets: number; weekStart: Date } } = {};
     
     userBets.forEach(bet => {
-      const betDate = new Date(bet.timestamp);
+      const betDate = new Date(bet.createdAt);
       const weekStart = new Date(betDate);
       weekStart.setDate(betDate.getDate() - betDate.getDay()); // Start of week (Sunday)
       weekStart.setHours(0, 0, 0, 0);
@@ -824,7 +824,9 @@ export default function MyBetsPage() {
       weeklyData[weekKey].bets += 1;
       
       // Calculate winnings for resolved bets
-      if (bet.status === 'resolved' && bet.outcome === 'won') {
+      const prediction = predictions[bet.predictionId];
+      const isWinning = prediction?.resolution?.outcome === bet.outcome;
+      if (prediction?.status === 'resolved' && isWinning) {
         const payout = bet.payout || 0;
         weeklyData[weekKey].winnings += payout;
       }
