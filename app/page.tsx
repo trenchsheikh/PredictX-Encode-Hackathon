@@ -295,23 +295,15 @@ export default function HomePage() {
         (expiresAtTimestamp - Math.floor(Date.now() / 1000)) / 60
       );
 
-      // Check if contract is paused
-      try {
-        const isPaused = await contract.paused();
-        console.log('  Contract paused:', isPaused);
-        if (isPaused) {
-          throw new Error('Contract is currently paused');
-        }
-      } catch (pauseError) {
-        console.warn('Could not check pause status:', pauseError.message);
-      }
-
       // Call smart contract to create market
       const result = await contract.createMarket(
         data.title,
         data.description,
+        '',
+        '',
+        category,
         expiresAtTimestamp,
-        category
+        '0'
       );
 
       if (!result.success || !result.txHash) {

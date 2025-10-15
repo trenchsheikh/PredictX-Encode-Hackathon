@@ -250,8 +250,9 @@ export function CryptoSelector({
                         onError={e => {
                           // Fallback to symbol if image fails to load
                           e.currentTarget.style.display = 'none';
-                          e.currentTarget.nextElementSibling!.style.display =
-                            'flex';
+                          const fallback = e.currentTarget
+                            .nextElementSibling as HTMLElement;
+                          if (fallback) fallback.style.display = 'flex';
                         }}
                       />
                     ) : null}

@@ -6,7 +6,6 @@ import { usePrivy, useWallets } from '@privy-io/react-auth';
 import {
   getContractAddresses,
   checkNetwork,
-  switchToBSCTestnet,
   estimateGas,
   waitForTransaction,
   parseContractError,
@@ -24,7 +23,6 @@ export function usePredictionContract() {
   const [txHash, setTxHash] = useState<string>();
   const [error, setError] = useState<string>();
   const [contractABI, setContractABI] = useState<any[]>([]);
-  const [vaultABI, setVaultABI] = useState<any[]>([]);
 
   // Load ABIs on mount
   useEffect(() => {
@@ -34,32 +32,23 @@ export function usePredictionContract() {
         const predictionRes = await fetch(
           '/deployments/bscTestnet/PredictionMarket.json'
         );
-        const vaultRes = await fetch('/deployments/bscTestnet/Vault.json');
 
         if (predictionRes.ok) {
           const predictionABI = await predictionRes.json();
           console.log(
-            '✅ PredictionMarket ABI loaded:',
+            'PredictionMarket ABI loaded:',
             predictionABI.length,
             'functions'
           );
           setContractABI(predictionABI);
         } else {
           console.error(
-            '❌ Failed to load PredictionMarket ABI:',
+            'Failed to load PredictionMarket ABI:',
             predictionRes.status
           );
         }
-
-        if (vaultRes.ok) {
-          const vaultABIData = await vaultRes.json();
-          console.log('✅ Vault ABI loaded');
-          setVaultABI(vaultABIData);
-        } else {
-          console.error('❌ Failed to load Vault ABI:', vaultRes.status);
-        }
       } catch (err) {
-        console.error('❌ Failed to load contract ABIs:', err);
+        console.error('Failed to load contract ABIs:', err);
       }
     }
     loadABIs();
@@ -77,14 +66,14 @@ export function usePredictionContract() {
 
     if (!authenticated) {
       const errorMsg = 'Please connect your wallet first';
-      console.error('❌', errorMsg);
+      console.error(errorMsg);
       setError(errorMsg);
       return null;
     }
 
     if (!wallets || wallets.length === 0) {
       const errorMsg = 'No wallet found. Please connect your wallet.';
-      console.error('❌', errorMsg);
+      console.error(errorMsg);
       setError(errorMsg);
       return null;
     }
@@ -108,13 +97,13 @@ export function usePredictionContract() {
         wallet.walletClientType === 'metamask' ||
         wallet.walletClientType === 'injected'
       ) {
-        console.log('🔍 Trying MetaMask via Privy...');
+        console.log('Trying MetaMask via Privy...');
 
         if (typeof wallet.getEthereumProvider === 'function') {
           try {
-            console.log('🔍 Using Privy getEthereumProvider...');
+            console.log('Using Privy getEthereumProvider...');
             const provider = await wallet.getEthereumProvider();
-            console.log('✅ Provider obtained from Privy');
+            console.log('Provider obtained from Privy');
 
             const ethersProvider = new ethers.BrowserProvider(provider);
 
@@ -125,42 +114,42 @@ export function usePredictionContract() {
               chainIdStr !== '97' &&
               chainIdStr !== 'eip155:97'
             ) {
-              console.log('🔍 Switching to BSC Testnet...', {
+              console.log('Switching to BSC Testnet...', {
                 currentChainId: wallet.chainId,
               });
               try {
                 await wallet.switchChain(97);
-                console.log('✅ Switched to BSC Testnet');
+                console.log('Switched to BSC Testnet');
               } catch (switchError: any) {
-                console.warn('⚠️ Failed to switch chain:', switchError.message);
+                console.warn('Failed to switch chain:', switchError.message);
                 // Try alternative method
                 try {
-                  console.log('🔍 Trying alternative chain switch...');
+                  console.log('Trying alternative chain switch...');
                   await wallet.switchChain('0x61'); // Hex format
-                  console.log('✅ Switched to BSC Testnet (hex)');
+                  console.log('Switched to BSC Testnet (hex)');
                 } catch (altError: any) {
                   console.warn(
-                    '⚠️ Alternative switch also failed:',
+                    'Alternative switch also failed:',
                     altError.message
                   );
                   // Continue anyway, user can switch manually
                 }
               }
             } else {
-              console.log('✅ Already on BSC Testnet');
+              console.log('Already on BSC Testnet');
             }
 
             signer = await ethersProvider.getSigner();
-            console.log('✅ Signer obtained via Privy');
+            console.log('Signer obtained via Privy');
           } catch (privyError: any) {
-            console.warn('⚠️ Privy method failed:', privyError.message);
+            console.warn('Privy method failed:', privyError.message);
           }
         }
 
         // Method 2: Fallback to window.ethereum
         if (!signer && typeof window !== 'undefined' && window.ethereum) {
           try {
-            console.log('🔍 Fallback to window.ethereum...');
+            console.log('Fallback to window.ethereum...');
             const provider = new ethers.BrowserProvider(window.ethereum);
 
             // Request accounts
@@ -168,27 +157,24 @@ export function usePredictionContract() {
 
             // Switch network if needed
             const network = await provider.getNetwork();
-            console.log('🔍 Current network:', {
+            console.log('Current network:', {
               chainId: network.chainId,
               name: network.name,
             });
             if (Number(network.chainId) !== 97) {
-              console.log('🔍 Switching to BSC Testnet via window.ethereum...');
+              console.log('Switching to BSC Testnet via window.ethereum...');
               try {
                 await window.ethereum.request({
                   method: 'wallet_switchEthereumChain',
                   params: [{ chainId: '0x61' }], // BSC Testnet
                 });
-                console.log('✅ Switched to BSC Testnet');
+                console.log('Switched to BSC Testnet');
               } catch (switchError: any) {
-                console.warn(
-                  '⚠️ Failed to switch network:',
-                  switchError.message
-                );
+                console.warn('Failed to switch network:', switchError.message);
                 // Try adding the network if it doesn't exist
                 if (switchError.code === 4902) {
                   try {
-                    console.log('🔍 Adding BSC Testnet network...');
+                    console.log('Adding BSC Testnet network...');
                     await window.ethereum.request({
                       method: 'wallet_addEthereumChain',
                       params: [
@@ -207,26 +193,23 @@ export function usePredictionContract() {
                         },
                       ],
                     });
-                    console.log('✅ Added BSC Testnet network');
+                    console.log('Added BSC Testnet network');
                   } catch (addError: any) {
                     console.warn(
-                      '⚠️ Failed to add BSC Testnet:',
+                      'Failed to add BSC Testnet:',
                       addError.message
                     );
                   }
                 }
               }
             } else {
-              console.log('✅ Already on BSC Testnet');
+              console.log('Already on BSC Testnet');
             }
 
             signer = await provider.getSigner();
-            console.log('✅ Signer obtained via window.ethereum');
+            console.log('Signer obtained via window.ethereum');
           } catch (windowError: any) {
-            console.warn(
-              '⚠️ Window.ethereum method failed:',
-              windowError.message
-            );
+            console.warn('Window.ethereum method failed:', windowError.message);
           }
         }
       }
@@ -238,19 +221,19 @@ export function usePredictionContract() {
         typeof wallet.getEthereumProvider === 'function'
       ) {
         try {
-          console.log('🔍 Trying Privy embedded wallet...');
+          console.log('Trying Privy embedded wallet...');
           const provider = await wallet.getEthereumProvider();
           const ethersProvider = new ethers.BrowserProvider(provider);
           signer = await ethersProvider.getSigner();
-          console.log('✅ Signer obtained via Privy embedded wallet');
+          console.log('Signer obtained via Privy embedded wallet');
         } catch (privyError: any) {
-          console.warn('⚠️ Privy embedded wallet failed:', privyError.message);
+          console.warn('Privy embedded wallet failed:', privyError.message);
         }
       }
 
       // Method 4: Try any available method on the wallet object
       if (!signer) {
-        console.log('🔍 Trying any available signer method...');
+        console.log('Trying any available signer method...');
         const methods = Object.keys(wallet).filter(
           key =>
             typeof (wallet as any)[key] === 'function' &&
@@ -263,22 +246,22 @@ export function usePredictionContract() {
 
         for (const method of methods) {
           try {
-            console.log(`🔍 Trying wallet.${method}...`);
+            console.log(`Trying wallet.${method}...`);
             const result = await (wallet as any)[method]();
             console.log(`Result from wallet.${method}:`, result);
 
             if (result && typeof result.getSigner === 'function') {
               signer = await result.getSigner();
-              console.log(`✅ Signer obtained via wallet.${method}`);
+              console.log(`Signer obtained via wallet.${method}`);
               break;
             } else if (result && typeof result.getSigner === 'function') {
               // Some wallets might have getSigner as a property
               signer = result.getSigner;
-              console.log(`✅ Signer obtained via wallet.${method} (property)`);
+              console.log(`Signer obtained via wallet.${method} (property)`);
               break;
             }
           } catch (methodError: any) {
-            console.warn(`⚠️ wallet.${method} failed:`, methodError.message);
+            console.warn(`wallet.${method} failed:`, methodError.message);
           }
         }
       }
@@ -291,7 +274,7 @@ export function usePredictionContract() {
             const provider = new ethers.BrowserProvider(window.ethereum);
             signer = await provider.getSigner();
             console.log(
-              '✅ Signer created from window.ethereum with wallet address'
+              'Signer created from window.ethereum with wallet address'
             );
           }
         } catch (addressError: any) {
@@ -402,7 +385,7 @@ export function usePredictionContract() {
       // Check if user is authenticated
       if (!authenticated) {
         const errorMsg = 'Please connect your wallet first';
-        console.error('❌', errorMsg);
+        console.error(errorMsg);
         setError(errorMsg);
         return null;
       }
@@ -410,7 +393,7 @@ export function usePredictionContract() {
       // Check if wallet is available
       if (!wallets || wallets.length === 0) {
         const errorMsg = 'No wallet found. Please connect your wallet.';
-        console.error('❌', errorMsg);
+        console.error(errorMsg);
         setError(errorMsg);
         return null;
       }
@@ -420,23 +403,23 @@ export function usePredictionContract() {
       if (!signer) {
         const errorMsg =
           'Failed to get wallet signer. Please check your wallet connection.';
-        console.error('❌', errorMsg);
+        console.error(errorMsg);
         setError(errorMsg);
         return null;
       }
-      console.log('✅ Signer obtained');
+      console.log('Signer obtained');
 
       if (contractABI.length === 0) {
         const errorMsg =
           'Contract ABI not loaded. Please refresh the page and try again.';
-        console.error('❌', errorMsg);
+        console.error(errorMsg);
         setError(errorMsg);
         return null;
       }
-      console.log('✅ ABI loaded');
+      console.log('ABI loaded');
 
       // Check network
-      console.log('🔍 Checking network...');
+      console.log('Checking network...');
 
       // First try to get chainId from wallet
       const wallet = wallets[0];
@@ -460,7 +443,7 @@ export function usePredictionContract() {
 
       // Check if we're on BSC Testnet (chainId 97)
       if (currentChainId !== 97) {
-        console.log('🔄 Attempting to switch to BSC Testnet...');
+        console.log('Attempting to switch to BSC Testnet...');
         try {
           // Try to switch network automatically
           if (typeof window !== 'undefined' && window.ethereum) {
@@ -468,24 +451,24 @@ export function usePredictionContract() {
               method: 'wallet_switchEthereumChain',
               params: [{ chainId: '0x61' }], // BSC Testnet
             });
-            console.log('✅ Successfully switched to BSC Testnet');
+            console.log('Successfully switched to BSC Testnet');
             // Wait a moment for the network switch to complete
             await new Promise(resolve => setTimeout(resolve, 1000));
-            // Retry getting the signer after network switch
-            return await getSigner();
+            // Retry getting the contract after network switch
+            return await getContract();
           } else {
             throw new Error('No ethereum provider available');
           }
         } catch (switchError: any) {
           console.warn(
-            '⚠️ Failed to switch network automatically:',
+            'Failed to switch network automatically:',
             switchError.message
           );
 
           // Try adding the network if it doesn't exist
           if (switchError.code === 4902) {
             try {
-              console.log('🔍 Adding BSC Testnet network...');
+              console.log('Adding BSC Testnet network...');
               await window.ethereum.request({
                 method: 'wallet_addEthereumChain',
                 params: [
@@ -504,18 +487,17 @@ export function usePredictionContract() {
                   },
                 ],
               });
-              console.log('✅ Added BSC Testnet network');
+              console.log('Added BSC Testnet network');
               // Wait a moment for the network to be added
               await new Promise(resolve => setTimeout(resolve, 1000));
-              // Retry getting the signer after adding network
-              return await getSigner();
+              return await getContract();
             } catch (addError: any) {
-              console.error('❌ Failed to add BSC Testnet:', addError.message);
+              console.error('Failed to add BSC Testnet:', addError.message);
             }
           }
 
           const errorMsg = `Please switch to BSC Testnet (Chain ID: 97). Current: ${currentChainId || 'Unknown'}`;
-          console.error('❌', errorMsg);
+          console.error(errorMsg);
           setError(errorMsg);
           return null;
         }
@@ -526,11 +508,11 @@ export function usePredictionContract() {
         const networkCheck = await checkNetwork();
         if (!networkCheck.isCorrect) {
           console.warn(
-            '⚠️ Provider-based network check failed, but wallet chainId is correct'
+            'Provider-based network check failed, but wallet chainId is correct'
           );
         }
       } catch (networkError: any) {
-        console.warn('⚠️ Network check failed:', networkError.message);
+        console.warn('Network check failed:', networkError.message);
         // Continue anyway since wallet chainId check passed
       }
 
@@ -542,7 +524,7 @@ export function usePredictionContract() {
       if (!addresses.predictionMarket) {
         const errorMsg =
           'Contract address not found. Please check your configuration.';
-        console.error('❌', errorMsg);
+        console.error(errorMsg);
         setError(errorMsg);
         return null;
       }
@@ -559,7 +541,7 @@ export function usePredictionContract() {
         const testAddress = await signer.getAddress();
         console.log('✅ Signer test passed, address:', testAddress);
       } catch (signerTestError: any) {
-        console.error('❌ Signer test failed:', signerTestError);
+        console.error('Signer test failed:', signerTestError);
         throw new Error(`Signer is invalid: ${signerTestError.message}`);
       }
 
@@ -571,7 +553,7 @@ export function usePredictionContract() {
       console.log('✅ Contract instance created successfully');
       return contract;
     } catch (err: any) {
-      console.error('❌ Failed to create contract instance:', err);
+      console.error('Failed to create contract instance:', err);
       const errorMessage = err.message || 'Unknown error occurred';
       setError(`Failed to get contract instance: ${errorMessage}`);
       return null;
@@ -800,21 +782,18 @@ export function usePredictionContract() {
         }
 
         // Debug: Check market and bet data before claiming
-        console.log('🔍 Checking market and bet data before claiming...');
-        console.log('🔍 Market ID:', marketId, 'Type:', typeof marketId);
+        console.log('Checking market and bet data before claiming...');
+        console.log('Market ID:', marketId, 'Type:', typeof marketId);
 
         try {
-          console.log('🔍 Calling getMarket with marketId:', marketId);
+          console.log('Calling getMarket with marketId:', marketId);
 
           // First check if market exists by trying to get basic info
           try {
             const market = await contract.getMarket(marketId);
-            console.log('✅ Market exists on blockchain');
+            console.log('Market exists on blockchain');
           } catch (marketError: any) {
-            console.error(
-              '❌ Market does not exist on blockchain:',
-              marketError
-            );
+            console.error('Market does not exist on blockchain:', marketError);
             throw new Error(
               `Market ${marketId} does not exist on blockchain. Error: ${marketError.message}`
             );
@@ -1025,9 +1004,9 @@ export function usePredictionContract() {
             );
           }
 
-          console.log('✅ All requirements met, proceeding with claim...');
+          console.log('All requirements met, proceeding with claim...');
         } catch (debugError: any) {
-          console.error('❌ Pre-claim validation failed:', debugError);
+          console.error('Pre-claim validation failed:', debugError);
 
           // Check if it's a contract call error
           if (
