@@ -23,16 +23,16 @@ i18n
     fallbackLng: 'zh', // Default to Chinese
     defaultNS: 'common',
     debug: false,
-    
+
     detection: {
       order: ['localStorage', 'navigator', 'htmlTag'],
       caches: ['localStorage'],
     },
-    
+
     interpolation: {
       escapeValue: false,
     },
-    
+
     react: {
       useSuspense: false,
     },

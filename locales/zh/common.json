@@ -7,30 +7,30 @@
   "disconnect": "断开连接",
   "connecting": "连接中...",
   "connected": "已连接",
-  
+
   "hero_title": "DarkBet",
   "hero_subtitle": "暗池投注平台",
   "hero_description": "预测市场的未来就在这里。基于BNB智能链构建，AI驱动结果，完全链上执行。",
   "what_is_darkpool": "什么是暗池投注？",
   "darkpool_explanation": "暗池投注将暗池的隐私和效率与预测市场相结合。您的投注在解析前保持隐藏，防止市场操纵，同时确保在BNB智能链上的公平、AI驱动结果。",
-  
+
   "features": {
     "fully_onchain": "完全链上",
     "ai_driven": "AI驱动结果",
     "realtime_markets": "实时市场"
   },
-  
+
   "cta": {
     "start_darkpool_betting": "开始暗池投注",
     "crypto_darkpool": "加密货币暗池"
   },
-  
+
   "stats": {
     "total_volume": "总交易量",
     "active_markets": "活跃市场",
     "participants": "参与者"
   },
-  
+
   "markets": {
     "all_markets": "所有市场",
     "markets_count": "个市场",
@@ -39,7 +39,7 @@
     "create_first_prediction": "创建第一个预测",
     "completed_predictions": "已完成的预测"
   },
-  
+
   "prediction_card": {
     "pool": "奖池",
     "yes": "是",
@@ -56,7 +56,7 @@
     "expires_in": "到期时间",
     "expired": "已过期"
   },
-  
+
   "create_prediction": {
     "title": "创建预测市场",
     "description": "创建具有自动或手动解析的预测市场",
@@ -91,7 +91,7 @@
     "set_expiration_help": "设置此预测市场何时关闭和解析（最少15分钟）",
     "generate_analysis_checkbox": "生成详细分析（卡片的无偏见摘要）"
   },
-  
+
   "categories": {
     "sports": "体育",
     "crypto": "加密货币",
@@ -102,7 +102,7 @@
     "technology": "技术",
     "custom": "自定义"
   },
-  
+
   "bet_modal": {
     "place_bet": "下注",
     "bet_amount": "投注金额",
@@ -116,7 +116,7 @@
     "transaction_fee": "交易费用",
     "total_cost": "总成本"
   },
-  
+
   "crypto_prediction": {
     "title": "加密货币预测",
     "select_crypto": "选择加密货币",
@@ -127,7 +127,7 @@
     "deadline": "截止时间",
     "create_crypto_prediction": "创建加密货币预测"
   },
-  
+
   "filters": {
     "all_categories": "所有类别",
     "all_status": "所有状态",
@@ -138,7 +138,7 @@
     "last_30d": "最近30天",
     "clear_filters": "清除筛选"
   },
-  
+
   "my_bets": {
     "title": "我的投注",
     "subtitle": "跟踪您的预测市场投资和收益",
@@ -164,7 +164,7 @@
     "lost": "失败",
     "active": "活跃"
   },
-  
+
   "how_it_works": {
     "title": "DarkBet如何运作",
     "platform_overview": "平台概览",
@@ -271,7 +271,7 @@
     "ready_description": "连接您的钱包，今天创建您的第一个预测市场",
     "explore_markets": "探索市场"
   },
-  
+
   "leaderboard": {
     "title": "排行榜",
     "subtitle": "DarkBet预测市场顶级表现者",
@@ -302,7 +302,7 @@
     "portfolio_tracking": "投资组合跟踪",
     "achievement_system": "成就系统"
   },
-  
+
   "transaction_history": {
     "title": "交易历史",
     "no_transactions": "暂无交易记录",
@@ -315,7 +315,7 @@
     "confirmed": "已确认",
     "failed": "失败"
   },
-  
+
   "errors": {
     "wallet_required": "请连接您的钱包以进行投注",
     "transaction_failed": "交易失败",
@@ -324,17 +324,17 @@
     "unknown_error": "未知错误",
     "retry": "重试"
   },
-  
+
   "success": {
     "bet_placed": "投注成功！请记住在市场到期后揭示。",
     "prediction_created": "预测创建成功！",
     "crypto_prediction_created": "加密货币预测创建成功！"
   },
-  
+
   "footer": {
     "all_rights_reserved": "版权所有。"
   },
-  
+
   "common": {
     "example": "示例"
   }

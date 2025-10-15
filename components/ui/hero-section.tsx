@@ -19,7 +19,11 @@ interface PlatformStats {
   participants: number;
 }
 
-export function HeroSection({ onCreateClick, onCryptoClick, isAuthenticated }: HeroSectionProps) {
+export function HeroSection({
+  onCreateClick,
+  onCryptoClick,
+  isAuthenticated,
+}: HeroSectionProps) {
   const { t } = useI18n();
   const [stats, setStats] = useState<PlatformStats>({
     totalVolume: 0,
@@ -43,23 +47,27 @@ export function HeroSection({ onCreateClick, onCryptoClick, isAuthenticated }: H
     const fetchStats = async () => {
       try {
         setLoading(true);
-        
+
         // Fetch markets to get active markets count and total volume
         const marketsResponse = await api.markets.getMarkets();
         const markets = marketsResponse.data || [];
-        
+
         // Calculate active markets (status 0 = active)
-        const activeMarkets = markets.filter((market: any) => market.status === 0).length;
-        
+        const activeMarkets = markets.filter(
+          (market: any) => market.status === 0
+        ).length;
+
         // Calculate total volume from all markets
         const totalVolume = markets.reduce((sum: number, market: any) => {
           return sum + parseFloat(market.totalPool || '0');
         }, 0);
-        
+
         // Fetch leaderboard to get participants count
-        const leaderboardResponse = await api.leaderboard.getLeaderboard({ limit: 1000 });
+        const leaderboardResponse = await api.leaderboard.getLeaderboard({
+          limit: 1000,
+        });
         const participants = leaderboardResponse.data?.totalUsers || 0;
-        
+
         setStats({
           totalVolume,
           activeMarkets,
@@ -76,13 +84,21 @@ export function HeroSection({ onCreateClick, onCryptoClick, isAuthenticated }: H
     fetchStats();
   }, []);
   const features = [
-    { icon: Shield, text: t('features.fully_onchain'), color: 'text-yellow-400' },
+    {
+      icon: Shield,
+      text: t('features.fully_onchain'),
+      color: 'text-yellow-400',
+    },
     { icon: Zap, text: t('features.ai_driven'), color: 'text-white' },
-    { icon: TrendingUp, text: t('features.realtime_markets'), color: 'text-yellow-400' },
+    {
+      icon: TrendingUp,
+      text: t('features.realtime_markets'),
+      color: 'text-yellow-400',
+    },
   ];
 
   return (
-    <div className="relative py-20 px-4 text-center">
+    <div className="relative px-4 py-20 text-center">
       {/* Background Effects */}
       <div className="absolute inset-0 overflow-hidden">
         <motion.div
@@ -93,9 +109,9 @@ export function HeroSection({ onCreateClick, onCryptoClick, isAuthenticated }: H
           transition={{
             duration: 4,
             repeat: Infinity,
-            ease: "easeInOut",
+            ease: 'easeInOut',
           }}
-          className="absolute top-1/4 left-1/4 w-96 h-96 bg-yellow-500/10 rounded-full blur-3xl"
+          className="absolute left-1/4 top-1/4 h-96 w-96 rounded-full bg-yellow-500/10 blur-3xl"
         />
         <motion.div
           animate={{
@@ -105,14 +121,14 @@ export function HeroSection({ onCreateClick, onCryptoClick, isAuthenticated }: H
           transition={{
             duration: 3,
             repeat: Infinity,
-            ease: "easeInOut",
+            ease: 'easeInOut',
             delay: 1,
           }}
-          className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-yellow-400/10 rounded-full blur-3xl"
+          className="absolute bottom-1/4 right-1/4 h-80 w-80 rounded-full bg-yellow-400/10 blur-3xl"
         />
       </div>
 
-      <div className="relative z-10 max-w-6xl mx-auto">
+      <div className="relative z-10 mx-auto max-w-6xl">
         {/* Main Title */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -120,13 +136,13 @@ export function HeroSection({ onCreateClick, onCryptoClick, isAuthenticated }: H
           transition={{ duration: 0.8 }}
           className="mb-8"
         >
-          <h1 className="text-6xl md:text-8xl font-brand-large mb-6 gradient-text-brand">
+          <h1 className="font-brand-large gradient-text-brand mb-6 text-6xl md:text-8xl">
             {t('hero_title')}
           </h1>
-          <p className="text-xl md:text-2xl font-body text-gray-300 max-w-3xl mx-auto mb-4">
+          <p className="font-body mx-auto mb-4 max-w-3xl text-xl text-gray-300 md:text-2xl">
             {t('hero_subtitle')}
           </p>
-          <p className="text-lg font-body text-gray-400 max-w-3xl mx-auto">
+          <p className="font-body mx-auto max-w-3xl text-lg text-gray-400">
             {t('hero_description')}
           </p>
         </motion.div>
@@ -138,9 +154,11 @@ export function HeroSection({ onCreateClick, onCryptoClick, isAuthenticated }: H
           transition={{ duration: 0.8, delay: 0.2 }}
           className="mb-8"
         >
-          <div className="max-w-4xl mx-auto p-6 rounded-2xl bg-gray-900/40 backdrop-blur-sm border border-gray-700/50">
-            <h3 className="text-lg font-heading text-yellow-400 mb-3 text-center">{t('what_is_darkpool')}</h3>
-            <p className="text-gray-300 text-center leading-relaxed">
+          <div className="mx-auto max-w-4xl rounded-2xl border border-gray-700/50 bg-gray-900/40 p-6 backdrop-blur-sm">
+            <h3 className="font-heading mb-3 text-center text-lg text-yellow-400">
+              {t('what_is_darkpool')}
+            </h3>
+            <p className="text-center leading-relaxed text-gray-300">
               {t('darkpool_explanation')}
             </p>
           </div>
@@ -151,7 +169,7 @@ export function HeroSection({ onCreateClick, onCryptoClick, isAuthenticated }: H
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
-          className="flex flex-wrap justify-center gap-8 mb-12"
+          className="mb-12 flex flex-wrap justify-center gap-8"
         >
           {features.map((feature, index) => {
             const Icon = feature.icon;
@@ -162,10 +180,10 @@ export function HeroSection({ onCreateClick, onCryptoClick, isAuthenticated }: H
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.5, delay: 0.5 + index * 0.1 }}
                 whileHover={{ scale: 1.05 }}
-                className="flex items-center space-x-3 px-6 py-3 rounded-full bg-gray-900/50 backdrop-blur-sm border border-gray-700/50"
+                className="flex items-center space-x-3 rounded-full border border-gray-700/50 bg-gray-900/50 px-6 py-3 backdrop-blur-sm"
               >
-                <Icon className={`w-5 h-5 ${feature.color}`} />
-                <span className="text-white font-medium">{feature.text}</span>
+                <Icon className={`h-5 w-5 ${feature.color}`} />
+                <span className="font-medium text-white">{feature.text}</span>
               </motion.div>
             );
           })}
@@ -176,24 +194,24 @@ export function HeroSection({ onCreateClick, onCryptoClick, isAuthenticated }: H
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.6 }}
-          className="flex flex-col sm:flex-row gap-4 justify-center items-center"
+          className="flex flex-col items-center justify-center gap-4 sm:flex-row"
         >
           <AnimatedButton
             onClick={onCreateClick}
             size="lg"
             className="px-8 py-4 text-lg"
           >
-            <Star className="w-5 h-5 mr-2" />
+            <Star className="mr-2 h-5 w-5" />
             {t('cta.start_darkpool_betting')}
           </AnimatedButton>
-          
+
           <AnimatedButton
             onClick={onCryptoClick}
             variant="outline"
             size="lg"
             className="px-8 py-4 text-lg"
           >
-            <TrendingUp className="w-5 h-5 mr-2" />
+            <TrendingUp className="mr-2 h-5 w-5" />
             {t('cta.crypto_darkpool')}
           </AnimatedButton>
         </motion.div>
@@ -203,23 +221,23 @@ export function HeroSection({ onCreateClick, onCryptoClick, isAuthenticated }: H
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.6 }}
-          className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto"
+          className="mx-auto mt-16 grid max-w-4xl grid-cols-1 gap-8 md:grid-cols-3"
         >
           {[
-            { 
-              label: t('stats.total_volume'), 
-              value: loading ? '...' : `${formatNumber(stats.totalVolume)} BNB`, 
-              icon: TrendingUp 
+            {
+              label: t('stats.total_volume'),
+              value: loading ? '...' : `${formatNumber(stats.totalVolume)} BNB`,
+              icon: TrendingUp,
             },
-            { 
-              label: t('stats.active_markets'), 
-              value: loading ? '...' : formatNumber(stats.activeMarkets), 
-              icon: Zap 
+            {
+              label: t('stats.active_markets'),
+              value: loading ? '...' : formatNumber(stats.activeMarkets),
+              icon: Zap,
             },
-            { 
-              label: t('stats.participants'), 
-              value: loading ? '...' : formatNumber(stats.participants), 
-              icon: Shield 
+            {
+              label: t('stats.participants'),
+              value: loading ? '...' : formatNumber(stats.participants),
+              icon: Shield,
             },
           ].map((stat, index) => {
             const Icon = stat.icon;
@@ -230,17 +248,17 @@ export function HeroSection({ onCreateClick, onCryptoClick, isAuthenticated }: H
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.5, delay: 0.7 + index * 0.1 }}
                 whileHover={{ scale: 1.05 }}
-                className="text-center p-6 rounded-xl bg-gray-900/30 backdrop-blur-sm border border-gray-700/30"
+                className="rounded-xl border border-gray-700/30 bg-gray-900/30 p-6 text-center backdrop-blur-sm"
               >
-                <Icon className="w-8 h-8 text-yellow-400 mx-auto mb-3" />
-                <div className="text-3xl font-heading text-white mb-1 flex items-center justify-center">
+                <Icon className="mx-auto mb-3 h-8 w-8 text-yellow-400" />
+                <div className="font-heading mb-1 flex items-center justify-center text-3xl text-white">
                   {loading ? (
-                    <Loader2 className="w-6 h-6 animate-spin text-yellow-400" />
+                    <Loader2 className="h-6 w-6 animate-spin text-yellow-400" />
                   ) : (
                     stat.value
                   )}
                 </div>
-                <div className="text-gray-400 font-caption">{stat.label}</div>
+                <div className="font-caption text-gray-400">{stat.label}</div>
               </motion.div>
             );
           })}

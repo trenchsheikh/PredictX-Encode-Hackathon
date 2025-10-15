@@ -7,30 +7,30 @@
   "disconnect": "Disconnect",
   "connecting": "Connecting...",
   "connected": "Connected",
-  
+
   "hero_title": "DarkBet",
   "hero_subtitle": "DarkPool Betting Platform",
   "hero_description": "The future of prediction markets is here. Built on BNB Smart Chain with AI-driven results and fully on-chain execution.",
   "what_is_darkpool": "What is DarkPool Betting?",
   "darkpool_explanation": "DarkPool Betting combines the privacy and efficiency of dark pools with prediction markets. Your bets remain hidden until resolution, preventing market manipulation while ensuring fair, AI-driven outcomes on the BNB Smart Chain.",
-  
+
   "features": {
     "fully_onchain": "Fully On-Chain",
     "ai_driven": "AI-Driven Results",
     "realtime_markets": "Real-Time Markets"
   },
-  
+
   "cta": {
     "start_darkpool_betting": "Start DarkPool Betting",
     "crypto_darkpool": "Crypto DarkPool"
   },
-  
+
   "stats": {
     "total_volume": "Total Volume",
     "active_markets": "Active Markets",
     "participants": "Participants"
   },
-  
+
   "markets": {
     "all_markets": "All Markets",
     "markets_count": "markets",
@@ -39,7 +39,7 @@
     "create_first_prediction": "Create First Prediction",
     "completed_predictions": "Completed Predictions"
   },
-  
+
   "prediction_card": {
     "pool": "Pool",
     "yes": "YES",
@@ -56,7 +56,7 @@
     "expires_in": "Expires in",
     "expired": "Expired"
   },
-  
+
   "create_prediction": {
     "title": "Create Prediction Market",
     "description": "Create a prediction market with automated or manual resolution",
@@ -91,7 +91,7 @@
     "set_expiration_help": "Set when this prediction market will close and be resolved (minimum 15 minutes)",
     "generate_analysis_checkbox": "Generate detailed analysis (unbiased summary for card)"
   },
-  
+
   "categories": {
     "sports": "Sports",
     "crypto": "Crypto",
@@ -102,7 +102,7 @@
     "technology": "Technology",
     "custom": "Custom"
   },
-  
+
   "bet_modal": {
     "place_bet": "Place Bet",
     "bet_amount": "Bet Amount",
@@ -116,7 +116,7 @@
     "transaction_fee": "Transaction Fee",
     "total_cost": "Total Cost"
   },
-  
+
   "crypto_prediction": {
     "title": "Crypto Prediction",
     "select_crypto": "Select Cryptocurrency",
@@ -127,7 +127,7 @@
     "deadline": "Deadline",
     "create_crypto_prediction": "Create Crypto Prediction"
   },
-  
+
   "filters": {
     "all_categories": "All Categories",
     "all_status": "All Status",
@@ -138,7 +138,7 @@
     "last_30d": "Last 30d",
     "clear_filters": "Clear Filters"
   },
-  
+
   "my_bets": {
     "title": "My Bets",
     "subtitle": "Track your prediction market investments and winnings",
@@ -164,7 +164,7 @@
     "lost": "Lost",
     "active": "Active"
   },
-  
+
   "how_it_works": {
     "title": "How DarkBet Works",
     "platform_overview": "Platform Overview",
@@ -271,7 +271,7 @@
     "ready_description": "Connect your wallet and create your first prediction market today",
     "explore_markets": "Explore Markets"
   },
-  
+
   "leaderboard": {
     "title": "Leaderboard",
     "subtitle": "Top performers on DarkBet prediction markets",
@@ -302,7 +302,7 @@
     "portfolio_tracking": "Portfolio Tracking",
     "achievement_system": "Achievement System"
   },
-  
+
   "transaction_history": {
     "title": "Transaction History",
     "no_transactions": "No transactions found",
@@ -315,7 +315,7 @@
     "confirmed": "Confirmed",
     "failed": "Failed"
   },
-  
+
   "errors": {
     "wallet_required": "Please connect your wallet to place a bet",
     "transaction_failed": "Transaction failed",
@@ -324,17 +324,17 @@
     "unknown_error": "Unknown error",
     "retry": "Retry"
   },
-  
+
   "success": {
     "bet_placed": "Bet placed successfully! Remember to reveal after market expiration.",
     "prediction_created": "Prediction created successfully!",
     "crypto_prediction_created": "Crypto prediction created successfully!"
   },
-  
+
   "footer": {
     "all_rights_reserved": "All Rights Reserved."
   },
-  
+
   "common": {
     "example": "Example"
   }
