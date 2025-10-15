@@ -3,58 +3,22 @@
 import { useState, useEffect } from 'react';
 import { usePrivy } from '@privy-io/react-auth';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import dynamic from 'next/dynamic';
 import { PredictionCard } from '@/components/prediction/prediction-card';
 import { Filters } from '@/components/prediction/filters';
+import { CreateBetModal } from '@/components/prediction/create-bet-modal';
+import { BetModal } from '@/components/prediction/bet-modal';
+import {
+  CryptoPredictionModal,
+  CryptoPredictionData,
+} from '@/components/prediction/crypto-prediction-modal';
+import { TransactionHistoryModal } from '@/components/prediction/transaction-history-modal';
+import { Particles } from '@/components/ui/particles';
+import { ShimmeringText } from '@/components/ui/shimmering-text';
+import { AppleHelloEffect } from '@/components/ui/apple-hello-effect';
+import { InteractiveGridPattern } from '@/components/ui/interactive-grid-pattern';
 import { TransactionStatus } from '@/components/ui/transaction-status';
-
-const CreateBetModal = dynamic(
-  () =>
-    import('@/components/prediction/create-bet-modal').then(mod => ({
-      default: mod.CreateBetModal,
-    })),
-  {
-    ssr: false,
-    loading: () => null,
-  }
-);
-
-const BetModal = dynamic(
-  () =>
-    import('@/components/prediction/bet-modal').then(mod => ({
-      default: mod.BetModal,
-    })),
-  {
-    ssr: false,
-    loading: () => null,
-  }
-);
-
-const CryptoPredictionModal = dynamic(
-  () =>
-    import('@/components/prediction/crypto-prediction-modal').then(mod => ({
-      default: mod.CryptoPredictionModal,
-    })),
-  {
-    ssr: false,
-    loading: () => null,
-  }
-);
-
-const TransactionHistoryModal = dynamic(
-  () =>
-    import('@/components/prediction/transaction-history-modal').then(mod => ({
-      default: mod.TransactionHistoryModal,
-    })),
-  {
-    ssr: false,
-    loading: () => null,
-  }
-);
-
-import { CryptoPredictionData } from '@/components/prediction/crypto-prediction-modal';
 import {
   Prediction,
   FilterOptions,
@@ -65,31 +29,26 @@ import {
 import {
   Plus,
   TrendingUp,
+  Users,
+  Clock,
+  Zap,
+  Star,
+  Trophy,
+  Flame,
+  Target,
   BarChart3,
+  TrendingDown,
+  ArrowUp,
+  ArrowDown,
+  Eye,
+  Shield,
+  Lock,
   Loader2,
   RefreshCw,
   AlertCircle,
   CheckCircle,
 } from 'lucide-react';
-const HeroSection = dynamic(
-  () =>
-    import('@/components/ui/hero-section').then(mod => ({
-      default: mod.HeroSection,
-    })),
-  {
-    ssr: true,
-    loading: () => (
-      <div className="relative px-4 py-20 text-center">
-        <div className="animate-pulse">
-          <div className="mx-auto mb-4 h-24 max-w-2xl rounded bg-gray-800"></div>
-          <div className="mx-auto mb-2 h-8 max-w-4xl rounded bg-gray-700"></div>
-          <div className="mx-auto h-8 max-w-3xl rounded bg-gray-700"></div>
-        </div>
-      </div>
-    ),
-  }
-);
-
+import { HeroSection } from '@/components/ui/hero-section';
 import { AnimatedCard } from '@/components/ui/animated-card';
 import { AnimatedButton } from '@/components/ui/animated-button';
 import { AnimatedBackground } from '@/components/ui/animated-background';

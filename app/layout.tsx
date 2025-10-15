@@ -1,9 +1,7 @@
 import type { Metadata } from 'next';
 import { GeistSans } from 'geist/font/sans';
-import './critical.css';
 import './globals.css';
 import { PrivyProviderWrapper } from '@/components/providers/privy-provider';
-import { I18nProvider } from '@/components/providers/i18n-provider';
 import { AnimatedHeader } from '@/components/layout/animated-header';
 import { AnimatedBackground } from '@/components/ui/animated-background';
 import { PageTransition } from '@/components/ui/page-transition';
@@ -60,36 +58,22 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head>
-        {/* Preconnect to external domains for faster loading */}
-        <link rel="preconnect" href="https://auth.privy.io" />
-        <link rel="preconnect" href="https://explorer-api.walletconnect.com" />
-        <link rel="preconnect" href="https://api.coingecko.com" />
-        <link rel="dns-prefetch" href="https://auth.privy.io" />
-        <link
-          rel="dns-prefetch"
-          href="https://explorer-api.walletconnect.com"
-        />
-        <link rel="dns-prefetch" href="https://api.coingecko.com" />
-      </head>
       <body className={GeistSans.className}>
-        <I18nProvider>
-          <PrivyProviderWrapper>
-            <IntroProvider>
-              <div className="relative flex min-h-screen flex-col bg-black">
-                {/* Animated Background */}
-                <AnimatedBackground variant="gradient" />
+        <PrivyProviderWrapper>
+          <IntroProvider>
+            <div className="relative flex min-h-screen flex-col bg-black">
+              {/* Animated Background */}
+              <AnimatedBackground variant="gradient" />
 
-                <AnimatedHeader />
-                <main className="relative z-10 flex-1">
-                  <ErrorBoundary>
-                    <PageTransition>{children}</PageTransition>
-                  </ErrorBoundary>
-                </main>
-              </div>
-            </IntroProvider>
-          </PrivyProviderWrapper>
-        </I18nProvider>
+              <AnimatedHeader />
+              <main className="relative z-10 flex-1">
+                <ErrorBoundary>
+                  <PageTransition>{children}</PageTransition>
+                </ErrorBoundary>
+              </main>
+            </div>
+          </IntroProvider>
+        </PrivyProviderWrapper>
       </body>
     </html>
   );
