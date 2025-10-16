@@ -1,6 +1,6 @@
 'use client';
 
-import { TrendingUp, Zap, Shield, Loader2 } from 'lucide-react';
+import { Quote } from 'lucide-react';
 import WordAnimator from './word-animator';
 import ShimmerButton from './shimmer-button';
 import NewItemsLoading from './new-items-loading';
@@ -47,10 +47,11 @@ export function HeroSection({
 
   return (
     <div className="relative px-4 py-20 text-center">
-      {/* Background Effects (static, no animation) */}
+      {/* Background Effects */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute left-1/4 top-1/4 h-96 w-96 rounded-full bg-yellow-500/10 blur-3xl" />
         <div className="absolute bottom-1/4 right-1/4 h-80 w-80 rounded-full bg-yellow-400/10 blur-3xl" />
+        <div className="absolute inset-0 bg-[repeating-linear-gradient(105deg,#101010_0px_1px,transparent_1px_8px)] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_110%)]"></div>
       </div>
 
       <div className="relative z-10 mx-auto max-w-5xl">
@@ -59,7 +60,7 @@ export function HeroSection({
           <NewItemsLoading />
         </div>
 
-        {/* Main Title (no pop-in) */}
+        {/* Main Title */}
         <div className="mb-10">
           {/* Large text - two lines */}
           <h1 className="mx-auto mb-6 mt-4 text-2xl leading-[1.12] tracking-tighter text-white md:text-4xl lg:text-5xl">
@@ -71,7 +72,7 @@ export function HeroSection({
                 {t('hero_bet_word')}
               </span>{' '}
               <span className="relative inline-flex">
-                <span className="relative z-0 inline-flex items-center rounded-2xl border border-yellow-400/40 bg-gradient-to-br from-gray-800/95 to-gray-900/95 px-2 py-1 text-3xl md:px-4 md:py-1.5 md:text-5xl lg:text-6xl">
+                <span className="relative z-0 inline-flex items-center overflow-visible rounded-2xl border border-yellow-400/40 bg-gradient-to-br from-gray-800/95 to-gray-900/95 px-4 py-1 text-3xl md:px-6 md:py-1.5 md:text-5xl lg:px-8 lg:text-6xl">
                   <span className="bnb-pattern pointer-events-none absolute inset-0 opacity-20 mix-blend-overlay" />
                   <span className="relative font-medium italic leading-normal">
                     <WordAnimator
@@ -95,20 +96,8 @@ export function HeroSection({
           </p>
         </div>
 
-        {/* DarkPool Explanation */}
-        <div className="mb-8">
-          <div className="mx-auto max-w-4xl rounded-2xl border border-gray-700/50 bg-gray-900/40 p-6">
-            <h3 className="font-heading mb-3 text-center text-lg text-yellow-400">
-              {t('what_is_darkpool')}
-            </h3>
-            <p className="text-center leading-relaxed text-gray-300">
-              {t('darkpool_explanation')}
-            </p>
-          </div>
-        </div>
-
-        {/* CTA Buttons (no pop-in) */}
-        <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
+        {/* CTA Buttons */}
+        <div className="mb-16 flex flex-col items-center justify-center gap-4 sm:flex-row">
           <ShimmerButton
             onClick={onCreateClick}
             className="h-14 min-w-[280px] rounded-full px-8 text-base font-medium md:text-lg"
@@ -125,42 +114,45 @@ export function HeroSection({
           </Button>
         </div>
 
-        <div className="mx-auto mt-16 grid max-w-4xl grid-cols-1 gap-8 md:grid-cols-3">
-          {[
-            {
-              label: t('stats.total_volume'),
-              value: loading ? '...' : `${stats.totalVolume} BNB`,
-              icon: TrendingUp,
-            },
-            {
-              label: t('stats.active_markets'),
-              value: loading ? '...' : stats.activeMarkets.toString(),
-              icon: Zap,
-            },
-            {
-              label: t('stats.participants'),
-              value: loading ? '...' : stats.participants.toString(),
-              icon: Shield,
-            },
-          ].map((stat, index) => {
-            const Icon = stat.icon;
-            return (
-              <div
-                key={index}
-                className="rounded-xl border border-gray-700/30 bg-gray-900/30 p-6 text-center backdrop-blur-sm"
-              >
-                <Icon className="mx-auto mb-3 h-8 w-8 text-yellow-400" />
-                <div className="font-heading mb-1 flex items-center justify-center text-3xl text-white">
-                  {loading ? (
-                    <Loader2 className="h-6 w-6 text-yellow-400" />
-                  ) : (
-                    stat.value
-                  )}
-                </div>
-                <div className="font-caption text-gray-400">{stat.label}</div>
-              </div>
-            );
-          })}
+        {/* DarkPool Explanation Section (static) */}
+        <div className="mb-8">
+          <div className="mb-6">
+            <Quote className="mx-auto h-12 w-12 fill-yellow-400 text-yellow-400" />
+          </div>
+          <h2 className="mb-6 text-4xl font-medium leading-tight text-white md:text-6xl">
+            {t('what_is_darkpool')}
+          </h2>
+          <p className="mx-auto mb-12 max-w-3xl text-sm leading-relaxed text-gray-300 sm:text-base">
+            {t('darkpool_explanation')}
+          </p>
+        </div>
+
+        {/* Stats Section (static) */}
+        <div className="mx-auto mb-12 flex w-fit flex-wrap justify-center gap-6 rounded-xl border border-yellow-400 bg-yellow-400/10 px-4 py-4 backdrop-blur-sm sm:gap-12 sm:px-6">
+          <div className="text-center">
+            <div className="mb-2 text-2xl font-semibold text-yellow-400 sm:text-4xl">
+              {loading ? '...' : `${stats.totalVolume} BNB`}
+            </div>
+            <div className="text-xs text-gray-300 sm:text-base">
+              {t('stats.total_volume')}
+            </div>
+          </div>
+          <div className="text-center">
+            <div className="mb-2 text-2xl font-semibold text-yellow-400 sm:text-4xl">
+              {loading ? '...' : stats.activeMarkets}
+            </div>
+            <div className="text-xs text-gray-300 sm:text-base">
+              {t('stats.active_markets')}
+            </div>
+          </div>
+          <div className="text-center">
+            <div className="mb-2 text-2xl font-semibold text-yellow-400 sm:text-4xl">
+              {loading ? '...' : stats.participants}
+            </div>
+            <div className="text-xs text-gray-300 sm:text-base">
+              {t('stats.participants')}
+            </div>
+          </div>
         </div>
       </div>
     </div>

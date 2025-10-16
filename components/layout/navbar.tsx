@@ -7,15 +7,7 @@ import Image from 'next/image';
 import { usePrivy } from '@privy-io/react-auth';
 import { useI18n } from '@/components/providers/i18n-provider';
 import { AnimatedButton } from '@/components/ui/animated-button';
-import {
-  Menu,
-  X,
-  Globe,
-  Wallet,
-  Home,
-  HelpCircle,
-  BookOpen,
-} from 'lucide-react';
+import { Menu, X, Wallet, Home, HelpCircle, BookOpen } from 'lucide-react';
 
 const navigation = [
   { key: 'nav_home', href: '/', icon: Home, isHome: true },
@@ -99,7 +91,13 @@ export function AnimatedHeader() {
                   }`}
                   prefetch={item.isHome ? false : undefined}
                 >
-                  <Icon className="h-4 w-4 transition-colors duration-200 group-hover:text-yellow-400" />
+                  {!(
+                    item.key === 'nav_home' ||
+                    item.key === 'nav_how' ||
+                    item.key === 'nav_docs'
+                  ) && (
+                    <Icon className="h-4 w-4 transition-colors duration-200 group-hover:text-yellow-400" />
+                  )}
                   <span className="whitespace-nowrap">
                     {mounted
                       ? t(item.key)
@@ -119,9 +117,8 @@ export function AnimatedHeader() {
               variant="ghost"
               size="sm"
               onClick={toggleLanguage}
-              className="flex min-w-[52px] items-center gap-2 text-lg font-semibold text-gray-300 transition-all duration-200 hover:bg-gray-800/30 hover:text-white"
+              className="flex min-w-[52px] items-center gap-2 border-none text-lg font-semibold text-gray-300 ring-0 transition-all duration-200 hover:bg-gray-800/30 hover:text-white focus:outline-none focus:ring-0 focus-visible:ring-0"
             >
-              <Globe className="h-4 w-4 flex-shrink-0" />
               <span className="whitespace-nowrap">
                 {mounted ? (locale === 'en' ? '中文' : 'EN') : 'EN'}
               </span>
@@ -134,7 +131,6 @@ export function AnimatedHeader() {
                 disabled
                 className="rounded-lg bg-gray-700/50 px-4 py-2 text-gray-400"
               >
-                <Wallet className="mr-2 h-4 w-4" />
                 {mounted ? t('connecting') : 'Connecting...'}
               </AnimatedButton>
             ) : authenticated ? (
@@ -162,7 +158,6 @@ export function AnimatedHeader() {
                 onClick={login}
                 className="rounded-lg bg-gradient-to-r from-yellow-400 to-yellow-600 px-4 py-2 text-black shadow-md transition-all duration-200 hover:from-yellow-500 hover:to-yellow-700 hover:shadow-lg"
               >
-                <Wallet className="mr-2 h-4 w-4" />
                 {mounted ? t('connect_wallet') : 'Connect Wallet'}
               </AnimatedButton>
             )}
@@ -202,7 +197,13 @@ export function AnimatedHeader() {
                         onClick={() => setMobileMenuOpen(false)}
                         prefetch={item.isHome ? false : undefined}
                       >
-                        <Icon className="h-5 w-5 transition-colors group-hover:text-yellow-400" />
+                        {!(
+                          item.key === 'nav_home' ||
+                          item.key === 'nav_how' ||
+                          item.key === 'nav_docs'
+                        ) && (
+                          <Icon className="h-5 w-5 transition-colors group-hover:text-yellow-400" />
+                        )}
                         <span className="whitespace-nowrap font-medium">
                           {mounted
                             ? t(item.key)
@@ -219,12 +220,11 @@ export function AnimatedHeader() {
 
               <div className="space-y-4 border-t border-gray-700/50 pt-6">
                 <AnimatedButton
-                  variant="outline"
+                  variant="ghost"
                   size="sm"
                   onClick={toggleLanguage}
-                  className="w-full justify-start border-gray-600/50 text-gray-300 hover:text-white"
+                  className="w-full justify-start border-none text-gray-300 ring-0 hover:text-white focus:outline-none focus:ring-0 focus-visible:ring-0"
                 >
-                  <Globe className="mr-3 h-4 w-4 flex-shrink-0" />
                   <span className="whitespace-nowrap">
                     {mounted ? (locale === 'en' ? '中文' : 'EN') : 'EN'}
                   </span>
@@ -235,7 +235,6 @@ export function AnimatedHeader() {
                     disabled
                     className="w-full bg-gray-700 text-gray-300"
                   >
-                    <Wallet className="mr-2 h-4 w-4" />
                     {mounted ? t('connecting') : 'Connecting...'}
                   </AnimatedButton>
                 ) : authenticated ? (
@@ -269,7 +268,6 @@ export function AnimatedHeader() {
                     onClick={login}
                     className="w-full bg-gradient-to-r from-yellow-400 to-yellow-600 text-black"
                   >
-                    <Wallet className="mr-2 h-4 w-4" />
                     {mounted ? t('connect_wallet') : 'Connect Wallet'}
                   </AnimatedButton>
                 )}
