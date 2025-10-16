@@ -73,19 +73,11 @@ export function AnimatedHeader() {
             <div className="relative flex h-10 w-10 items-center justify-center overflow-hidden rounded-lg bg-gradient-to-r from-yellow-400 to-yellow-600">
               <Image
                 src="/binanceeye.jpg"
-                alt="DarkBet"
+                alt="Logo"
                 width={32}
                 height={32}
                 className="rounded-lg object-cover"
               />
-            </div>
-            <div className="flex flex-col">
-              <span className="font-brand gradient-text-brand text-2xl font-bold">
-                DarkBet
-              </span>
-              <span className="font-caption text-sm text-gray-400">
-                DarkPool Betting
-              </span>
             </div>
           </Link>
         </motion.div>
@@ -173,8 +165,7 @@ export function AnimatedHeader() {
               </AnimatedButton>
             ) : authenticated ? (
               <div className="flex items-center gap-2">
-                <div className="flex items-center space-x-2 rounded-lg border border-green-500/20 bg-green-500/10 px-3 py-2">
-                  <div className="h-2 w-2 animate-pulse rounded-full bg-green-400" />
+                <div className="flex items-center rounded-lg border border-green-500/20 bg-green-500/10 px-3 py-2">
                   <span className="font-caption text-sm text-green-400">
                     {user?.wallet?.address
                       ? `${user.wallet.address.slice(0, 6)}...${user.wallet.address.slice(-4)}`
@@ -222,21 +213,7 @@ export function AnimatedHeader() {
               className="fixed inset-y-0 right-0 w-full max-w-sm border-l border-gray-700/50 bg-black shadow-2xl"
             >
               <div className="flex items-center justify-between border-b border-gray-700/30 p-4">
-                <Link
-                  href="/"
-                  className="flex items-center"
-                  onClick={() => setMobileMenuOpen(false)}
-                  prefetch={false}
-                >
-                  <div className="flex flex-col">
-                    <span className="font-brand gradient-text-brand text-2xl">
-                      DarkBet
-                    </span>
-                    <span className="font-caption text-sm text-gray-400">
-                      DarkPool Betting
-                    </span>
-                  </div>
-                </Link>
+                <div />
                 <motion.button
                   whileTap={{ scale: 0.95 }}
                   whileHover={{ scale: 1.05 }}
@@ -248,8 +225,8 @@ export function AnimatedHeader() {
                 </motion.button>
               </div>
 
-              <div className="space-y-6 p-6">
-                <div className="space-y-2">
+              <div className="space-y-5 p-6">
+                <div className="space-y-1.5">
                   {navItems.map((item, index) => {
                     const Icon = item.icon;
                     return (
@@ -264,7 +241,7 @@ export function AnimatedHeader() {
                           aria-current={
                             isActive(item.href) ? 'page' : undefined
                           }
-                          className={`group flex items-center space-x-3 rounded-xl px-4 py-3 text-lg font-semibold transition-all duration-300 hover:bg-white/10 ${
+                          className={`group flex items-center space-x-3 rounded-xl px-3 py-2 text-lg font-semibold transition-all duration-300 hover:bg-white/10 ${
                             isActive(item.href)
                               ? 'bg-white/10 text-white'
                               : 'text-gray-300 hover:text-white'
@@ -310,8 +287,8 @@ export function AnimatedHeader() {
                     </AnimatedButton>
                   ) : authenticated ? (
                     <div className="space-y-3">
-                      <div className="rounded-lg border border-green-500/20 bg-green-500/10 p-3 text-center">
-                        <div className="mb-1 flex items-center justify-center space-x-2">
+                      <div className="flex items-center justify-between rounded-lg border border-green-500/20 bg-green-500/10 p-3">
+                        <div className="flex items-center space-x-2">
                           <div className="h-2 w-2 animate-pulse rounded-full bg-green-400" />
                           <span className="font-caption text-sm text-green-400">
                             Connected
