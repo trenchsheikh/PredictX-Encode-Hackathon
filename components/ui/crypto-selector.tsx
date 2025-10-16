@@ -59,7 +59,7 @@ export function CryptoSelector({
           )}
         </div>
 
-        <div className={cn(isOpen && 'rotate-180 transition-transform')}>
+        <div className={cn('transition-transform', isOpen && 'rotate-180')}>
           <ChevronDown className="h-5 w-5 text-gray-400" />
         </div>
       </button>

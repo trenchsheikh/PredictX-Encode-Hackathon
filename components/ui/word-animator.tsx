@@ -17,6 +17,8 @@ const WordAnimator: React.FC<WordAnimatorProps> = ({
   const [currentIndex, setCurrentIndex] = React.useState(0);
 
   React.useEffect(() => {
+    if (words.length === 0) return;
+
     const interval = setInterval(() => {
       setCurrentIndex(prev => (prev + 1) % words.length);
     }, duration * 1000);
@@ -39,7 +41,7 @@ const WordAnimator: React.FC<WordAnimatorProps> = ({
         style={{ position: 'absolute', display: 'block', left: 0, right: 0 }}
         className="w-full bg-gradient-to-br from-yellow-300 via-yellow-400 to-yellow-500 bg-clip-text font-medium text-transparent"
       >
-        {words[currentIndex]}
+        {words[currentIndex] ?? ''}
       </span>
       <span style={{ visibility: 'hidden' }}>{words[currentIndex]}</span>
     </span>

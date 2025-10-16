@@ -48,11 +48,11 @@ const ShimmerButton = React.forwardRef<HTMLButtonElement, ShimmerButtonProps>(
         ref={ref}
         {...props}
       >
-        {/* Decorative layers removed to prevent content clipping */}
+        {/* Minimal decorative layers to avoid content clipping */}
         {children}
         <div
           className={cn(
-            'insert-0 absolute size-full',
+            'absolute inset-0 size-full',
             'rounded-full px-4 py-1.5 text-sm font-semibold',
             'transform-gpu transition-all duration-300 ease-in-out',
             'group-hover:opacity-90',
