@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { TrendingUp, TrendingDown, Loader2, Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
+import { logger } from '@/lib/logger';
 
 export interface CryptoData {
   id: string;
@@ -40,8 +41,8 @@ export function CryptoSelector({
   useEffect(() => {
     fetchCryptoPrices();
 
-    // Refresh prices every 60 seconds
-    const interval = setInterval(fetchCryptoPrices, 60000);
+    // Refresh prices every 30 seconds for more frequent updates
+    const interval = setInterval(fetchCryptoPrices, 30000);
     return () => clearInterval(interval);
   }, []);
 
@@ -63,31 +64,48 @@ export function CryptoSelector({
       const data = await response.json();
 
       if (data.success && data.data.prices && data.data.prices.length > 0) {
-        // Validate that prices are recent (within last 5 minutes)
-        const now = Date.now();
-        const validPrices = data.data.prices.filter((crypto: CryptoData) => {
-          const priceAge = now - (crypto.timestamp || 0);
-          return priceAge < 5 * 60 * 1000; // 5 minutes
-        });
-
-        if (validPrices.length > 0) {
-          setCryptos(validPrices);
+        // Check if we have fresh real-time data from CoinGecko
+        const isRealTimeData = data.data.source === 'CoinGecko API' && data.data.fresh === true;
+        
+        if (isRealTimeData) {
+          // Use real-time data from CoinGecko
+          setCryptos(data.data.prices);
           setLastUpdated(new Date());
-          console.log(
-            `✅ Fetched ${validPrices.length} real-time crypto prices`
+          logger.api(
+            `Fetched ${data.data.prices.length} real-time crypto prices from CoinGecko`
           );
-        } else {
-          console.warn('⚠️ All prices are stale, using fallback data');
-          setCryptos(getFallbackCryptoData());
+        } else if (data.data.source === 'Fallback Data') {
+          // Use fallback data but warn user
+          setCryptos(data.data.prices);
           setLastUpdated(new Date());
+          logger.warn('Using fallback crypto prices - real-time data unavailable');
+        } else {
+          // Check if prices are recent (within last 15 minutes for more tolerance)
+          const now = Date.now();
+          const validPrices = data.data.prices.filter((crypto: CryptoData) => {
+            const priceAge = now - (crypto.timestamp || 0);
+            return priceAge < 15 * 60 * 1000; // 15 minutes tolerance
+          });
+
+          if (validPrices.length > 0) {
+            setCryptos(validPrices);
+            setLastUpdated(new Date());
+            logger.api(
+              `Using ${validPrices.length} recent crypto prices (${Math.round((now - validPrices[0].timestamp) / 1000)}s old)`
+            );
+          } else {
+            logger.warn('All prices are stale, using fallback data');
+            setCryptos(getFallbackCryptoData());
+            setLastUpdated(new Date());
+          }
         }
       } else {
         // Fallback to hardcoded crypto data if API returns empty or fails
-        console.warn('API returned empty prices, using fallback data');
+        logger.warn('API returned empty prices, using fallback data');
         setCryptos(getFallbackCryptoData());
       }
     } catch (error) {
-      console.error('Failed to fetch crypto prices:', error);
+      logger.error('Failed to fetch crypto prices:', error);
       // Use fallback data on error
       setCryptos(getFallbackCryptoData());
     } finally {

@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { logger } from '@/lib/logger';
 
 // CoinGecko API configuration
 const COINGECKO_API_URL = 'https://api.coingecko.com/api/v3';
@@ -6,20 +7,24 @@ const COINGECKO_API_KEY = process.env.COINGECKO_API_KEY; // Optional for higher 
 
 export async function GET(request: NextRequest) {
   try {
+    // Add cache busting parameter to ensure fresh data
+    const cacheBuster = Date.now();
+    const url = `${COINGECKO_API_URL}/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=50&page=1&sparkline=false&price_change_percentage=24h&_t=${cacheBuster}`;
+    
     // Fetch real-time crypto prices from CoinGecko
-    const response = await fetch(
-      `${COINGECKO_API_URL}/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=50&page=1&sparkline=false&price_change_percentage=24h`,
-      {
-        method: 'GET',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          ...(COINGECKO_API_KEY && { 'x-cg-demo-api-key': COINGECKO_API_KEY }),
-        },
-        // Add cache control to ensure fresh data
-        cache: 'no-store',
-      }
-    );
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0',
+        ...(COINGECKO_API_KEY && { 'x-cg-demo-api-key': COINGECKO_API_KEY }),
+      },
+      // Ensure no caching
+      cache: 'no-store',
+    });
 
     if (!response.ok) {
       throw new Error(
@@ -44,8 +49,9 @@ export async function GET(request: NextRequest) {
       low24h: coin.low_24h,
     }));
 
-    console.log(
-      `✅ Fetched ${prices.length} real-time crypto prices from CoinGecko`
+    logger.api(
+      `Fetched ${prices.length} real-time crypto prices from CoinGecko`,
+      { timestamp: new Date().toISOString() }
     );
 
     return NextResponse.json({
@@ -55,10 +61,12 @@ export async function GET(request: NextRequest) {
         lastUpdated: new Date().toISOString(),
         source: 'CoinGecko API',
         count: prices.length,
+        timestamp: Date.now(),
+        fresh: true,
       },
     });
   } catch (error: any) {
-    console.error('Error fetching crypto prices from CoinGecko:', error);
+    logger.error('Error fetching crypto prices from CoinGecko:', error);
 
     // Fallback to static data if API fails
     const fallbackPrices = [
@@ -133,7 +141,7 @@ export async function GET(request: NextRequest) {
       },
     ];
 
-    console.warn('⚠️ Using fallback crypto prices due to API error');
+    logger.warn('Using fallback crypto prices due to API error');
 
     return NextResponse.json({
       success: true,
@@ -143,6 +151,8 @@ export async function GET(request: NextRequest) {
         source: 'Fallback Data',
         count: fallbackPrices.length,
         warning: 'Using fallback data - real-time prices unavailable',
+        timestamp: Date.now(),
+        fresh: false,
       },
     });
   }

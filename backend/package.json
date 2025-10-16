@@ -9,6 +9,7 @@
     "dev": "nodemon src/server.ts",
     "test": "echo \"No tests yet\" && exit 0",
     "fix-null-outcomes": "ts-node scripts/fix-null-outcomes.ts",
+    "clear-markets": "ts-node scripts/clear-all-markets.ts",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },
