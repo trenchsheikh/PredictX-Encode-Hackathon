@@ -68,8 +68,10 @@ export async function loadContractABI(
   contractName: 'PredictionMarket' | 'Vault'
 ): Promise<any[]> {
   try {
+    // Determine which network to load from based on environment
+    const network = process.env.NEXT_PUBLIC_CHAIN_ID === '56' ? 'bscMainnet' : 'bscTestnet';
     const response = await fetch(
-      `/deployments/bscTestnet/${contractName}.json`
+      `/deployments/${network}/${contractName}.json`
     );
     if (!response.ok) {
       throw new Error(`Failed to load ${contractName} ABI`);
@@ -109,8 +111,8 @@ export function getContractAddresses() {
     'Environment variables not set, using hardcoded contract addresses'
   );
   return {
-    predictionMarket: '0x7282D4d20e072d1e0Ab344916BA7DF2B66162e8E',
-    vault: '0xbB37B8A3fB2691AB44e561df427C6D63F684535E',
+    predictionMarket: '0x4DA603511D8aeA98B8d9534c19F59eB43c246DaF',
+    vault: '0x5499c4b5480900744350A9f891Bb2e2746d5BDbD',
   };
 }
 
@@ -258,6 +260,41 @@ export async function switchToBSCTestnet(provider: any): Promise<boolean> {
         return true;
       } catch (addError) {
         console.error('Error adding BSC Testnet:', addError);
+        return false;
+      }
+    }
+    console.error('Error switching network:', error);
+    return false;
+  }
+}
+
+/**
+ * Switch to BSC Mainnet
+ */
+export async function switchToBSCMainnet(provider: any): Promise<boolean> {
+  try {
+    await provider.send('wallet_switchEthereumChain', [{ chainId: '0x38' }]); // 56 in hex
+    return true;
+  } catch (error: any) {
+    // Chain not added to MetaMask
+    if (error.code === 4902) {
+      try {
+        await provider.send('wallet_addEthereumChain', [
+          {
+            chainId: '0x38',
+            chainName: 'BSC Mainnet',
+            nativeCurrency: {
+              name: 'BNB',
+              symbol: 'BNB',
+              decimals: 18,
+            },
+            rpcUrls: ['https://bsc-dataseed.binance.org/'],
+            blockExplorerUrls: ['https://bscscan.com/'],
+          },
+        ]);
+        return true;
+      } catch (addError) {
+        console.error('Error adding BSC Mainnet:', addError);
         return false;
       }
     }

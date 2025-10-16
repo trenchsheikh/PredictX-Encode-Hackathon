@@ -9,6 +9,8 @@ import {
   estimateGas,
   waitForTransaction,
   parseContractError,
+  switchToBSCTestnet,
+  switchToBSCMainnet,
 } from '@/lib/blockchain-utils';
 import { TransactionStatus } from '@/components/ui/transaction-status';
 
@@ -29,8 +31,10 @@ export function usePredictionContract() {
     async function loadABIs() {
       try {
         console.log('Loading contract ABIs...');
+        // Determine which network to load from based on environment
+        const network = process.env.NEXT_PUBLIC_CHAIN_ID === '56' ? 'bscMainnet' : 'bscTestnet';
         const predictionRes = await fetch(
-          '/deployments/bscTestnet/PredictionMarket.json'
+          `/deployments/${network}/PredictionMarket.json`
         );
 
         if (predictionRes.ok) {
@@ -109,24 +113,29 @@ export function usePredictionContract() {
 
             // Switch network if needed
             const chainIdStr = wallet.chainId?.toString();
+            const expectedChainId = process.env.NEXT_PUBLIC_CHAIN_ID === '56' ? '56' : '97';
+            const expectedChainIdHex = process.env.NEXT_PUBLIC_CHAIN_ID === '56' ? '0x38' : '0x61';
+            const expectedChainIdEip155 = process.env.NEXT_PUBLIC_CHAIN_ID === '56' ? 'eip155:56' : 'eip155:97';
+            
             if (
-              chainIdStr !== '0x61' &&
-              chainIdStr !== '97' &&
-              chainIdStr !== 'eip155:97'
+              chainIdStr !== expectedChainIdHex &&
+              chainIdStr !== expectedChainId &&
+              chainIdStr !== expectedChainIdEip155
             ) {
-              console.log('Switching to BSC Testnet...', {
+              console.log(`Switching to BSC ${expectedChainId === '56' ? 'Mainnet' : 'Testnet'}...`, {
                 currentChainId: wallet.chainId,
+                expectedChainId,
               });
               try {
-                await wallet.switchChain(97);
-                console.log('Switched to BSC Testnet');
+                await wallet.switchChain(parseInt(expectedChainId));
+                console.log(`Switched to BSC ${expectedChainId === '56' ? 'Mainnet' : 'Testnet'}`);
               } catch (switchError: any) {
                 console.warn('Failed to switch chain:', switchError.message);
                 // Try alternative method
                 try {
                   console.log('Trying alternative chain switch...');
-                  await wallet.switchChain('0x61'); // Hex format
-                  console.log('Switched to BSC Testnet (hex)');
+                  await wallet.switchChain(expectedChainIdHex); // Hex format
+                  console.log(`Switched to BSC ${expectedChainId === '56' ? 'Mainnet' : 'Testnet'} (hex)`);
                 } catch (altError: any) {
                   console.warn(
                     'Alternative switch also failed:',
@@ -136,7 +145,7 @@ export function usePredictionContract() {
                 }
               }
             } else {
-              console.log('Already on BSC Testnet');
+              console.log(`Already on BSC ${expectedChainId === '56' ? 'Mainnet' : 'Testnet'}`);
             }
 
             signer = await ethersProvider.getSigner();
@@ -161,49 +170,57 @@ export function usePredictionContract() {
               chainId: network.chainId,
               name: network.name,
             });
-            if (Number(network.chainId) !== 97) {
-              console.log('Switching to BSC Testnet via window.ethereum...');
+            const expectedChainId = process.env.NEXT_PUBLIC_CHAIN_ID === '56' ? 56 : 97;
+            const expectedChainIdHex = process.env.NEXT_PUBLIC_CHAIN_ID === '56' ? '0x38' : '0x61';
+            const networkName = process.env.NEXT_PUBLIC_CHAIN_ID === '56' ? 'BSC Mainnet' : 'BSC Testnet';
+            const rpcUrl = process.env.NEXT_PUBLIC_CHAIN_ID === '56' 
+              ? 'https://bsc-dataseed.binance.org/' 
+              : 'https://data-seed-prebsc-1-s1.binance.org:8545/';
+            const blockExplorerUrl = process.env.NEXT_PUBLIC_CHAIN_ID === '56' 
+              ? 'https://bscscan.com/' 
+              : 'https://testnet.bscscan.com/';
+            
+            if (Number(network.chainId) !== expectedChainId) {
+              console.log(`Switching to ${networkName} via window.ethereum...`);
               try {
                 await window.ethereum.request({
                   method: 'wallet_switchEthereumChain',
-                  params: [{ chainId: '0x61' }], // BSC Testnet
+                  params: [{ chainId: expectedChainIdHex }],
                 });
-                console.log('Switched to BSC Testnet');
+                console.log(`Switched to ${networkName}`);
               } catch (switchError: any) {
                 console.warn('Failed to switch network:', switchError.message);
                 // Try adding the network if it doesn't exist
                 if (switchError.code === 4902) {
                   try {
-                    console.log('Adding BSC Testnet network...');
+                    console.log(`Adding ${networkName} network...`);
                     await window.ethereum.request({
                       method: 'wallet_addEthereumChain',
                       params: [
                         {
-                          chainId: '0x61',
-                          chainName: 'BSC Testnet',
+                          chainId: expectedChainIdHex,
+                          chainName: networkName,
                           nativeCurrency: {
                             name: 'BNB',
                             symbol: 'BNB',
                             decimals: 18,
                           },
-                          rpcUrls: [
-                            'https://data-seed-prebsc-1-s1.binance.org:8545/',
-                          ],
-                          blockExplorerUrls: ['https://testnet.bscscan.com/'],
+                          rpcUrls: [rpcUrl],
+                          blockExplorerUrls: [blockExplorerUrl],
                         },
                       ],
                     });
-                    console.log('Added BSC Testnet network');
+                    console.log(`Added ${networkName} network`);
                   } catch (addError: any) {
                     console.warn(
-                      'Failed to add BSC Testnet:',
+                      `Failed to add ${networkName}:`,
                       addError.message
                     );
                   }
                 }
               }
             } else {
-              console.log('Already on BSC Testnet');
+              console.log(`Already on ${networkName}`);
             }
 
             signer = await provider.getSigner();
@@ -441,17 +458,27 @@ export function usePredictionContract() {
         converted: currentChainId,
       });
 
-      // Check if we're on BSC Testnet (chainId 97)
-      if (currentChainId !== 97) {
-        console.log('Attempting to switch to BSC Testnet...');
+      // Check if we're on the correct network
+      const expectedChainId = process.env.NEXT_PUBLIC_CHAIN_ID === '56' ? 56 : 97;
+      const expectedChainIdHex = process.env.NEXT_PUBLIC_CHAIN_ID === '56' ? '0x38' : '0x61';
+      const networkName = process.env.NEXT_PUBLIC_CHAIN_ID === '56' ? 'BSC Mainnet' : 'BSC Testnet';
+      const rpcUrl = process.env.NEXT_PUBLIC_CHAIN_ID === '56' 
+        ? 'https://bsc-dataseed.binance.org/' 
+        : 'https://data-seed-prebsc-1-s1.binance.org:8545/';
+      const blockExplorerUrl = process.env.NEXT_PUBLIC_CHAIN_ID === '56' 
+        ? 'https://bscscan.com/' 
+        : 'https://testnet.bscscan.com/';
+      
+      if (currentChainId !== expectedChainId) {
+        console.log(`Attempting to switch to ${networkName}...`);
         try {
           // Try to switch network automatically
           if (typeof window !== 'undefined' && window.ethereum) {
             await window.ethereum.request({
               method: 'wallet_switchEthereumChain',
-              params: [{ chainId: '0x61' }], // BSC Testnet
+              params: [{ chainId: expectedChainIdHex }],
             });
-            console.log('Successfully switched to BSC Testnet');
+            console.log(`Successfully switched to ${networkName}`);
             // Wait a moment for the network switch to complete
             await new Promise(resolve => setTimeout(resolve, 1000));
             // Retry getting the contract after network switch
@@ -468,35 +495,33 @@ export function usePredictionContract() {
           // Try adding the network if it doesn't exist
           if (switchError.code === 4902) {
             try {
-              console.log('Adding BSC Testnet network...');
+              console.log(`Adding ${networkName} network...`);
               await window.ethereum.request({
                 method: 'wallet_addEthereumChain',
                 params: [
                   {
-                    chainId: '0x61',
-                    chainName: 'BSC Testnet',
+                    chainId: expectedChainIdHex,
+                    chainName: networkName,
                     nativeCurrency: {
                       name: 'BNB',
                       symbol: 'BNB',
                       decimals: 18,
                     },
-                    rpcUrls: [
-                      'https://data-seed-prebsc-1-s1.binance.org:8545/',
-                    ],
-                    blockExplorerUrls: ['https://testnet.bscscan.com/'],
+                    rpcUrls: [rpcUrl],
+                    blockExplorerUrls: [blockExplorerUrl],
                   },
                 ],
               });
-              console.log('Added BSC Testnet network');
+              console.log(`Added ${networkName} network`);
               // Wait a moment for the network to be added
               await new Promise(resolve => setTimeout(resolve, 1000));
               return await getContract();
             } catch (addError: any) {
-              console.error('Failed to add BSC Testnet:', addError.message);
+              console.error(`Failed to add ${networkName}:`, addError.message);
             }
           }
 
-          const errorMsg = `Please switch to BSC Testnet (Chain ID: 97). Current: ${currentChainId || 'Unknown'}`;
+          const errorMsg = `Please switch to ${networkName} (Chain ID: ${expectedChainId}). Current: ${currentChainId || 'Unknown'}`;
           console.error(errorMsg);
           setError(errorMsg);
           return null;
