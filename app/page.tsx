@@ -137,6 +137,7 @@ export default function HomePage() {
         })
       );
 
+
       setPredictions(mappedPredictions);
     } catch (err: any) {
       logger.error('Failed to fetch markets:', err);
@@ -171,6 +172,7 @@ export default function HomePage() {
     }
     return true;
   });
+
 
   /**
    * Open bet modal
@@ -303,19 +305,11 @@ export default function HomePage() {
         throw new Error(actualError);
       }
 
-      // Call backend API to index the market
-      await api.markets.createMarket({
-        title: data.title,
-        description: data.description,
-        category: 'crypto',
-        expiresAt: data.deadline,
-        initialLiquidity: '0',
-        userAddress,
-        txHash: result.txHash,
-      });
-
-      // Refresh markets
-      await fetchMarkets();
+      // The backend will automatically index the market via blockchain event listener
+      // Wait a moment for the event to be processed, then refresh markets
+      setTimeout(async () => {
+        await fetchMarkets();
+      }, 2000);
 
       setShowCryptoModal(false);
       logger.user(t('success.crypto_prediction_created'));

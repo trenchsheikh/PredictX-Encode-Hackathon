@@ -13,11 +13,11 @@ export interface BlockchainConfig {
 export function getBlockchainConfig(): BlockchainConfig {
   const rpcUrl =
     process.env.BSC_RPC_URL ||
-    'https://data-seed-prebsc-1-s1.binance.org:8545/';
+    'https://bsc-dataseed.binance.org/';
   const provider = new ethers.JsonRpcProvider(rpcUrl);
 
   // Load contract addresses from deployments
-  const network = process.env.NETWORK || 'bscTestnet';
+  const network = process.env.NETWORK || 'bscMainnet';
   const deploymentsPath = path.join(__dirname, '../../../deployments', network);
 
   let predictionMarketAddress: string;
