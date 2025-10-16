@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import { GeistSans } from 'geist/font/sans';
 import './globals.css';
 import { PrivyProviderWrapper } from '@/components/providers/privy-provider';
 import { AnimatedHeader } from '@/components/layout/navbar';
@@ -58,7 +57,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={GeistSans.className}>
+      <head>
+        <style>{`
+          @import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+        `}</style>
+      </head>
+      <body className="font-[Be_Vietnam_Pro]">
         <PrivyProviderWrapper>
           <IntroProvider>
             <div className="relative flex min-h-screen flex-col bg-gradient-to-br from-gray-900 via-black to-gray-800">

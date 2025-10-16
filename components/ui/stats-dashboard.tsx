@@ -1,6 +1,4 @@
 'use client';
-
-import { motion } from 'framer-motion';
 import { StatsCard } from './stats-card';
 import { TrendingUp, DollarSign, Target, Trophy } from 'lucide-react';
 import { formatBNB } from '@/lib/utils';
@@ -54,7 +52,7 @@ export function StatsDashboard({
           value={stat.value}
           icon={stat.icon}
           trend={stat.trend}
-          delay={index * 0.1}
+          delay={0}
         />
       ))}
     </div>

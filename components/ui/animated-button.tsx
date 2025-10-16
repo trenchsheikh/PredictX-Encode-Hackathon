@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import React from 'react';
 import { ReactNode } from 'react';
 import { cn } from '@/lib/utils';
 
@@ -46,26 +46,10 @@ export function AnimatedButton({
   };
 
   return (
-    <motion.button
+    <button
       type={type}
       onClick={onClick}
       disabled={disabled || loading}
-      whileHover={
-        !disabled && !loading
-          ? {
-              scale: 1.02,
-              transition: { duration: 0.2 },
-            }
-          : {}
-      }
-      whileTap={
-        !disabled && !loading
-          ? {
-              scale: 0.98,
-              transition: { duration: 0.1 },
-            }
-          : {}
-      }
       className={cn(
         baseClasses,
         variants[variant],
@@ -75,25 +59,31 @@ export function AnimatedButton({
       )}
       {...props}
     >
-      {/* Animated background */}
-      <motion.div
-        className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
-        initial={{ x: '-100%' }}
-        whileHover={{ x: '100%' }}
-        transition={{ duration: 0.6, ease: 'easeInOut' }}
-      />
+      {/* Static background */}
+      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
 
       {/* Content */}
       <div className="relative z-10 flex items-center justify-center space-x-2">
         {loading && (
-          <motion.div
-            animate={{ rotate: 360 }}
-            transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
-            className="h-4 w-4 rounded-full border-2 border-current border-t-transparent"
-          />
+          <svg className="h-5 w-5 animate-spin" viewBox="0 0 24 24">
+            <circle
+              className="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              strokeWidth="4"
+              fill="none"
+            />
+            <path
+              className="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+            />
+          </svg>
         )}
         {children}
       </div>
-    </motion.button>
+    </button>
   );
 }

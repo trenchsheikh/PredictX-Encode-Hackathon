@@ -1,6 +1,6 @@
 'use client';
 
-import { motion, AnimatePresence } from 'framer-motion';
+import React from 'react';
 import { useState } from 'react';
 import { Check, ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -35,8 +35,7 @@ export function CryptoSelector({
 
   return (
     <div className={cn('relative', className)}>
-      <motion.button
-        whileTap={{ scale: 0.98 }}
+      <button
         onClick={() => setIsOpen(!isOpen)}
         className={cn(
           'flex w-full items-center justify-between rounded-xl bg-gradient-to-r from-gray-900/60 to-gray-800/40 p-4',
@@ -60,92 +59,68 @@ export function CryptoSelector({
           )}
         </div>
 
-        <motion.div
-          animate={{ rotate: isOpen ? 180 : 0 }}
-          transition={{ duration: 0.2 }}
-        >
+        <div className={cn('transition-transform', isOpen && 'rotate-180')}>
           <ChevronDown className="h-5 w-5 text-gray-400" />
-        </motion.div>
-      </motion.button>
+        </div>
+      </button>
 
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -10, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -10, scale: 0.95 }}
-            transition={{ duration: 0.2 }}
-            className="absolute left-0 right-0 top-full z-50 mt-2"
-          >
-            <div className="overflow-hidden rounded-xl border border-gray-700/50 bg-gray-900/95 shadow-2xl backdrop-blur-sm">
-              <div className="max-h-64 overflow-y-auto">
-                {options.map((option, index) => (
-                  <motion.button
-                    key={option.id}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.05 }}
-                    whileHover={{ backgroundColor: 'rgba(255, 193, 7, 0.1)' }}
-                    whileTap={{ scale: 0.98 }}
-                    onClick={() => {
-                      onValueChange(option.id);
-                      setIsOpen(false);
-                    }}
-                    className={cn(
-                      'flex w-full items-center justify-between p-4 text-left transition-colors duration-200',
-                      'hover:bg-yellow-500/10',
-                      value === option.id ? 'bg-yellow-500/20' : ''
-                    )}
-                  >
-                    <div className="flex w-full items-center justify-between">
-                      <div>
-                        <div className="font-medium text-white">
-                          {option.name}
-                        </div>
-                        <div className="text-sm text-gray-400">
-                          {option.symbol}
-                        </div>
-                        {option.price && (
-                          <div className="text-xs text-gray-500">
-                            ${option.price.toLocaleString()}
-                            {option.change && (
-                              <span
-                                className={cn(
-                                  'ml-1',
-                                  option.change >= 0
-                                    ? 'text-green-400'
-                                    : 'text-red-400'
-                                )}
-                              >
-                                {option.change >= 0 ? '+' : ''}
-                                {option.change.toFixed(2)}%
-                              </span>
-                            )}
-                          </div>
-                        )}
+      {isOpen && (
+        <div className="absolute left-0 right-0 top-full z-50 mt-2">
+          <div className="overflow-hidden rounded-xl border border-gray-700/50 bg-gray-900/95 shadow-2xl backdrop-blur-sm">
+            <div className="max-h-64 overflow-y-auto">
+              {options.map((option, index) => (
+                <button
+                  key={option.id}
+                  onClick={() => {
+                    onValueChange(option.id);
+                    setIsOpen(false);
+                  }}
+                  className={cn(
+                    'flex w-full items-center justify-between p-4 text-left transition-colors duration-200',
+                    'hover:bg-yellow-500/10',
+                    value === option.id ? 'bg-yellow-500/20' : ''
+                  )}
+                >
+                  <div className="flex w-full items-center justify-between">
+                    <div>
+                      <div className="font-medium text-white">
+                        {option.name}
                       </div>
+                      <div className="text-sm text-gray-400">
+                        {option.symbol}
+                      </div>
+                      {option.price && (
+                        <div className="text-xs text-gray-500">
+                          ${option.price.toLocaleString()}
+                          {option.change && (
+                            <span
+                              className={cn(
+                                'ml-1',
+                                option.change >= 0
+                                  ? 'text-green-400'
+                                  : 'text-red-400'
+                              )}
+                            >
+                              {option.change >= 0 ? '+' : ''}
+                              {option.change.toFixed(2)}%
+                            </span>
+                          )}
+                        </div>
+                      )}
                     </div>
+                  </div>
 
-                    {value === option.id && (
-                      <motion.div
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        transition={{
-                          type: 'spring',
-                          stiffness: 500,
-                          damping: 30,
-                        }}
-                      >
-                        <Check className="h-5 w-5 text-yellow-400" />
-                      </motion.div>
-                    )}
-                  </motion.button>
-                ))}
-              </div>
+                  {value === option.id && (
+                    <div>
+                      <Check className="h-5 w-5 text-yellow-400" />
+                    </div>
+                  )}
+                </button>
+              ))}
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

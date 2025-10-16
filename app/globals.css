@@ -100,8 +100,7 @@
   /* Professional Typography */
   .font-display {
     font-family:
-      var(--font-geist-sans),
-      'Geist Sans',
+      'Be Vietnam Pro',
       system-ui,
       -apple-system,
       sans-serif;
@@ -112,8 +111,7 @@
 
   .font-heading {
     font-family:
-      var(--font-geist-sans),
-      'Geist Sans',
+      'Be Vietnam Pro',
       system-ui,
       -apple-system,
       sans-serif;
@@ -124,8 +122,7 @@
 
   .font-body {
     font-family:
-      var(--font-geist-sans),
-      'Geist Sans',
+      'Be Vietnam Pro',
       system-ui,
       -apple-system,
       sans-serif;
@@ -135,8 +132,7 @@
 
   .font-caption {
     font-family:
-      var(--font-geist-sans),
-      'Geist Sans',
+      'Be Vietnam Pro',
       system-ui,
       -apple-system,
       sans-serif;
@@ -148,8 +144,7 @@
   /* Clean brand typography */
   .font-brand {
     font-family:
-      var(--font-geist-sans),
-      'Geist Sans',
+      'Be Vietnam Pro',
       system-ui,
       -apple-system,
       sans-serif;
@@ -160,8 +155,7 @@
 
   .font-brand-large {
     font-family:
-      var(--font-geist-sans),
-      'Geist Sans',
+      'Be Vietnam Pro',
       system-ui,
       -apple-system,
       sans-serif;

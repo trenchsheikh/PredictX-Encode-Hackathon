@@ -31,9 +31,13 @@ export function usePredictionContract() {
     async function loadABIs() {
       try {
         console.log('Loading contract ABIs...');
-        // Load BSC Mainnet ABI
+        // Determine which network to load from based on environment
+        const network =
+          process.env.NEXT_PUBLIC_CHAIN_ID === '56'
+            ? 'bscMainnet'
+            : 'bscTestnet';
         const predictionRes = await fetch(
-          `/deployments/bscMainnet/PredictionMarket.json`
+          `/deployments/${network}/PredictionMarket.json`
         );
 
         if (predictionRes.ok) {
@@ -110,15 +114,24 @@ export function usePredictionContract() {
 
             const ethersProvider = new ethers.BrowserProvider(provider);
 
-            // Verify wallet is on BSC Mainnet (no switching)
+            // Verify wallet is on correct network
             const chainIdStr = wallet.chainId?.toString();
-            const expectedChainId = '56'; // BSC Mainnet
-            const expectedChainIdHex = '0x38'; // BSC Mainnet hex
-            const expectedChainIdEip155 = 'eip155:56'; // BSC Mainnet EIP155
+            const expectedChainId =
+              process.env.NEXT_PUBLIC_CHAIN_ID === '56' ? '56' : '97';
+            const expectedChainIdHex =
+              process.env.NEXT_PUBLIC_CHAIN_ID === '56' ? '0x38' : '0x61';
+            const expectedChainIdEip155 =
+              process.env.NEXT_PUBLIC_CHAIN_ID === '56'
+                ? 'eip155:56'
+                : 'eip155:97';
+            const networkName =
+              process.env.NEXT_PUBLIC_CHAIN_ID === '56'
+                ? 'BSC Mainnet'
+                : 'BSC Testnet';
 
             // Debug network check (only in development)
             if (process.env.NODE_ENV === 'development') {
-              console.log('🔍 BSC Mainnet Check:', {
+              console.log(`🔍 ${networkName} Check:`, {
                 currentChainId: chainIdStr,
                 expectedChainId,
                 expectedChainIdHex,
@@ -135,13 +148,33 @@ export function usePredictionContract() {
               chainIdStr !== expectedChainId &&
               chainIdStr !== expectedChainIdEip155
             ) {
-              const errorMsg = `Wallet must be on BSC Mainnet (Chain ID: 56). Current: ${chainIdStr || 'Unknown'}. Please switch to BSC Mainnet in your wallet and try again.`;
-              console.error('❌ Wrong network:', errorMsg);
-              setError(errorMsg);
-              return null;
+              console.log(`Switching to ${networkName}...`, {
+                currentChainId: wallet.chainId,
+                expectedChainId,
+              });
+              try {
+                await wallet.switchChain(parseInt(expectedChainId));
+                console.log(`Switched to ${networkName}`);
+              } catch (switchError: any) {
+                console.warn('Failed to switch chain:', switchError.message);
+                // Try alternative method
+                try {
+                  console.log('Trying alternative chain switch...');
+                  await wallet.switchChain(expectedChainIdHex); // Hex format
+                  console.log(`Switched to ${networkName} (hex)`);
+                } catch (altError: any) {
+                  console.warn(
+                    'Alternative switch also failed:',
+                    altError.message
+                  );
+                  // Continue anyway, user can switch manually
+                }
+              }
+            } else {
+              console.log(`Already on ${networkName}`);
             }
 
-            console.log(`✅ Wallet is on BSC Mainnet`);
+            console.log(`✅ Wallet is on ${networkName}`);
 
             signer = await ethersProvider.getSigner();
             console.log('✅ Signer obtained via Privy');
@@ -153,22 +186,28 @@ export function usePredictionContract() {
 
               // Check if we're on the correct network
               const network = await ethersProvider.getNetwork();
+              const expectedChainId = parseInt(
+                process.env.NEXT_PUBLIC_CHAIN_ID || '56'
+              );
+              const networkName =
+                expectedChainId === 56 ? 'BSC Mainnet' : 'BSC Testnet';
+
               console.log('🔍 Current network after switch:', {
                 chainId: network.chainId,
                 name: network.name,
               });
 
-              if (Number(network.chainId) !== 56) {
+              if (Number(network.chainId) !== expectedChainId) {
                 console.warn(
-                  '⚠️ Still not on BSC Mainnet after switch. Chain ID:',
+                  `⚠️ Still not on ${networkName} after switch. Chain ID:`,
                   network.chainId
                 );
                 throw new Error(
-                  `Wallet is on wrong network. Expected BSC Mainnet (56), got ${network.chainId}`
+                  `Wallet is on wrong network. Expected ${networkName} (${expectedChainId}), got ${network.chainId}`
                 );
               }
 
-              console.log('✅ Confirmed on BSC Mainnet');
+              console.log(`✅ Confirmed on ${networkName}`);
             } catch (signerError: any) {
               console.error(
                 '❌ Signer verification failed:',
@@ -192,21 +231,73 @@ export function usePredictionContract() {
             // Request accounts
             await window.ethereum.request({ method: 'eth_requestAccounts' });
 
-            // Verify wallet is on BSC Mainnet (no switching)
+            // Verify wallet is on correct network
             const network = await provider.getNetwork();
             console.log('Current network:', {
               chainId: network.chainId,
               name: network.name,
             });
+            const expectedChainId =
+              process.env.NEXT_PUBLIC_CHAIN_ID === '56' ? 56 : 97;
+            const expectedChainIdHex =
+              process.env.NEXT_PUBLIC_CHAIN_ID === '56' ? '0x38' : '0x61';
+            const networkName =
+              process.env.NEXT_PUBLIC_CHAIN_ID === '56'
+                ? 'BSC Mainnet'
+                : 'BSC Testnet';
+            const rpcUrl =
+              process.env.NEXT_PUBLIC_CHAIN_ID === '56'
+                ? 'https://bsc-dataseed.binance.org/'
+                : 'https://data-seed-prebsc-1-s1.binance.org:8545/';
+            const blockExplorerUrl =
+              process.env.NEXT_PUBLIC_CHAIN_ID === '56'
+                ? 'https://bscscan.com/'
+                : 'https://testnet.bscscan.com/';
 
-            if (Number(network.chainId) !== 56) {
-              const errorMsg = `Wallet must be on BSC Mainnet (Chain ID: 56). Current: ${network.chainId}. Please switch to BSC Mainnet in your wallet and try again.`;
-              console.error('❌ Wrong network:', errorMsg);
-              setError(errorMsg);
-              return null;
+            if (Number(network.chainId) !== expectedChainId) {
+              console.log(`Switching to ${networkName} via window.ethereum...`);
+              try {
+                await window.ethereum.request({
+                  method: 'wallet_switchEthereumChain',
+                  params: [{ chainId: expectedChainIdHex }],
+                });
+                console.log(`Switched to ${networkName}`);
+              } catch (switchError: any) {
+                console.warn('Failed to switch network:', switchError.message);
+                // Try adding the network if it doesn't exist
+                if (switchError.code === 4902) {
+                  try {
+                    console.log(`Adding ${networkName} network...`);
+                    await window.ethereum.request({
+                      method: 'wallet_addEthereumChain',
+                      params: [
+                        {
+                          chainId: expectedChainIdHex,
+                          chainName: networkName,
+                          nativeCurrency: {
+                            name: 'BNB',
+                            symbol: 'BNB',
+                            decimals: 18,
+                          },
+                          rpcUrls: [rpcUrl],
+                          blockExplorerUrls: [blockExplorerUrl],
+                        },
+                      ],
+                    });
+                    console.log(`Added ${networkName} network`);
+                  } catch (addError: any) {
+                    console.warn(
+                      `Failed to add ${networkName}:`,
+                      addError.message
+                    );
+                  }
+                }
+              }
+            } else {
+              console.log(`Already on ${networkName}`);
             }
 
-            console.log(`✅ Wallet is on BSC Mainnet`);
+            console.log(`✅ Wallet is on ${networkName}`);
 
             signer = await provider.getSigner();
             console.log('✅ Signer obtained via window.ethereum');
@@ -466,15 +557,84 @@ export function usePredictionContract() {
         converted: currentChainId,
       });
 
-      // Verify wallet is on BSC Mainnet (no switching)
-      if (currentChainId !== 56) {
-        const errorMsg = `Wallet must be on BSC Mainnet (Chain ID: 56). Current: ${currentChainId || 'Unknown'}. Please switch to BSC Mainnet in your wallet and try again.`;
-        console.error('❌ Wrong network:', errorMsg);
-        setError(errorMsg);
-        return null;
+      // Check if we're on the correct network
+      const expectedChainId =
+        process.env.NEXT_PUBLIC_CHAIN_ID === '56' ? 56 : 97;
+      const expectedChainIdHex =
+        process.env.NEXT_PUBLIC_CHAIN_ID === '56' ? '0x38' : '0x61';
+      const networkName =
+        process.env.NEXT_PUBLIC_CHAIN_ID === '56'
+          ? 'BSC Mainnet'
+          : 'BSC Testnet';
+      const rpcUrl =
+        process.env.NEXT_PUBLIC_CHAIN_ID === '56'
+          ? 'https://bsc-dataseed.binance.org/'
+          : 'https://data-seed-prebsc-1-s1.binance.org:8545/';
+      const blockExplorerUrl =
+        process.env.NEXT_PUBLIC_CHAIN_ID === '56'
+          ? 'https://bscscan.com/'
+          : 'https://testnet.bscscan.com/';
+
+      if (currentChainId !== expectedChainId) {
+        console.log(`Attempting to switch to ${networkName}...`);
+        try {
+          // Try to switch network automatically
+          if (typeof window !== 'undefined' && window.ethereum) {
+            await window.ethereum.request({
+              method: 'wallet_switchEthereumChain',
+              params: [{ chainId: expectedChainIdHex }],
+            });
+            console.log(`Successfully switched to ${networkName}`);
+            // Wait a moment for the network switch to complete
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            // Retry getting the contract after network switch
+            return await getContract();
+          } else {
+            throw new Error('No ethereum provider available');
+          }
+        } catch (switchError: any) {
+          console.warn(
+            'Failed to switch network automatically:',
+            switchError.message
+          );
+
+          // Try adding the network if it doesn't exist
+          if (switchError.code === 4902) {
+            try {
+              console.log(`Adding ${networkName} network...`);
+              await window.ethereum.request({
+                method: 'wallet_addEthereumChain',
+                params: [
+                  {
+                    chainId: expectedChainIdHex,
+                    chainName: networkName,
+                    nativeCurrency: {
+                      name: 'BNB',
+                      symbol: 'BNB',
+                      decimals: 18,
+                    },
+                    rpcUrls: [rpcUrl],
+                    blockExplorerUrls: [blockExplorerUrl],
+                  },
+                ],
+              });
+              console.log(`Added ${networkName} network`);
+              // Wait a moment for the network to be added
+              await new Promise(resolve => setTimeout(resolve, 1000));
+              return await getContract();
+            } catch (addError: any) {
+              console.error(`Failed to add ${networkName}:`, addError.message);
+            }
+          }
+
+          const errorMsg = `Please switch to ${networkName} (Chain ID: ${expectedChainId}). Current: ${currentChainId || 'Unknown'}`;
+          console.error(errorMsg);
+          setError(errorMsg);
+          return null;
+        }
       }
 
-      console.log(`✅ Wallet is on BSC Mainnet`);
+      console.log(`✅ Wallet is on ${networkName}`);
 
       // Also try the provider-based check as backup
       try {

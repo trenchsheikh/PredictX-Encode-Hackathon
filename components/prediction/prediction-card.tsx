@@ -15,7 +15,6 @@ import {
   ChevronDown,
   ChevronUp,
   Info,
-  History,
   CheckCircle,
   XCircle,
 } from 'lucide-react';
@@ -233,7 +232,6 @@ export function PredictionCard({
                 className="w-full bg-purple-600 font-semibold text-white hover:bg-purple-700"
                 onClick={() => onViewHistory(prediction.id)}
               >
-                <History className="mr-2 h-3 w-3" />
                 {t('prediction_card.view_history')}
               </Button>
             </div>

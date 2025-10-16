@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import React from 'react';
 import {
   LineChart,
   Line,
@@ -30,10 +30,7 @@ export function PerformanceChart({
   className,
 }: PerformanceChartProps) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6 }}
+    <div
       className={`rounded-xl border border-gray-700/50 bg-gradient-to-br from-gray-900/60 to-gray-800/40 p-6 backdrop-blur-sm ${className}`}
     >
       <div className="mb-6 flex items-center justify-between">
@@ -158,6 +155,6 @@ export function PerformanceChart({
           )}
         </ResponsiveContainer>
       </div>
-    </motion.div>
+    </div>
   );
 }
