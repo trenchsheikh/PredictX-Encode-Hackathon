@@ -121,7 +121,7 @@ const getNavigationSections = (t: any): NavSection[] => [
     title: t('nav.docs.official_links'),
     items: [
       {
-        href: 'https://twitter.com/darkbet',
+        href: 'https://twitter.com/darkbetbnb',
         label: t('nav.docs.twitter'),
         icon: '↗️',
       },
