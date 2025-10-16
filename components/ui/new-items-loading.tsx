@@ -1,9 +1,14 @@
 'use client';
 
-import { useI18n } from '@/components/providers/i18n-provider';
+import { useSSRSafeI18n } from '@/hooks/use-ssr-safe-i18n';
 
 function NewItemsLoading() {
-  const { t } = useI18n();
+  const { t } = useSSRSafeI18n({
+    badge_live: 'Live',
+    badge_introducing: '推出',
+    darkpool_betting: '暗池投注',
+  });
+
   const item = {
     href: '/#all-markets',
     title: t('darkpool_betting'),

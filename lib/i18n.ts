@@ -23,10 +23,13 @@ i18n
     fallbackLng: 'zh', // Default to Chinese
     defaultNS: 'common',
     debug: false,
+    lng: 'zh',
 
     detection: {
       order: ['localStorage', 'navigator', 'htmlTag'],
       caches: ['localStorage'],
+      lookupLocalStorage:
+        typeof window !== 'undefined' ? 'darkbet-locale' : undefined,
     },
 
     interpolation: {
