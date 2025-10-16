@@ -8,12 +8,20 @@ import { usePrivy } from '@privy-io/react-auth';
 import { useI18n } from '@/components/providers/i18n-provider';
 import { AnimatedButton } from '@/components/ui/animated-button';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Globe, Wallet, Home, Shield, BookOpen } from 'lucide-react';
+import {
+  Menu,
+  X,
+  Globe,
+  Wallet,
+  Home,
+  HelpCircle,
+  BookOpen,
+} from 'lucide-react';
 
 const navigation = [
   { key: 'nav_home', href: '/', icon: Home, isHome: true },
   { key: 'nav_my_bets', href: '/my-bets', icon: Wallet },
-  { key: 'nav_how', href: '/how-it-works', icon: Shield },
+  { key: 'nav_how', href: '/how-it-works', icon: HelpCircle },
   { key: 'nav_docs', href: '/docs', icon: BookOpen },
   // { key: 'nav_leaderboard', href: '/leaderboard', icon: Zap },
 ];
@@ -50,12 +58,12 @@ export function AnimatedHeader() {
     >
       {/* Floating glassy navbar container (applied on nav) */}
 
-      <nav className="relative z-10 mx-4 mb-4 mt-4 flex items-center justify-between rounded-2xl border border-white/10 bg-black/35 p-3 shadow-lg supports-[backdrop-filter]:backdrop-blur-md lg:mx-auto lg:max-w-7xl lg:px-6">
+      <nav className="relative z-10 mx-4 mb-4 mt-4 flex items-center justify-between rounded-2xl border border-white/10 bg-black/35 p-3 shadow-lg supports-[backdrop-filter]:backdrop-blur-md lg:mx-auto lg:max-w-screen-2xl lg:px-8">
         {/* Logo */}
         <motion.div
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
-          className="flex lg:flex-1"
+          className="flex flex-shrink-0"
         >
           <Link
             href="/"
@@ -96,7 +104,7 @@ export function AnimatedHeader() {
         </div>
 
         {/* Right side: desktop navigation + actions, right-aligned with even spacing */}
-        <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:gap-x-6">
+        <div className="hidden lg:flex lg:flex-1 lg:flex-nowrap lg:items-center lg:justify-end lg:gap-x-5">
           {navItems.map((item, index) => {
             const Icon = item.icon;
             return (
@@ -110,7 +118,7 @@ export function AnimatedHeader() {
                 <Link
                   href={item.href}
                   aria-current={isActive(item.href) ? 'page' : undefined}
-                  className={`group flex items-center space-x-2 rounded-lg px-3 py-2 text-lg font-semibold transition-all duration-200 hover:bg-gray-800/30 ${
+                  className={`group flex items-center space-x-2 rounded-lg px-2 py-2 text-lg font-semibold transition-all duration-200 hover:bg-gray-800/30 ${
                     isActive(item.href)
                       ? 'bg-white/10 text-white'
                       : 'text-gray-300 hover:text-white'
@@ -141,7 +149,7 @@ export function AnimatedHeader() {
               variant="ghost"
               size="sm"
               onClick={toggleLanguage}
-              className="flex min-w-[60px] items-center gap-3 text-gray-300 transition-all duration-200 hover:bg-gray-800/30 hover:text-white"
+              className="flex min-w-[52px] items-center gap-2 text-lg font-semibold text-gray-300 transition-all duration-200 hover:bg-gray-800/30 hover:text-white"
             >
               <Globe className="h-4 w-4 flex-shrink-0" />
               <span className="whitespace-nowrap">
@@ -216,19 +224,10 @@ export function AnimatedHeader() {
               <div className="flex items-center justify-between border-b border-gray-700/30 p-4">
                 <Link
                   href="/"
-                  className="flex items-center space-x-3"
+                  className="flex items-center"
                   onClick={() => setMobileMenuOpen(false)}
                   prefetch={false}
                 >
-                  <div className="flex h-8 w-8 items-center justify-center overflow-hidden rounded-lg bg-gradient-to-r from-yellow-400 to-yellow-600">
-                    <Image
-                      src="/binanceeye.jpg"
-                      alt="DarkBet"
-                      width={24}
-                      height={24}
-                      className="rounded-lg object-cover"
-                    />
-                  </div>
                   <div className="flex flex-col">
                     <span className="font-brand gradient-text-brand text-2xl">
                       DarkBet
