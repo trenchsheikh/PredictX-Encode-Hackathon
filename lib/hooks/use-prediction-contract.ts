@@ -9,8 +9,6 @@ import {
   estimateGas,
   waitForTransaction,
   parseContractError,
-  switchToBSCTestnet,
-  switchToBSCMainnet,
 } from '@/lib/blockchain-utils';
 import { TransactionStatus } from '@/components/ui/transaction-status';
 
