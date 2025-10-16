@@ -65,8 +65,9 @@ export function CryptoSelector({
 
       if (data.success && data.data.prices && data.data.prices.length > 0) {
         // Check if we have fresh real-time data from CoinGecko
-        const isRealTimeData = data.data.source === 'CoinGecko API' && data.data.fresh === true;
-        
+        const isRealTimeData =
+          data.data.source === 'CoinGecko API' && data.data.fresh === true;
+
         if (isRealTimeData) {
           // Use real-time data from CoinGecko
           setCryptos(data.data.prices);
@@ -78,7 +79,9 @@ export function CryptoSelector({
           // Use fallback data but warn user
           setCryptos(data.data.prices);
           setLastUpdated(new Date());
-          logger.warn('Using fallback crypto prices - real-time data unavailable');
+          logger.warn(
+            'Using fallback crypto prices - real-time data unavailable'
+          );
         } else {
           // Check if prices are recent (within last 15 minutes for more tolerance)
           const now = Date.now();

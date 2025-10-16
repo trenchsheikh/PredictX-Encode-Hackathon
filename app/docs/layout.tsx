@@ -5,7 +5,6 @@ import { useTranslation } from 'react-i18next';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
-import { AnimatedBackground } from '@/components/ui/animated-background';
 import '@/lib/i18n';
 
 interface DocsLayoutProps {
@@ -155,13 +154,11 @@ export default function DocsLayout({ children }: DocsLayoutProps) {
   }, [i18n]);
 
   return (
-    <div className="relative min-h-screen bg-black text-gray-100">
-      {/* Animated Background */}
-      <AnimatedBackground variant="gradient" />
-
+    <div className="relative min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 text-gray-100">
       {/* Main content container */}
       <div className="mx-auto max-w-7xl">
-        <div className="flex flex-col lg:flex-row">
+        {/* Use grid on large screens so the sidebar grows to fill the gap up to the content */}
+        <div className="flex flex-col lg:grid lg:grid-cols-[1fr_minmax(0,56rem)]">
           {/* Mobile navigation - shown on top */}
           <nav className="w-full px-4 py-6 lg:hidden">
             <div className="rounded-lg border border-gray-700/30 bg-gray-800/90 p-4 backdrop-blur-sm">
@@ -173,13 +170,13 @@ export default function DocsLayout({ children }: DocsLayoutProps) {
                         {section.title}
                       </h3>
                     )}
-                    <ul className="space-y-1">
+                    <ul className="space-y-0">
                       {section.items.map((item, itemIndex) => (
                         <li key={itemIndex}>
                           <Link
                             href={item.href}
                             className={cn(
-                              'flex items-center rounded-md px-3 py-2 text-sm font-medium',
+                              'flex items-center rounded-md px-3 py-1 text-[0.95rem] font-medium leading-[1.05]',
                               'hover:bg-gray-700 hover:text-white',
                               pathname === item.href
                                 ? 'bg-orange-600 text-white'
@@ -187,7 +184,9 @@ export default function DocsLayout({ children }: DocsLayoutProps) {
                             )}
                           >
                             {item.icon && (
-                              <span className="mr-3 text-lg">{item.icon}</span>
+                              <span className="mr-1.5 text-lg">
+                                {item.icon}
+                              </span>
                             )}
                             {item.label}
                           </Link>
@@ -201,8 +200,8 @@ export default function DocsLayout({ children }: DocsLayoutProps) {
           </nav>
 
           {/* Desktop floating sidebar */}
-          <aside className="hidden lg:block lg:w-64 lg:flex-shrink-0">
-            <div className="sticky top-24 ml-4 mr-8 mt-8">
+          <aside className="hidden lg:block">
+            <div className="sticky top-24 ml-4 mt-8 pr-6">
               <div className="rounded-lg border border-gray-700/30 bg-gray-800/90 backdrop-blur-sm">
                 <nav className="space-y-6 p-4">
                   {getNavigationSections(t).map((section, sectionIndex) => (
@@ -212,13 +211,13 @@ export default function DocsLayout({ children }: DocsLayoutProps) {
                           {section.title}
                         </h3>
                       )}
-                      <ul className="space-y-1">
+                      <ul className="space-y-0">
                         {section.items.map((item, itemIndex) => (
                           <li key={itemIndex}>
                             <Link
                               href={item.href}
                               className={cn(
-                                'flex items-center rounded-md px-3 py-2 text-sm font-medium',
+                                'flex items-center rounded-md px-3 py-1 text-[0.95rem] font-medium leading-[1.05]',
                                 'hover:bg-gray-700 hover:text-white',
                                 pathname === item.href
                                   ? 'bg-orange-600 text-white'
@@ -226,7 +225,7 @@ export default function DocsLayout({ children }: DocsLayoutProps) {
                               )}
                             >
                               {item.icon && (
-                                <span className="mr-3 text-lg">
+                                <span className="mr-1.5 text-lg">
                                   {item.icon}
                                 </span>
                               )}
@@ -244,7 +243,7 @@ export default function DocsLayout({ children }: DocsLayoutProps) {
 
           {/* Main content */}
           <main className="flex-1 lg:ml-0">
-            <div className="mx-auto max-w-4xl px-6 py-8">{children}</div>
+            <div className="px-6 py-8">{children}</div>
           </main>
         </div>
       </div>

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 import { usePrivy } from '@privy-io/react-auth';
 import { useI18n } from '@/components/providers/i18n-provider';
@@ -19,22 +20,18 @@ const navigation = [
 
 export function AnimatedHeader() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
   const [mounted, setMounted] = useState(false);
   const { locale, setLocale, t } = useI18n();
   const { ready, authenticated, user, login, logout } = usePrivy();
+  const navItems = navigation.filter(
+    item => item.key !== 'nav_my_bets' || authenticated
+  );
+  const pathname = usePathname();
+  const isActive = (href: string) =>
+    href === '/' ? pathname === '/' : pathname.startsWith(href);
 
   useEffect(() => {
     setMounted(true);
-  }, []);
-
-  // Track scroll for header background effect
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const toggleLanguage = () => {
@@ -51,50 +48,9 @@ export function AnimatedHeader() {
       transition={{ duration: 0.6, ease: 'easeOut' }}
       className="sticky top-0 z-50"
     >
-      {/* Animated Background */}
-      <motion.div
-        animate={{
-          background: scrolled
-            ? 'linear-gradient(135deg, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.9) 100%)'
-            : 'linear-gradient(135deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.6) 100%)',
-        }}
-        transition={{ duration: 0.3 }}
-        className="absolute inset-0 border-b border-yellow-500/20 backdrop-blur-md"
-      />
+      {/* Floating glassy navbar container (applied on nav) */}
 
-      {/* Animated particles background - only render after hydration */}
-      {mounted && (
-        <div className="pointer-events-none absolute inset-0 overflow-hidden">
-          {Array.from({ length: 20 }).map((_, i) => {
-            const leftPosition = ((i * 13.7) % 100) + i * 0.1;
-            const topPosition = ((i * 7.3) % 100) + i * 0.05;
-
-            return (
-              <motion.div
-                key={i}
-                className="absolute h-1 w-1 rounded-full bg-yellow-400/30"
-                animate={{
-                  x: [0, 100, 0],
-                  y: [0, -100, 0],
-                  opacity: [0, 1, 0],
-                }}
-                transition={{
-                  duration: 8 + i * 0.5,
-                  repeat: Infinity,
-                  delay: i * 0.2,
-                  ease: 'easeInOut',
-                }}
-                style={{
-                  left: `${leftPosition}%`,
-                  top: `${topPosition}%`,
-                }}
-              />
-            );
-          })}
-        </div>
-      )}
-
-      <nav className="relative z-10 mx-auto mb-4 mt-4 flex max-w-7xl items-center justify-between rounded-xl border border-gray-700/30 bg-gray-900/80 p-3 shadow-xl backdrop-blur-md lg:px-6">
+      <nav className="relative z-10 mx-4 mb-4 mt-4 flex items-center justify-between rounded-2xl border border-white/10 bg-black/35 p-3 shadow-lg supports-[backdrop-filter]:backdrop-blur-md lg:mx-auto lg:max-w-7xl lg:px-6">
         {/* Logo */}
         <motion.div
           whileHover={{ scale: 1.02 }}
@@ -116,10 +72,10 @@ export function AnimatedHeader() {
               />
             </div>
             <div className="flex flex-col">
-              <span className="font-brand gradient-text-brand text-xl">
+              <span className="font-brand gradient-text-brand text-2xl font-bold">
                 DarkBet
               </span>
-              <span className="font-caption text-xs text-gray-400">
+              <span className="font-caption text-sm text-gray-400">
                 DarkPool Betting
               </span>
             </div>
@@ -139,9 +95,9 @@ export function AnimatedHeader() {
           </motion.button>
         </div>
 
-        {/* Desktop Navigation */}
-        <div className="hidden lg:flex lg:gap-x-6">
-          {navigation.map((item, index) => {
+        {/* Right side: desktop navigation + actions, right-aligned with even spacing */}
+        <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:gap-x-6">
+          {navItems.map((item, index) => {
             const Icon = item.icon;
             return (
               <motion.div
@@ -153,11 +109,16 @@ export function AnimatedHeader() {
               >
                 <Link
                   href={item.href}
-                  className="group flex items-center space-x-2 rounded-lg px-3 py-2 text-sm font-medium text-gray-300 transition-all duration-200 hover:bg-gray-800/50 hover:text-white"
+                  aria-current={isActive(item.href) ? 'page' : undefined}
+                  className={`group flex items-center space-x-2 rounded-lg px-3 py-2 text-lg font-semibold transition-all duration-200 hover:bg-gray-800/30 ${
+                    isActive(item.href)
+                      ? 'bg-white/10 text-white'
+                      : 'text-gray-300 hover:text-white'
+                  }`}
                   prefetch={item.isHome ? false : undefined}
                 >
                   <Icon className="h-4 w-4 transition-colors duration-200 group-hover:text-yellow-400" />
-                  <span>
+                  <span className="whitespace-nowrap">
                     {mounted
                       ? t(item.key)
                       : item.key
@@ -169,10 +130,8 @@ export function AnimatedHeader() {
               </motion.div>
             );
           })}
-        </div>
 
-        {/* Desktop Actions */}
-        <div className="hidden lg:flex lg:flex-1 lg:justify-end lg:gap-x-3">
+          {/* Divider spacing between nav and actions keeps even gap due to container gap-x-6 */}
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -182,7 +141,7 @@ export function AnimatedHeader() {
               variant="ghost"
               size="sm"
               onClick={toggleLanguage}
-              className="flex min-w-[60px] items-center gap-3 text-gray-300 transition-all duration-200 hover:bg-gray-800/50 hover:text-white"
+              className="flex min-w-[60px] items-center gap-3 text-gray-300 transition-all duration-200 hover:bg-gray-800/30 hover:text-white"
             >
               <Globe className="h-4 w-4 flex-shrink-0" />
               <span className="whitespace-nowrap">
@@ -271,10 +230,10 @@ export function AnimatedHeader() {
                     />
                   </div>
                   <div className="flex flex-col">
-                    <span className="font-brand gradient-text-brand text-lg">
+                    <span className="font-brand gradient-text-brand text-2xl">
                       DarkBet
                     </span>
-                    <span className="font-caption text-xs text-gray-400">
+                    <span className="font-caption text-sm text-gray-400">
                       DarkPool Betting
                     </span>
                   </div>
@@ -292,7 +251,7 @@ export function AnimatedHeader() {
 
               <div className="space-y-6 p-6">
                 <div className="space-y-2">
-                  {navigation.map((item, index) => {
+                  {navItems.map((item, index) => {
                     const Icon = item.icon;
                     return (
                       <motion.div
@@ -303,12 +262,19 @@ export function AnimatedHeader() {
                       >
                         <Link
                           href={item.href}
-                          className="group flex items-center space-x-3 rounded-xl px-4 py-3 text-gray-300 transition-all duration-300 hover:bg-white/10 hover:text-white"
+                          aria-current={
+                            isActive(item.href) ? 'page' : undefined
+                          }
+                          className={`group flex items-center space-x-3 rounded-xl px-4 py-3 text-lg font-semibold transition-all duration-300 hover:bg-white/10 ${
+                            isActive(item.href)
+                              ? 'bg-white/10 text-white'
+                              : 'text-gray-300 hover:text-white'
+                          }`}
                           onClick={() => setMobileMenuOpen(false)}
                           prefetch={item.isHome ? false : undefined}
                         >
                           <Icon className="h-5 w-5 transition-colors group-hover:text-yellow-400" />
-                          <span className="font-medium">
+                          <span className="whitespace-nowrap font-medium">
                             {mounted
                               ? t(item.key)
                               : item.key

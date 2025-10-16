@@ -517,7 +517,9 @@ router.delete('/clear-all', async (req: Request, res: Response) => {
     const commitmentCount = await Commitment.countDocuments();
     const betCount = await Bet.countDocuments();
 
-    console.log(`🧹 Clearing ${marketCount} markets, ${commitmentCount} commitments, ${betCount} bets`);
+    console.log(
+      `🧹 Clearing ${marketCount} markets, ${commitmentCount} commitments, ${betCount} bets`
+    );
 
     // Delete all data
     const deletedBets = await Bet.deleteMany({});

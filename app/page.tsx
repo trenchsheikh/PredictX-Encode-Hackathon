@@ -40,7 +40,6 @@ import {
 } from 'lucide-react';
 import { HeroSection } from '@/components/ui/hero-section';
 import { AnimatedCard } from '@/components/ui/animated-card';
-import { AnimatedBackground } from '@/components/ui/animated-background';
 import { useI18n } from '@/components/providers/i18n-provider';
 import { api, getErrorMessage } from '@/lib/api-client';
 import { usePredictionContract } from '@/lib/hooks/use-prediction-contract';
@@ -77,12 +76,7 @@ export default function HomePage() {
     [predictionId: string]: { outcome: 'yes' | 'no'; shares: number };
   }>({});
 
-  // Client-only mounted state (fixes hydration errors for random animations)
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  // Removed homepage background bubbles/dust; no mounted gating needed
 
   /**
    * Fetch markets from backend API
@@ -288,7 +282,8 @@ export default function HomePage() {
         expiresAt: expiresAtTimestamp,
         category: category,
         currentTimestamp: Math.floor(Date.now() / 1000),
-        timeUntilExpiry: (expiresAtTimestamp - Math.floor(Date.now() / 1000)) / 60
+        timeUntilExpiry:
+          (expiresAtTimestamp - Math.floor(Date.now() / 1000)) / 60,
       });
 
       // Call smart contract to create market
@@ -341,185 +336,27 @@ export default function HomePage() {
 
   return (
     <div className="relative overflow-hidden">
-      {/* Page-specific background */}
-      <AnimatedBackground variant="grid" />
+      {/* Removed page-specific animated background */}
 
       <style jsx>{`
-        @keyframes riseUp {
-          0% {
-            transform: translateY(100vh);
-            opacity: 0;
-          }
-          10% {
-            opacity: 0.8;
-          }
-          90% {
-            opacity: 0.8;
-          }
-          100% {
-            transform: translateY(-100vh);
-            opacity: 0;
-          }
+        /* Animations removed for performance and to avoid fade/scale effects */
+        .bold-title {
+          font-weight: 900;
+          letter-spacing: -0.02em;
         }
-        .dust-particle {
-          position: absolute;
-          background-color: #000000;
-          border-radius: 50%;
-          animation: riseUp linear infinite;
-        }
-
-        @keyframes boldPulse {
-          0%,
-          100% {
-            transform: scale(1);
-            text-shadow:
-              0 0 20px rgba(0, 0, 0, 0.3),
-              0 0 40px rgba(0, 0, 0, 0.2);
-          }
-          50% {
-            transform: scale(1.05);
-            text-shadow:
-              0 0 30px rgba(0, 0, 0, 0.5),
-              0 0 60px rgba(0, 0, 0, 0.3),
-              0 0 80px rgba(0, 0, 0, 0.2);
-          }
-        }
-
-        @keyframes slideInScale {
-          0% {
-            transform: translateY(-20px) scale(0.9);
-            opacity: 0;
-          }
-          100% {
-            transform: translateY(0) scale(1);
-            opacity: 1;
-          }
-        }
-
-        @keyframes greenGlow {
-          0%,
-          100% {
-            box-shadow:
-              0 0 10px 3px #00ff00,
-              0 0 20px 5px #00ff00,
-              inset 0 0 10px rgba(0, 255, 0, 0.3);
-          }
-          50% {
-            box-shadow:
-              0 0 20px 5px #00ff00,
-              0 0 40px 10px #00ff00,
-              inset 0 0 20px rgba(0, 255, 0, 0.5);
-          }
-        }
-
         .rotating-border-btn,
         button.rotating-border-btn {
           border: 5px solid #00ff00 !important;
           outline: 3px solid #00ff00 !important;
           outline-offset: 3px !important;
-          animation: greenGlow 1.5s ease-in-out infinite !important;
           transition:
             transform 0.25s ease,
             box-shadow 0.25s ease,
             background 0.25s ease !important;
         }
-
-        .rotating-border-btn:hover,
-        button.rotating-border-btn:hover {
-          transform: scale(1.06) !important;
-          background: #111111 !important;
-          box-shadow:
-            0 0 35px 10px #00ff00,
-            0 0 70px 18px #00ff00,
-            inset 0 0 35px rgba(0, 255, 0, 0.65) !important;
-        }
-
-        .bold-title {
-          animation:
-            slideInScale 0.8s ease-out,
-            boldPulse 3s ease-in-out infinite;
-          font-weight: 900;
-          letter-spacing: -0.02em;
-        }
-
-        /* Neon green (brighter) border wrapper */
-        @keyframes neonPulse {
-          0%,
-          100% {
-            box-shadow:
-              0 0 10px #39ff14,
-              0 0 22px rgba(57, 255, 20, 0.5);
-          }
-          50% {
-            box-shadow:
-              0 0 16px #39ff14,
-              0 0 30px rgba(57, 255, 20, 0.65);
-          }
-        }
-        .neon-border {
-          position: relative;
-          display: inline-block;
-        }
-        .neon-border::before {
-          content: '';
-          position: absolute;
-          top: -6px;
-          left: -6px;
-          right: -6px;
-          bottom: -6px;
-          border-radius: 0.75rem; /* match/extend button rounding */
-          border: 3px solid #39ff14; /* toned-down neon green */
-          box-shadow:
-            0 0 12px #39ff14,
-            0 0 24px rgba(57, 255, 20, 0.55);
-          pointer-events: none;
-          animation: neonPulse 2.2s ease-in-out infinite;
-          transition: box-shadow 160ms ease;
-        }
-        .neon-border:hover::before {
-          box-shadow:
-            0 0 18px #39ff14,
-            0 0 36px rgba(57, 255, 20, 0.75);
-        }
       `}</style>
 
-      {/* Rising dust on left side - Client-only to prevent hydration errors */}
-      {mounted && (
-        <div className="pointer-events-none fixed bottom-0 left-0 top-0 z-[1] w-64 overflow-hidden">
-          {Array.from({ length: 50 }).map((_, i) => (
-            <div
-              key={`left-${i}`}
-              className="dust-particle"
-              style={{
-                left: `${Math.random() * 100}%`,
-                width: `${Math.random() * 4 + 2}px`,
-                height: `${Math.random() * 4 + 2}px`,
-                animationDuration: `${Math.random() * 10 + 15}s`,
-                animationDelay: `${Math.random() * 20}s`,
-              }}
-            />
-          ))}
-        </div>
-      )}
-
-      {/* Rising dust on right side - Client-only to prevent hydration errors */}
-      {mounted && (
-        <div className="pointer-events-none fixed bottom-0 right-0 top-0 z-[1] w-64 overflow-hidden">
-          {Array.from({ length: 50 }).map((_, i) => (
-            <div
-              key={`right-${i}`}
-              className="dust-particle"
-              style={{
-                left: `${Math.random() * 100}%`,
-                width: `${Math.random() * 4 + 2}px`,
-                height: `${Math.random() * 4 + 2}px`,
-                animationDuration: `${Math.random() * 10 + 15}s`,
-                animationDelay: `${Math.random() * 20}s`,
-              }}
-            />
-          ))}
-        </div>
-      )}
+      {/* Removed rising dust/bubbles from left and right sides */}
 
       {/* Hero Section */}
       <HeroSection
@@ -551,7 +388,10 @@ export default function HomePage() {
       )}
 
       {/* All Markets Section */}
-      <div className="relative z-10 mx-auto max-w-7xl px-6 pb-16 lg:px-8">
+      <div
+        id="all-markets"
+        className="relative z-10 mx-auto max-w-7xl px-6 pb-16 lg:px-8"
+      >
         <div className="space-y-6">
           {/* Section Header */}
           <div className="flex items-center justify-between">
@@ -560,12 +400,6 @@ export default function HomePage() {
               <h2 className="font-heading text-2xl text-white">
                 {t('markets.all_markets')}
               </h2>
-              <Badge
-                variant="outline"
-                className="border-yellow-400/50 bg-yellow-400/10 text-yellow-400"
-              >
-                {filteredPredictions.length} {t('markets.markets_count')}
-              </Badge>
             </div>
           </div>
 
@@ -604,7 +438,7 @@ export default function HomePage() {
               </CardContent>
             </Card>
           ) : (
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <div className="grid auto-rows-fr grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
               {filteredPredictions.map((prediction, index) => (
                 <AnimatedCard
                   key={prediction.id}

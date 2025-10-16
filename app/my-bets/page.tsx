@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { usePrivy, useWallets } from '@privy-io/react-auth';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -24,7 +25,6 @@ import {
 } from 'lucide-react';
 import { StatsDashboard } from '@/components/ui/stats-dashboard';
 import { PerformanceChart } from '@/components/ui/performance-chart';
-import { AnimatedBackground } from '@/components/ui/animated-background';
 import { cn } from '@/lib/utils';
 import { useI18n } from '@/components/providers/i18n-provider';
 import { api, getErrorMessage } from '@/lib/api-client';
@@ -45,6 +45,7 @@ export default function MyBetsPage() {
   const { authenticated, user } = usePrivy();
   const { wallets } = useWallets();
   const contract = usePredictionContract();
+  const router = useRouter();
 
   // Data state
   const [userBets, setUserBets] = useState<UserBet[]>([]);
@@ -181,6 +182,13 @@ export default function MyBetsPage() {
       fetchUserBets();
     }
   }, [authenticated, user?.wallet?.address]);
+
+  // Redirect unauthenticated users to home and render nothing
+  useEffect(() => {
+    if (!authenticated) {
+      router.replace('/');
+    }
+  }, [authenticated, router]);
 
   /**
    * Check refund availability for all unrevealed bets
@@ -622,25 +630,7 @@ export default function MyBetsPage() {
   };
 
   if (!authenticated) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-yellow-400 via-yellow-500 to-yellow-600">
-        <Card className="w-full max-w-md border-black bg-black/90 text-center">
-          <CardContent className="p-8">
-            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-yellow-500">
-              <Wallet className="h-8 w-8 text-black" />
-            </div>
-            <h2 className="mb-2 text-2xl font-bold text-white">
-              {t('my_bets.title')}
-            </h2>
-            <p className="mb-6 text-gray-200">{t('my_bets.subtitle')}</p>
-            <Button className="bg-white text-black hover:bg-gray-200">
-              <Wallet className="mr-2 h-4 w-4" />
-              {t('connect_wallet')}
-            </Button>
-          </CardContent>
-        </Card>
-      </div>
-    );
+    return null;
   }
 
   const totalInvested = userBets.reduce((sum, bet) => sum + bet.amount, 0);
@@ -728,9 +718,6 @@ export default function MyBetsPage() {
 
   return (
     <div className="relative min-h-screen">
-      {/* Page-specific background */}
-      <AnimatedBackground variant="particles" />
-
       <div className="relative z-10 mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-16 lg:px-8">
         {/* Header */}
         <div className="mb-8">
@@ -743,6 +730,7 @@ export default function MyBetsPage() {
           {/* <div className="mt-4 rounded-xl border border-gray-700/50 bg-gray-900/60 p-3 backdrop-blur-sm sm:p-4"> */}
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
+              {/*
               <Button
                 onClick={switchToBSC}
                 size="sm"
@@ -764,6 +752,7 @@ export default function MyBetsPage() {
               >
                 Resolve Market 6
               </Button>
+              */}
             </div>
           </div>
         </div>
@@ -854,7 +843,10 @@ export default function MyBetsPage() {
                     ? t('my_bets.no_active_bets')
                     : t('my_bets.no_resolved_bets')}
               </p>
-              <Button className="bg-white text-black hover:bg-gray-200">
+              <Button
+                className="bg-white text-black hover:bg-gray-200"
+                onClick={() => router.push('/#all-markets')}
+              >
                 {t('my_bets.explore_markets')}
               </Button>
             </CardContent>

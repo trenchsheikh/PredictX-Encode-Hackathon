@@ -3,7 +3,6 @@ import { GeistSans } from 'geist/font/sans';
 import './globals.css';
 import { PrivyProviderWrapper } from '@/components/providers/privy-provider';
 import { AnimatedHeader } from '@/components/layout/animated-header';
-import { AnimatedBackground } from '@/components/ui/animated-background';
 import { IntroProvider } from '@/components/providers/intro-provider';
 import { ErrorBoundary } from '@/components/ui/error-boundary';
 
@@ -60,10 +59,7 @@ export default function RootLayout({
       <body className={GeistSans.className}>
         <PrivyProviderWrapper>
           <IntroProvider>
-            <div className="relative flex min-h-screen flex-col bg-black">
-              {/* Animated Background */}
-              <AnimatedBackground variant="gradient" />
-
+            <div className="relative flex min-h-screen flex-col bg-gradient-to-br from-gray-900 via-black to-gray-800">
               <AnimatedHeader />
               <main className="relative z-10 flex-1">
                 <ErrorBoundary>{children}</ErrorBoundary>

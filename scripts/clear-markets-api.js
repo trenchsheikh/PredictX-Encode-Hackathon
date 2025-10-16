@@ -47,7 +47,7 @@ async function clearMarkets() {
     }
 
     const result = await response.json();
-    
+
     if (result.success) {
       console.log('✅ Markets cleared successfully!');
       console.log(`   Deleted ${result.data.deletedMarkets} markets`);
@@ -58,12 +58,13 @@ async function clearMarkets() {
     } else {
       throw new Error(`API returned error: ${result.error}`);
     }
-
   } catch (error) {
     console.error('❌ Error clearing markets:', error.message);
     console.log('');
     console.log('💡 Troubleshooting:');
-    console.log('   1. Make sure the backend is running: npm run dev (in backend folder)');
+    console.log(
+      '   1. Make sure the backend is running: npm run dev (in backend folder)'
+    );
     console.log('   2. Check if MongoDB is running');
     console.log('   3. Verify the backend URL is correct');
     console.log('   4. Check backend logs for errors');

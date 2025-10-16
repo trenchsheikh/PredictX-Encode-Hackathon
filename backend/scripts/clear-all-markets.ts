@@ -18,11 +18,14 @@ import { blockchainService } from '../src/services/BlockchainService';
 async function main() {
   try {
     console.log('🧹 Starting market clearing process...');
-    console.log('⚠️  WARNING: This will delete ALL markets, bets, and commitments!');
+    console.log(
+      '⚠️  WARNING: This will delete ALL markets, bets, and commitments!'
+    );
     console.log('');
 
     // Connect to MongoDB
-    const mongoUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/darkbet';
+    const mongoUri =
+      process.env.MONGODB_URI || 'mongodb://localhost:27017/darkbet';
     await mongoose.connect(mongoUri);
     console.log('✅ Connected to MongoDB');
 
@@ -45,9 +48,13 @@ async function main() {
     // Show markets that will be deleted
     if (marketCount > 0) {
       console.log('📋 Markets to be deleted:');
-      const markets = await Market.find({}).select('marketId title creator createdAt').lean();
+      const markets = await Market.find({})
+        .select('marketId title creator createdAt')
+        .lean();
       markets.forEach((market, index) => {
-        console.log(`   ${index + 1}. Market ${market.marketId}: "${market.title}"`);
+        console.log(
+          `   ${index + 1}. Market ${market.marketId}: "${market.title}"`
+        );
         console.log(`      Creator: ${market.creator}`);
         console.log(`      Created: ${market.createdAt}`);
       });
@@ -59,12 +66,14 @@ async function main() {
     console.log('   - All markets will be deleted');
     console.log('   - All bets will be deleted');
     console.log('   - All commitments will be deleted');
-    console.log('   - Smart contract state will remain (markets exist on-chain)');
+    console.log(
+      '   - Smart contract state will remain (markets exist on-chain)'
+    );
     console.log('');
 
     // Delete all data
     console.log('🗑️  Deleting all data...');
-    
+
     // Delete in order to respect foreign key constraints
     const deletedBets = await Bet.deleteMany({});
     console.log(`   ✅ Deleted ${deletedBets.deletedCount} bets`);
@@ -84,11 +93,12 @@ async function main() {
     console.log('   3. New markets will start with fresh IDs');
     console.log('   4. You can now create new markets for testing');
     console.log('');
-    console.log('💡 Note: If you want to reset the smart contract too, you would need to:');
+    console.log(
+      '💡 Note: If you want to reset the smart contract too, you would need to:'
+    );
     console.log('   - Redeploy the contracts');
     console.log('   - Update contract addresses in the frontend');
     console.log('   - This script only clears the database');
-
   } catch (error) {
     console.error('❌ Error clearing markets:', error);
     process.exit(1);

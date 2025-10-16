@@ -10,7 +10,7 @@ export async function GET(request: NextRequest) {
     // Add cache busting parameter to ensure fresh data
     const cacheBuster = Date.now();
     const url = `${COINGECKO_API_URL}/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=50&page=1&sparkline=false&price_change_percentage=24h&_t=${cacheBuster}`;
-    
+
     // Fetch real-time crypto prices from CoinGecko
     const response = await fetch(url, {
       method: 'GET',
@@ -18,8 +18,8 @@ export async function GET(request: NextRequest) {
         Accept: 'application/json',
         'Content-Type': 'application/json',
         'Cache-Control': 'no-cache, no-store, must-revalidate',
-        'Pragma': 'no-cache',
-        'Expires': '0',
+        Pragma: 'no-cache',
+        Expires: '0',
         ...(COINGECKO_API_KEY && { 'x-cg-demo-api-key': COINGECKO_API_KEY }),
       },
       // Ensure no caching

@@ -54,11 +54,11 @@ export function PredictionCard({
   return (
     <Card
       className={cn(
-        'relative h-full overflow-hidden border-black bg-black/90 transition-all duration-300 hover:bg-black',
+        'relative flex h-full flex-col overflow-hidden border-black bg-black/90 shadow-none transition-all duration-300 hover:bg-black',
         prediction.isHot && 'ring-2 ring-yellow-400'
       )}
     >
-      <CardContent className="p-4">
+      <CardContent className="flex flex-1 flex-col p-4">
         <div className="mb-3 flex items-start justify-between">
           <div className="flex-1">
             <div className="mb-2 flex items-center gap-2">
@@ -92,7 +92,7 @@ export function PredictionCard({
                 </Badge>
               )}
               {prediction.isHot && (
-                <Badge variant="warning" className="animate-pulse text-xs">
+                <Badge variant="warning" className="text-xs">
                   <Flame className="mr-1 h-3 w-3" />
                   HOT
                 </Badge>
@@ -227,7 +227,7 @@ export function PredictionCard({
         {(prediction.status === 'resolved' ||
           prediction.status === 'cancelled') &&
           onViewHistory && (
-            <div className="mb-3">
+            <div className="mb-3 mt-auto">
               <Button
                 size="sm"
                 className="w-full bg-purple-600 font-semibold text-white hover:bg-purple-700"
