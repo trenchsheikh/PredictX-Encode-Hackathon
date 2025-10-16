@@ -15,8 +15,8 @@
 **Key Findings:**
 
 - **Fund Distribution:** Correctly implemented with proportional payouts
-- **Platform Fee:** 10% fee deducted before distributing winnings
-- **Winner Calculation:** `(userShares / totalWinningShares) * totalPool * 0.9`
+- **Platform Fee:** 1.5% fee deducted before distributing winnings
+- **Winner Calculation:** `(userShares / totalWinningShares) * totalPool * 0.985`
 - **Security:** ReentrancyGuard, Pausable, and proper access controls implemented
 - **Vault Integration:** All fees properly sent to vault contract
 

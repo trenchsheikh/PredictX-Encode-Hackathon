@@ -346,9 +346,9 @@ export function calculatePotentialPayout(
 
     if (totalWinningSharesBN === 0n) return '0';
 
-    // Payout = (userShares / totalWinningShares) * totalPool * 0.9 (10% fee)
+    // Payout = (userShares / totalWinningShares) * totalPool * 0.985 (1.5% fee)
     const grossPayout = (userSharesBN * totalPoolBN) / totalWinningSharesBN;
-    const netPayout = (grossPayout * 90n) / 100n; // 10% platform fee
+    const netPayout = (grossPayout * 985n) / 1000n; // 1.5% platform fee
 
     return ethers.formatEther(netPayout);
   } catch (error) {

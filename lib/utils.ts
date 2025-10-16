@@ -47,5 +47,5 @@ export function calculatePayout(
   totalPool: number
 ): number {
   if (totalWinningShares === 0) return 0;
-  return (shares / totalWinningShares) * totalPool * 0.9; // 90% after 10% platform fee
+  return (shares / totalWinningShares) * totalPool * 0.985;
 }

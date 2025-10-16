@@ -225,17 +225,17 @@
     "how_payouts_work": "收益如何运作",
     "payout_mechanism_1": "获胜者按比例分配总奖池",
     "payout_mechanism_2": "收益 = （您的份额 ÷ 总获胜份额）× 总奖池",
-    "payout_mechanism_3": "自动扣除10%平台费用",
-    "payout_mechanism_4": "您收到90%的BNB总收益",
+    "payout_mechanism_3": "自动扣除1.5%平台费用",
+    "payout_mechanism_4": "您收到98.5%的BNB总收益",
     "security_features": "安全功能",
     "security_vault": "安全金库钱包持有所有资金",
     "security_verification": "链上交易验证",
     "security_cooldown": "30秒领取冷却期防止重复",
     "security_bscscan": "领取后可在BSCScan上查看交易",
     "platform_fee_structure": "平台费用结构",
-    "fee_description": "10%平台费用适用于奖金领取和投注取消",
+    "fee_description": "1.5%平台费用适用于奖金领取和投注取消",
     "gross_winnings": "总收益：",
-    "platform_fee": "平台费用（10%）：",
+    "platform_fee": "平台费用（1.5%）：",
     "net_payout": "净收益：",
     "creator_participation": "创建者参与和取消",
     "creator_description": "为确保预测质量并防止垃圾信息，创建者必须积极参与",
@@ -244,7 +244,7 @@
     "bet_cancellation_policy": "投注取消政策",
     "cancellation_description": "如果您是投注中的唯一参与者，您可以取消它并获得退款：",
     "cancellation_1": "仅在创建者是唯一参与者时可用",
-    "cancellation_2": "取消时适用10%平台费用",
+    "cancellation_2": "取消时适用1.5%平台费用",
     "cancellation_3": "即时退款发送到您的钱包",
     "cancellation_4": "一旦其他用户加入，取消按钮消失",
     "fully_automated_resolution": "完全自动化解析",
@@ -252,7 +252,7 @@
     "automated_1": "AI分析来自25+验证API的证据",
     "automated_2": "价格预言机提供即时加密货币/代币结果",
     "automated_3": "多层验证确保准确性",
-    "automated_4": "获胜者手动领取奖品（适用10%费用）",
+    "automated_4": "获胜者手动领取奖品（适用1.5%费用）",
     "security_transparency": "安全与透明度",
     "blockchain_security": "🔐 区块链安全",
     "blockchain_1": "BNB智能链上的所有交易",
@@ -779,7 +779,7 @@
       },
       "note": {
         "title": "重要说明",
-        "description": "投注与标准 DarkBet 市场以相同方式运行，不取消或退款。所有加入的资金都安全存储在 DarkBet 的托管中，适用标准 10% 平台费用。"
+        "description": "投注与标准 DarkBet 市场以相同方式运行，不取消或退款。所有加入的资金都安全存储在 DarkBet 的托管中，适用标准 1.5% 平台费用。"
       },
       "benefits": {
         "title": "Polybets 的优势",
@@ -808,8 +808,8 @@
         "title": "奖金如何运作",
         "winners_split": "获胜者按比例分配总池",
         "formula": "奖金 = (您的份额 ÷ 总获胜份额) × 总池",
-        "platform_fee": "自动扣除 10% 平台费用",
-        "receive": "您收到 90% 的 BNB 总奖金"
+        "platform_fee": "自动扣除 1.5% 平台费用",
+        "receive": "您收到 98.5% 的 BNB 总奖金"
       },
       "security": {
         "title": "安全功能",
@@ -841,7 +841,7 @@
         "title": "重要说明",
         "gas_fees": "您需要为领取交易支付 gas 费用",
         "cooldown_period": "领取之间有 30 秒冷却期以防止重复交易",
-        "platform_fee": "所有奖金自动扣除 10% 平台费用",
+        "platform_fee": "所有奖金自动扣除 1.5% 平台费用",
         "transaction_history": "所有交易都记录在链上，可在 BSCScan 上查看"
       },
       "example": {
@@ -851,8 +851,8 @@
         "your_shares": "您的份额：10",
         "total_winning": "总获胜份额：500",
         "gross_winnings": "总奖金：(10 ÷ 500) × 1,000 = 20 BNB",
-        "platform_fee": "平台费用 (10%)：2 BNB",
-        "net_winnings": "净奖金：18 BNB"
+        "platform_fee": "平台费用 (1.5%)：0.3 BNB",
+        "net_winnings": "净奖金：19.7 BNB"
       }
     },
     "ai_resolution": {

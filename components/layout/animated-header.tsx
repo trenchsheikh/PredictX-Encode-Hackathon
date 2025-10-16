@@ -7,19 +7,10 @@ import { usePrivy } from '@privy-io/react-auth';
 import { useI18n } from '@/components/providers/i18n-provider';
 import { AnimatedButton } from '@/components/ui/animated-button';
 import { motion, AnimatePresence } from 'framer-motion';
-import {
-  Menu,
-  X,
-  Globe,
-  Wallet,
-  TrendingUp,
-  Zap,
-  Shield,
-  BookOpen,
-} from 'lucide-react';
+import { Menu, X, Globe, Wallet, Home, Shield, BookOpen } from 'lucide-react';
 
 const navigation = [
-  { key: 'nav_home', href: '/', icon: TrendingUp, isHome: true },
+  { key: 'nav_home', href: '/', icon: Home, isHome: true },
   { key: 'nav_my_bets', href: '/my-bets', icon: Wallet },
   { key: 'nav_how', href: '/how-it-works', icon: Shield },
   { key: 'nav_docs', href: '/docs', icon: BookOpen },

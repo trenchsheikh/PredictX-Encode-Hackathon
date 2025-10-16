@@ -614,10 +614,10 @@ export default function MyBetsPage() {
         : prediction.noShares;
     if (totalWinningShares === 0) return 0;
 
-    // Calculate payout: (user shares / total winning shares) * total pool * 0.9 (10% platform fee)
+    // Calculate payout: (user shares / total winning shares) * total pool * 0.985 (1.5% platform fee)
     const grossPayout =
       (bet.shares / totalWinningShares) * prediction.totalPool;
-    const platformFee = grossPayout * 0.1; // 10% platform fee
+    const platformFee = grossPayout * 0.015; // 1.5% platform fee
     return grossPayout - platformFee;
   };
 
@@ -657,28 +657,28 @@ export default function MyBetsPage() {
    */
   const generatePerformanceData = () => {
     if (userBets.length === 0) {
-      return [
-        { date: 'This Week', winnings: 0, bets: 0 }
-      ];
+      return [{ date: 'This Week', winnings: 0, bets: 0 }];
     }
 
     // Group bets by week
-    const weeklyData: { [key: string]: { winnings: number; bets: number; weekStart: Date } } = {};
-    
+    const weeklyData: {
+      [key: string]: { winnings: number; bets: number; weekStart: Date };
+    } = {};
+
     userBets.forEach(bet => {
       const betDate = new Date(bet.createdAt);
       const weekStart = new Date(betDate);
       weekStart.setDate(betDate.getDate() - betDate.getDay()); // Start of week (Sunday)
       weekStart.setHours(0, 0, 0, 0);
-      
+
       const weekKey = weekStart.toISOString().split('T')[0];
-      
+
       if (!weeklyData[weekKey]) {
         weeklyData[weekKey] = { winnings: 0, bets: 0, weekStart };
       }
-      
+
       weeklyData[weekKey].bets += 1;
-      
+
       // Calculate winnings for resolved bets
       const prediction = predictions[bet.predictionId];
       const isWinning = prediction?.resolution?.outcome === bet.outcome;
@@ -692,7 +692,10 @@ export default function MyBetsPage() {
     const performanceData = Object.values(weeklyData)
       .sort((a, b) => a.weekStart.getTime() - b.weekStart.getTime())
       .map((data, index) => ({
-        date: index === Object.keys(weeklyData).length - 1 ? 'This Week' : `Week ${index + 1}`,
+        date:
+          index === Object.keys(weeklyData).length - 1
+            ? 'This Week'
+            : `Week ${index + 1}`,
         winnings: data.winnings,
         bets: data.bets,
       }));
@@ -701,7 +704,7 @@ export default function MyBetsPage() {
     if (performanceData.length > 0) {
       const currentWeek = performanceData[performanceData.length - 1];
       const weeksToShow = Math.max(4, performanceData.length);
-      
+
       const result = [];
       for (let i = 0; i < weeksToShow; i++) {
         if (i < performanceData.length - 1) {
@@ -740,27 +743,27 @@ export default function MyBetsPage() {
           {/* <div className="mt-4 rounded-xl border border-gray-700/50 bg-gray-900/60 p-3 backdrop-blur-sm sm:p-4"> */}
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
-                <Button
-                  onClick={switchToBSC}
-                  size="sm"
-                  className="bg-purple-600 text-white hover:bg-purple-700"
-                >
-                  Switch to BSC
-                </Button>
-                <Button
-                  onClick={triggerMarketResolution}
-                  size="sm"
-                  className="bg-orange-600 text-white hover:bg-orange-700"
-                >
-                  Resolve Markets
-                </Button>
-                <Button
-                  onClick={manualResolveMarket6}
-                  size="sm"
-                  className="bg-red-600 text-white hover:bg-red-700"
-                >
-                  Resolve Market 6
-                </Button>
+              <Button
+                onClick={switchToBSC}
+                size="sm"
+                className="bg-purple-600 text-white hover:bg-purple-700"
+              >
+                Switch to BSC
+              </Button>
+              <Button
+                onClick={triggerMarketResolution}
+                size="sm"
+                className="bg-orange-600 text-white hover:bg-orange-700"
+              >
+                Resolve Markets
+              </Button>
+              <Button
+                onClick={manualResolveMarket6}
+                size="sm"
+                className="bg-red-600 text-white hover:bg-red-700"
+              >
+                Resolve Market 6
+              </Button>
             </div>
           </div>
         </div>
@@ -787,10 +790,7 @@ export default function MyBetsPage() {
 
         {/* Performance Chart */}
         <div className="mb-8">
-          <PerformanceChart
-            data={generatePerformanceData()}
-            type="area"
-          />
+          <PerformanceChart data={generatePerformanceData()} type="area" />
         </div>
 
         {/* Tabs */}

@@ -45,14 +45,14 @@ export default function ClaimingWinningsPage() {
               <span className="mr-2 mt-1 text-green-400">•</span>
               {t(
                 'docs.claiming_winnings.payouts.platform_fee',
-                '10% platform fee automatically deducted'
+                '1.5% platform fee automatically deducted'
               )}
             </li>
             <li className="flex items-start">
               <span className="mr-2 mt-1 text-green-400">•</span>
               {t(
                 'docs.claiming_winnings.payouts.receive',
-                'You receive 90% of gross winnings in BNB'
+                'You receive 98.5% of gross winnings in BNB'
               )}
             </li>
           </ul>
@@ -211,7 +211,7 @@ export default function ClaimingWinningsPage() {
                   <span className="mr-2 mt-1 text-yellow-400">•</span>
                   {t(
                     'docs.claiming_winnings.notes.platform_fee',
-                    'A 10% platform fee is automatically deducted from all winnings'
+                    'A 1.5% platform fee is automatically deducted from all winnings'
                   )}
                 </li>
                 <li className="flex items-start">
@@ -272,7 +272,7 @@ export default function ClaimingWinningsPage() {
                 •{' '}
                 {t(
                   'docs.claiming_winnings.example.platform_fee',
-                  'Platform Fee (10%): 2 BNB'
+                  'Platform Fee (1.5%): 0.3 BNB'
                 )}
               </li>
               <li>
@@ -280,7 +280,7 @@ export default function ClaimingWinningsPage() {
                 <span className="font-semibold text-green-400">
                   {t(
                     'docs.claiming_winnings.example.net_winnings',
-                    'Net Winnings: 18 BNB'
+                    'Net Winnings: 19.7 BNB'
                   )}
                 </span>
               </li>

@@ -229,7 +229,7 @@ contract PredictionMarket is Ownable, ReentrancyGuard, Pausable {
   // ============ State Variables ============
 
   uint256 public marketIdCounter;
-  uint256 public constant PLATFORM_FEE_PERCENT = 10; // 10% fee
+  uint256 public constant PLATFORM_FEE_PERCENT = 15; // 1.5% fee (in per-thousand if used)
   uint256 public constant MIN_BET_AMOUNT = 0.001 ether; // 0.001 BNB
   uint256 public constant MAX_BET_AMOUNT = 100 ether; // 100 BNB
 
@@ -522,8 +522,8 @@ contract PredictionMarket is Ownable, ReentrancyGuard, Pausable {
 
     market.status = MarketStatus.Cancelled;
 
-    // Refund creator (minus 10% fee)
-    uint256 refundAmount = (market.totalPool * 90) / 100;
+    // Refund creator (minus 1.5% fee)
+    uint256 refundAmount = (market.totalPool * 985) / 1000;
     uint256 fee = market.totalPool - refundAmount;
 
     (bool success, ) = payable(msg.sender).call{ value: refundAmount }('');

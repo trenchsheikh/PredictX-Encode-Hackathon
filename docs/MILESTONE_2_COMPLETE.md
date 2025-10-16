@@ -23,7 +23,7 @@
    - ✅ FPMM pricing (Fixed Product Market Maker)
    - ✅ Market creation with validation
    - ✅ Oracle-based resolution
-   - ✅ 10% platform fee mechanism
+   - ✅ 1.5% platform fee mechanism
    - ✅ Refunds for unrevealed bets
    - ✅ Pausable & admin controls
 

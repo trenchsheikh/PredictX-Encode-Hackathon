@@ -145,7 +145,7 @@ export default function PolybetsPage() {
               <p className="text-sm text-gray-300">
                 {t(
                   'docs.polybets.note.description',
-                  "Bets operate the same way as standard DarkBet markets, with no cancellations or refunds. All joined funds are secured in DarkBet's escrow, and the standard 10% platform fee applies."
+                  "Bets operate the same way as standard DarkBet markets, with no cancellations or refunds. All joined funds are secured in DarkBet's escrow, and the standard 1.5% platform fee applies."
                 )}
               </p>
             </div>

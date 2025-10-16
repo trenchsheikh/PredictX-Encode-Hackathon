@@ -73,7 +73,7 @@ npx hardhat verify --network bscTestnet PREDICTION_MARKET_ADDRESS VAULT_ADDRESS 
 - ✅ Commit-reveal betting (darkpool privacy)
 - ✅ FPMM pricing (Fixed Product Market Maker)
 - ✅ Oracle resolution system
-- ✅ 10% platform fee
+- ✅ 1.5% platform fee
 - ✅ Pausable and upgradeable by owner
 
 **Key Functions:**

@@ -226,17 +226,17 @@
     "how_payouts_work": "How Payouts Work",
     "payout_mechanism_1": "Winners split the total pool proportionally",
     "payout_mechanism_2": "Payout = (Your Shares ÷ Total Winning Shares) × Total Pool",
-    "payout_mechanism_3": "10% platform fee automatically deducted",
-    "payout_mechanism_4": "You receive 90% of gross winnings in BNB",
+    "payout_mechanism_3": "1.5% platform fee automatically deducted",
+    "payout_mechanism_4": "You receive 98.5% of gross winnings in BNB",
     "security_features": "Security Features",
     "security_vault": "Secure vault wallet holds all funds",
     "security_verification": "On-chain transaction verification",
     "security_cooldown": "30-second claim cooldown prevents duplicates",
     "security_bscscan": "View transaction on BSCScan after claiming",
     "platform_fee_structure": "Platform Fee Structure",
-    "fee_description": "10% platform fee applies to both prize claims AND bet cancellations",
+    "fee_description": "1.5% platform fee applies to both prize claims AND bet cancellations",
     "gross_winnings": "Gross Winnings:",
-    "platform_fee": "Platform Fee (10%):",
+    "platform_fee": "Platform Fee (1.5%):",
     "net_payout": "Net Payout:",
     "creator_participation": "Creator Participation & Cancellation",
     "creator_description": "To ensure quality predictions and prevent spam, creators must actively participate",
@@ -245,7 +245,7 @@
     "bet_cancellation_policy": "Bet Cancellation Policy",
     "cancellation_description": "If you're the only participant in your bet, you can cancel it and receive a refund:",
     "cancellation_1": "Only available when creator is sole participant",
-    "cancellation_2": "10% platform fee applies to cancellations",
+    "cancellation_2": "1.5% platform fee applies to cancellations",
     "cancellation_3": "Instant refund sent to your wallet",
     "cancellation_4": "Cancel button disappears once another user joins",
     "fully_automated_resolution": "Fully Automated Resolution",
@@ -253,7 +253,7 @@
     "automated_1": "AI analyzes evidence from 25+ verification APIs",
     "automated_2": "Price oracles provide instant crypto/token results",
     "automated_3": "Multi-layer validation ensures accuracy",
-    "automated_4": "Winners claim prizes manually (10% fee applies)",
+    "automated_4": "Winners claim prizes manually (1.5% fee applies)",
     "security_transparency": "Security & Transparency",
     "blockchain_security": "Blockchain Security",
     "blockchain_1": "All transactions on BNB Smart Chain",
@@ -779,7 +779,7 @@
       },
       "note": {
         "title": "Important Note",
-        "description": "Bets operate the same way as standard DarkBet markets, with no cancellations or refunds. All joined funds are secured in DarkBet's escrow, and the standard 10% platform fee applies."
+        "description": "Bets operate the same way as standard DarkBet markets, with no cancellations or refunds. All joined funds are secured in DarkBet's escrow, and the standard 1.5% platform fee applies."
       },
       "benefits": {
         "title": "Benefits of Polybets",
@@ -808,8 +808,8 @@
         "title": "How Payouts Work",
         "winners_split": "Winners split the total pool proportionally",
         "formula": "Payout = (Your Shares ÷ Total Winning Shares) × Total Pool",
-        "platform_fee": "10% platform fee automatically deducted",
-        "receive": "You receive 90% of gross winnings in BNB"
+        "platform_fee": "1.5% platform fee automatically deducted",
+        "receive": "You receive 98.5% of gross winnings in BNB"
       },
       "security": {
         "title": "Security Features",
@@ -841,7 +841,7 @@
         "title": "Important Notes",
         "gas_fees": "You will need to pay gas fees for the claim transaction",
         "cooldown_period": "There is a 30-second cooldown between claims to prevent duplicate transactions",
-        "platform_fee": "A 10% platform fee is automatically deducted from all winnings",
+        "platform_fee": "A 1.5% platform fee is automatically deducted from all winnings",
         "transaction_history": "All transactions are recorded on-chain and can be viewed on BSCScan"
       },
       "example": {
@@ -851,8 +851,8 @@
         "your_shares": "Your Shares: 10",
         "total_winning": "Total Winning Shares: 500",
         "gross_winnings": "Gross Winnings: (10 ÷ 500) × 1,000 = 20 BNB",
-        "platform_fee": "Platform Fee (10%): 2 BNB",
-        "net_winnings": "Net Winnings: 18 BNB"
+        "platform_fee": "Platform Fee (1.5%): 0.3 BNB",
+        "net_winnings": "Net Winnings: 19.7 BNB"
       }
     },
     "ai_resolution": {

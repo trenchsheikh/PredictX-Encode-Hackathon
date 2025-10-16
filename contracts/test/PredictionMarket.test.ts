@@ -423,8 +423,8 @@ describe('PredictionMarket', function () {
                 user1.address
             );
 
-            // User1 should receive ~90% of total pool (minus gas)
-            const expectedPayout = (TYPICAL_BET * 2n * 90n) / 100n;
+            // User1 should receive ~98.5% of total pool (minus gas)
+            const expectedPayout = (TYPICAL_BET * 2n * 985n) / 1000n;
             expect(balanceAfter + gasUsed).to.be.closeTo(
                 balanceBefore + expectedPayout,
                 ethers.parseEther('0.0001')
@@ -462,8 +462,8 @@ describe('PredictionMarket', function () {
                 await vault.getAddress()
             );
 
-            // Vault should receive 10% fee
-            const expectedFee = (TYPICAL_BET * 2n * 10n) / 100n;
+            // Vault should receive 1.5% fee
+            const expectedFee = (TYPICAL_BET * 2n * 15n) / 1000n;
             expect(vaultBalanceAfter - vaultBalanceBefore).to.equal(
                 expectedFee
             );

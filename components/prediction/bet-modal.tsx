@@ -202,9 +202,9 @@ export function BetModal({
                 </span>
               </div>
               <div className="flex justify-between border-t border-gray-600/50 pt-2 text-sm">
-                <span className="text-gray-400">Platform Fee (10%)</span>
+                <span className="text-gray-400">Platform Fee (1.5%)</span>
                 <span className="font-medium text-white">
-                  {formatBNB(numAmount * 0.1)}
+                  {formatBNB(numAmount * 0.015)}
                 </span>
               </div>
             </div>

@@ -577,17 +577,17 @@ export function calculatePayout(
   totalPool: number
 ): number {
   if (totalWinningShares === 0) return 0;
-  return (shares / totalWinningShares) * totalPool * 0.9; // 90% after 10% fee
+  return (shares / totalWinningShares) * totalPool * 0.985; // 98.5% after 1.5% fee
 }
 ```
 
 **Formula:**
 
 ```
-Payout = (User Shares / Total Winning Shares) × Total Pool × 0.9
+Payout = (User Shares / Total Winning Shares) × Total Pool × 0.985
 ```
 
-**Platform Fee:** 10% (mentioned throughout UI)
+**Platform Fee:** 1.5% (applies to winnings and cancellations)
 
 ---
 
