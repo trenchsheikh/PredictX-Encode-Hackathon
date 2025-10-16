@@ -1,9 +1,12 @@
 'use client';
 
+import { useI18n } from '@/components/providers/i18n-provider';
+
 function NewItemsLoading() {
+  const { t } = useI18n();
   const item = {
     href: '/#all-markets',
-    title: 'DarkPool Betting',
+    title: t('darkpool_betting'),
   };
 
   return (
@@ -12,10 +15,10 @@ function NewItemsLoading() {
       className="mx-auto inline-flex w-fit items-center justify-center gap-1 rounded-full border-4 border-yellow-400/20 bg-yellow-500/20 py-0.5 pl-1 pr-3 text-xs shadow-[0_0_0_1px_rgba(234,179,8,0.15)]"
     >
       <div className="rounded-full bg-yellow-300 px-2 py-1 text-xs font-medium text-black">
-        Live
+        {t('badge_live')}
       </div>
       <p className="inline-block text-xs text-yellow-100 sm:text-base">
-        ✨ Introducing{' '}
+        ✨ {t('badge_introducing')}{' '}
         <span className="px-1 font-semibold text-yellow-200">{item.title}</span>
       </p>
       <svg

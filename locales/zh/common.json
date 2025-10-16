@@ -13,10 +13,14 @@
   "hero_description": "预测市场的未来就在这里。基于BNB智能链构建，AI驱动结果，完全链上执行。",
   "hero_headline_lead": "不要只下注，",
   "hero_bet_word": "下注",
+  "badge_live": "Live",
+  "badge_introducing": "推出",
+  "darkpool_betting": "暗池投注",
   "what_is_darkpool": "什么是暗池投注？",
   "darkpool_explanation": "暗池投注将暗池的隐私和效率与预测市场相结合。您的投注在解析前保持隐藏，防止市场操纵，同时确保在BNB智能链上的公平、AI驱动结果。",
 
   "features": {
+    "privacy": "暗池隐私",
     "fully_onchain": "完全链上",
     "ai_driven": "AI驱动结果",
     "realtime_markets": "实时市场"

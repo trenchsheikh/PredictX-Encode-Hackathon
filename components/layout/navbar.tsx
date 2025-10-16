@@ -44,7 +44,7 @@ export function AnimatedHeader() {
     <header className="sticky top-0 z-50">
       {/* Floating glassy navbar container (applied on nav) */}
 
-      <nav className="relative z-10 mx-4 mb-4 mt-4 flex items-center justify-between rounded-2xl border border-white/10 bg-black/35 p-3 shadow-lg supports-[backdrop-filter]:backdrop-blur-md lg:mx-auto lg:max-w-screen-2xl lg:px-8">
+      <nav className="relative z-10 mx-4 mb-4 mt-4 flex items-center justify-between rounded-2xl border border-white/10 bg-black/35 p-3 shadow-lg supports-[backdrop-filter]:backdrop-blur-md lg:mx-auto lg:max-w-screen-xl lg:px-8">
         {/* Logo */}
         <div className="flex flex-shrink-0">
           <Link
@@ -52,15 +52,13 @@ export function AnimatedHeader() {
             className="group flex items-center space-x-3"
             prefetch={false}
           >
-            <div className="relative flex h-10 w-10 items-center justify-center overflow-hidden rounded-lg bg-gradient-to-r from-yellow-400 to-yellow-600">
-              <Image
-                src="/binanceeye.jpg"
-                alt="Logo"
-                width={32}
-                height={32}
-                className="rounded-lg object-cover"
-              />
-            </div>
+            <Image
+              src="/binanceeye.jpg"
+              alt="Logo"
+              width={44}
+              height={44}
+              className="rounded-lg object-cover"
+            />
           </Link>
         </div>
 
@@ -94,7 +92,8 @@ export function AnimatedHeader() {
                   {!(
                     item.key === 'nav_home' ||
                     item.key === 'nav_how' ||
-                    item.key === 'nav_docs'
+                    item.key === 'nav_docs' ||
+                    item.key === 'nav_my_bets'
                   ) && (
                     <Icon className="h-4 w-4 transition-colors duration-200 group-hover:text-yellow-400" />
                   )}
@@ -129,14 +128,14 @@ export function AnimatedHeader() {
             {!ready ? (
               <AnimatedButton
                 disabled
-                className="rounded-lg bg-gray-700/50 px-4 py-2 text-gray-400"
+                className="pointer-events-none rounded-full border border-orange-600 bg-gradient-to-b from-[#ffb84d] to-[#cc6b00] px-6 py-2 font-semibold tracking-wide text-white/95 opacity-85 shadow-md ring-1 ring-black/40 backdrop-blur-sm"
               >
                 {mounted ? t('connecting') : 'Connecting...'}
               </AnimatedButton>
             ) : authenticated ? (
               <div className="flex items-center gap-2">
-                <div className="flex items-center rounded-lg border border-green-500/20 bg-green-500/10 px-3 py-2">
-                  <span className="font-caption text-sm text-green-400">
+                <div className="flex items-center rounded-full border border-white/10 bg-white/10 px-3 py-2 text-white backdrop-blur-sm">
+                  <span className="font-caption text-sm">
                     {user?.wallet?.address
                       ? `${user.wallet.address.slice(0, 6)}...${user.wallet.address.slice(-4)}`
                       : mounted
@@ -145,10 +144,9 @@ export function AnimatedHeader() {
                   </span>
                 </div>
                 <AnimatedButton
-                  variant="outline"
                   size="sm"
                   onClick={logout}
-                  className="border-red-500/50 text-red-400 transition-all duration-200 hover:bg-red-500/10 hover:text-red-300"
+                  className="rounded-full border border-red-600 bg-gradient-to-b from-[#ff6b6b] to-[#b40000] px-4 py-2 font-semibold text-white shadow-lg shadow-red-900/40 ring-1 ring-black/40 transition-all duration-200 hover:from-[#ff7d7d] hover:to-[#990000]"
                 >
                   Disconnect
                 </AnimatedButton>
@@ -156,7 +154,7 @@ export function AnimatedHeader() {
             ) : (
               <AnimatedButton
                 onClick={login}
-                className="rounded-lg bg-gradient-to-r from-yellow-400 to-yellow-600 px-4 py-2 text-black shadow-md transition-all duration-200 hover:from-yellow-500 hover:to-yellow-700 hover:shadow-lg"
+                className="rounded-full border border-orange-600 bg-gradient-to-b from-[#ffb84d] to-[#cc6b00] px-6 py-2 font-semibold tracking-wide text-white shadow-md ring-1 ring-black/40 backdrop-blur-sm transition-all duration-200 hover:from-[#ffc266] hover:to-[#b35f00]"
               >
                 {mounted ? t('connect_wallet') : 'Connect Wallet'}
               </AnimatedButton>
@@ -200,7 +198,8 @@ export function AnimatedHeader() {
                         {!(
                           item.key === 'nav_home' ||
                           item.key === 'nav_how' ||
-                          item.key === 'nav_docs'
+                          item.key === 'nav_docs' ||
+                          item.key === 'nav_my_bets'
                         ) && (
                           <Icon className="h-5 w-5 transition-colors group-hover:text-yellow-400" />
                         )}
@@ -233,32 +232,27 @@ export function AnimatedHeader() {
                 {!ready ? (
                   <AnimatedButton
                     disabled
-                    className="w-full bg-gray-700 text-gray-300"
+                    className="pointer-events-none w-full rounded-full border border-yellow-600 bg-gradient-to-b from-[#f5c83b] to-[#a46b00] px-6 py-2 font-semibold tracking-wide text-white opacity-80 shadow-lg shadow-yellow-900/40 drop-shadow-[0_2px_2px_rgba(0,0,0,0.85)] backdrop-blur-sm"
                   >
                     {mounted ? t('connecting') : 'Connecting...'}
                   </AnimatedButton>
                 ) : authenticated ? (
                   <div className="space-y-3">
-                    <div className="flex items-center justify-between rounded-lg border border-green-500/20 bg-green-500/10 p-3">
-                      <div className="flex items-center space-x-2">
-                        <div className="h-2 w-2 animate-pulse rounded-full bg-green-400" />
-                        <span className="font-caption text-sm text-green-400">
-                          Connected
+                    <div className="flex items-center justify-between gap-3">
+                      <div className="flex flex-1 items-center justify-start rounded-full border border-white/10 bg-white/10 px-3 py-2 text-white backdrop-blur-sm">
+                        <span className="font-caption text-sm">
+                          {user?.wallet?.address
+                            ? `${user.wallet.address.slice(0, 6)}...${user.wallet.address.slice(-4)}`
+                            : mounted
+                              ? t('connected')
+                              : 'Connected'}
                         </span>
-                      </div>
-                      <div className="text-xs text-gray-400">
-                        {user?.wallet?.address
-                          ? `${user.wallet.address.slice(0, 6)}...${user.wallet.address.slice(-4)}`
-                          : mounted
-                            ? t('connected')
-                            : 'Connected'}
                       </div>
                     </div>
                     <AnimatedButton
-                      variant="outline"
                       size="sm"
                       onClick={logout}
-                      className="w-full border-red-500/50 text-red-400 hover:bg-red-500/10"
+                      className="w-full rounded-full border border-red-600 bg-gradient-to-b from-[#ff6b6b] to-[#b40000] px-4 py-2 font-semibold text-white shadow-lg shadow-red-900/40 ring-1 ring-black/40 transition-all duration-200 hover:from-[#ff7d7d] hover:to-[#990000]"
                     >
                       Disconnect
                     </AnimatedButton>
@@ -266,7 +260,7 @@ export function AnimatedHeader() {
                 ) : (
                   <AnimatedButton
                     onClick={login}
-                    className="w-full bg-gradient-to-r from-yellow-400 to-yellow-600 text-black"
+                    className="w-full rounded-full border border-yellow-600 bg-gradient-to-b from-[#f5c83b] to-[#a46b00] px-6 py-2 font-semibold tracking-wide text-white shadow-lg shadow-yellow-900/40 drop-shadow-[0_2px_2px_rgba(0,0,0,0.85)] backdrop-blur-sm transition-all duration-200 hover:from-[#ffd65c] hover:to-[#8a5a00]"
                   >
                     {mounted ? t('connect_wallet') : 'Connect Wallet'}
                   </AnimatedButton>

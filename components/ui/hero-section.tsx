@@ -77,9 +77,9 @@ export function HeroSection({
                   <span className="relative font-medium italic leading-normal">
                     <WordAnimator
                       words={[
+                        t('features.privacy'),
                         t('features.fully_onchain'),
                         t('features.ai_driven'),
-                        t('features.realtime_markets'),
                       ]}
                       duration={4}
                       className="border-0 bg-transparent px-0"
@@ -100,7 +100,8 @@ export function HeroSection({
         <div className="mb-16 flex flex-col items-center justify-center gap-4 sm:flex-row">
           <ShimmerButton
             onClick={onCreateClick}
-            className="h-14 min-w-[280px] rounded-full px-8 text-base font-medium md:text-lg"
+            background="linear-gradient(180deg, #ffb84d 0%, #cc6b00 100%)"
+            className="h-14 min-w-[280px] rounded-full border-orange-600 px-8 text-base font-semibold tracking-wide text-white shadow-md ring-1 ring-black/40 hover:[background:linear-gradient(180deg,#ffc266_0%,#b35f00_100%)] md:text-lg"
           >
             {t('cta.start_darkpool_betting')}
           </ShimmerButton>
@@ -108,7 +109,7 @@ export function HeroSection({
           <Button
             onClick={onCryptoClick}
             variant="outline"
-            className="h-14 min-w-[280px] rounded-full border-gray-700 bg-gray-900 px-8 text-base font-medium text-white hover:bg-gray-800 md:text-lg"
+            className="h-14 min-w-[280px] rounded-full border-white/10 bg-gradient-to-b from-[#121726] to-[#0b111c] px-8 text-base font-semibold tracking-wide text-white shadow-md ring-1 ring-white/10 hover:from-[#161d31] hover:to-[#0e1522] md:text-lg"
           >
             {t('cta.crypto_darkpool')}
           </Button>

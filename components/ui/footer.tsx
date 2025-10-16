@@ -131,19 +131,15 @@ export const Footer = ({
             rel="noopener noreferrer"
             className="duration-400 absolute bottom-24 left-1/2 z-10 flex -translate-x-1/2 items-center justify-center rounded-3xl border-2 border-yellow-500/60 bg-black/30 p-3 shadow-[0_0_24px_0_rgba(234,179,8,0.22)] backdrop-blur-sm hover:border-yellow-400/80 md:bottom-20"
           >
-            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-yellow-500 to-yellow-600 shadow-[0_10px_28px_-10px_rgba(234,179,8,0.35)] sm:h-16 sm:w-16 md:h-24 md:w-24">
-              {brandIcon || (
-                <NotepadTextDashed className="h-8 w-8 text-background drop-shadow-lg sm:h-10 sm:w-10 md:h-14 md:w-14" />
-              )}
-            </div>
+            {brandIcon || (
+              <NotepadTextDashed className="h-10 w-10 text-yellow-400 drop-shadow-lg sm:h-12 sm:w-12 md:h-16 md:w-16" />
+            )}
           </Link>
         ) : (
           <div className="duration-400 absolute bottom-24 left-1/2 z-10 flex -translate-x-1/2 items-center justify-center rounded-3xl border-2 border-yellow-500/60 bg-black/30 p-3 shadow-[0_0_24px_0_rgba(234,179,8,0.22)] backdrop-blur-sm hover:border-yellow-400/80 md:bottom-20">
-            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-yellow-500 to-yellow-600 shadow-[0_10px_28px_-10px_rgba(234,179,8,0.35)] sm:h-16 sm:w-16 md:h-24 md:w-24">
-              {brandIcon || (
-                <NotepadTextDashed className="h-8 w-8 text-background drop-shadow-lg sm:h-10 sm:w-10 md:h-14 md:w-14" />
-              )}
-            </div>
+            {brandIcon || (
+              <NotepadTextDashed className="h-10 w-10 text-yellow-400 drop-shadow-lg sm:h-12 sm:w-12 md:h-16 md:w-16" />
+            )}
           </div>
         )}
 
