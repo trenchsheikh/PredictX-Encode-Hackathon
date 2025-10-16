@@ -114,7 +114,7 @@ export function usePredictionContract() {
 
             const ethersProvider = new ethers.BrowserProvider(provider);
 
-            // Switch network if needed
+            // Verify wallet is on correct network
             const chainIdStr = wallet.chainId?.toString();
             const expectedChainId =
               process.env.NEXT_PUBLIC_CHAIN_ID === '56' ? '56' : '97';
@@ -124,33 +124,44 @@ export function usePredictionContract() {
               process.env.NEXT_PUBLIC_CHAIN_ID === '56'
                 ? 'eip155:56'
                 : 'eip155:97';
+            const networkName =
+              process.env.NEXT_PUBLIC_CHAIN_ID === '56'
+                ? 'BSC Mainnet'
+                : 'BSC Testnet';
+
+            // Debug network check (only in development)
+            if (process.env.NODE_ENV === 'development') {
+              console.log(`🔍 ${networkName} Check:`, {
+                currentChainId: chainIdStr,
+                expectedChainId,
+                expectedChainIdHex,
+                expectedChainIdEip155,
+                isCorrectNetwork:
+                  chainIdStr === expectedChainIdHex ||
+                  chainIdStr === expectedChainId ||
+                  chainIdStr === expectedChainIdEip155,
+              });
+            }
 
             if (
               chainIdStr !== expectedChainIdHex &&
               chainIdStr !== expectedChainId &&
               chainIdStr !== expectedChainIdEip155
             ) {
-              console.log(
-                `Switching to BSC ${expectedChainId === '56' ? 'Mainnet' : 'Testnet'}...`,
-                {
-                  currentChainId: wallet.chainId,
-                  expectedChainId,
-                }
-              );
+              console.log(`Switching to ${networkName}...`, {
+                currentChainId: wallet.chainId,
+                expectedChainId,
+              });
               try {
                 await wallet.switchChain(parseInt(expectedChainId));
-                console.log(
-                  `Switched to BSC ${expectedChainId === '56' ? 'Mainnet' : 'Testnet'}`
-                );
+                console.log(`Switched to ${networkName}`);
               } catch (switchError: any) {
                 console.warn('Failed to switch chain:', switchError.message);
                 // Try alternative method
                 try {
                   console.log('Trying alternative chain switch...');
                   await wallet.switchChain(expectedChainIdHex); // Hex format
-                  console.log(
-                    `Switched to BSC ${expectedChainId === '56' ? 'Mainnet' : 'Testnet'} (hex)`
-                  );
+                  console.log(`Switched to ${networkName} (hex)`);
                 } catch (altError: any) {
                   console.warn(
                     'Alternative switch also failed:',
@@ -160,13 +171,52 @@ export function usePredictionContract() {
                 }
               }
             } else {
-              console.log(
-                `Already on BSC ${expectedChainId === '56' ? 'Mainnet' : 'Testnet'}`
-              );
+              console.log(`Already on ${networkName}`);
             }
 
+            console.log(`✅ Wallet is on ${networkName}`);
+
             signer = await ethersProvider.getSigner();
-            console.log('Signer obtained via Privy');
+            console.log('✅ Signer obtained via Privy');
+
+            // Verify the signer is working and on correct network
+            try {
+              const signerAddress = await signer.getAddress();
+              console.log('✅ Signer address verified:', signerAddress);
+
+              // Check if we're on the correct network
+              const network = await ethersProvider.getNetwork();
+              const expectedChainId = parseInt(
+                process.env.NEXT_PUBLIC_CHAIN_ID || '56'
+              );
+              const networkName =
+                expectedChainId === 56 ? 'BSC Mainnet' : 'BSC Testnet';
+
+              console.log('🔍 Current network after switch:', {
+                chainId: network.chainId,
+                name: network.name,
+              });
+
+              if (Number(network.chainId) !== expectedChainId) {
+                console.warn(
+                  `⚠️ Still not on ${networkName} after switch. Chain ID:`,
+                  network.chainId
+                );
+                throw new Error(
+                  `Wallet is on wrong network. Expected ${networkName} (${expectedChainId}), got ${network.chainId}`
+                );
+              }
+
+              console.log(`✅ Confirmed on ${networkName}`);
+            } catch (signerError: any) {
+              console.error(
+                '❌ Signer verification failed:',
+                signerError.message
+              );
+              throw new Error(
+                `Signer verification failed: ${signerError.message}`
+              );
+            }
           } catch (privyError: any) {
             console.warn('Privy method failed:', privyError.message);
           }
@@ -181,7 +231,7 @@ export function usePredictionContract() {
             // Request accounts
             await window.ethereum.request({ method: 'eth_requestAccounts' });
 
-            // Switch network if needed
+            // Verify wallet is on correct network
             const network = await provider.getNetwork();
             console.log('Current network:', {
               chainId: network.chainId,
@@ -247,8 +297,24 @@ export function usePredictionContract() {
               console.log(`Already on ${networkName}`);
             }
 
+            console.log(`✅ Wallet is on ${networkName}`);
+
             signer = await provider.getSigner();
-            console.log('Signer obtained via window.ethereum');
+            console.log('✅ Signer obtained via window.ethereum');
+
+            // Verify the signer is working
+            try {
+              const signerAddress = await signer.getAddress();
+              console.log('✅ Signer address verified:', signerAddress);
+            } catch (signerError: any) {
+              console.error(
+                '❌ Signer verification failed:',
+                signerError.message
+              );
+              throw new Error(
+                `Signer verification failed: ${signerError.message}`
+              );
+            }
           } catch (windowError: any) {
             console.warn('Window.ethereum method failed:', windowError.message);
           }
@@ -448,7 +514,16 @@ export function usePredictionContract() {
         setError(errorMsg);
         return null;
       }
-      console.log('Signer obtained');
+      console.log('✅ Signer obtained for contract creation');
+
+      // Test signer before using it
+      try {
+        const testAddress = await signer.getAddress();
+        console.log('✅ Signer test passed, address:', testAddress);
+      } catch (signerTestError: any) {
+        console.error('❌ Signer test failed:', signerTestError);
+        throw new Error(`Signer is invalid: ${signerTestError.message}`);
+      }
 
       if (contractABI.length === 0) {
         const errorMsg =
@@ -558,6 +633,8 @@ export function usePredictionContract() {
           return null;
         }
       }
+
+      console.log(`✅ Wallet is on ${networkName}`);
 
       // Also try the provider-based check as backup
       try {
