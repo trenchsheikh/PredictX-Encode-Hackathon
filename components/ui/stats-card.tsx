@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import React from 'react';
 import { LucideIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -25,14 +25,7 @@ export function StatsCard({
   delay = 0,
 }: StatsCardProps) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay }}
-      whileHover={{
-        y: -4,
-        transition: { duration: 0.2 },
-      }}
+    <div
       className={cn(
         'relative overflow-hidden rounded-xl border border-gray-700/50 bg-gradient-to-br from-gray-900/60 to-gray-800/40 p-6 backdrop-blur-sm',
         'transition-all duration-300 hover:border-yellow-500/30 hover:shadow-lg hover:shadow-yellow-500/10',
@@ -50,10 +43,7 @@ export function StatsCard({
             <Icon className="h-5 w-5 text-yellow-400" />
           </div>
           {trend && (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: delay + 0.2 }}
+            <div
               className={cn(
                 'flex items-center space-x-1 rounded-full px-2 py-1 text-sm font-medium',
                 trend.isPositive
@@ -65,29 +55,15 @@ export function StatsCard({
                 {trend.isPositive ? '+' : ''}
                 {trend.value}%
               </span>
-            </motion.div>
+            </div>
           )}
         </div>
 
         <div className="space-y-1">
-          <motion.h3
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: delay + 0.1 }}
-            className="text-2xl font-bold text-white"
-          >
-            {value}
-          </motion.h3>
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: delay + 0.2 }}
-            className="text-sm text-gray-400"
-          >
-            {title}
-          </motion.p>
+          <h3 className="text-2xl font-bold text-white">{value}</h3>
+          <p className="text-sm text-gray-400">{title}</p>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }

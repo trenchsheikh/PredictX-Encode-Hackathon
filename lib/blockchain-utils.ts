@@ -69,7 +69,8 @@ export async function loadContractABI(
 ): Promise<any[]> {
   try {
     // Determine which network to load from based on environment
-    const network = process.env.NEXT_PUBLIC_CHAIN_ID === '56' ? 'bscMainnet' : 'bscTestnet';
+    const network =
+      process.env.NEXT_PUBLIC_CHAIN_ID === '56' ? 'bscMainnet' : 'bscTestnet';
     const response = await fetch(
       `/deployments/${network}/${contractName}.json`
     );

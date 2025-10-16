@@ -32,7 +32,10 @@ export function usePredictionContract() {
       try {
         console.log('Loading contract ABIs...');
         // Determine which network to load from based on environment
-        const network = process.env.NEXT_PUBLIC_CHAIN_ID === '56' ? 'bscMainnet' : 'bscTestnet';
+        const network =
+          process.env.NEXT_PUBLIC_CHAIN_ID === '56'
+            ? 'bscMainnet'
+            : 'bscTestnet';
         const predictionRes = await fetch(
           `/deployments/${network}/PredictionMarket.json`
         );
@@ -113,29 +116,41 @@ export function usePredictionContract() {
 
             // Switch network if needed
             const chainIdStr = wallet.chainId?.toString();
-            const expectedChainId = process.env.NEXT_PUBLIC_CHAIN_ID === '56' ? '56' : '97';
-            const expectedChainIdHex = process.env.NEXT_PUBLIC_CHAIN_ID === '56' ? '0x38' : '0x61';
-            const expectedChainIdEip155 = process.env.NEXT_PUBLIC_CHAIN_ID === '56' ? 'eip155:56' : 'eip155:97';
-            
+            const expectedChainId =
+              process.env.NEXT_PUBLIC_CHAIN_ID === '56' ? '56' : '97';
+            const expectedChainIdHex =
+              process.env.NEXT_PUBLIC_CHAIN_ID === '56' ? '0x38' : '0x61';
+            const expectedChainIdEip155 =
+              process.env.NEXT_PUBLIC_CHAIN_ID === '56'
+                ? 'eip155:56'
+                : 'eip155:97';
+
             if (
               chainIdStr !== expectedChainIdHex &&
               chainIdStr !== expectedChainId &&
               chainIdStr !== expectedChainIdEip155
             ) {
-              console.log(`Switching to BSC ${expectedChainId === '56' ? 'Mainnet' : 'Testnet'}...`, {
-                currentChainId: wallet.chainId,
-                expectedChainId,
-              });
+              console.log(
+                `Switching to BSC ${expectedChainId === '56' ? 'Mainnet' : 'Testnet'}...`,
+                {
+                  currentChainId: wallet.chainId,
+                  expectedChainId,
+                }
+              );
               try {
                 await wallet.switchChain(parseInt(expectedChainId));
-                console.log(`Switched to BSC ${expectedChainId === '56' ? 'Mainnet' : 'Testnet'}`);
+                console.log(
+                  `Switched to BSC ${expectedChainId === '56' ? 'Mainnet' : 'Testnet'}`
+                );
               } catch (switchError: any) {
                 console.warn('Failed to switch chain:', switchError.message);
                 // Try alternative method
                 try {
                   console.log('Trying alternative chain switch...');
                   await wallet.switchChain(expectedChainIdHex); // Hex format
-                  console.log(`Switched to BSC ${expectedChainId === '56' ? 'Mainnet' : 'Testnet'} (hex)`);
+                  console.log(
+                    `Switched to BSC ${expectedChainId === '56' ? 'Mainnet' : 'Testnet'} (hex)`
+                  );
                 } catch (altError: any) {
                   console.warn(
                     'Alternative switch also failed:',
@@ -145,7 +160,9 @@ export function usePredictionContract() {
                 }
               }
             } else {
-              console.log(`Already on BSC ${expectedChainId === '56' ? 'Mainnet' : 'Testnet'}`);
+              console.log(
+                `Already on BSC ${expectedChainId === '56' ? 'Mainnet' : 'Testnet'}`
+              );
             }
 
             signer = await ethersProvider.getSigner();
@@ -170,16 +187,23 @@ export function usePredictionContract() {
               chainId: network.chainId,
               name: network.name,
             });
-            const expectedChainId = process.env.NEXT_PUBLIC_CHAIN_ID === '56' ? 56 : 97;
-            const expectedChainIdHex = process.env.NEXT_PUBLIC_CHAIN_ID === '56' ? '0x38' : '0x61';
-            const networkName = process.env.NEXT_PUBLIC_CHAIN_ID === '56' ? 'BSC Mainnet' : 'BSC Testnet';
-            const rpcUrl = process.env.NEXT_PUBLIC_CHAIN_ID === '56' 
-              ? 'https://bsc-dataseed.binance.org/' 
-              : 'https://data-seed-prebsc-1-s1.binance.org:8545/';
-            const blockExplorerUrl = process.env.NEXT_PUBLIC_CHAIN_ID === '56' 
-              ? 'https://bscscan.com/' 
-              : 'https://testnet.bscscan.com/';
-            
+            const expectedChainId =
+              process.env.NEXT_PUBLIC_CHAIN_ID === '56' ? 56 : 97;
+            const expectedChainIdHex =
+              process.env.NEXT_PUBLIC_CHAIN_ID === '56' ? '0x38' : '0x61';
+            const networkName =
+              process.env.NEXT_PUBLIC_CHAIN_ID === '56'
+                ? 'BSC Mainnet'
+                : 'BSC Testnet';
+            const rpcUrl =
+              process.env.NEXT_PUBLIC_CHAIN_ID === '56'
+                ? 'https://bsc-dataseed.binance.org/'
+                : 'https://data-seed-prebsc-1-s1.binance.org:8545/';
+            const blockExplorerUrl =
+              process.env.NEXT_PUBLIC_CHAIN_ID === '56'
+                ? 'https://bscscan.com/'
+                : 'https://testnet.bscscan.com/';
+
             if (Number(network.chainId) !== expectedChainId) {
               console.log(`Switching to ${networkName} via window.ethereum...`);
               try {
@@ -459,16 +483,23 @@ export function usePredictionContract() {
       });
 
       // Check if we're on the correct network
-      const expectedChainId = process.env.NEXT_PUBLIC_CHAIN_ID === '56' ? 56 : 97;
-      const expectedChainIdHex = process.env.NEXT_PUBLIC_CHAIN_ID === '56' ? '0x38' : '0x61';
-      const networkName = process.env.NEXT_PUBLIC_CHAIN_ID === '56' ? 'BSC Mainnet' : 'BSC Testnet';
-      const rpcUrl = process.env.NEXT_PUBLIC_CHAIN_ID === '56' 
-        ? 'https://bsc-dataseed.binance.org/' 
-        : 'https://data-seed-prebsc-1-s1.binance.org:8545/';
-      const blockExplorerUrl = process.env.NEXT_PUBLIC_CHAIN_ID === '56' 
-        ? 'https://bscscan.com/' 
-        : 'https://testnet.bscscan.com/';
-      
+      const expectedChainId =
+        process.env.NEXT_PUBLIC_CHAIN_ID === '56' ? 56 : 97;
+      const expectedChainIdHex =
+        process.env.NEXT_PUBLIC_CHAIN_ID === '56' ? '0x38' : '0x61';
+      const networkName =
+        process.env.NEXT_PUBLIC_CHAIN_ID === '56'
+          ? 'BSC Mainnet'
+          : 'BSC Testnet';
+      const rpcUrl =
+        process.env.NEXT_PUBLIC_CHAIN_ID === '56'
+          ? 'https://bsc-dataseed.binance.org/'
+          : 'https://data-seed-prebsc-1-s1.binance.org:8545/';
+      const blockExplorerUrl =
+        process.env.NEXT_PUBLIC_CHAIN_ID === '56'
+          ? 'https://bscscan.com/'
+          : 'https://testnet.bscscan.com/';
+
       if (currentChainId !== expectedChainId) {
         console.log(`Attempting to switch to ${networkName}...`);
         try {

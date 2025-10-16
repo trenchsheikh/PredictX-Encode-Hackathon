@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import React from 'react';
 import { ReactNode } from 'react';
 import { cn } from '@/lib/utils';
 
@@ -20,20 +20,7 @@ export function AnimatedCard({
   onClick,
 }: AnimatedCardProps) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay }}
-      whileHover={
-        hover
-          ? {
-              y: -8,
-              scale: 1.02,
-              transition: { duration: 0.2 },
-            }
-          : {}
-      }
-      whileTap={onClick ? { scale: 0.98 } : {}}
+    <div
       onClick={onClick}
       className={cn(
         'relative overflow-hidden rounded-2xl border border-gray-700/50 bg-gradient-to-br from-gray-900/50 to-gray-800/30 shadow-2xl backdrop-blur-sm',
@@ -47,22 +34,7 @@ export function AnimatedCard({
       {/* Content */}
       <div className="relative z-10">{children}</div>
 
-      {/* Animated border glow */}
-      <motion.div
-        className="absolute inset-0 rounded-2xl"
-        style={{
-          background:
-            'linear-gradient(45deg, transparent, rgba(255, 193, 7, 0.1), transparent)',
-        }}
-        animate={{
-          backgroundPosition: ['0% 0%', '100% 100%', '0% 0%'],
-        }}
-        transition={{
-          duration: 3,
-          repeat: Infinity,
-          ease: 'linear',
-        }}
-      />
-    </motion.div>
+      {/* Static border glow removed */}
+    </div>
   );
 }

@@ -27,8 +27,7 @@ export function Header() {
   };
 
   return (
-    <header className="relative sticky top-0 z-50">
-      {/* Clean yellow background behind header - no dust */}
+    <header className="relative top-0 z-50">
       <div className="absolute inset-0 bg-gradient-to-br from-yellow-400 via-yellow-500 to-yellow-600" />
       <nav
         className="relative z-10 mx-auto mb-3 mt-3 flex max-w-7xl items-center justify-between rounded-full border border-black bg-black/90 p-2 shadow-lg backdrop-blur-md lg:px-4"
@@ -180,7 +179,7 @@ export function Header() {
                 </Button>
 
                 {!ready ? (
-                  <Button disabled className="w-full bg-gray-700 text-gray-300">
+                  <Button disabled className="w-full bg-gray-700 text-white">
                     <Wallet className="mr-2 h-4 w-4" />
                     {t('connecting')}
                   </Button>

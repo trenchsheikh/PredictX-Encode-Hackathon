@@ -42,12 +42,14 @@ export const privyClientConfig: PrivyClientConfig = {
 ## Environment Variables Required
 
 ### For BSC Mainnet
+
 ```bash
 NEXT_PUBLIC_CHAIN_ID=56
 NEXT_PUBLIC_PRIVY_APP_ID=your_privy_app_id_here
 ```
 
 ### For BSC Testnet
+
 ```bash
 NEXT_PUBLIC_CHAIN_ID=97
 NEXT_PUBLIC_PRIVY_APP_ID=your_privy_app_id_here
@@ -63,12 +65,14 @@ NEXT_PUBLIC_PRIVY_APP_ID=your_privy_app_id_here
 ## Testing
 
 ### Development Testing
+
 1. Set `NEXT_PUBLIC_CHAIN_ID=56` in your `.env.local`
 2. Run `npm run dev`
 3. Open browser console to see Privy configuration logs
 4. Connect wallet - should automatically connect to BSC Mainnet
 
 ### Production Testing
+
 1. Deploy with `NEXT_PUBLIC_CHAIN_ID=56` in Vercel environment variables
 2. Visit the deployed app
 3. Connect wallet - should automatically connect to BSC Mainnet

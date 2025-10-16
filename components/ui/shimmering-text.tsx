@@ -21,13 +21,10 @@ export function ShimmeringText({
     <span
       className={cn(
         'relative inline-block bg-gradient-to-r from-transparent via-current to-transparent bg-clip-text text-transparent',
-        'animate-shimmer bg-[length:200%_100%]',
         className
       )}
       style={{
         backgroundImage: `linear-gradient(90deg, transparent, ${shimmerColor}, transparent)`,
-        animationDuration: `${duration}ms`,
-        animationDelay: `${delay}ms`,
       }}
     >
       {children}

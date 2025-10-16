@@ -7,7 +7,6 @@ import Image from 'next/image';
 import { usePrivy } from '@privy-io/react-auth';
 import { useI18n } from '@/components/providers/i18n-provider';
 import { AnimatedButton } from '@/components/ui/animated-button';
-import { motion, AnimatePresence } from 'framer-motion';
 import {
   Menu,
   X,
@@ -50,21 +49,12 @@ export function AnimatedHeader() {
   };
 
   return (
-    <motion.header
-      initial={{ y: -100, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.6, ease: 'easeOut' }}
-      className="sticky top-0 z-50"
-    >
+    <header className="sticky top-0 z-50">
       {/* Floating glassy navbar container (applied on nav) */}
 
       <nav className="relative z-10 mx-4 mb-4 mt-4 flex items-center justify-between rounded-2xl border border-white/10 bg-black/35 p-3 shadow-lg supports-[backdrop-filter]:backdrop-blur-md lg:mx-auto lg:max-w-screen-2xl lg:px-8">
         {/* Logo */}
-        <motion.div
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-          className="flex flex-shrink-0"
-        >
+        <div className="flex flex-shrink-0">
           <Link
             href="/"
             className="group flex items-center space-x-3"
@@ -80,19 +70,17 @@ export function AnimatedHeader() {
               />
             </div>
           </Link>
-        </motion.div>
+        </div>
 
         {/* Mobile menu button */}
         <div className="flex lg:hidden">
-          <motion.button
-            whileTap={{ scale: 0.95 }}
-            whileHover={{ scale: 1.05 }}
+          <button
             type="button"
             className="rounded-lg p-2 text-gray-300 transition-all duration-200 hover:bg-gray-800/50 hover:text-white"
             onClick={() => setMobileMenuOpen(true)}
           >
             <Menu className="h-5 w-5" />
-          </motion.button>
+          </button>
         </div>
 
         {/* Right side: desktop navigation + actions, right-aligned with even spacing */}
@@ -100,13 +88,7 @@ export function AnimatedHeader() {
           {navItems.map((item, index) => {
             const Icon = item.icon;
             return (
-              <motion.div
-                key={item.key}
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.05 }}
-                whileHover={{ y: -1 }}
-              >
+              <div key={item.key}>
                 <Link
                   href={item.href}
                   aria-current={isActive(item.href) ? 'page' : undefined}
@@ -127,16 +109,12 @@ export function AnimatedHeader() {
                           .replace(/\b\w/g, l => l.toUpperCase())}
                   </span>
                 </Link>
-              </motion.div>
+              </div>
             );
           })}
 
           {/* Divider spacing between nav and actions keeps even gap due to container gap-x-6 */}
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.2 }}
-          >
+          <div>
             <AnimatedButton
               variant="ghost"
               size="sm"
@@ -148,13 +126,9 @@ export function AnimatedHeader() {
                 {mounted ? (locale === 'en' ? '中文' : 'EN') : 'EN'}
               </span>
             </AnimatedButton>
-          </motion.div>
+          </div>
 
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.3 }}
-          >
+          <div>
             {!ready ? (
               <AnimatedButton
                 disabled
@@ -192,140 +166,118 @@ export function AnimatedHeader() {
                 {mounted ? t('connect_wallet') : 'Connect Wallet'}
               </AnimatedButton>
             )}
-          </motion.div>
+          </div>
         </div>
       </nav>
 
       {/* Mobile Menu */}
-      <AnimatePresence>
-        {mobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 bg-black/60 lg:hidden"
-          >
-            <motion.div
-              initial={{ x: '100%' }}
-              animate={{ x: 0 }}
-              exit={{ x: '100%' }}
-              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className="fixed inset-y-0 right-0 w-full max-w-sm border-l border-gray-700/50 bg-black shadow-2xl"
-            >
-              <div className="flex items-center justify-between border-b border-gray-700/30 p-4">
-                <div />
-                <motion.button
-                  whileTap={{ scale: 0.95 }}
-                  whileHover={{ scale: 1.05 }}
-                  type="button"
-                  className="rounded-lg p-2 text-gray-400 transition-all duration-200 hover:bg-gray-800/50 hover:text-white"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  <X className="h-5 w-5" />
-                </motion.button>
-              </div>
+      {mobileMenuOpen && (
+        <div className="fixed inset-0 z-50 bg-black/60 lg:hidden">
+          <div className="fixed inset-y-0 right-0 w-full max-w-sm border-l border-gray-700/50 bg-black shadow-2xl">
+            <div className="flex items-center justify-between border-b border-gray-700/30 p-4">
+              <div />
+              <button
+                type="button"
+                className="rounded-lg p-2 text-gray-400 transition-all duration-200 hover:bg-gray-800/50 hover:text-white"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
 
-              <div className="space-y-5 p-6">
-                <div className="space-y-1.5">
-                  {navItems.map((item, index) => {
-                    const Icon = item.icon;
-                    return (
-                      <motion.div
-                        key={item.key}
-                        initial={{ opacity: 0, x: 20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: index * 0.1 }}
+            <div className="space-y-5 p-6">
+              <div className="space-y-1.5">
+                {navItems.map((item, index) => {
+                  const Icon = item.icon;
+                  return (
+                    <div key={item.key}>
+                      <Link
+                        href={item.href}
+                        aria-current={isActive(item.href) ? 'page' : undefined}
+                        className={`group flex items-center space-x-3 rounded-xl px-3 py-2 text-lg font-semibold transition-all duration-300 hover:bg-white/10 ${
+                          isActive(item.href)
+                            ? 'bg-white/10 text-white'
+                            : 'text-gray-300 hover:text-white'
+                        }`}
+                        onClick={() => setMobileMenuOpen(false)}
+                        prefetch={item.isHome ? false : undefined}
                       >
-                        <Link
-                          href={item.href}
-                          aria-current={
-                            isActive(item.href) ? 'page' : undefined
-                          }
-                          className={`group flex items-center space-x-3 rounded-xl px-3 py-2 text-lg font-semibold transition-all duration-300 hover:bg-white/10 ${
-                            isActive(item.href)
-                              ? 'bg-white/10 text-white'
-                              : 'text-gray-300 hover:text-white'
-                          }`}
-                          onClick={() => setMobileMenuOpen(false)}
-                          prefetch={item.isHome ? false : undefined}
-                        >
-                          <Icon className="h-5 w-5 transition-colors group-hover:text-yellow-400" />
-                          <span className="whitespace-nowrap font-medium">
-                            {mounted
-                              ? t(item.key)
-                              : item.key
-                                  .replace('nav_', '')
-                                  .replace('_', ' ')
-                                  .replace(/\b\w/g, l => l.toUpperCase())}
-                          </span>
-                        </Link>
-                      </motion.div>
-                    );
-                  })}
-                </div>
-
-                <div className="space-y-4 border-t border-gray-700/50 pt-6">
-                  <AnimatedButton
-                    variant="outline"
-                    size="sm"
-                    onClick={toggleLanguage}
-                    className="w-full justify-start border-gray-600/50 text-gray-300 hover:text-white"
-                  >
-                    <Globe className="mr-3 h-4 w-4 flex-shrink-0" />
-                    <span className="whitespace-nowrap">
-                      {mounted ? (locale === 'en' ? '中文' : 'EN') : 'EN'}
-                    </span>
-                  </AnimatedButton>
-
-                  {!ready ? (
-                    <AnimatedButton
-                      disabled
-                      className="w-full bg-gray-700 text-gray-300"
-                    >
-                      <Wallet className="mr-2 h-4 w-4" />
-                      {mounted ? t('connecting') : 'Connecting...'}
-                    </AnimatedButton>
-                  ) : authenticated ? (
-                    <div className="space-y-3">
-                      <div className="flex items-center justify-between rounded-lg border border-green-500/20 bg-green-500/10 p-3">
-                        <div className="flex items-center space-x-2">
-                          <div className="h-2 w-2 animate-pulse rounded-full bg-green-400" />
-                          <span className="font-caption text-sm text-green-400">
-                            Connected
-                          </span>
-                        </div>
-                        <div className="text-xs text-gray-400">
-                          {user?.wallet?.address
-                            ? `${user.wallet.address.slice(0, 6)}...${user.wallet.address.slice(-4)}`
-                            : mounted
-                              ? t('connected')
-                              : 'Connected'}
-                        </div>
-                      </div>
-                      <AnimatedButton
-                        variant="outline"
-                        size="sm"
-                        onClick={logout}
-                        className="w-full border-red-500/50 text-red-400 hover:bg-red-500/10"
-                      >
-                        Disconnect
-                      </AnimatedButton>
+                        <Icon className="h-5 w-5 transition-colors group-hover:text-yellow-400" />
+                        <span className="whitespace-nowrap font-medium">
+                          {mounted
+                            ? t(item.key)
+                            : item.key
+                                .replace('nav_', '')
+                                .replace('_', ' ')
+                                .replace(/\b\w/g, l => l.toUpperCase())}
+                        </span>
+                      </Link>
                     </div>
-                  ) : (
-                    <AnimatedButton
-                      onClick={login}
-                      className="w-full bg-gradient-to-r from-yellow-400 to-yellow-600 text-black"
-                    >
-                      <Wallet className="mr-2 h-4 w-4" />
-                      {mounted ? t('connect_wallet') : 'Connect Wallet'}
-                    </AnimatedButton>
-                  )}
-                </div>
+                  );
+                })}
               </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </motion.header>
+
+              <div className="space-y-4 border-t border-gray-700/50 pt-6">
+                <AnimatedButton
+                  variant="outline"
+                  size="sm"
+                  onClick={toggleLanguage}
+                  className="w-full justify-start border-gray-600/50 text-gray-300 hover:text-white"
+                >
+                  <Globe className="mr-3 h-4 w-4 flex-shrink-0" />
+                  <span className="whitespace-nowrap">
+                    {mounted ? (locale === 'en' ? '中文' : 'EN') : 'EN'}
+                  </span>
+                </AnimatedButton>
+
+                {!ready ? (
+                  <AnimatedButton
+                    disabled
+                    className="w-full bg-gray-700 text-gray-300"
+                  >
+                    <Wallet className="mr-2 h-4 w-4" />
+                    {mounted ? t('connecting') : 'Connecting...'}
+                  </AnimatedButton>
+                ) : authenticated ? (
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between rounded-lg border border-green-500/20 bg-green-500/10 p-3">
+                      <div className="flex items-center space-x-2">
+                        <div className="h-2 w-2 animate-pulse rounded-full bg-green-400" />
+                        <span className="font-caption text-sm text-green-400">
+                          Connected
+                        </span>
+                      </div>
+                      <div className="text-xs text-gray-400">
+                        {user?.wallet?.address
+                          ? `${user.wallet.address.slice(0, 6)}...${user.wallet.address.slice(-4)}`
+                          : mounted
+                            ? t('connected')
+                            : 'Connected'}
+                      </div>
+                    </div>
+                    <AnimatedButton
+                      variant="outline"
+                      size="sm"
+                      onClick={logout}
+                      className="w-full border-red-500/50 text-red-400 hover:bg-red-500/10"
+                    >
+                      Disconnect
+                    </AnimatedButton>
+                  </div>
+                ) : (
+                  <AnimatedButton
+                    onClick={login}
+                    className="w-full bg-gradient-to-r from-yellow-400 to-yellow-600 text-black"
+                  >
+                    <Wallet className="mr-2 h-4 w-4" />
+                    {mounted ? t('connect_wallet') : 'Connect Wallet'}
+                  </AnimatedButton>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </header>
   );
 }

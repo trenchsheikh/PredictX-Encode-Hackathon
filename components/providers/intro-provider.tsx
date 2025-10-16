@@ -15,9 +15,8 @@ export function IntroProvider({ children }: IntroProviderProps) {
     setMounted(true);
     // Check if user has seen intro before
     const hasSeenIntro = localStorage.getItem('darkbet-intro-seen');
-    if (!hasSeenIntro) {
-      setShowIntro(true);
-    }
+    // Disable intro animation entirely
+    setShowIntro(false);
   }, []);
 
   const handleIntroComplete = () => {
@@ -27,9 +26,7 @@ export function IntroProvider({ children }: IntroProviderProps) {
 
   return (
     <>
-      {mounted && showIntro && (
-        <IntroAnimation onComplete={handleIntroComplete} />
-      )}
+      {/* Intro animation disabled */}
       {children}
     </>
   );
