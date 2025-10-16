@@ -2,9 +2,11 @@ import type { Metadata } from 'next';
 import { GeistSans } from 'geist/font/sans';
 import './globals.css';
 import { PrivyProviderWrapper } from '@/components/providers/privy-provider';
-import { AnimatedHeader } from '@/components/layout/animated-header';
+import { AnimatedHeader } from '@/components/layout/navbar';
 import { IntroProvider } from '@/components/providers/intro-provider';
 import { ErrorBoundary } from '@/components/ui/error-boundary';
+import { FooterGate } from '@/components/layout/footer-gate';
+import Image from 'next/image';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://darkbet.fun'),
@@ -64,6 +66,23 @@ export default function RootLayout({
               <main className="relative z-10 flex-1">
                 <ErrorBoundary>{children}</ErrorBoundary>
               </main>
+              <FooterGate
+                brandName="DarkBet"
+                showTopInfo={false}
+                showBackgroundBrandText={true}
+                showCopyright={false}
+                brandLinkHref="https://x.com/DarkbetBNB"
+                brandIcon={
+                  <Image
+                    src="/binanceeye.jpg"
+                    alt="DarkBet"
+                    width={56}
+                    height={56}
+                    className="rounded-xl object-cover"
+                    priority
+                  />
+                }
+              />
             </div>
           </IntroProvider>
         </PrivyProviderWrapper>

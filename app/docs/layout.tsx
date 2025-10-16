@@ -243,7 +243,7 @@ export default function DocsLayout({ children }: DocsLayoutProps) {
 
           {/* Main content */}
           <main className="flex-1 lg:ml-0">
-            <div className="px-6 py-8">{children}</div>
+            <div className="px-6 pb-8 pt-14">{children}</div>
           </main>
         </div>
       </div>
