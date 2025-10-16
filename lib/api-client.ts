@@ -3,6 +3,8 @@
  * Base URL: /api (proxied to backend server)
  */
 
+import { logger } from './logger';
+
 // Always use local API routes in production to ensure proper proxying
 const API_BASE_URL =
   process.env.NODE_ENV === 'production'
@@ -11,9 +13,9 @@ const API_BASE_URL =
       process.env.NEXT_PUBLIC_BACKEND_URL ||
       '/api';
 
-// Debug logging
-if (typeof window !== 'undefined') {
-  console.log('🔍 API Client Debug:', {
+// Debug logging (development only)
+if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
+  logger.api('API Client initialized', {
     NODE_ENV: process.env.NODE_ENV,
     NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
     NEXT_PUBLIC_BACKEND_URL: process.env.NEXT_PUBLIC_BACKEND_URL,
@@ -61,7 +63,7 @@ async function apiFetch<T>(
       message: data.message,
     };
   } catch (error: any) {
-    console.error(`API Error [${endpoint}]:`, error);
+    logger.error(`API Error [${endpoint}]:`, error);
     return {
       success: false,
       error: error.message || 'Network error occurred',

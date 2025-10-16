@@ -46,6 +46,7 @@ import { api, getErrorMessage } from '@/lib/api-client';
 import { usePredictionContract } from '@/lib/hooks/use-prediction-contract';
 import { generateCommit, storeCommitSecret } from '@/lib/commit-reveal';
 import { mapCategory, mapStatus, calculatePrice } from '@/lib/blockchain-utils';
+import { logger } from '@/lib/logger';
 import { ethers } from 'ethers';
 
 export default function HomePage() {
@@ -144,7 +145,7 @@ export default function HomePage() {
 
       setPredictions(mappedPredictions);
     } catch (err: any) {
-      console.error('Failed to fetch markets:', err);
+      logger.error('Failed to fetch markets:', err);
       setError(getErrorMessage(err));
     } finally {
       setLoading(false);
@@ -185,7 +186,7 @@ export default function HomePage() {
     if (!prediction) return;
 
     if (!authenticated) {
-      console.info(t('errors.wallet_required'));
+      logger.user(t('errors.wallet_required'));
       return;
     }
 
@@ -246,9 +247,9 @@ export default function HomePage() {
       // Refresh markets
       await fetchMarkets();
 
-      console.info(t('success.bet_placed'));
+      logger.user(t('success.bet_placed'));
     } catch (err: any) {
-      console.error('Bet failed:', err);
+      logger.error('Bet failed:', err);
       throw new Error(getErrorMessage(err));
     }
   };
@@ -258,7 +259,7 @@ export default function HomePage() {
    */
   const handleCreatePrediction = async (data: CreatePredictionData) => {
     if (!authenticated || !user?.wallet?.address) {
-      console.info(t('errors.wallet_required'));
+      logger.user(t('errors.wallet_required'));
       return;
     }
 
@@ -272,7 +273,7 @@ export default function HomePage() {
    */
   const handleCreateCryptoPrediction = async (data: CryptoPredictionData) => {
     if (!authenticated || !user?.wallet?.address) {
-      console.info(t('errors.wallet_required'));
+      logger.user(t('errors.wallet_required'));
       return;
     }
 
@@ -281,19 +282,14 @@ export default function HomePage() {
       const category = 7; // Crypto category
       const expiresAtTimestamp = Math.floor(data.deadline / 1000); // Convert to seconds
 
-      console.log('🔍 Creating crypto prediction with parameters:');
-      console.log('  Title:', data.title);
-      console.log('  Description:', data.description);
-      console.log('  ExpiresAt (seconds):', expiresAtTimestamp);
-      console.log('  Category:', category);
-      console.log(
-        '  Current timestamp (seconds):',
-        Math.floor(Date.now() / 1000)
-      );
-      console.log(
-        '  Time until expiry (minutes):',
-        (expiresAtTimestamp - Math.floor(Date.now() / 1000)) / 60
-      );
+      logger.blockchain('Creating crypto prediction with parameters:', {
+        title: data.title,
+        description: data.description,
+        expiresAt: expiresAtTimestamp,
+        category: category,
+        currentTimestamp: Math.floor(Date.now() / 1000),
+        timeUntilExpiry: (expiresAtTimestamp - Math.floor(Date.now() / 1000)) / 60
+      });
 
       // Call smart contract to create market
       const result = await contract.createMarket(
@@ -308,7 +304,7 @@ export default function HomePage() {
 
       if (!result.success || !result.txHash) {
         const actualError = contract.error || 'Transaction failed';
-        console.error('Contract error:', contract.error);
+        logger.error('Contract error:', contract.error);
         throw new Error(actualError);
       }
 
@@ -327,9 +323,9 @@ export default function HomePage() {
       await fetchMarkets();
 
       setShowCryptoModal(false);
-      console.info(t('success.crypto_prediction_created'));
+      logger.user(t('success.crypto_prediction_created'));
     } catch (err: any) {
-      console.error('Create crypto prediction failed:', err);
+      logger.error('Create crypto prediction failed:', err);
     }
   };
 
