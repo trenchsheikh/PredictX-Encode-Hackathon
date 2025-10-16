@@ -72,7 +72,7 @@ export function HeroSection({
               </span>{' '}
               <span className="relative inline-flex">
                 <span className="relative z-0 inline-flex items-center rounded-2xl border border-yellow-400/40 bg-gradient-to-br from-gray-800/95 to-gray-900/95 px-2 py-1 text-3xl md:px-4 md:py-1.5 md:text-5xl lg:text-6xl">
-                  <span className="pointer-events-none absolute inset-0 bg-[url('/noise.gif')] opacity-40 mix-blend-overlay" />
+                  <span className="bnb-pattern pointer-events-none absolute inset-0 opacity-20 mix-blend-overlay" />
                   <span className="relative font-medium italic leading-normal">
                     <WordAnimator
                       words={[

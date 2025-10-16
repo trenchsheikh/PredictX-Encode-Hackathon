@@ -35,7 +35,7 @@ const WordAnimator: React.FC<WordAnimatorProps> = ({
       }}
       className={cn('overflow-hidden rounded-md border text-left', className)}
     >
-      <span className="pointer-events-none absolute left-0 top-0 z-10 h-full w-full bg-[url('/noise.gif')] opacity-10 content-['']" />
+      <span className="bnb-pattern pointer-events-none absolute left-0 top-0 z-10 h-full w-full opacity-10 content-['']" />
       <span
         key={currentIndex}
         style={{ position: 'absolute', display: 'block', left: 0, right: 0 }}
