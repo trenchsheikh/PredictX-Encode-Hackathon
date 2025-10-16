@@ -11,19 +11,19 @@
 
   "hero_title": "DarkBet",
   "hero_subtitle": "DarkPool Betting Platform",
-  "hero_description": "The future of prediction markets is here. Built on BNB Smart Chain with AI-driven results and fully on-chain execution.",
-  "hero_headline_lead": "Don't Just Bet,",
+  "hero_description": "Trade outcomes privately. No frontruns. No copycats. Only pure conviction. Built on BNB Smart Chain.",
+  "hero_headline_lead": "Don't Just Bet, Bet",
   "hero_bet_word": "Bet",
   "badge_live": "Live",
   "badge_introducing": "Introducing",
-  "darkpool_betting": "DarkPool Betting",
+  "darkpool_betting": "Darkpool Markets",
   "what_is_darkpool": "What is DarkPool Betting?",
-  "darkpool_explanation": "DarkPool Betting combines the privacy and efficiency of dark pools with prediction markets. Your bets remain hidden until resolution, preventing market manipulation while ensuring fair, AI-driven outcomes on the BNB Smart Chain.",
+  "darkpool_explanation": "Darkpool Markets let you place bets privately inside hidden liquidity pools.\nEvery trade stays invisible, but outcomes settle transparently on BNB Smart Chain.\nYou see the truth only when it matters, when the market closes",
 
   "features": {
-    "privacy": "Dark Pool Privacy",
-    "fully_onchain": "Fully On-Chain",
-    "ai_driven": "AI-Driven Results",
+    "privacy": "Private",
+    "fully_onchain": "On-Chain",
+    "ai_driven": "Predictive",
     "realtime_markets": "Real-Time Markets"
   },
 
