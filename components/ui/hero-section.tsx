@@ -41,46 +41,18 @@ export function HeroSection({
     return num.toString();
   };
 
-  // Fetch real platform statistics
+  // Set hardcoded platform statistics
   useEffect(() => {
-    const fetchStats = async () => {
-      try {
-        setLoading(true);
-
-        // Fetch markets to get active markets count and total volume
-        const marketsResponse = await api.markets.getMarkets();
-        const markets = marketsResponse.data || [];
-
-        // Calculate active markets (status 0 = active)
-        const activeMarkets = markets.filter(
-          (market: any) => market.status === 0
-        ).length;
-
-        // Calculate total volume from all markets (convert from wei to BNB)
-        const totalVolume = markets.reduce((sum: number, market: any) => {
-          return sum + parseFloat(ethers.formatEther(market.totalPool || '0'));
-        }, 0);
-
-        // Fetch leaderboard to get participants count
-        const leaderboardResponse = await api.leaderboard.getLeaderboard({
-          limit: 1000,
-        });
-        const participants = leaderboardResponse.data?.totalUsers || 0;
-
-        setStats({
-          totalVolume,
-          activeMarkets,
-          participants,
-        });
-      } catch (error) {
-        console.error('Error fetching platform stats:', error);
-        // Keep default values on error
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchStats();
+    setLoading(true);
+    
+    // Hardcoded values as requested
+    setStats({
+      totalVolume: 2.1, // 2.1 BNB
+      activeMarkets: 3, // 3 Active Markets
+      participants: 12, // 12 Participants
+    });
+    
+    setLoading(false);
   }, []);
   const features = [
     {
@@ -225,17 +197,17 @@ export function HeroSection({
           {[
             {
               label: t('stats.total_volume'),
-              value: loading ? '...' : `${formatNumber(stats.totalVolume)} BNB`,
+              value: loading ? '...' : `${stats.totalVolume} BNB`,
               icon: TrendingUp,
             },
             {
               label: t('stats.active_markets'),
-              value: loading ? '...' : formatNumber(stats.activeMarkets),
+              value: loading ? '...' : stats.activeMarkets.toString(),
               icon: Zap,
             },
             {
               label: t('stats.participants'),
-              value: loading ? '...' : formatNumber(stats.participants),
+              value: loading ? '...' : stats.participants.toString(),
               icon: Shield,
             },
           ].map((stat, index) => {
