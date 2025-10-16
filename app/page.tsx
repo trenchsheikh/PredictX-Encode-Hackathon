@@ -137,7 +137,6 @@ export default function HomePage() {
         })
       );
 
-
       setPredictions(mappedPredictions);
     } catch (err: any) {
       logger.error('Failed to fetch markets:', err);
@@ -172,7 +171,6 @@ export default function HomePage() {
     }
     return true;
   });
-
 
   /**
    * Open bet modal

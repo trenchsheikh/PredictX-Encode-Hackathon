@@ -29,18 +29,17 @@ export function HeroSection({
   });
   const [loading, setLoading] = useState(true);
 
-
   // Set hardcoded platform statistics
   useEffect(() => {
     setLoading(true);
-    
+
     // Hardcoded values as requested
     setStats({
       totalVolume: 2.1, // 2.1 BNB
       activeMarkets: 3, // 3 Active Markets
       participants: 12, // 12 Participants
     });
-    
+
     setLoading(false);
   }, []);
   const features = [

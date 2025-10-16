@@ -58,6 +58,7 @@ VAULT_CONTRACT_ADDRESS=0x5499c4b5480900744350A9f891Bb2e2746d5BDbD
 ## Network Configuration
 
 The application will automatically:
+
 - Load the correct contract ABIs from `/deployments/bscMainnet/`
 - Use the correct contract addresses
 - Switch users to BSC Mainnet (Chain ID: 56) when they connect their wallet
@@ -66,12 +67,14 @@ The application will automatically:
 ## Verification
 
 The contracts have been verified on BSCScan:
+
 - [PredictionMarket Contract](https://bscscan.com/address/0x4DA603511D8aeA98B8d9534c19F59eB43c246DaF)
 - [Vault Contract](https://bscscan.com/address/0x5499c4b5480900744350A9f891Bb2e2746d5BDbD)
 
 ## Testing
 
 After deployment, test the following:
+
 1. Connect wallet and verify it switches to BSC Mainnet
 2. Create a crypto prediction
 3. Place a bet

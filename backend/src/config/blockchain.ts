@@ -11,9 +11,7 @@ export interface BlockchainConfig {
 }
 
 export function getBlockchainConfig(): BlockchainConfig {
-  const rpcUrl =
-    process.env.BSC_RPC_URL ||
-    'https://bsc-dataseed.binance.org/';
+  const rpcUrl = process.env.BSC_RPC_URL || 'https://bsc-dataseed.binance.org/';
   const provider = new ethers.JsonRpcProvider(rpcUrl);
 
   // Load contract addresses from deployments

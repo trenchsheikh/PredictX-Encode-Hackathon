@@ -115,7 +115,7 @@ export function usePredictionContract() {
             const expectedChainId = '56'; // BSC Mainnet
             const expectedChainIdHex = '0x38'; // BSC Mainnet hex
             const expectedChainIdEip155 = 'eip155:56'; // BSC Mainnet EIP155
-            
+
             // Debug network check (only in development)
             if (process.env.NODE_ENV === 'development') {
               console.log('🔍 BSC Mainnet Check:', {
@@ -123,10 +123,13 @@ export function usePredictionContract() {
                 expectedChainId,
                 expectedChainIdHex,
                 expectedChainIdEip155,
-                isCorrectNetwork: chainIdStr === expectedChainIdHex || chainIdStr === expectedChainId || chainIdStr === expectedChainIdEip155
+                isCorrectNetwork:
+                  chainIdStr === expectedChainIdHex ||
+                  chainIdStr === expectedChainId ||
+                  chainIdStr === expectedChainIdEip155,
               });
             }
-            
+
             if (
               chainIdStr !== expectedChainIdHex &&
               chainIdStr !== expectedChainId &&
@@ -137,33 +140,43 @@ export function usePredictionContract() {
               setError(errorMsg);
               return null;
             }
-            
+
             console.log(`✅ Wallet is on BSC Mainnet`);
 
             signer = await ethersProvider.getSigner();
             console.log('✅ Signer obtained via Privy');
-            
+
             // Verify the signer is working and on correct network
             try {
               const signerAddress = await signer.getAddress();
               console.log('✅ Signer address verified:', signerAddress);
-              
+
               // Check if we're on the correct network
               const network = await ethersProvider.getNetwork();
               console.log('🔍 Current network after switch:', {
                 chainId: network.chainId,
-                name: network.name
+                name: network.name,
               });
-              
+
               if (Number(network.chainId) !== 56) {
-                console.warn('⚠️ Still not on BSC Mainnet after switch. Chain ID:', network.chainId);
-                throw new Error(`Wallet is on wrong network. Expected BSC Mainnet (56), got ${network.chainId}`);
+                console.warn(
+                  '⚠️ Still not on BSC Mainnet after switch. Chain ID:',
+                  network.chainId
+                );
+                throw new Error(
+                  `Wallet is on wrong network. Expected BSC Mainnet (56), got ${network.chainId}`
+                );
               }
-              
+
               console.log('✅ Confirmed on BSC Mainnet');
             } catch (signerError: any) {
-              console.error('❌ Signer verification failed:', signerError.message);
-              throw new Error(`Signer verification failed: ${signerError.message}`);
+              console.error(
+                '❌ Signer verification failed:',
+                signerError.message
+              );
+              throw new Error(
+                `Signer verification failed: ${signerError.message}`
+              );
             }
           } catch (privyError: any) {
             console.warn('Privy method failed:', privyError.message);
@@ -185,26 +198,31 @@ export function usePredictionContract() {
               chainId: network.chainId,
               name: network.name,
             });
-            
+
             if (Number(network.chainId) !== 56) {
               const errorMsg = `Wallet must be on BSC Mainnet (Chain ID: 56). Current: ${network.chainId}. Please switch to BSC Mainnet in your wallet and try again.`;
               console.error('❌ Wrong network:', errorMsg);
               setError(errorMsg);
               return null;
             }
-            
+
             console.log(`✅ Wallet is on BSC Mainnet`);
 
             signer = await provider.getSigner();
             console.log('✅ Signer obtained via window.ethereum');
-            
+
             // Verify the signer is working
             try {
               const signerAddress = await signer.getAddress();
               console.log('✅ Signer address verified:', signerAddress);
             } catch (signerError: any) {
-              console.error('❌ Signer verification failed:', signerError.message);
-              throw new Error(`Signer verification failed: ${signerError.message}`);
+              console.error(
+                '❌ Signer verification failed:',
+                signerError.message
+              );
+              throw new Error(
+                `Signer verification failed: ${signerError.message}`
+              );
             }
           } catch (windowError: any) {
             console.warn('Window.ethereum method failed:', windowError.message);
@@ -406,7 +424,7 @@ export function usePredictionContract() {
         return null;
       }
       console.log('✅ Signer obtained for contract creation');
-      
+
       // Test signer before using it
       try {
         const testAddress = await signer.getAddress();
@@ -455,7 +473,7 @@ export function usePredictionContract() {
         setError(errorMsg);
         return null;
       }
-      
+
       console.log(`✅ Wallet is on BSC Mainnet`);
 
       // Also try the provider-based check as backup
