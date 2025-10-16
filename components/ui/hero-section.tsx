@@ -4,9 +4,7 @@ import { motion } from 'framer-motion';
 import { TrendingUp, Zap, Shield, Star, Loader2 } from 'lucide-react';
 import { AnimatedButton } from './animated-button';
 import { useState, useEffect } from 'react';
-import { api } from '@/lib/api-client';
 import { useI18n } from '@/components/providers/i18n-provider';
-import { ethers } from 'ethers';
 
 interface HeroSectionProps {
   onCreateClick: () => void;
@@ -31,15 +29,6 @@ export function HeroSection({
   });
   const [loading, setLoading] = useState(true);
 
-  // Helper function to format numbers
-  const formatNumber = (num: number): string => {
-    if (num >= 1000000) {
-      return (num / 1000000).toFixed(1) + 'M';
-    } else if (num >= 1000) {
-      return (num / 1000).toFixed(1) + 'K';
-    }
-    return num.toString();
-  };
 
   // Set hardcoded platform statistics
   useEffect(() => {

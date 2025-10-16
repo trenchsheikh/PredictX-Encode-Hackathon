@@ -68,10 +68,9 @@ export async function loadContractABI(
   contractName: 'PredictionMarket' | 'Vault'
 ): Promise<any[]> {
   try {
-    // Determine which network to load from based on environment
-    const network = process.env.NEXT_PUBLIC_CHAIN_ID === '56' ? 'bscMainnet' : 'bscTestnet';
+    // Load BSC Mainnet ABI
     const response = await fetch(
-      `/deployments/${network}/${contractName}.json`
+      `/deployments/bscMainnet/${contractName}.json`
     );
     if (!response.ok) {
       throw new Error(`Failed to load ${contractName} ABI`);
