@@ -72,9 +72,9 @@ export function HeroSection({
                 {t('hero_bet_word')}
               </span>{' '}
               <span className="relative inline-flex">
-                <span className="relative z-0 inline-flex items-center overflow-visible rounded-2xl border border-yellow-400/40 bg-gradient-to-br from-gray-800/95 to-gray-900/95 px-4 py-1 text-3xl md:px-6 md:py-1.5 md:text-5xl lg:px-8 lg:text-6xl">
+                <span className="relative z-0 inline-flex items-center overflow-hidden rounded-2xl border border-yellow-400/40 bg-gradient-to-br from-gray-800/95 to-gray-900/95 py-1 pl-2 pr-4 text-3xl md:py-1.5 md:pl-3 md:pr-6 md:text-5xl lg:pl-4 lg:pr-8 lg:text-6xl">
                   <span className="bnb-pattern pointer-events-none absolute inset-0 opacity-20 mix-blend-overlay" />
-                  <span className="relative font-medium italic leading-normal">
+                  <span className="relative min-w-0 font-medium italic leading-normal">
                     <WordAnimator
                       words={[
                         t('features.privacy'),
@@ -82,7 +82,7 @@ export function HeroSection({
                         t('features.ai_driven'),
                       ]}
                       duration={4}
-                      className="border-0 bg-transparent px-0"
+                      className="whitespace-nowrap border-0 bg-transparent px-0"
                     />
                   </span>
                 </span>

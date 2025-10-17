@@ -1,6 +1,5 @@
 'use client';
 
-import { cn } from '@/lib/utils';
 import React from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 
@@ -14,8 +13,7 @@ interface WordAnimatorProps {
 const WordAnimator: React.FC<WordAnimatorProps> = ({
   words,
   duration = 2,
-  className = '',
-  padRightEm = 0.35,
+  padRightEm = 0.15,
 }) => {
   const [currentIndex, setCurrentIndex] = React.useState(0);
 
@@ -37,9 +35,8 @@ const WordAnimator: React.FC<WordAnimatorProps> = ({
         verticalAlign: 'bottom',
         paddingRight: `${padRightEm}em`,
       }}
-      className={cn('overflow-visible', className)}
+      className="overflow-visible"
     >
-      <span className="bnb-pattern pointer-events-none absolute left-0 top-0 z-10 h-full w-full opacity-10 content-['']" />
       <AnimatePresence mode="popLayout">
         <motion.span
           key={currentIndex}
