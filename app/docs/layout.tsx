@@ -16,7 +16,6 @@ import {
   Bot,
   Trophy,
   Shield,
-  Flame,
   PieChart,
   Rocket,
   TrendingUp,
@@ -99,16 +98,6 @@ const getNavigationSections = (t: any): NavSection[] => [
         href: '/docs/security',
         label: t('nav.docs.security'),
         icon: <Shield className="h-4 w-4" aria-hidden />,
-      },
-    ],
-  },
-  {
-    title: t('nav.docs.polybets'),
-    items: [
-      {
-        href: '/docs/polybets',
-        label: t('nav.docs.introducing_polybets'),
-        icon: <Flame className="h-4 w-4" aria-hidden />,
       },
     ],
   },
