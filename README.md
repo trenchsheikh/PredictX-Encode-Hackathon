@@ -4,7 +4,7 @@ A decentralized prediction market platform built on BNB Smart Chain with AI-driv
 
 ## 🌟 Features
 
-- **DarkPool Betting**: Bets remain hidden until resolution, preventing manipulation
+- **DarkPool Betting**: Bets remain hidden until resolution, preventing manipulation.
 - **AI-Driven Results**: Automated market resolution using external data sources
 - **Fully On-Chain**: All transactions and logic executed on BNB Smart Chain
 - **Real-Time Markets**: Live prediction markets with instant updates
