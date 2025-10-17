@@ -15,19 +15,19 @@ export default function VisionPage() {
         <p className="mb-6 text-base leading-relaxed text-gray-300">
           {t(
             'docs.vision.description',
-            'DarkBet envisions a future where prediction markets become an integral part of the decentralized economy. Transparent, borderless ecosystem where knowledge, data, and foresight hold real value.'
+            'DarkBet imagines a tomorrow where confidential forecasting platforms transform our engagement with cryptocurrency markets. An ecosystem prioritizing secrecy where DarkPool innovation creates honest, interference-resistant digital asset predictions possessing genuine worth.'
           )}
         </p>
         <p className="mb-6 text-base leading-relaxed text-gray-300">
           {t(
             'docs.vision.subdescription',
-            'As the first Dark Pool prediction market built on the BNB Chain, DarkBet aims to redefine how people interact with information, enabling users across the world to trade insights, anticipate outcomes, and participate in events that shape global narratives, all through the power of blockchain transparency and verifiable smart contracts.'
+            'Being the inaugural DarkPool forecasting system constructed on BNB Chain, DarkBet transforms digital currency market prediction by maintaining all forecasts entirely confidential until settlement. Participants can exchange cryptocurrency knowledge, forecast price changes, and engage in market occurrences that influence the destiny of digital currencies, all via blockchain openness and verifiable smart contracts.'
           )}
         </p>
         <p className="text-lg leading-relaxed text-gray-300">
           {t(
             'docs.vision.conclusion',
-            'We aspire to create a platform that blends accessibility, innovation, and trust, where every prediction is not just a wager, but a reflection of collective intelligence. DarkBet seeks to empower individuals to make data-driven decisions, connect communities through shared beliefs about the future, and foster a new economy built around truth, accountability, and decentralized participation.'
+            'We dream of building a system that combines confidentiality, creativity, and confidence, where each cryptocurrency forecast is not merely a bet, but an expression of shared market wisdom. DarkBet aims to enable people to make evidence-based digital asset choices, unite groups through common convictions about virtual currency prospects, and cultivate a fresh economy founded on honesty, responsibility, and distributed involvement in the cryptocurrency realm.'
           )}
         </p>
       </div>
@@ -101,79 +101,56 @@ export default function VisionPage() {
           <h2 className="mb-4 text-xl font-semibold text-white">
             {t('docs.vision.future.title', "The Future We're Building")}
           </h2>
-          <div className="space-y-4">
-            <div className="flex items-start">
-              <span className="mr-3 mt-0.5 flex h-6 w-6 items-center justify-center rounded-full bg-orange-600 text-sm font-bold text-white">
-                1
-              </span>
-              <div>
-                <h3 className="font-semibold text-white">
-                  {t(
-                    'docs.vision.future.step1.title',
-                    'Global Prediction Markets'
-                  )}
-                </h3>
-                <p className="text-sm text-gray-300">
-                  {t(
-                    'docs.vision.future.step1.description',
-                    'Access to prediction markets for events worldwide, from sports to politics to weather.'
-                  )}
-                </p>
-              </div>
+          <div className="grid gap-6 md:grid-cols-2">
+            <div className="rounded-lg bg-gray-800/50 p-4">
+              <h3 className="mb-2 font-semibold text-white">
+                {t(
+                  'docs.vision.future.step1.title',
+                  'Global Prediction Markets'
+                )}
+              </h3>
+              <p className="text-sm text-gray-300">
+                {t(
+                  'docs.vision.future.step1.description',
+                  'Access to prediction markets for events worldwide, from sports to politics to weather.'
+                )}
+              </p>
             </div>
-            <div className="flex items-start">
-              <span className="mr-3 mt-0.5 flex h-6 w-6 items-center justify-center rounded-full bg-orange-600 text-sm font-bold text-white">
-                2
-              </span>
-              <div>
-                <h3 className="font-semibold text-white">
-                  {t('docs.vision.future.step2.title', 'AI-Powered Insights')}
-                </h3>
-                <p className="text-sm text-gray-300">
-                  {t(
-                    'docs.vision.future.step2.description',
-                    'Advanced AI analysis providing unbiased market insights and automated resolution.'
-                  )}
-                </p>
-              </div>
+            <div className="rounded-lg bg-gray-800/50 p-4">
+              <h3 className="mb-2 font-semibold text-white">
+                {t('docs.vision.future.step2.title', 'AI-Powered Insights')}
+              </h3>
+              <p className="text-sm text-gray-300">
+                {t(
+                  'docs.vision.future.step2.description',
+                  'Advanced AI analysis providing unbiased market insights and automated resolution.'
+                )}
+              </p>
             </div>
-            <div className="flex items-start">
-              <span className="mr-3 mt-0.5 flex h-6 w-6 items-center justify-center rounded-full bg-orange-600 text-sm font-bold text-white">
-                3
-              </span>
-              <div>
-                <h3 className="font-semibold text-white">
-                  {t(
-                    'docs.vision.future.step3.title',
-                    'Decentralized Governance'
-                  )}
-                </h3>
-                <p className="text-sm text-gray-300">
-                  {t(
-                    'docs.vision.future.step3.description',
-                    'Community-driven decisions on platform features and market categories.'
-                  )}
-                </p>
-              </div>
+            <div className="rounded-lg bg-gray-800/50 p-4">
+              <h3 className="mb-2 font-semibold text-white">
+                {t(
+                  'docs.vision.future.step3.title',
+                  'Decentralized Governance'
+                )}
+              </h3>
+              <p className="text-sm text-gray-300">
+                {t(
+                  'docs.vision.future.step3.description',
+                  'Community-driven decisions on platform features and market categories.'
+                )}
+              </p>
             </div>
-            <div className="flex items-start">
-              <span className="mr-3 mt-0.5 flex h-6 w-6 items-center justify-center rounded-full bg-orange-600 text-sm font-bold text-white">
-                4
-              </span>
-              <div>
-                <h3 className="font-semibold text-white">
-                  {t(
-                    'docs.vision.future.step4.title',
-                    'Cross-Chain Integration'
-                  )}
-                </h3>
-                <p className="text-sm text-gray-300">
-                  {t(
-                    'docs.vision.future.step4.description',
-                    'Multi-chain support for broader accessibility and reduced transaction costs.'
-                  )}
-                </p>
-              </div>
+            <div className="rounded-lg bg-gray-800/50 p-4">
+              <h3 className="mb-2 font-semibold text-white">
+                {t('docs.vision.future.step4.title', 'Cross-Chain Integration')}
+              </h3>
+              <p className="text-sm text-gray-300">
+                {t(
+                  'docs.vision.future.step4.description',
+                  'Multi-chain support for broader accessibility and reduced transaction costs.'
+                )}
+              </p>
             </div>
           </div>
         </div>

@@ -11,18 +11,21 @@ export default function DocsPage() {
     <div className="prose prose-invert max-w-none">
       <div className="mb-8">
         <h1 className="mb-4 text-3xl font-bold text-white">
-          {t('docs.overview.title', 'DarkBet Documentation')}
+          {t(
+            'docs.overview.title',
+            'DarkBet: The Future of Private Prediction Markets'
+          )}
         </h1>
         <p className="text-lg leading-relaxed text-gray-300">
           {t(
             'docs.overview.description',
-            'DarkBet is an on-chain prediction market built on BNB Chain, designed to allow users to forecast real-world events, market trends, and community-driven outcomes using blockchain technology. Every prediction, transaction, and resolution is executed on-chain, ensuring verifiable transparency and fairness.'
+            "DarkBet revolutionizes prediction markets with DarkPool technology — the first privacy-first prediction system that keeps your crypto market forecasts completely hidden until resolution. Built on BNB Chain for speed and efficiency, we're creating the fastest, most scalable prediction darkpool in Web3."
           )}
         </p>
         <p className="mt-4 text-base leading-relaxed text-gray-400">
           {t(
             'docs.overview.subdescription',
-            "Whether it's sports results, political elections, or crypto price movements, DarkBet turns public sentiment and data analysis into actionable, tradeable predictions, creating a decentralized marketplace for knowledge and foresight with the revolutionary Dark Pool betting system."
+            'Unlike traditional prediction markets where strategies are visible, DarkPool ensures complete privacy during betting phases. This prevents market manipulation, copy trading, and first-mover advantages while maintaining full transparency in outcomes. Currently focused on crypto predictions with plans to expand across all major prediction categories.'
           )}
         </p>
       </div>
@@ -40,7 +43,7 @@ export default function DocsPage() {
               />
               {t(
                 'docs.overview.features.privacy',
-                'Dark Pool Privacy - Bets remain hidden until resolution'
+                'DarkPool Technology - Revolutionary privacy-first betting system'
               )}
             </li>
             <li className="flex items-center">
@@ -50,7 +53,7 @@ export default function DocsPage() {
               />
               {t(
                 'docs.overview.features.ai',
-                'AI-Powered Resolution - Automated outcome determination'
+                'AI Oracle Network - Multi-source data verification and resolution'
               )}
             </li>
             <li className="flex items-center">
@@ -60,7 +63,7 @@ export default function DocsPage() {
               />
               {t(
                 'docs.overview.features.blockchain',
-                'Fully On-Chain - Built on BNB Smart Chain'
+                'BNB Chain Optimized - Ultra-fast transactions with minimal fees'
               )}
             </li>
             <li className="flex items-center">
@@ -70,7 +73,7 @@ export default function DocsPage() {
               />
               {t(
                 'docs.overview.features.amm',
-                'Dynamic AMM Pricing - Fair market-based pricing'
+                'Dynamic Pricing Engine - Real-time market-based odds calculation'
               )}
             </li>
           </ul>
@@ -108,13 +111,13 @@ export default function DocsPage() {
                 <p className="font-medium text-white">
                   {t(
                     'docs.overview.getting_started.step2',
-                    'Create or join predictions'
+                    'Create or join crypto predictions'
                   )}
                 </p>
                 <p className="text-sm text-gray-400">
                   {t(
                     'docs.overview.getting_started.step2_desc',
-                    'Describe your prediction or browse existing markets'
+                    'Predict crypto price movements or browse existing crypto markets'
                   )}
                 </p>
               </div>
@@ -142,72 +145,254 @@ export default function DocsPage() {
         </div>
       </div>
 
+      {/* DarkPool Technology Section */}
       <div className="mb-8 rounded-lg bg-gradient-to-r from-orange-600/20 to-red-600/20 p-6">
         <h3 className="mb-4 text-2xl font-semibold text-white">
-          {t('docs.overview.dark_pool.title', 'What is Dark Pool Betting?')}
+          {t(
+            'docs.overview.dark_pool.title',
+            'DarkPool Technology: The Privacy Revolution'
+          )}
         </h3>
-        <p className="mb-4 leading-relaxed text-gray-300">
+        <p className="mb-6 leading-relaxed text-gray-300">
           {t(
             'docs.overview.dark_pool.description',
-            'Dark Pool betting combines the privacy and efficiency of traditional dark pools with prediction markets. Your bets remain completely hidden until the market resolves, preventing market manipulation and ensuring a fair, competitive environment for all participants.'
+            'DarkPool is our proprietary privacy-first prediction system that fundamentally changes how prediction markets work. Unlike traditional markets where all bets are visible, DarkPool keeps your crypto price predictions completely hidden until resolution — creating a fair, manipulation-free environment.'
           )}
         </p>
-        <div className="grid gap-4 md:grid-cols-2">
-          <div className="rounded-lg bg-gray-800/50 p-4">
-            <h4 className="mb-2 font-semibold text-white">
-              {t(
-                'docs.overview.dark_pool.benefits.privacy',
-                'Privacy Protection'
-              )}
+
+        <div className="grid gap-6 md:grid-cols-2">
+          <div className="space-y-4">
+            <h4 className="text-lg font-semibold text-white">
+              {t('docs.overview.dark_pool.advantages.title', 'Key Advantages')}
             </h4>
-            <p className="text-sm text-gray-400">
-              {t(
-                'docs.overview.dark_pool.benefits.privacy_desc',
-                'Your betting strategy remains completely hidden from other participants'
-              )}
-            </p>
+            <div className="space-y-3">
+              <div className="rounded-lg bg-gray-800/50 p-4">
+                <h5 className="mb-2 font-semibold text-orange-400">
+                  {t(
+                    'docs.overview.dark_pool.advantages.privacy',
+                    '🔒 Complete Privacy'
+                  )}
+                </h5>
+                <p className="text-sm text-gray-300">
+                  {t(
+                    'docs.overview.dark_pool.advantages.privacy_desc',
+                    'Your betting strategy remains completely hidden from other participants until market resolution'
+                  )}
+                </p>
+              </div>
+              <div className="rounded-lg bg-gray-800/50 p-4">
+                <h5 className="mb-2 font-semibold text-orange-400">
+                  {t(
+                    'docs.overview.dark_pool.advantages.fairness',
+                    '⚖️ True Fairness'
+                  )}
+                </h5>
+                <p className="text-sm text-gray-300">
+                  {t(
+                    'docs.overview.dark_pool.advantages.fairness_desc',
+                    'Eliminates first-mover advantage, copy trading, and market manipulation'
+                  )}
+                </p>
+              </div>
+            </div>
           </div>
-          <div className="rounded-lg bg-gray-800/50 p-4">
-            <h4 className="mb-2 font-semibold text-white">
+
+          <div className="space-y-4">
+            <h4 className="text-lg font-semibold text-white">
               {t(
-                'docs.overview.dark_pool.benefits.fairness',
-                'Fair Competition'
+                'docs.overview.dark_pool.performance.title',
+                'Performance Metrics'
               )}
             </h4>
-            <p className="text-sm text-gray-400">
-              {t(
-                'docs.overview.dark_pool.benefits.fairness_desc',
-                'No first-mover advantage or copy trading'
-              )}
-            </p>
+            <div className="space-y-3">
+              <div className="rounded-lg bg-gray-800/50 p-4">
+                <h5 className="mb-2 font-semibold text-orange-400">
+                  {t(
+                    'docs.overview.dark_pool.performance.speed',
+                    '⚡ Resolution Speed'
+                  )}
+                </h5>
+                <p className="text-sm text-gray-300">
+                  {t(
+                    'docs.overview.dark_pool.performance.speed_desc',
+                    '95% of markets resolve within 2 hours using AI-powered oracle network'
+                  )}
+                </p>
+              </div>
+              <div className="rounded-lg bg-gray-800/50 p-4">
+                <h5 className="mb-2 font-semibold text-orange-400">
+                  {t(
+                    'docs.overview.dark_pool.performance.scale',
+                    '📈 Current Scale'
+                  )}
+                </h5>
+                <p className="text-sm text-gray-300">
+                  {t(
+                    'docs.overview.dark_pool.performance.scale_desc',
+                    'Supporting 7.2 BNB volume across 11 active markets with 32 participants'
+                  )}
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
+      {/* Scalability & Performance Roadmap */}
+      <div className="mb-8 rounded-lg bg-gradient-to-r from-orange-600/20 to-red-600/20 p-6">
+        <h3 className="mb-4 text-2xl font-semibold text-white">
+          {t(
+            'docs.overview.roadmap.title',
+            '🛠️ Roadmap: Scalability & Performance'
+          )}
+        </h3>
+        <p className="mb-6 leading-relaxed text-gray-300">
+          {t(
+            'docs.overview.roadmap.description',
+            'As DarkBet grows, our next major milestone is to expand the prediction engine and dispute system to handle global scale without compromising privacy or fairness.'
+          )}
+        </p>
+
+        <div className="grid gap-6 md:grid-cols-2">
+          {/* Performance Goals */}
+          <div className="space-y-4">
+            <h4 className="text-lg font-semibold text-white">
+              {t(
+                'docs.overview.roadmap.performance.title',
+                'Performance Targets'
+              )}
+            </h4>
+            <div className="space-y-3">
+              <div className="rounded-lg bg-gray-800/50 p-4">
+                <h5 className="mb-2 font-semibold text-orange-400">
+                  {t(
+                    'docs.overview.roadmap.performance.fast_resolutions',
+                    '⚡ Fast Resolutions'
+                  )}
+                </h5>
+                <p className="text-sm text-gray-300">
+                  {t(
+                    'docs.overview.roadmap.performance.fast_resolutions_desc',
+                    "We're targeting the vast majority of markets to resolve automatically within hours, ensuring near-instant outcomes for most predictions."
+                  )}
+                </p>
+              </div>
+              <div className="rounded-lg bg-gray-800/50 p-4">
+                <h5 className="mb-2 font-semibold text-orange-400">
+                  {t(
+                    'docs.overview.roadmap.performance.transparent_disputes',
+                    '⏳ Transparent Disputes'
+                  )}
+                </h5>
+                <p className="text-sm text-gray-300">
+                  {t(
+                    'docs.overview.roadmap.performance.transparent_disputes_desc',
+                    'For contested results, DarkBet will introduce a tracked dispute system that finalizes outcomes quickly — giving users full visibility into each step of the review process.'
+                  )}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Scale Goals */}
+          <div className="space-y-4">
+            <h4 className="text-lg font-semibold text-white">
+              {t('docs.overview.roadmap.scale.title', 'Built for Scale')}
+            </h4>
+            <div className="space-y-3">
+              <div className="rounded-lg bg-gray-800/50 p-4">
+                <h5 className="mb-2 font-semibold text-orange-400">
+                  {t(
+                    'docs.overview.roadmap.scale.capacity',
+                    '🧱 Infrastructure Goals'
+                  )}
+                </h5>
+                <ul className="space-y-1 text-sm text-gray-300">
+                  <li>
+                    • Supporting massive scale with 50,000+ concurrent active
+                    markets
+                  </li>
+                  <li>
+                    • Processing high-volume daily market creation of 1,000+
+                    markets at enterprise scale
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Technical Vision */}
+        <div className="mt-6 rounded-lg bg-gray-800/30 p-4">
+          <h4 className="mb-3 text-lg font-semibold text-white">
+            {t('docs.overview.roadmap.technical.title', '🔬 Technical Vision')}
+          </h4>
+          <p className="mb-4 text-sm text-gray-300">
+            {t(
+              'docs.overview.roadmap.technical.description',
+              "To achieve this, we'll expand the DarkPool backend and oracle pipeline through:"
+            )}
+          </p>
+          <div className="grid gap-3 md:grid-cols-2">
+            <ul className="space-y-1 text-sm text-gray-300">
+              <li>• Optimized smart contracts for faster on-chain execution</li>
+              <li>• Batched oracle resolutions for grouped predictions</li>
+            </ul>
+            <ul className="space-y-1 text-sm text-gray-300">
+              <li>• Load-balanced backend architecture using MongoDB</li>
+              <li>• Decentralized API nodes for reliability and uptime</li>
+            </ul>
+          </div>
+        </div>
+
+        {/* Mission Statement */}
+        <div className="mt-6 rounded-lg bg-gradient-to-r from-yellow-600/20 to-orange-600/20 p-4">
+          <h4 className="mb-2 text-lg font-semibold text-white">
+            {t('docs.overview.roadmap.mission.title', '🚀 The Mission')}
+          </h4>
+          <p className="text-sm text-gray-300">
+            {t(
+              'docs.overview.roadmap.mission.description',
+              "DarkBet's long-term mission is to become the fastest, most scalable prediction darkpool in Web3 — combining speed, privacy, and trust across every market."
+            )}
+          </p>
+        </div>
+      </div>
+
+      {/* Call to Action Section */}
       <div className="text-center">
         <h3 className="mb-4 text-2xl font-semibold text-white">
-          {t('docs.overview.ready.title', 'Ready to Start?')}
+          {t('docs.overview.ready.title', 'Ready to Experience DarkPool?')}
         </h3>
         <p className="mb-6 text-gray-300">
           {t(
             'docs.overview.ready.description',
-            'Explore our documentation to learn more about DarkBet and start your prediction market journey.'
+            'Join the privacy revolution in prediction markets. Start making crypto predictions with complete privacy and fair competition.'
           )}
         </p>
         <div className="flex flex-wrap justify-center gap-4">
           <a
             href="/docs/connect-wallet"
-            className="rounded-lg bg-orange-600 px-6 py-3 font-medium text-white hover:bg-orange-700"
+            className="rounded-lg bg-gradient-to-r from-orange-600 to-red-600 px-8 py-3 font-medium text-white transition-all duration-200 hover:from-orange-700 hover:to-red-700"
           >
             {t('docs.overview.ready.connect_wallet', 'Connect Wallet')}
           </a>
           <a
             href="/docs/creating-predictions"
-            className="rounded-lg bg-gray-700 px-6 py-3 font-medium text-white hover:bg-gray-600"
+            className="rounded-lg bg-gradient-to-r from-gray-700 to-gray-600 px-8 py-3 font-medium text-white transition-all duration-200 hover:from-gray-600 hover:to-gray-500"
           >
-            {t('docs.overview.ready.create_prediction', 'Create Prediction')}
+            {t(
+              'docs.overview.ready.create_prediction',
+              'Create Crypto Prediction'
+            )}
           </a>
         </div>
+        <p className="mt-4 text-sm text-gray-400">
+          {t(
+            'docs.overview.ready.note',
+            'Experience the future of private prediction markets today'
+          )}
+        </p>
       </div>
     </div>
   );
