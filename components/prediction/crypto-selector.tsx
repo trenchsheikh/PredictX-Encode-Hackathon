@@ -235,7 +235,7 @@ export function CryptoSelector({
           placeholder="Search cryptocurrencies..."
           value={searchQuery}
           onChange={e => setSearchQuery(e.target.value)}
-          className="border-gray-700/50 bg-gray-800/60 pl-10 text-white placeholder:text-gray-400 focus:border-yellow-400/50 focus:ring-yellow-400/20"
+          className="border-white/10 bg-white/5 pl-10 text-white backdrop-blur-sm transition-all duration-300 placeholder:text-gray-400 focus:border-yellow-400/50 focus:ring-yellow-400/20"
         />
       </div>
       {lastUpdated && (
@@ -251,7 +251,7 @@ export function CryptoSelector({
           <Card
             key={crypto.id}
             className={cn(
-              'cursor-pointer border-gray-700/50 bg-gray-800/60 backdrop-blur-sm transition-all duration-200 hover:scale-[1.02] hover:shadow-lg',
+              'cursor-pointer border-white/10 bg-gradient-to-r from-gray-800/60 to-gray-700/40 backdrop-blur-sm transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:shadow-yellow-500/10',
               value === crypto.id
                 ? 'bg-yellow-400/10 ring-2 ring-yellow-400/50'
                 : 'hover:bg-gray-800/80 hover:ring-1 hover:ring-yellow-400/30'

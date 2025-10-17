@@ -2,6 +2,14 @@
 
 import { useTranslation } from 'react-i18next';
 import '@/lib/i18n';
+import {
+  DollarSign,
+  Settings,
+  ClipboardList,
+  AlertTriangle,
+  Calculator,
+  CircleDot,
+} from 'lucide-react';
 
 export default function ClaimingWinningsPage() {
   const { t } = useTranslation();
@@ -24,32 +32,48 @@ export default function ClaimingWinningsPage() {
         {/* How Payouts Work */}
         <div className="rounded-lg bg-gray-800 p-6">
           <h2 className="mb-4 text-xl font-semibold text-white">
-            💰 {t('docs.claiming_winnings.payouts.title', 'How Payouts Work')}
+            <DollarSign
+              className="mr-2 inline h-5 w-5 align-text-bottom text-yellow-400"
+              aria-hidden
+            />{' '}
+            {t('docs.claiming_winnings.payouts.title', 'How Payouts Work')}
           </h2>
-          <ul className="space-y-2 text-gray-300">
+          <ul className="space-y-3 text-gray-300">
             <li className="flex items-start">
-              <span className="mr-2 mt-1 text-green-400">•</span>
+              <CircleDot
+                className="mr-3 mt-1 h-4 w-4 flex-shrink-0 text-green-400"
+                aria-hidden
+              />
               {t(
                 'docs.claiming_winnings.payouts.winners_split',
                 'Winners split the total pool proportionally'
               )}
             </li>
             <li className="flex items-start">
-              <span className="mr-2 mt-1 text-green-400">•</span>
+              <CircleDot
+                className="mr-3 mt-1 h-4 w-4 flex-shrink-0 text-green-400"
+                aria-hidden
+              />
               {t(
                 'docs.claiming_winnings.payouts.formula',
                 'Payout = (Your Shares ÷ Total Winning Shares) × Total Pool'
               )}
             </li>
             <li className="flex items-start">
-              <span className="mr-2 mt-1 text-green-400">•</span>
+              <CircleDot
+                className="mr-3 mt-1 h-4 w-4 flex-shrink-0 text-green-400"
+                aria-hidden
+              />
               {t(
                 'docs.claiming_winnings.payouts.platform_fee',
                 '1.5% platform fee automatically deducted'
               )}
             </li>
             <li className="flex items-start">
-              <span className="mr-2 mt-1 text-green-400">•</span>
+              <CircleDot
+                className="mr-3 mt-1 h-4 w-4 flex-shrink-0 text-green-400"
+                aria-hidden
+              />
               {t(
                 'docs.claiming_winnings.payouts.receive',
                 'You receive 98.5% of gross winnings in BNB'
@@ -61,32 +85,48 @@ export default function ClaimingWinningsPage() {
         {/* Security Features */}
         <div className="rounded-lg bg-gray-800 p-6">
           <h2 className="mb-4 text-xl font-semibold text-white">
-            ⚙️ {t('docs.claiming_winnings.security.title', 'Security Features')}
+            <Settings
+              className="mr-2 inline h-5 w-5 align-text-bottom text-yellow-400"
+              aria-hidden
+            />{' '}
+            {t('docs.claiming_winnings.security.title', 'Security Features')}
           </h2>
-          <ul className="space-y-2 text-gray-300">
+          <ul className="space-y-3 text-gray-300">
             <li className="flex items-start">
-              <span className="mr-2 mt-1 text-blue-400">•</span>
+              <CircleDot
+                className="mr-3 mt-1 h-4 w-4 flex-shrink-0 text-blue-400"
+                aria-hidden
+              />
               {t(
                 'docs.claiming_winnings.security.vault_wallet',
                 'Secure vault wallet holds all funds'
               )}
             </li>
             <li className="flex items-start">
-              <span className="mr-2 mt-1 text-blue-400">•</span>
+              <CircleDot
+                className="mr-3 mt-1 h-4 w-4 flex-shrink-0 text-blue-400"
+                aria-hidden
+              />
               {t(
                 'docs.claiming_winnings.security.verification',
                 'On-chain transaction verification'
               )}
             </li>
             <li className="flex items-start">
-              <span className="mr-2 mt-1 text-blue-400">•</span>
+              <CircleDot
+                className="mr-3 mt-1 h-4 w-4 flex-shrink-0 text-blue-400"
+                aria-hidden
+              />
               {t(
                 'docs.claiming_winnings.security.cooldown',
                 '30-second claim cooldown prevents duplicates'
               )}
             </li>
             <li className="flex items-start">
-              <span className="mr-2 mt-1 text-blue-400">•</span>
+              <CircleDot
+                className="mr-3 mt-1 h-4 w-4 flex-shrink-0 text-blue-400"
+                aria-hidden
+              />
               {t(
                 'docs.claiming_winnings.security.bscscan',
                 'View transaction on BSCScan after claiming'
@@ -98,7 +138,10 @@ export default function ClaimingWinningsPage() {
         {/* Step-by-Step Process */}
         <div className="rounded-lg bg-gray-800 p-6">
           <h2 className="mb-4 text-xl font-semibold text-white">
-            📋{' '}
+            <ClipboardList
+              className="mr-2 inline h-5 w-5 align-text-bottom text-yellow-400"
+              aria-hidden
+            />{' '}
             {t(
               'docs.claiming_winnings.process.title',
               'How to Claim Your Winnings'
@@ -187,35 +230,50 @@ export default function ClaimingWinningsPage() {
         {/* Important Notes */}
         <div className="rounded-lg border border-yellow-600/30 bg-yellow-600/10 p-6">
           <div className="flex items-start">
-            <span className="mr-3 mt-1 text-yellow-400">⚠️</span>
+            <AlertTriangle
+              className="mr-3 mt-1 h-4 w-4 flex-shrink-0 text-yellow-400"
+              aria-hidden
+            />
             <div>
               <h3 className="mb-2 font-semibold text-yellow-300">
                 {t('docs.claiming_winnings.notes.title', 'Important Notes')}
               </h3>
-              <ul className="space-y-2 text-sm text-gray-300">
+              <ul className="space-y-3 text-sm text-gray-300">
                 <li className="flex items-start">
-                  <span className="mr-2 mt-1 text-yellow-400">•</span>
+                  <CircleDot
+                    className="mr-3 mt-1 h-4 w-4 flex-shrink-0 text-yellow-400"
+                    aria-hidden
+                  />
                   {t(
                     'docs.claiming_winnings.notes.gas_fees',
                     'You will need to pay gas fees for the claim transaction'
                   )}
                 </li>
                 <li className="flex items-start">
-                  <span className="mr-2 mt-1 text-yellow-400">•</span>
+                  <CircleDot
+                    className="mr-3 mt-1 h-4 w-4 flex-shrink-0 text-yellow-400"
+                    aria-hidden
+                  />
                   {t(
                     'docs.claiming_winnings.notes.cooldown_period',
                     'There is a 30-second cooldown between claims to prevent duplicate transactions'
                   )}
                 </li>
                 <li className="flex items-start">
-                  <span className="mr-2 mt-1 text-yellow-400">•</span>
+                  <CircleDot
+                    className="mr-3 mt-1 h-4 w-4 flex-shrink-0 text-yellow-400"
+                    aria-hidden
+                  />
                   {t(
                     'docs.claiming_winnings.notes.platform_fee',
                     'A 1.5% platform fee is automatically deducted from all winnings'
                   )}
                 </li>
                 <li className="flex items-start">
-                  <span className="mr-2 mt-1 text-yellow-400">•</span>
+                  <CircleDot
+                    className="mr-3 mt-1 h-4 w-4 flex-shrink-0 text-yellow-400"
+                    aria-hidden
+                  />
                   {t(
                     'docs.claiming_winnings.notes.transaction_history',
                     'All transactions are recorded on-chain and can be viewed on BSCScan'
@@ -229,7 +287,10 @@ export default function ClaimingWinningsPage() {
         {/* Example Calculation */}
         <div className="rounded-lg bg-gray-800 p-6">
           <h2 className="mb-4 text-xl font-semibold text-white">
-            🧮{' '}
+            <Calculator
+              className="mr-2 inline h-5 w-5 align-text-bottom text-yellow-400"
+              aria-hidden
+            />{' '}
             {t('docs.claiming_winnings.example.title', 'Example Calculation')}
           </h2>
           <div className="rounded-lg border border-gray-700 p-4">
@@ -239,7 +300,7 @@ export default function ClaimingWinningsPage() {
                 'If you bet on "YES" with 10 shares and "YES" wins:'
               )}
             </p>
-            <ul className="space-y-1 text-sm text-gray-300">
+            <ul className="space-y-2 text-sm text-gray-300">
               <li>
                 •{' '}
                 {t(

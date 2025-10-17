@@ -157,7 +157,7 @@ export function TransactionHistoryModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-h-[90vh] max-w-4xl overflow-y-auto bg-black p-4 text-white sm:p-6">
+      <DialogContent className="max-h-[90vh] max-w-4xl overflow-y-auto border border-white/10 bg-gradient-to-br from-gray-900/95 via-gray-800/90 to-gray-900/95 p-4 text-white shadow-2xl backdrop-blur-md sm:p-6">
         <DialogHeader>
           <DialogTitle className="text-xl font-bold text-white sm:text-2xl">
             Transaction History
@@ -180,7 +180,7 @@ export function TransactionHistoryModal({
           <div className="space-y-6">
             {/* Summary Stats */}
             <div className="grid grid-cols-2 gap-2 sm:gap-4 md:grid-cols-4">
-              <Card className="border-white/10 bg-black/60">
+              <Card className="border-white/10 bg-gradient-to-r from-gray-800/60 to-gray-700/40 backdrop-blur-sm">
                 <CardContent className="p-3 text-center sm:p-4">
                   <div
                     className="truncate text-xl font-bold text-blue-400 sm:text-2xl"
@@ -194,7 +194,7 @@ export function TransactionHistoryModal({
                 </CardContent>
               </Card>
 
-              <Card className="border-white/10 bg-black/60">
+              <Card className="border-white/10 bg-gradient-to-r from-gray-800/60 to-gray-700/40 backdrop-blur-sm">
                 <CardContent className="p-3 text-center sm:p-4">
                   <div
                     className="truncate text-xl font-bold text-green-400 sm:text-2xl"
@@ -208,7 +208,7 @@ export function TransactionHistoryModal({
                 </CardContent>
               </Card>
 
-              <Card className="border-white/10 bg-black/60">
+              <Card className="border-white/10 bg-gradient-to-r from-gray-800/60 to-gray-700/40 backdrop-blur-sm">
                 <CardContent className="p-3 text-center sm:p-4">
                   <div
                     className="truncate text-xl font-bold text-purple-400 sm:text-2xl"
@@ -222,7 +222,7 @@ export function TransactionHistoryModal({
                 </CardContent>
               </Card>
 
-              <Card className="border-white/10 bg-black/60">
+              <Card className="border-white/10 bg-gradient-to-r from-gray-800/60 to-gray-700/40 backdrop-blur-sm">
                 <CardContent className="p-3 text-center sm:p-4">
                   <div
                     className="truncate text-xl font-bold text-orange-400 sm:text-2xl"
@@ -243,7 +243,7 @@ export function TransactionHistoryModal({
               {history.transactions.map((tx, index) => (
                 <Card
                   key={index}
-                  className="border-white/10 bg-black/50 transition-shadow hover:shadow-md"
+                  className="border-white/10 bg-gradient-to-r from-gray-800/50 to-gray-700/30 backdrop-blur-sm transition-all duration-300 hover:shadow-lg hover:shadow-yellow-500/10"
                 >
                   <CardContent className="p-3 sm:p-4">
                     <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">

@@ -721,9 +721,14 @@ export default function MyBetsPage() {
       <div className="relative z-10 mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-16 lg:px-8">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="font-display mb-2 text-4xl text-white">
-            {t('my_bets.title')}
-          </h1>
+          <div className="mb-4 flex items-center gap-3">
+            <div className="rounded-lg border border-yellow-400/30 bg-gradient-to-r from-yellow-400/20 to-yellow-600/20 p-2">
+              <Wallet className="h-6 w-6 text-yellow-400" />
+            </div>
+            <h1 className="font-display text-4xl text-white">
+              {t('my_bets.title')}
+            </h1>
+          </div>
           <p className="font-body text-gray-300">{t('my_bets.subtitle')}</p>
 
           {/* Connection Status */}
@@ -807,10 +812,10 @@ export default function MyBetsPage() {
                   key={tab.key}
                   onClick={() => setActiveTab(tab.key as any)}
                   className={cn(
-                    'whitespace-nowrap border-b-2 px-1 py-2 text-sm font-medium',
+                    'whitespace-nowrap border-b-2 px-1 py-2 text-sm font-medium transition-all duration-300',
                     activeTab === tab.key
-                      ? 'border-white text-white'
-                      : 'border-transparent text-white/60 hover:border-white/30 hover:text-white'
+                      ? 'border-yellow-400 text-yellow-400'
+                      : 'border-transparent text-white/60 hover:border-yellow-400/50 hover:text-yellow-300'
                   )}
                 >
                   {tab.label}

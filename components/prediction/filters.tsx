@@ -55,7 +55,7 @@ export function Filters({
               variant="ghost"
               size="sm"
               onClick={clearAllFilters}
-              className="text-black hover:bg-black/10 hover:text-black/80"
+              className="text-yellow-400 hover:bg-yellow-400/10 hover:text-yellow-300"
             >
               <X className="mr-1 h-4 w-4" />
               Clear all
@@ -68,7 +68,7 @@ export function Filters({
       </div>
 
       {/* Filter Options - Always Visible */}
-      <div className="grid grid-cols-1 gap-4 rounded-lg border border-black bg-black/90 p-4 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-1 gap-4 rounded-lg border border-white/10 bg-gradient-to-br from-gray-900/50 via-gray-800/30 to-gray-900/50 p-4 backdrop-blur-sm md:grid-cols-2 lg:grid-cols-4">
         {/* Status Filter */}
         <div className="space-y-2">
           <label className="text-sm font-medium text-white">Status</label>
@@ -80,7 +80,7 @@ export function Filters({
                 e.target.value === 'all' ? undefined : e.target.value
               )
             }
-            className="w-full rounded-md border border-white/20 bg-black/50 p-2 text-white focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400"
+            className="w-full rounded-md border border-white/20 bg-white/5 p-2 text-white backdrop-blur-sm transition-all duration-300 focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400"
           >
             <option value="all">All Status</option>
             <option value="active">Active</option>
@@ -101,7 +101,7 @@ export function Filters({
                 e.target.value === 'all' ? undefined : e.target.value
               )
             }
-            className="w-full rounded-md border border-white/20 bg-black/50 p-2 text-white focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400"
+            className="w-full rounded-md border border-white/20 bg-white/5 p-2 text-white backdrop-blur-sm transition-all duration-300 focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400"
           >
             <option value="all">All Categories</option>
             {categories.map(category => (
@@ -123,7 +123,7 @@ export function Filters({
                 e.target.value === 'all' ? undefined : e.target.value
               )
             }
-            className="w-full rounded-md border border-white/20 bg-black/50 p-2 text-white focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400"
+            className="w-full rounded-md border border-white/20 bg-white/5 p-2 text-white backdrop-blur-sm transition-all duration-300 focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400"
           >
             {timeRanges.map(range => (
               <option key={range.value} value={range.value}>
@@ -139,7 +139,7 @@ export function Filters({
           <select
             value={filters.isHot ? 'hot' : 'all'}
             onChange={e => updateFilter('isHot', e.target.value === 'hot')}
-            className="w-full rounded-md border border-white/20 bg-black/50 p-2 text-white focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400"
+            className="w-full rounded-md border border-white/20 bg-white/5 p-2 text-white backdrop-blur-sm transition-all duration-300 focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400"
           >
             <option value="all">All</option>
             <option value="hot">Hot Only</option>
@@ -151,7 +151,7 @@ export function Filters({
       {hasActiveFilters && (
         <div className="flex flex-wrap gap-2">
           {filters.status && (
-            <Badge className="flex items-center gap-1 border border-white/20 bg-black/90 text-white">
+            <Badge variant="secondary" className="flex items-center gap-1">
               Status: {filters.status}
               <button
                 onClick={() => updateFilter('status', undefined)}
@@ -162,7 +162,7 @@ export function Filters({
             </Badge>
           )}
           {filters.category && (
-            <Badge className="flex items-center gap-1 border border-white/20 bg-black/90 text-white">
+            <Badge variant="secondary" className="flex items-center gap-1">
               Category:{' '}
               {categories.find(c => c.value === filters.category)?.label}
               <button
@@ -174,7 +174,7 @@ export function Filters({
             </Badge>
           )}
           {filters.timeRange && (
-            <Badge className="flex items-center gap-1 border border-white/20 bg-black/90 text-white">
+            <Badge variant="secondary" className="flex items-center gap-1">
               Time: {timeRanges.find(t => t.value === filters.timeRange)?.label}
               <button
                 onClick={() => updateFilter('timeRange', undefined)}
@@ -185,7 +185,7 @@ export function Filters({
             </Badge>
           )}
           {filters.isHot && (
-            <Badge className="flex items-center gap-1 border border-yellow-600 bg-yellow-500 text-black">
+            <Badge variant="default" className="flex items-center gap-1">
               Hot Only
               <button
                 onClick={() => updateFilter('isHot', undefined)}

@@ -2,6 +2,16 @@
 
 import { useTranslation } from 'react-i18next';
 import '@/lib/i18n';
+import {
+  Link as LinkIcon,
+  Lock,
+  Search,
+  Users,
+  Trophy,
+  Bot,
+  Shield,
+  KeyRound,
+} from 'lucide-react';
 
 export default function WhyChooseDarkBetPage() {
   const { t } = useTranslation();
@@ -21,10 +31,13 @@ export default function WhyChooseDarkBetPage() {
       </div>
 
       <div className="space-y-8">
-        <div className="grid gap-6 md:grid-cols-2">
+        <div className="grid gap-8 md:grid-cols-2">
           <div className="rounded-lg bg-gray-800 p-6">
             <h3 className="mb-3 text-lg font-semibold text-white">
-              ⛓️{' '}
+              <LinkIcon
+                className="mr-2 inline h-5 w-5 align-text-bottom text-yellow-400"
+                aria-hidden
+              />{' '}
               {t('docs.why_choose_darkbet.built_on_bnb', 'Built on BNB Chain')}
             </h3>
             <p className="text-gray-300">
@@ -37,7 +50,10 @@ export default function WhyChooseDarkBetPage() {
 
           <div className="rounded-lg bg-gray-800 p-6">
             <h3 className="mb-3 text-lg font-semibold text-white">
-              🔒{' '}
+              <Lock
+                className="mr-2 inline h-5 w-5 align-text-bottom text-yellow-400"
+                aria-hidden
+              />{' '}
               {t(
                 'docs.why_choose_darkbet.dark_pool_privacy',
                 'Dark Pool Privacy'
@@ -53,7 +69,10 @@ export default function WhyChooseDarkBetPage() {
 
           <div className="rounded-lg bg-gray-800 p-6">
             <h3 className="mb-3 text-lg font-semibold text-white">
-              🔍{' '}
+              <Search
+                className="mr-2 inline h-5 w-5 align-text-bottom text-yellow-400"
+                aria-hidden
+              />{' '}
               {t(
                 'docs.why_choose_darkbet.transparent',
                 'Transparent and Verifiable'
@@ -69,7 +88,10 @@ export default function WhyChooseDarkBetPage() {
 
           <div className="rounded-lg bg-gray-800 p-6">
             <h3 className="mb-3 text-lg font-semibold text-white">
-              👥{' '}
+              <Users
+                className="mr-2 inline h-5 w-5 align-text-bottom text-yellow-400"
+                aria-hidden
+              />{' '}
               {t(
                 'docs.why_choose_darkbet.community_driven',
                 'Community-Driven Markets'
@@ -85,7 +107,10 @@ export default function WhyChooseDarkBetPage() {
 
           <div className="rounded-lg bg-gray-800 p-6">
             <h3 className="mb-3 text-lg font-semibold text-white">
-              🏆{' '}
+              <Trophy
+                className="mr-2 inline h-5 w-5 align-text-bottom text-yellow-400"
+                aria-hidden
+              />{' '}
               {t(
                 'docs.why_choose_darkbet.rewarding_accuracy',
                 'Rewarding Accuracy'
@@ -101,7 +126,10 @@ export default function WhyChooseDarkBetPage() {
 
           <div className="rounded-lg bg-gray-800 p-6">
             <h3 className="mb-3 text-lg font-semibold text-white">
-              🤖{' '}
+              <Bot
+                className="mr-2 inline h-5 w-5 align-text-bottom text-yellow-400"
+                aria-hidden
+              />{' '}
               {t('docs.why_choose_darkbet.ai_powered', 'AI-Powered Resolution')}
             </h3>
             <p className="text-gray-300">
@@ -138,23 +166,32 @@ export default function WhyChooseDarkBetPage() {
               'DarkBet integrates Privy, a trusted third-party authentication provider, to ensure the security and privacy of all users. Privy enables safe wallet connections, encrypted session management, and identity verification, helping protect the community from fraudulent activity while maintaining a seamless on-chain experience.'
             )}
           </p>
-          <ul className="space-y-2 text-gray-300">
+          <ul className="space-y-3 text-gray-300">
             <li className="flex items-start">
-              <span className="mr-2 mt-1 text-yellow-400">🔐</span>
+              <KeyRound
+                className="mr-3 mt-1 h-4 w-4 flex-shrink-0 text-yellow-400"
+                aria-hidden
+              />
               {t(
                 'docs.why_choose_darkbet.security.encrypted',
                 'Encrypted session management and secure wallet connections'
               )}
             </li>
             <li className="flex items-start">
-              <span className="mr-2 mt-1 text-yellow-400">🛡️</span>
+              <Shield
+                className="mr-3 mt-1 h-4 w-4 flex-shrink-0 text-yellow-400"
+                aria-hidden
+              />
               {t(
                 'docs.why_choose_darkbet.security.identity',
                 'Identity verification and fraud protection'
               )}
             </li>
             <li className="flex items-start">
-              <span className="mr-2 mt-1 text-yellow-400">🔒</span>
+              <Lock
+                className="mr-3 mt-1 h-4 w-4 flex-shrink-0 text-yellow-400"
+                aria-hidden
+              />
               {t(
                 'docs.why_choose_darkbet.security.privacy',
                 'Complete betting privacy with Dark Pool technology'

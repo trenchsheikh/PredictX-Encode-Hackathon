@@ -2,6 +2,7 @@
 
 import { useTranslation } from 'react-i18next';
 import '@/lib/i18n';
+import { KeyRound, Shield, Lock, AlertTriangle, Eye } from 'lucide-react';
 
 export default function SecurityPage() {
   const { t } = useTranslation();
@@ -24,32 +25,36 @@ export default function SecurityPage() {
         {/* Blockchain Security */}
         <div className="rounded-lg bg-gray-800 p-6">
           <h2 className="mb-4 text-xl font-semibold text-white">
-            🔐 {t('docs.security.blockchain.title', 'Blockchain Security')}
+            <KeyRound
+              className="mr-2 inline h-5 w-5 align-text-bottom text-yellow-400"
+              aria-hidden
+            />{' '}
+            {t('docs.security.blockchain.title', 'Blockchain Security')}
           </h2>
-          <ul className="space-y-2 text-gray-300">
+          <ul className="space-y-3 text-gray-300">
             <li className="flex items-start">
-              <span className="mr-2 mt-1 text-green-400">•</span>
+              <span className="mr-3 mt-1 text-green-400">•</span>
               {t(
                 'docs.security.blockchain.all_transactions',
                 'All transactions on BNB Smart Chain'
               )}
             </li>
             <li className="flex items-start">
-              <span className="mr-2 mt-1 text-green-400">•</span>
+              <span className="mr-3 mt-1 text-green-400">•</span>
               {t(
                 'docs.security.blockchain.verifiable',
                 'Verifiable on BSCScan'
               )}
             </li>
             <li className="flex items-start">
-              <span className="mr-2 mt-1 text-green-400">•</span>
+              <span className="mr-3 mt-1 text-green-400">•</span>
               {t(
                 'docs.security.blockchain.multi_wallet',
                 'Multi-wallet support via Privy'
               )}
             </li>
             <li className="flex items-start">
-              <span className="mr-2 mt-1 text-green-400">•</span>
+              <span className="mr-3 mt-1 text-green-400">•</span>
               {t(
                 'docs.security.blockchain.network_switching',
                 'Automatic network switching'
@@ -61,32 +66,36 @@ export default function SecurityPage() {
         {/* Smart Protections */}
         <div className="rounded-lg bg-gray-800 p-6">
           <h2 className="mb-4 text-xl font-semibold text-white">
-            🛡️ {t('docs.security.smart_protections.title', 'Smart Protections')}
+            <Shield
+              className="mr-2 inline h-5 w-5 align-text-bottom text-yellow-400"
+              aria-hidden
+            />{' '}
+            {t('docs.security.smart_protections.title', 'Smart Protections')}
           </h2>
-          <ul className="space-y-2 text-gray-300">
+          <ul className="space-y-3 text-gray-300">
             <li className="flex items-start">
-              <span className="mr-2 mt-1 text-blue-400">•</span>
+              <span className="mr-3 mt-1 text-blue-400">•</span>
               {t(
                 'docs.security.smart_protections.server_calculations',
                 'Server-side price calculations'
               )}
             </li>
             <li className="flex items-start">
-              <span className="mr-2 mt-1 text-blue-400">•</span>
+              <span className="mr-3 mt-1 text-blue-400">•</span>
               {t(
                 'docs.security.smart_protections.zero_trust',
                 'Zero client trust model'
               )}
             </li>
             <li className="flex items-start">
-              <span className="mr-2 mt-1 text-blue-400">•</span>
+              <span className="mr-3 mt-1 text-blue-400">•</span>
               {t(
                 'docs.security.smart_protections.rate_limiting',
                 'Rate limiting on claims'
               )}
             </li>
             <li className="flex items-start">
-              <span className="mr-2 mt-1 text-blue-400">•</span>
+              <span className="mr-3 mt-1 text-blue-400">•</span>
               {t(
                 'docs.security.smart_protections.rollback',
                 'Database rollback support'
@@ -98,32 +107,36 @@ export default function SecurityPage() {
         {/* Dark Pool Privacy */}
         <div className="rounded-lg bg-gray-800 p-6">
           <h2 className="mb-4 text-xl font-semibold text-white">
-            🔒 {t('docs.security.dark_pool.title', 'Dark Pool Privacy')}
+            <Lock
+              className="mr-2 inline h-5 w-5 align-text-bottom text-yellow-400"
+              aria-hidden
+            />{' '}
+            {t('docs.security.dark_pool.title', 'Dark Pool Privacy')}
           </h2>
-          <ul className="space-y-2 text-gray-300">
+          <ul className="space-y-3 text-gray-300">
             <li className="flex items-start">
-              <span className="mr-2 mt-1 text-purple-400">•</span>
+              <span className="mr-3 mt-1 text-purple-400">•</span>
               {t(
                 'docs.security.dark_pool.hidden_bets',
                 'Your betting strategy remains completely hidden until market resolution'
               )}
             </li>
             <li className="flex items-start">
-              <span className="mr-2 mt-1 text-purple-400">•</span>
+              <span className="mr-3 mt-1 text-purple-400">•</span>
               {t(
                 'docs.security.dark_pool.no_manipulation',
                 'Prevents market manipulation and copy trading'
               )}
             </li>
             <li className="flex items-start">
-              <span className="mr-2 mt-1 text-purple-400">•</span>
+              <span className="mr-3 mt-1 text-purple-400">•</span>
               {t(
                 'docs.security.dark_pool.fair_competition',
                 'Ensures fair competition for all participants'
               )}
             </li>
             <li className="flex items-start">
-              <span className="mr-2 mt-1 text-purple-400">•</span>
+              <span className="mr-3 mt-1 text-purple-400">•</span>
               {t(
                 'docs.security.dark_pool.encrypted_data',
                 'All betting data is encrypted and stored securely'
@@ -135,7 +148,10 @@ export default function SecurityPage() {
         {/* Important Security Note */}
         <div className="rounded-lg border border-red-600/30 bg-red-600/10 p-6">
           <div className="flex items-start">
-            <span className="mr-3 mt-1 text-red-400">⚠️</span>
+            <AlertTriangle
+              className="mr-3 mt-1 h-4 w-4 flex-shrink-0 text-red-400"
+              aria-hidden
+            />
             <div>
               <h3 className="mb-2 font-semibold text-red-300">
                 {t('docs.security.note.title', 'Security Note')}
@@ -153,7 +169,11 @@ export default function SecurityPage() {
         {/* Transparency Features */}
         <div className="rounded-lg bg-gray-800 p-6">
           <h2 className="mb-4 text-xl font-semibold text-white">
-            👁️ {t('docs.security.transparency.title', 'Transparency Features')}
+            <Eye
+              className="mr-2 inline h-5 w-5 align-text-bottom text-yellow-400"
+              aria-hidden
+            />{' '}
+            {t('docs.security.transparency.title', 'Transparency Features')}
           </h2>
           <div className="grid gap-4 md:grid-cols-2">
             <div className="rounded-lg border border-gray-700 p-4">

@@ -18,6 +18,15 @@ import {
   Database,
   Lock,
   Eye,
+  Trophy,
+  Bitcoin,
+  Landmark,
+  Clapperboard,
+  Sun,
+  Coins,
+  Laptop,
+  CircleDot,
+  XCircle,
 } from 'lucide-react';
 import { useI18n } from '@/components/providers/i18n-provider';
 
@@ -47,14 +56,14 @@ export default function HowItWorksPage() {
         },
       ],
       categories: [
-        { name: t('categories.sports'), icon: '⚽' },
-        { name: t('categories.crypto'), icon: '₿' },
-        { name: t('categories.politics'), icon: '🏛️' },
-        { name: t('categories.entertainment'), icon: '🎬' },
-        { name: t('categories.weather'), icon: '🌤️' },
-        { name: t('categories.finance'), icon: '💰' },
-        { name: t('categories.technology'), icon: '💻' },
-        { name: t('categories.custom'), icon: '🎯' },
+        { name: t('categories.sports'), icon: Trophy },
+        { name: t('categories.crypto'), icon: Bitcoin },
+        { name: t('categories.politics'), icon: Landmark },
+        { name: t('categories.entertainment'), icon: Clapperboard },
+        { name: t('categories.weather'), icon: Sun },
+        { name: t('categories.finance'), icon: Coins },
+        { name: t('categories.technology'), icon: Laptop },
+        { name: t('categories.custom'), icon: Target },
       ],
     },
     {
@@ -212,9 +221,14 @@ export default function HowItWorksPage() {
       <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-16 lg:px-8">
         {/* Header */}
         <div className="mb-16 text-center">
-          <h1 className="font-brand-large gradient-text-brand mb-6 text-4xl font-bold tracking-tight text-white sm:text-6xl">
-            {t('how_it_works.how_darkbet_works')}
-          </h1>
+          <div className="mb-6 flex items-center justify-center gap-3">
+            <div className="rounded-lg border border-yellow-400/30 bg-gradient-to-r from-yellow-400/20 to-yellow-600/20 p-3">
+              <Target className="h-8 w-8 text-yellow-400" />
+            </div>
+            <h1 className="font-brand-large gradient-text-brand text-4xl font-bold tracking-tight text-white sm:text-6xl">
+              {t('how_it_works.how_darkbet_works')}
+            </h1>
+          </div>
           <p className="mx-auto max-w-3xl text-lg leading-8 text-gray-300">
             {t('how_it_works.platform_description')}
           </p>
@@ -334,8 +348,9 @@ export default function HowItWorksPage() {
               </h3>
               <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                 <div>
-                  <h4 className="text-md mb-2 font-medium text-red-400">
-                    ❌ {t('how_it_works.traditional_markets_title')}
+                  <h4 className="text-md mb-2 flex items-center gap-2 font-medium text-red-400">
+                    <XCircle className="h-4 w-4" aria-hidden />{' '}
+                    {t('how_it_works.traditional_markets_title')}
                   </h4>
                   <ul className="space-y-1 text-sm text-gray-200">
                     {t('how_it_works.traditional_markets_points')
@@ -346,8 +361,9 @@ export default function HowItWorksPage() {
                   </ul>
                 </div>
                 <div>
-                  <h4 className="text-md mb-2 font-medium text-green-400">
-                    ✅ {t('how_it_works.darkbet_dark_pools_title')}
+                  <h4 className="text-md mb-2 flex items-center gap-2 font-medium text-green-400">
+                    <CheckCircle className="h-4 w-4" aria-hidden />{' '}
+                    {t('how_it_works.darkbet_dark_pools_title')}
                   </h4>
                   <ul className="space-y-1 text-sm text-gray-200">
                     {t('how_it_works.darkbet_dark_pools_points')
@@ -443,7 +459,12 @@ export default function HowItWorksPage() {
                             key={catIndex}
                             className="flex items-center gap-2 rounded-lg border border-gray-700/50 bg-gray-800/60 p-3 backdrop-blur-sm"
                           >
-                            <span className="text-lg">{category.icon}</span>
+                            <span className="text-lg">
+                              {(() => {
+                                const Icon = category.icon as any;
+                                return <Icon className="h-4 w-4" aria-hidden />;
+                              })()}
+                            </span>
                             <span className="text-sm font-medium text-white">
                               {category.name}
                             </span>
@@ -553,7 +574,10 @@ export default function HowItWorksPage() {
                             </div>
                             <div className="flex justify-between border-t border-gray-600/50 pt-1 font-semibold text-green-400">
                               <span>{t('how_it_works.net_payout')}</span>
-                              <span>{step.feeExample.net} ✨</span>
+                              <span className="flex items-center gap-1">
+                                {step.feeExample.net}{' '}
+                                <Sparkles className="h-4 w-4" aria-hidden />
+                              </span>
                             </div>
                           </div>
                         </CardContent>

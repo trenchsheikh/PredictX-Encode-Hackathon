@@ -21,7 +21,7 @@ const ShimmerButton = React.forwardRef<HTMLButtonElement, ShimmerButtonProps>(
       shimmerSize = '0.05em',
       shimmerDuration = '3s',
       borderRadius = '999px',
-      background = 'linear-gradient(90deg, #FDE68A 0%, #F59E0B 100%)',
+      background = 'linear-gradient(180deg, #ffb84d 0%, #cc6b00 100%)',
       className,
       children,
       ...props
@@ -41,27 +41,21 @@ const ShimmerButton = React.forwardRef<HTMLButtonElement, ShimmerButtonProps>(
           } as CSSProperties
         }
         className={cn(
-          'group relative z-0 flex cursor-pointer items-center justify-center overflow-hidden whitespace-nowrap border border-yellow-400/40 px-6 py-3 text-black [background:var(--bg)] [border-radius:var(--radius)]',
-          'transform-gpu shadow-[0_0_0_1px_rgba(234,179,8,0.3),0_8px_24px_rgba(234,179,8,0.15)] transition-transform duration-300 ease-in-out active:translate-y-px',
+          'group relative z-0 flex cursor-pointer items-center justify-center overflow-hidden whitespace-nowrap border border-yellow-400/40 px-8 py-4 font-semibold tracking-wide text-white [background:var(--bg)] [border-radius:var(--radius)]',
+          'transform-gpu shadow-lg shadow-yellow-500/25 transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-xl hover:shadow-yellow-500/40 active:translate-y-px',
+          'before:absolute before:inset-0 before:-translate-x-full before:animate-shimmer before:bg-gradient-to-r before:from-transparent before:via-white/20 before:to-transparent',
           className
         )}
         ref={ref}
         {...props}
       >
-        {/* Minimal decorative layers to avoid content clipping */}
-        {children}
+        {/* Shimmer effect overlay */}
+        <span className="relative z-10">{children}</span>
+
+        {/* Background layer */}
         <div
           className={cn(
-            'absolute inset-0 size-full',
-            'rounded-full px-4 py-1.5 text-sm font-semibold',
-            'transform-gpu transition-all duration-300 ease-in-out',
-            'group-hover:opacity-90',
-            'group-active:opacity-80'
-          )}
-        />
-        <div
-          className={cn(
-            'absolute -z-20 [background:var(--bg)] [border-radius:var(--radius)] [inset:var(--cut)]'
+            'absolute inset-0 -z-10 [background:var(--bg)] [border-radius:var(--radius)]'
           )}
         />
       </button>

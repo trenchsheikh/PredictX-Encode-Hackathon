@@ -387,7 +387,9 @@ export default function HomePage() {
           {/* Section Header */}
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <BarChart3 className="h-6 w-6 text-yellow-400" />
+              <div className="rounded-lg border border-yellow-400/30 bg-gradient-to-r from-yellow-400/20 to-yellow-600/20 p-2">
+                <BarChart3 className="h-6 w-6 text-yellow-400" />
+              </div>
               <h2 className="font-heading text-2xl text-white">
                 {t('markets.all_markets')}
               </h2>
@@ -420,7 +422,7 @@ export default function HomePage() {
                 </p>
                 <Button
                   onClick={() => setShowCreateModal(true)}
-                  className="bg-yellow-400 text-black hover:bg-yellow-500"
+                  variant="default"
                   disabled={!authenticated}
                 >
                   <Plus className="mr-2 h-4 w-4" />
@@ -454,7 +456,9 @@ export default function HomePage() {
         ).length > 0 && (
           <div className="mt-12">
             <div className="mb-6 flex items-center gap-3">
-              <CheckCircle className="h-6 w-6 text-green-400" />
+              <div className="rounded-lg border border-green-400/30 bg-gradient-to-r from-green-400/20 to-green-600/20 p-2">
+                <CheckCircle className="h-6 w-6 text-green-400" />
+              </div>
               <h2 className="font-heading text-2xl text-white">
                 {t('markets.completed_predictions')}
               </h2>

@@ -53,29 +53,25 @@ export function PredictionCard({
   return (
     <Card
       className={cn(
-        'relative flex h-full flex-col overflow-hidden border-black bg-black/90 shadow-none transition-all duration-300 hover:bg-black',
-        prediction.isHot && 'ring-2 ring-yellow-400'
+        'relative flex h-full flex-col overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:shadow-xl',
+        prediction.isHot &&
+          'shadow-lg shadow-yellow-400/25 ring-2 ring-yellow-400'
       )}
     >
       <CardContent className="flex flex-1 flex-col p-4">
         <div className="mb-3 flex items-start justify-between">
           <div className="flex-1">
             <div className="mb-2 flex items-center gap-2">
-              <Badge
-                variant="outline"
-                className="border-white text-xs text-white"
-              >
+              <Badge variant="secondary" className="text-xs">
                 {prediction.category}
               </Badge>
               {(prediction.status === 'resolved' ||
                 prediction.status === 'cancelled') && (
                 <Badge
-                  className={cn(
-                    'text-xs',
-                    prediction.status === 'resolved'
-                      ? 'border-green-500/30 bg-green-500/20 text-green-400'
-                      : 'border-yellow-500/30 bg-yellow-500/20 text-yellow-400'
-                  )}
+                  variant={
+                    prediction.status === 'resolved' ? 'success' : 'warning'
+                  }
+                  className="text-xs"
                 >
                   {prediction.status === 'resolved' ? (
                     <>
@@ -91,7 +87,7 @@ export function PredictionCard({
                 </Badge>
               )}
               {prediction.isHot && (
-                <Badge variant="warning" className="text-xs">
+                <Badge variant="hot" className="text-xs">
                   <Flame className="mr-1 h-3 w-3" />
                   HOT
                 </Badge>
@@ -155,27 +151,27 @@ export function PredictionCard({
           </div>
         )}
 
-        {/* Odds Display - Betting Style */}
+        {/* Odds Display - Enhanced Betting Style */}
         <div className="mb-3 grid grid-cols-2 gap-2">
-          <div className="rounded-lg border border-green-700 bg-green-600 p-3 text-center">
-            <div className="mb-1 text-xs text-white">
+          <div className="rounded-lg border border-green-500/30 bg-gradient-to-br from-green-600/90 to-green-700/90 p-3 text-center shadow-lg transition-all duration-300 hover:shadow-green-500/25">
+            <div className="mb-1 text-xs font-medium text-green-100">
               {t('prediction_card.yes')}
             </div>
             <div className="text-lg font-bold text-white">
               {prediction.yesPrice.toFixed(3)}
             </div>
-            <div className="text-xs text-gray-200">
+            <div className="text-xs text-green-200">
               {formatBNB(prediction.yesPool)}
             </div>
           </div>
-          <div className="rounded-lg border border-red-700 bg-red-600 p-3 text-center">
-            <div className="mb-1 text-xs text-white">
+          <div className="rounded-lg border border-red-500/30 bg-gradient-to-br from-red-600/90 to-red-700/90 p-3 text-center shadow-lg transition-all duration-300 hover:shadow-red-500/25">
+            <div className="mb-1 text-xs font-medium text-red-100">
               {t('prediction_card.no')}
             </div>
             <div className="text-lg font-bold text-white">
               {prediction.noPrice.toFixed(3)}
             </div>
-            <div className="text-xs text-gray-200">
+            <div className="text-xs text-red-200">
               {formatBNB(prediction.noPool)}
             </div>
           </div>
@@ -183,13 +179,13 @@ export function PredictionCard({
 
         {/* User Bet Status */}
         {userBet && (
-          <div className="mb-3 rounded-lg border border-yellow-600 bg-yellow-500 p-3">
+          <div className="mb-3 rounded-lg border border-yellow-400/30 bg-gradient-to-r from-yellow-400/20 to-yellow-600/20 p-3">
             <div className="flex items-center justify-between">
               <div>
-                <div className="text-sm font-medium text-black">
+                <div className="text-sm font-medium text-yellow-400">
                   {t('prediction_card.your_bet')}
                 </div>
-                <div className="text-xs text-black">
+                <div className="text-xs text-yellow-300">
                   {userBet.outcome.toUpperCase()} • {userBet.shares.toFixed(2)}{' '}
                   {t('prediction_card.shares')}
                 </div>
@@ -203,7 +199,7 @@ export function PredictionCard({
           <div className="mb-3 grid grid-cols-2 gap-2">
             <Button
               size="sm"
-              className="bg-white font-semibold text-black hover:bg-gray-200"
+              className="bg-gradient-to-r from-green-500 to-green-600 font-semibold text-white shadow-lg transition-all duration-300 hover:from-green-600 hover:to-green-700 hover:shadow-green-500/25"
               onClick={() => handleBet('yes')}
               disabled={isLoading}
             >
@@ -212,7 +208,7 @@ export function PredictionCard({
             </Button>
             <Button
               size="sm"
-              className="bg-white font-semibold text-black hover:bg-gray-200"
+              className="bg-gradient-to-r from-red-500 to-red-600 font-semibold text-white shadow-lg transition-all duration-300 hover:from-red-600 hover:to-red-700 hover:shadow-red-500/25"
               onClick={() => handleBet('no')}
               disabled={isLoading}
             >
@@ -229,7 +225,8 @@ export function PredictionCard({
             <div className="mb-3 mt-auto">
               <Button
                 size="sm"
-                className="w-full bg-purple-600 font-semibold text-white hover:bg-purple-700"
+                variant="accent"
+                className="w-full"
                 onClick={() => onViewHistory(prediction.id)}
               >
                 {t('prediction_card.view_history')}
@@ -239,12 +236,12 @@ export function PredictionCard({
 
         {/* Resolution Info */}
         {prediction.resolution && (
-          <div className="mb-3 rounded-lg border border-yellow-600 bg-yellow-500 p-3">
-            <div className="mb-1 text-sm font-medium text-black">
+          <div className="mb-3 rounded-lg border border-yellow-400/30 bg-gradient-to-r from-yellow-400/20 to-yellow-600/20 p-3">
+            <div className="mb-1 text-sm font-medium text-yellow-400">
               {t('prediction_card.resolved')}:{' '}
               {prediction.resolution.outcome.toUpperCase()}
             </div>
-            <div className="text-xs text-black">
+            <div className="text-xs text-yellow-300">
               {prediction.resolution.reasoning}
             </div>
           </div>

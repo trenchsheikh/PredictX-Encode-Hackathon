@@ -2,6 +2,7 @@
 
 import { useTranslation } from 'react-i18next';
 import '@/lib/i18n';
+import { Heart } from 'lucide-react';
 
 export default function FinalWordsPage() {
   const { t } = useTranslation();
@@ -56,7 +57,10 @@ export default function FinalWordsPage() {
             {t('final_words.cta', 'Think You Know? Bet It!')}
           </h2>
           <p className="text-lg text-gray-300">
-            {t('final_words.signature', 'DarkBet Team ♡')}
+            <span className="flex items-center justify-center gap-1">
+              {t('final_words.signature', 'DarkBet Team')}{' '}
+              <Heart className="h-4 w-4 text-red-400" aria-hidden />
+            </span>
           </p>
         </div>
       </div>

@@ -186,9 +186,14 @@ export default function LeaderboardPage() {
       <div className="mx-auto max-w-7xl px-6 py-16 lg:px-8">
         {/* Header */}
         <div className="mb-12 text-center">
-          <h1 className="font-brand-large gradient-text-brand mb-4 text-4xl font-bold tracking-tight text-white sm:text-6xl">
-            {t('leaderboard')}
-          </h1>
+          <div className="mb-4 flex items-center justify-center gap-3">
+            <div className="rounded-lg border border-yellow-400/30 bg-gradient-to-r from-yellow-400/20 to-yellow-600/20 p-3">
+              <Trophy className="h-8 w-8 text-yellow-400" />
+            </div>
+            <h1 className="font-brand-large gradient-text-brand text-4xl font-bold tracking-tight text-white sm:text-6xl">
+              {t('leaderboard')}
+            </h1>
+          </div>
           <p className="mx-auto max-w-2xl text-lg text-gray-300">
             {t('top_performers')}
           </p>

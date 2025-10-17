@@ -356,7 +356,7 @@ export function CreateBetModal({
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className="max-h-[90vh] max-w-2xl overflow-y-auto border border-gray-700/50 bg-gray-900/95 shadow-2xl backdrop-blur-md">
+      <DialogContent className="max-h-[90vh] max-w-2xl overflow-y-auto border border-white/10 bg-gradient-to-br from-gray-900/95 via-gray-800/90 to-gray-900/95 shadow-2xl backdrop-blur-md">
         <DialogHeader>
           <DialogTitle className="font-heading flex items-center gap-2 text-white">
             <Target className="h-5 w-5 text-yellow-400" />
@@ -369,7 +369,7 @@ export function CreateBetModal({
 
         <form onSubmit={handleSubmit(onFormSubmit)} className="space-y-6">
           {/* Wallet Requirement Notice */}
-          <Card className="border-gray-700/50 bg-gray-800/60 backdrop-blur-sm">
+          <Card className="border-white/10 bg-gradient-to-r from-gray-800/60 to-gray-700/40 backdrop-blur-sm">
             <CardContent className="p-4">
               <div className="flex items-center gap-2 text-sm">
                 <DollarSign className="h-4 w-4 text-yellow-400" />
@@ -391,10 +391,10 @@ export function CreateBetModal({
             <div className="grid grid-cols-2 gap-4">
               <Card
                 className={cn(
-                  'cursor-pointer border-gray-700/50 bg-gray-800/60 backdrop-blur-sm transition-all duration-200',
+                  'cursor-pointer border-white/10 bg-gradient-to-r from-gray-800/60 to-gray-700/40 backdrop-blur-sm transition-all duration-300',
                   watchedBetType === 'custom'
-                    ? 'bg-gray-800/80 ring-2 ring-yellow-400/50'
-                    : 'hover:bg-gray-800/80'
+                    ? 'bg-gradient-to-r from-yellow-400/20 to-yellow-600/20 ring-2 ring-yellow-400/50'
+                    : 'hover:bg-white/10'
                 )}
                 onClick={() => setValue('betType', 'custom')}
               >
@@ -409,10 +409,10 @@ export function CreateBetModal({
               </Card>
               <Card
                 className={cn(
-                  'cursor-pointer border-gray-700/50 bg-gray-800/60 backdrop-blur-sm transition-all duration-200',
+                  'cursor-pointer border-white/10 bg-gradient-to-r from-gray-800/60 to-gray-700/40 backdrop-blur-sm transition-all duration-300',
                   watchedBetType === 'auto-verified'
-                    ? 'bg-gray-800/80 ring-2 ring-yellow-400/50'
-                    : 'hover:bg-gray-800/80'
+                    ? 'bg-gradient-to-r from-yellow-400/20 to-yellow-600/20 ring-2 ring-yellow-400/50'
+                    : 'hover:bg-white/10'
                 )}
                 onClick={() => setValue('betType', 'auto-verified')}
               >
@@ -436,7 +436,7 @@ export function CreateBetModal({
             <Textarea
               {...register('description')}
               placeholder={t('create_prediction.describe_prediction')}
-              className="min-h-[100px] border-gray-700/50 bg-gray-800/60 text-white placeholder:text-gray-400 focus:border-yellow-400/50 focus:ring-yellow-400/20"
+              className="min-h-[100px] border-white/10 bg-white/5 text-white backdrop-blur-sm transition-all duration-300 placeholder:text-gray-400 focus:border-yellow-400/50 focus:ring-yellow-400/20"
             />
             {errors.description && (
               <p className="text-sm font-medium text-red-400">
@@ -547,7 +547,7 @@ export function CreateBetModal({
               </div>
 
               {aiGenerated && (
-                <Card className="border-gray-700/50 bg-gray-800/60 backdrop-blur-sm">
+                <Card className="border-white/10 bg-gradient-to-r from-gray-800/60 to-gray-700/40 backdrop-blur-sm">
                   <CardHeader className="pb-2">
                     <CardTitle className="flex items-center gap-2 text-sm text-yellow-400">
                       <Sparkles className="h-4 w-4 text-yellow-400" />
@@ -681,7 +681,7 @@ export function CreateBetModal({
           </div>
 
           {/* Place Initial Bet */}
-          <Card className="border-gray-700/50 bg-gray-800/60 backdrop-blur-sm">
+          <Card className="border-white/10 bg-gradient-to-r from-gray-800/60 to-gray-700/40 backdrop-blur-sm">
             <CardHeader className="pb-2">
               <CardTitle className="flex items-center gap-2 text-sm text-yellow-400">
                 <Target className="h-4 w-4 text-yellow-400" />

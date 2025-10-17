@@ -2,6 +2,7 @@
 
 import { useTranslation } from 'react-i18next';
 import '@/lib/i18n';
+import { Shield, Bot, Link as LinkIcon, Zap } from 'lucide-react';
 
 export default function DocsPage() {
   const { t } = useTranslation();
@@ -31,30 +32,42 @@ export default function DocsPage() {
           <h3 className="mb-3 text-lg font-semibold text-white">
             {t('docs.overview.features.title', 'Key Features')}
           </h3>
-          <ul className="space-y-2 text-gray-300">
+          <ul className="space-y-3 text-gray-300">
             <li className="flex items-center">
-              <span className="mr-2">🔒</span>
+              <Shield
+                className="mr-3 h-4 w-4 flex-shrink-0 text-yellow-400"
+                aria-hidden
+              />
               {t(
                 'docs.overview.features.privacy',
                 'Dark Pool Privacy - Bets remain hidden until resolution'
               )}
             </li>
             <li className="flex items-center">
-              <span className="mr-2">🤖</span>
+              <Bot
+                className="mr-3 h-4 w-4 flex-shrink-0 text-yellow-400"
+                aria-hidden
+              />
               {t(
                 'docs.overview.features.ai',
                 'AI-Powered Resolution - Automated outcome determination'
               )}
             </li>
             <li className="flex items-center">
-              <span className="mr-2">⛓️</span>
+              <LinkIcon
+                className="mr-3 h-4 w-4 flex-shrink-0 text-yellow-400"
+                aria-hidden
+              />
               {t(
                 'docs.overview.features.blockchain',
                 'Fully On-Chain - Built on BNB Smart Chain'
               )}
             </li>
             <li className="flex items-center">
-              <span className="mr-2">⚡</span>
+              <Zap
+                className="mr-3 h-4 w-4 flex-shrink-0 text-yellow-400"
+                aria-hidden
+              />
               {t(
                 'docs.overview.features.amm',
                 'Dynamic AMM Pricing - Fair market-based pricing'
@@ -67,9 +80,9 @@ export default function DocsPage() {
           <h3 className="mb-3 text-lg font-semibold text-white">
             {t('docs.overview.getting_started.title', 'Getting Started')}
           </h3>
-          <div className="space-y-3">
+          <div className="space-y-4">
             <div className="flex items-start">
-              <span className="mr-3 mt-0.5 flex h-6 w-6 items-center justify-center rounded-full bg-orange-600 text-sm font-bold text-white">
+              <span className="mr-4 mt-0.5 flex h-6 w-6 items-center justify-center rounded-full bg-orange-600 text-sm font-bold text-white">
                 1
               </span>
               <div>
@@ -88,7 +101,7 @@ export default function DocsPage() {
               </div>
             </div>
             <div className="flex items-start">
-              <span className="mr-3 mt-0.5 flex h-6 w-6 items-center justify-center rounded-full bg-orange-600 text-sm font-bold text-white">
+              <span className="mr-4 mt-0.5 flex h-6 w-6 items-center justify-center rounded-full bg-orange-600 text-sm font-bold text-white">
                 2
               </span>
               <div>
@@ -107,7 +120,7 @@ export default function DocsPage() {
               </div>
             </div>
             <div className="flex items-start">
-              <span className="mr-3 mt-0.5 flex h-6 w-6 items-center justify-center rounded-full bg-orange-600 text-sm font-bold text-white">
+              <span className="mr-4 mt-0.5 flex h-6 w-6 items-center justify-center rounded-full bg-orange-600 text-sm font-bold text-white">
                 3
               </span>
               <div>

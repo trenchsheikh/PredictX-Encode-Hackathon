@@ -44,7 +44,7 @@ export function AnimatedHeader() {
     <header className="sticky top-0 z-50">
       {/* Floating glassy navbar container (applied on nav) */}
 
-      <nav className="relative z-10 mx-4 mb-4 mt-4 flex items-center justify-between rounded-2xl border border-white/10 bg-black/35 p-3 shadow-lg supports-[backdrop-filter]:backdrop-blur-md lg:mx-auto lg:max-w-screen-xl lg:px-8">
+      <nav className="relative z-10 mx-4 mb-4 mt-4 flex items-center justify-between rounded-2xl border border-white/10 bg-black/50 p-3 shadow-lg supports-[backdrop-filter]:backdrop-blur-md lg:mx-auto lg:max-w-screen-xl lg:px-8">
         {/* Logo */}
         <div className="flex flex-shrink-0">
           <Link
@@ -82,10 +82,10 @@ export function AnimatedHeader() {
                 <Link
                   href={item.href}
                   aria-current={isActive(item.href) ? 'page' : undefined}
-                  className={`group flex items-center space-x-2 rounded-lg px-2 py-2 text-lg font-semibold transition-all duration-200 hover:bg-gray-800/30 ${
+                  className={`group flex items-center space-x-2 rounded-lg px-3 py-2 text-lg font-semibold transition-all duration-300 hover:bg-white/10 ${
                     isActive(item.href)
-                      ? 'bg-white/10 text-white'
-                      : 'text-gray-300 hover:text-white'
+                      ? 'border border-yellow-400/30 bg-gradient-to-r from-yellow-400/20 to-yellow-600/20 text-yellow-400'
+                      : 'text-gray-300 hover:bg-white/5 hover:text-white'
                   }`}
                   prefetch={item.isHome ? false : undefined}
                 >
@@ -134,7 +134,7 @@ export function AnimatedHeader() {
               </AnimatedButton>
             ) : authenticated ? (
               <div className="flex items-center gap-2">
-                <div className="flex items-center rounded-full border border-white/10 bg-white/10 px-3 py-2 text-white backdrop-blur-sm">
+                <div className="flex items-center rounded-full border border-yellow-400/30 bg-gradient-to-r from-yellow-400/20 to-yellow-600/20 px-3 py-2 text-yellow-400 backdrop-blur-sm">
                   <span className="font-caption text-sm">
                     {user?.wallet?.address
                       ? `${user.wallet.address.slice(0, 6)}...${user.wallet.address.slice(-4)}`
@@ -154,7 +154,7 @@ export function AnimatedHeader() {
             ) : (
               <AnimatedButton
                 onClick={login}
-                className="rounded-full border border-orange-600 bg-gradient-to-b from-[#ffb84d] to-[#cc6b00] px-6 py-2 font-semibold tracking-wide text-white shadow-md ring-1 ring-black/40 backdrop-blur-sm transition-all duration-200 hover:from-[#ffc266] hover:to-[#b35f00]"
+                className="rounded-full border border-yellow-400/40 bg-gradient-to-r from-yellow-400 to-yellow-600 px-6 py-2 font-semibold tracking-wide text-black shadow-lg shadow-yellow-500/25 backdrop-blur-sm transition-all duration-300 hover:from-yellow-500 hover:to-yellow-700 hover:shadow-xl hover:shadow-yellow-500/40"
               >
                 {mounted ? t('connect_wallet') : 'Connect Wallet'}
               </AnimatedButton>
@@ -189,8 +189,8 @@ export function AnimatedHeader() {
                         aria-current={isActive(item.href) ? 'page' : undefined}
                         className={`group flex items-center space-x-3 rounded-xl px-3 py-2 text-lg font-semibold transition-all duration-300 hover:bg-white/10 ${
                           isActive(item.href)
-                            ? 'bg-white/10 text-white'
-                            : 'text-gray-300 hover:text-white'
+                            ? 'border border-yellow-400/30 bg-gradient-to-r from-yellow-400/20 to-yellow-600/20 text-yellow-400'
+                            : 'text-gray-300 hover:bg-white/5 hover:text-white'
                         }`}
                         onClick={() => setMobileMenuOpen(false)}
                         prefetch={item.isHome ? false : undefined}
@@ -239,7 +239,7 @@ export function AnimatedHeader() {
                 ) : authenticated ? (
                   <div className="space-y-3">
                     <div className="flex items-center justify-between gap-3">
-                      <div className="flex flex-1 items-center justify-start rounded-full border border-white/10 bg-white/10 px-3 py-2 text-white backdrop-blur-sm">
+                      <div className="flex flex-1 items-center justify-start rounded-full border border-yellow-400/30 bg-gradient-to-r from-yellow-400/20 to-yellow-600/20 px-3 py-2 text-yellow-400 backdrop-blur-sm">
                         <span className="font-caption text-sm">
                           {user?.wallet?.address
                             ? `${user.wallet.address.slice(0, 6)}...${user.wallet.address.slice(-4)}`
@@ -260,7 +260,7 @@ export function AnimatedHeader() {
                 ) : (
                   <AnimatedButton
                     onClick={login}
-                    className="w-full rounded-full border border-yellow-600 bg-gradient-to-b from-[#f5c83b] to-[#a46b00] px-6 py-2 font-semibold tracking-wide text-white shadow-lg shadow-yellow-900/40 drop-shadow-[0_2px_2px_rgba(0,0,0,0.85)] backdrop-blur-sm transition-all duration-200 hover:from-[#ffd65c] hover:to-[#8a5a00]"
+                    className="w-full rounded-full border border-yellow-400/40 bg-gradient-to-r from-yellow-400 to-yellow-600 px-6 py-2 font-semibold tracking-wide text-black shadow-lg shadow-yellow-500/25 backdrop-blur-sm transition-all duration-300 hover:from-yellow-500 hover:to-yellow-700 hover:shadow-xl hover:shadow-yellow-500/40"
                   >
                     {mounted ? t('connect_wallet') : 'Connect Wallet'}
                   </AnimatedButton>

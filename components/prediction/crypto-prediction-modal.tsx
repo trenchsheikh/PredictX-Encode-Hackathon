@@ -181,7 +181,7 @@ export function CryptoPredictionModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-h-[90vh] max-w-4xl overflow-y-auto border border-gray-700/50 bg-gray-900/95 shadow-2xl backdrop-blur-md">
+      <DialogContent className="max-h-[90vh] max-w-4xl overflow-y-auto border border-white/10 bg-gradient-to-br from-gray-900/95 via-gray-800/90 to-gray-900/95 shadow-2xl backdrop-blur-md">
         <DialogHeader>
           <DialogTitle className="font-heading flex items-center gap-2 text-2xl font-bold text-white">
             <TrendingUp className="h-6 w-6 text-yellow-400" />
@@ -266,7 +266,7 @@ export function CryptoPredictionModal({
               {predictionType === 'price_target' && (
                 <div className="mt-6 space-y-6">
                   {/* Current Price Display */}
-                  <div className="rounded-xl border border-gray-700/50 bg-gray-800/60 p-6 backdrop-blur-sm">
+                  <div className="rounded-xl border border-white/10 bg-gradient-to-r from-gray-800/60 to-gray-700/40 p-6 backdrop-blur-sm">
                     <div className="flex items-center justify-between">
                       <div>
                         <div className="text-sm text-gray-400">
@@ -356,7 +356,7 @@ export function CryptoPredictionModal({
                         placeholder="Enter target price..."
                         value={targetPrice}
                         onChange={e => setTargetPrice(e.target.value)}
-                        className="border-gray-700/50 bg-gray-800/60 pl-10 text-white placeholder:text-gray-400 focus:border-yellow-400/50 focus:ring-yellow-400/20"
+                        className="border-white/10 bg-white/5 pl-10 text-white backdrop-blur-sm transition-all duration-300 placeholder:text-gray-400 focus:border-yellow-400/50 focus:ring-yellow-400/20"
                         min="0"
                         step="0.01"
                       />
@@ -428,7 +428,7 @@ export function CryptoPredictionModal({
                       placeholder={`e.g., "${selectedCrypto.name} will reach $150,000" or "${selectedCrypto.name} will be popular"`}
                       value={customTitle}
                       onChange={e => setCustomTitle(e.target.value)}
-                      className="border-gray-700/50 bg-gray-800/60 text-white placeholder:text-gray-400 focus:border-yellow-400/50 focus:ring-yellow-400/20"
+                      className="border-white/10 bg-white/5 text-white backdrop-blur-sm transition-all duration-300 placeholder:text-gray-400 focus:border-yellow-400/50 focus:ring-yellow-400/20"
                     />
                     <p className="text-xs text-gray-400">
                       💡 Enter your prediction idea here. AI will transform it

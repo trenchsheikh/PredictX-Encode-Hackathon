@@ -2,6 +2,7 @@
 
 import { useTranslation } from 'react-i18next';
 import '@/lib/i18n';
+import { CheckCircle2, Lock, Target, Vote, Gem } from 'lucide-react';
 
 export default function TokenomicsPage() {
   const { t } = useTranslation();
@@ -120,7 +121,10 @@ export default function TokenomicsPage() {
         {/* Buyback & Burn Note */}
         <div className="rounded-lg border border-green-600/30 bg-green-600/10 p-6">
           <div className="flex items-start">
-            <span className="mr-3 mt-1 text-green-400">✅</span>
+            <CheckCircle2
+              className="mr-3 mt-1 h-4 w-4 flex-shrink-0 text-green-400"
+              aria-hidden
+            />
             <div>
               <h3 className="mb-2 font-semibold text-green-300">
                 {t(
@@ -145,7 +149,10 @@ export default function TokenomicsPage() {
           </h2>
           <div className="space-y-4">
             <div className="flex items-start">
-              <span className="mr-3 mt-1 text-orange-400">🔒</span>
+              <Lock
+                className="mr-3 mt-1 h-4 w-4 flex-shrink-0 text-orange-400"
+                aria-hidden
+              />
               <div>
                 <h3 className="font-semibold text-white">
                   {t(
@@ -162,7 +169,10 @@ export default function TokenomicsPage() {
               </div>
             </div>
             <div className="flex items-start">
-              <span className="mr-3 mt-1 text-orange-400">🎯</span>
+              <Target
+                className="mr-3 mt-1 h-4 w-4 flex-shrink-0 text-orange-400"
+                aria-hidden
+              />
               <div>
                 <h3 className="font-semibold text-white">
                   {t('docs.tokenomics.utility.betting.title', 'Direct Betting')}
@@ -176,7 +186,10 @@ export default function TokenomicsPage() {
               </div>
             </div>
             <div className="flex items-start">
-              <span className="mr-3 mt-1 text-orange-400">🗳️</span>
+              <Vote
+                className="mr-3 mt-1 h-4 w-4 flex-shrink-0 text-orange-400"
+                aria-hidden
+              />
               <div>
                 <h3 className="font-semibold text-white">
                   {t(
@@ -193,7 +206,10 @@ export default function TokenomicsPage() {
               </div>
             </div>
             <div className="flex items-start">
-              <span className="mr-3 mt-1 text-orange-400">💎</span>
+              <Gem
+                className="mr-3 mt-1 h-4 w-4 flex-shrink-0 text-orange-400"
+                aria-hidden
+              />
               <div>
                 <h3 className="font-semibold text-white">
                   {t(

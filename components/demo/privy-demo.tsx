@@ -21,19 +21,21 @@ export function PrivyDemo() {
 
   return (
     <div className="space-y-6 p-6">
-      <Card>
+      <Card className="border-white/10 bg-gradient-to-br from-gray-900/50 via-gray-800/30 to-gray-900/50 shadow-lg backdrop-blur-sm">
         <CardHeader>
-          <CardTitle>Privy Authentication Demo</CardTitle>
+          <CardTitle className="text-white">
+            Privy Authentication Demo
+          </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           {/* Wallet Connection */}
           <div className="space-y-2">
-            <h3 className="font-semibold">1. Wallet Connection</h3>
+            <h3 className="font-semibold text-white">1. Wallet Connection</h3>
             {!authenticated ? (
               <Button onClick={login}>Connect Wallet</Button>
             ) : (
               <div className="space-y-2">
-                <p className="text-sm text-green-600">
+                <p className="text-sm text-green-400">
                   ✅ Connected as:{' '}
                   {user?.wallet?.address || user?.email?.address}
                 </p>
@@ -46,7 +48,7 @@ export function PrivyDemo() {
 
           {/* Email Login */}
           <div className="space-y-2">
-            <h3 className="font-semibold">
+            <h3 className="font-semibold text-white">
               2. Email Login (Following Documentation)
             </h3>
             <div className="flex gap-2">
@@ -70,7 +72,7 @@ export function PrivyDemo() {
           {/* Transaction Demo */}
           {authenticated && (
             <div className="space-y-2">
-              <h3 className="font-semibold">3. Send Transaction</h3>
+              <h3 className="font-semibold text-white">3. Send Transaction</h3>
               <Button
                 onClick={() =>
                   sendTransaction({

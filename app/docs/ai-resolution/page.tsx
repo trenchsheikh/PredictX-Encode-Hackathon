@@ -2,6 +2,17 @@
 
 import { useTranslation } from 'react-i18next';
 import '@/lib/i18n';
+import {
+  Bot,
+  Link as LinkIcon,
+  CloudSun,
+  Trophy,
+  Newspaper,
+  BarChart3,
+  Timer,
+  CheckCircle2,
+  CircleDot,
+} from 'lucide-react';
 
 export default function AIResolutionPage() {
   const { t } = useTranslation();
@@ -24,7 +35,10 @@ export default function AIResolutionPage() {
         {/* Overview */}
         <div className="rounded-lg bg-gray-800 p-6">
           <h2 className="mb-4 text-xl font-semibold text-white">
-            🤖{' '}
+            <Bot
+              className="mr-2 inline h-5 w-5 align-text-bottom text-yellow-400"
+              aria-hidden
+            />{' '}
             {t(
               'docs.ai_resolution.overview.title',
               'Multi-Layer Verification System'
@@ -41,7 +55,10 @@ export default function AIResolutionPage() {
         {/* Layer 1 */}
         <div className="rounded-lg bg-gray-800 p-6">
           <h2 className="mb-4 text-xl font-semibold text-white">
-            ⛉{' '}
+            <LinkIcon
+              className="mr-2 inline h-5 w-5 align-text-bottom text-yellow-400"
+              aria-hidden
+            />{' '}
             {t(
               'docs.ai_resolution.layer1.title',
               'Layer 1: Deterministic Checks'
@@ -53,23 +70,32 @@ export default function AIResolutionPage() {
               'Price oracles and on-chain data provide instant, verifiable results for crypto/token bets.'
             )}
           </p>
-          <div className="space-y-2 text-gray-300">
+          <div className="space-y-3 text-gray-300">
             <div className="flex items-start">
-              <span className="mr-2 mt-1 text-green-400">•</span>
+              <CircleDot
+                className="mr-3 mt-1 h-4 w-4 flex-shrink-0 text-green-400"
+                aria-hidden
+              />
               {t(
                 'docs.ai_resolution.layer1.crypto_prices',
                 'Real-time cryptocurrency price data from multiple exchanges'
               )}
             </div>
             <div className="flex items-start">
-              <span className="mr-2 mt-1 text-green-400">•</span>
+              <CircleDot
+                className="mr-3 mt-1 h-4 w-4 flex-shrink-0 text-green-400"
+                aria-hidden
+              />
               {t(
                 'docs.ai_resolution.layer1.on_chain_data',
                 'On-chain transaction and block data verification'
               )}
             </div>
             <div className="flex items-start">
-              <span className="mr-2 mt-1 text-green-400">•</span>
+              <CircleDot
+                className="mr-3 mt-1 h-4 w-4 flex-shrink-0 text-green-400"
+                aria-hidden
+              />
               {t(
                 'docs.ai_resolution.layer1.instant_resolution',
                 'Instant resolution for price-based predictions'
@@ -81,7 +107,10 @@ export default function AIResolutionPage() {
         {/* Layer 2 */}
         <div className="rounded-lg bg-gray-800 p-6">
           <h2 className="mb-4 text-xl font-semibold text-white">
-            🜲{' '}
+            <Trophy
+              className="mr-2 inline h-5 w-5 align-text-bottom text-yellow-400"
+              aria-hidden
+            />{' '}
             {t(
               'docs.ai_resolution.layer2.title',
               'Layer 2: Evidence Gathering'
@@ -96,7 +125,10 @@ export default function AIResolutionPage() {
           <div className="grid gap-4 md:grid-cols-2">
             <div className="rounded-lg border border-gray-700 p-4">
               <h3 className="mb-2 font-semibold text-white">
-                🌤️{' '}
+                <CloudSun
+                  className="mr-2 inline h-5 w-5 align-text-bottom text-yellow-400"
+                  aria-hidden
+                />{' '}
                 {t('docs.ai_resolution.layer2.weather.title', 'Weather Data')}
               </h3>
               <p className="text-sm text-gray-300">
@@ -108,7 +140,10 @@ export default function AIResolutionPage() {
             </div>
             <div className="rounded-lg border border-gray-700 p-4">
               <h3 className="mb-2 font-semibold text-white">
-                ⚽{' '}
+                <Trophy
+                  className="mr-2 inline h-5 w-5 align-text-bottom text-yellow-400"
+                  aria-hidden
+                />{' '}
                 {t('docs.ai_resolution.layer2.sports.title', 'Sports Scores')}
               </h3>
               <p className="text-sm text-gray-300">
@@ -120,7 +155,11 @@ export default function AIResolutionPage() {
             </div>
             <div className="rounded-lg border border-gray-700 p-4">
               <h3 className="mb-2 font-semibold text-white">
-                📰 {t('docs.ai_resolution.layer2.news.title', 'News & Events')}
+                <Newspaper
+                  className="mr-2 inline h-5 w-5 align-text-bottom text-yellow-400"
+                  aria-hidden
+                />{' '}
+                {t('docs.ai_resolution.layer2.news.title', 'News & Events')}
               </h3>
               <p className="text-sm text-gray-300">
                 {t(
@@ -131,7 +170,11 @@ export default function AIResolutionPage() {
             </div>
             <div className="rounded-lg border border-gray-700 p-4">
               <h3 className="mb-2 font-semibold text-white">
-                📊 {t('docs.ai_resolution.layer2.markets.title', 'Market Data')}
+                <BarChart3
+                  className="mr-2 inline h-5 w-5 align-text-bottom text-yellow-400"
+                  aria-hidden
+                />{' '}
+                {t('docs.ai_resolution.layer2.markets.title', 'Market Data')}
               </h3>
               <p className="text-sm text-gray-300">
                 {t(
@@ -146,7 +189,11 @@ export default function AIResolutionPage() {
         {/* Layer 3 */}
         <div className="rounded-lg bg-gray-800 p-6">
           <h2 className="mb-4 text-xl font-semibold text-white">
-            ֎ {t('docs.ai_resolution.layer3.title', 'Layer 3: AI Analysis')}
+            <Bot
+              className="mr-2 inline h-5 w-5 align-text-bottom text-yellow-400"
+              aria-hidden
+            />{' '}
+            {t('docs.ai_resolution.layer3.title', 'Layer 3: AI Analysis')}
           </h2>
           <p className="mb-4 text-gray-300">
             {t(
@@ -154,30 +201,42 @@ export default function AIResolutionPage() {
               'Advanced AI analyzes gathered evidence and makes final determination with reasoning.'
             )}
           </p>
-          <div className="space-y-2 text-gray-300">
+          <div className="space-y-3 text-gray-300">
             <div className="flex items-start">
-              <span className="mr-2 mt-1 text-blue-400">•</span>
+              <CircleDot
+                className="mr-3 mt-1 h-4 w-4 flex-shrink-0 text-blue-400"
+                aria-hidden
+              />
               {t(
                 'docs.ai_resolution.layer3.data_analysis',
                 'Comprehensive analysis of all gathered evidence'
               )}
             </div>
             <div className="flex items-start">
-              <span className="mr-2 mt-1 text-blue-400">•</span>
+              <CircleDot
+                className="mr-3 mt-1 h-4 w-4 flex-shrink-0 text-blue-400"
+                aria-hidden
+              />
               {t(
                 'docs.ai_resolution.layer3.reasoning',
                 'Detailed reasoning provided for each resolution decision'
               )}
             </div>
             <div className="flex items-start">
-              <span className="mr-2 mt-1 text-blue-400">•</span>
+              <CircleDot
+                className="mr-3 mt-1 h-4 w-4 flex-shrink-0 text-blue-400"
+                aria-hidden
+              />
               {t(
                 'docs.ai_resolution.layer3.consensus',
                 'Consensus building from multiple data sources'
               )}
             </div>
             <div className="flex items-start">
-              <span className="mr-2 mt-1 text-blue-400">•</span>
+              <CircleDot
+                className="mr-3 mt-1 h-4 w-4 flex-shrink-0 text-blue-400"
+                aria-hidden
+              />
               {t(
                 'docs.ai_resolution.layer3.verification',
                 'Cross-verification with independent sources'
@@ -189,7 +248,10 @@ export default function AIResolutionPage() {
         {/* Data Sources */}
         <div className="rounded-lg bg-gray-800 p-6">
           <h2 className="mb-4 text-xl font-semibold text-white">
-            🔗{' '}
+            <LinkIcon
+              className="mr-2 inline h-5 w-5 align-text-bottom text-yellow-400"
+              aria-hidden
+            />{' '}
             {t('docs.ai_resolution.data_sources.title', 'Data Sources & APIs')}
           </h2>
           <p className="mb-4 text-gray-300">
@@ -201,13 +263,16 @@ export default function AIResolutionPage() {
           <div className="grid gap-4 md:grid-cols-3">
             <div className="rounded-lg border border-gray-700 p-4">
               <h3 className="mb-2 font-semibold text-white">
-                💹{' '}
+                <BarChart3
+                  className="mr-2 inline h-5 w-5 align-text-bottom text-yellow-400"
+                  aria-hidden
+                />{' '}
                 {t(
                   'docs.ai_resolution.data_sources.financial.title',
                   'Financial Data'
                 )}
               </h3>
-              <ul className="space-y-1 text-sm text-gray-300">
+              <ul className="space-y-2 text-sm text-gray-300">
                 <li>• CoinGecko API</li>
                 <li>• Binance API</li>
                 <li>• Yahoo Finance</li>
@@ -216,13 +281,16 @@ export default function AIResolutionPage() {
             </div>
             <div className="rounded-lg border border-gray-700 p-4">
               <h3 className="mb-2 font-semibold text-white">
-                ⚽{' '}
+                <Trophy
+                  className="mr-2 inline h-5 w-5 align-text-bottom text-yellow-400"
+                  aria-hidden
+                />{' '}
                 {t(
                   'docs.ai_resolution.data_sources.sports.title',
                   'Sports Data'
                 )}
               </h3>
-              <ul className="space-y-1 text-sm text-gray-300">
+              <ul className="space-y-2 text-sm text-gray-300">
                 <li>• ESPN API</li>
                 <li>• The Sports DB</li>
                 <li>• Football Data API</li>
@@ -231,13 +299,16 @@ export default function AIResolutionPage() {
             </div>
             <div className="rounded-lg border border-gray-700 p-4">
               <h3 className="mb-2 font-semibold text-white">
-                🌍{' '}
+                <Newspaper
+                  className="mr-2 inline h-5 w-5 align-text-bottom text-yellow-400"
+                  aria-hidden
+                />{' '}
                 {t(
                   'docs.ai_resolution.data_sources.news.title',
                   'News & Events'
                 )}
               </h3>
-              <ul className="space-y-1 text-sm text-gray-300">
+              <ul className="space-y-2 text-sm text-gray-300">
                 <li>• NewsAPI</li>
                 <li>• Reuters API</li>
                 <li>• Associated Press</li>
@@ -250,7 +321,10 @@ export default function AIResolutionPage() {
         {/* Resolution Process */}
         <div className="rounded-lg bg-gray-800 p-6">
           <h2 className="mb-4 text-xl font-semibold text-white">
-            ⏱️{' '}
+            <Timer
+              className="mr-2 inline h-5 w-5 align-text-bottom text-yellow-400"
+              aria-hidden
+            />{' '}
             {t(
               'docs.ai_resolution.process.title',
               'Resolution Process Timeline'
@@ -339,7 +413,10 @@ export default function AIResolutionPage() {
         {/* Transparency Note */}
         <div className="rounded-lg border border-green-600/30 bg-green-600/10 p-6">
           <div className="flex items-start">
-            <span className="mr-3 mt-1 text-green-400">✅</span>
+            <CheckCircle2
+              className="mr-3 mt-1 h-4 w-4 flex-shrink-0 text-green-400"
+              aria-hidden
+            />
             <div>
               <h3 className="mb-2 font-semibold text-green-300">
                 {t(

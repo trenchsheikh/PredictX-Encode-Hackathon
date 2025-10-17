@@ -2,6 +2,12 @@
 
 import { useTranslation } from 'react-i18next';
 import '@/lib/i18n';
+import {
+  Wallet,
+  Link as LinkIcon,
+  Smartphone,
+  AlertTriangle,
+} from 'lucide-react';
 
 export default function ConnectWalletPage() {
   const { t } = useTranslation();
@@ -37,17 +43,26 @@ export default function ConnectWalletPage() {
 
           <div className="grid gap-4 md:grid-cols-3">
             <div className="rounded-lg bg-gray-700 p-4 text-center">
-              <div className="mb-2 text-3xl">🦊</div>
+              <Wallet
+                className="mx-auto mb-2 h-8 w-8 text-yellow-400"
+                aria-hidden
+              />
               <h3 className="font-semibold text-white">MetaMask</h3>
               <p className="text-sm text-gray-400">Browser Extension</p>
             </div>
             <div className="rounded-lg bg-gray-700 p-4 text-center">
-              <div className="mb-2 text-3xl">🔗</div>
+              <LinkIcon
+                className="mx-auto mb-2 h-8 w-8 text-yellow-400"
+                aria-hidden
+              />
               <h3 className="font-semibold text-white">WalletConnect</h3>
               <p className="text-sm text-gray-400">Mobile Wallets</p>
             </div>
             <div className="rounded-lg bg-gray-700 p-4 text-center">
-              <div className="mb-2 text-3xl">📱</div>
+              <Smartphone
+                className="mx-auto mb-2 h-8 w-8 text-yellow-400"
+                aria-hidden
+              />
               <h3 className="font-semibold text-white">Coinbase Wallet</h3>
               <p className="text-sm text-gray-400">Mobile & Extension</p>
             </div>
@@ -143,30 +158,42 @@ export default function ConnectWalletPage() {
           <h2 className="mb-4 text-2xl font-semibold text-yellow-300">
             {t('docs.connect_wallet.important.title', 'Important Notes')}
           </h2>
-          <ul className="space-y-2 text-gray-300">
+          <ul className="space-y-3 text-gray-300">
             <li className="flex items-start">
-              <span className="mr-2 mt-1 text-yellow-400">⚠️</span>
+              <AlertTriangle
+                className="mr-3 mt-1 h-4 w-4 flex-shrink-0 text-yellow-400"
+                aria-hidden
+              />
               {t(
                 'docs.connect_wallet.important.note1',
                 "Make sure you're connected to the BNB Smart Chain network in your wallet."
               )}
             </li>
             <li className="flex items-start">
-              <span className="mr-2 mt-1 text-yellow-400">⚠️</span>
+              <AlertTriangle
+                className="mr-3 mt-1 h-4 w-4 flex-shrink-0 text-yellow-400"
+                aria-hidden
+              />
               {t(
                 'docs.connect_wallet.important.note2',
                 'Keep some BNB in your wallet for transaction fees.'
               )}
             </li>
             <li className="flex items-start">
-              <span className="mr-2 mt-1 text-yellow-400">⚠️</span>
+              <AlertTriangle
+                className="mr-3 mt-1 h-4 w-4 flex-shrink-0 text-yellow-400"
+                aria-hidden
+              />
               {t(
                 'docs.connect_wallet.important.note3',
                 'Never share your private keys or seed phrases with anyone.'
               )}
             </li>
             <li className="flex items-start">
-              <span className="mr-2 mt-1 text-yellow-400">⚠️</span>
+              <AlertTriangle
+                className="mr-3 mt-1 h-4 w-4 flex-shrink-0 text-yellow-400"
+                aria-hidden
+              />
               {t(
                 'docs.connect_wallet.important.note4',
                 'DarkBet will never ask for your private keys or seed phrases.'

@@ -97,7 +97,7 @@ export function RevealModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="border-gray-800 bg-black p-4 sm:max-w-[550px] sm:p-6">
+      <DialogContent className="border-white/10 bg-gradient-to-br from-gray-900/95 via-gray-800/90 to-gray-900/95 p-4 shadow-2xl backdrop-blur-md sm:max-w-[550px] sm:p-6">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2 text-white">
             <Eye className="h-5 w-5 text-yellow-500" />
@@ -135,15 +135,12 @@ export function RevealModal({
           </div>
 
           {/* Bet Details */}
-          <div className="space-y-2 rounded-lg border border-gray-700 bg-gray-900/50 p-3">
+          <div className="space-y-2 rounded-lg border border-white/10 bg-gradient-to-r from-gray-800/60 to-gray-700/40 p-3 backdrop-blur-sm">
             <div className="flex items-center justify-between">
               <span className="text-sm text-gray-400">Your Bet</span>
               <Badge
-                className={`${
-                  isYes
-                    ? 'bg-yellow-500 text-black hover:bg-yellow-600'
-                    : 'bg-red-500 text-white hover:bg-red-600'
-                }`}
+                variant={isYes ? 'default' : 'destructive'}
+                className="text-xs"
               >
                 {isYes ? 'YES' : 'NO'}
               </Badge>
@@ -166,18 +163,19 @@ export function RevealModal({
             <div className="flex justify-between text-sm">
               <span className="text-gray-400">Market Status</span>
               <div className="flex items-center gap-2">
-                <Badge className="border-gray-600 bg-gray-700 text-white">
+                <Badge variant="secondary" className="text-xs">
                   {prediction.status}
                 </Badge>
                 {prediction.status === 'resolved' && (
                   <>
                     <span className="text-gray-400">Outcome:</span>
                     <Badge
-                      className={
+                      variant={
                         prediction.resolution?.outcome === 'yes'
-                          ? 'bg-yellow-500 text-black hover:bg-yellow-600'
-                          : 'bg-red-500 text-white hover:bg-red-600'
+                          ? 'default'
+                          : 'destructive'
                       }
+                      className="text-xs"
                     >
                       {prediction.resolution?.outcome?.toUpperCase()}
                     </Badge>
@@ -268,7 +266,7 @@ export function RevealModal({
             type="button"
             variant="outline"
             onClick={exportRevealData}
-            className="w-full border-gray-700 bg-gray-800 text-white hover:bg-gray-700 sm:w-auto"
+            className="w-full border-white/10 bg-white/5 text-white transition-all duration-300 hover:border-white/20 hover:bg-white/10 sm:w-auto"
           >
             <ExternalLink className="mr-2 h-4 w-4" />
             Export Data
@@ -279,7 +277,7 @@ export function RevealModal({
               variant="outline"
               onClick={() => onOpenChange(false)}
               disabled={loading}
-              className="border-gray-700 bg-gray-800 text-white hover:bg-gray-700"
+              className="border-white/10 bg-white/5 text-white transition-all duration-300 hover:border-white/20 hover:bg-white/10"
             >
               Cancel
             </Button>
@@ -287,7 +285,7 @@ export function RevealModal({
               type="button"
               onClick={handleConfirm}
               disabled={loading || !canRevealNow}
-              className="bg-yellow-500 text-black hover:bg-yellow-600 disabled:bg-gray-600 disabled:text-gray-400"
+              className="bg-gradient-to-r from-yellow-400 to-yellow-600 font-semibold text-black shadow-lg hover:from-yellow-500 hover:to-yellow-700 hover:shadow-xl disabled:opacity-50"
             >
               {loading ? 'Revealing...' : 'Reveal Bet'}
             </Button>

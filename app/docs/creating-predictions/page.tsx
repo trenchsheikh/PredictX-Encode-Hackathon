@@ -2,6 +2,20 @@
 
 import { useTranslation } from 'react-i18next';
 import '@/lib/i18n';
+import {
+  Target,
+  FileText,
+  CalendarDays,
+  Clock,
+  Tag,
+  Lock,
+  Bot,
+  BarChart3,
+  Globe,
+  Lightbulb,
+  CircleDot,
+  Trophy,
+} from 'lucide-react';
 
 export default function CreatingPredictionsPage() {
   const { t } = useTranslation();
@@ -24,7 +38,11 @@ export default function CreatingPredictionsPage() {
         {/* Overview */}
         <div className="rounded-lg bg-gray-800 p-6">
           <h2 className="mb-4 text-xl font-semibold text-white">
-            🎯 {t('docs.creating_predictions.overview.title', 'Overview')}
+            <Target
+              className="mr-2 inline h-5 w-5 align-text-bottom text-yellow-400"
+              aria-hidden
+            />{' '}
+            {t('docs.creating_predictions.overview.title', 'Overview')}
           </h2>
           <p className="text-gray-300">
             {t(
@@ -37,7 +55,10 @@ export default function CreatingPredictionsPage() {
         {/* Step 1 */}
         <div className="rounded-lg bg-gray-800 p-6">
           <h2 className="mb-4 text-xl font-semibold text-white">
-            📝{' '}
+            <FileText
+              className="mr-2 inline h-5 w-5 align-text-bottom text-yellow-400"
+              aria-hidden
+            />{' '}
             {t(
               'docs.creating_predictions.step1.title',
               'STEP 1 - Describe Your Prediction'
@@ -56,23 +77,23 @@ export default function CreatingPredictionsPage() {
                 'Example Descriptions'
               )}
             </h3>
-            <ul className="space-y-2 text-sm text-gray-300">
+            <ul className="space-y-3 text-sm text-gray-300">
               <li className="flex items-start">
-                <span className="mr-2 mt-1 text-orange-400">•</span>
+                <span className="mr-3 mt-1 text-orange-400">•</span>
                 {t(
                   'docs.creating_predictions.step1.example.bitcoin',
                   '"Will Bitcoin reach $100,000 by the end of 2024?"'
                 )}
               </li>
               <li className="flex items-start">
-                <span className="mr-2 mt-1 text-orange-400">•</span>
+                <span className="mr-3 mt-1 text-orange-400">•</span>
                 {t(
                   'docs.creating_predictions.step1.example.weather',
                   '"Will it rain in New York City tomorrow?"'
                 )}
               </li>
               <li className="flex items-start">
-                <span className="mr-2 mt-1 text-orange-400">•</span>
+                <span className="mr-3 mt-1 text-orange-400">•</span>
                 {t(
                   'docs.creating_predictions.step1.example.sports',
                   '"Will the Lakers win the NBA championship this season?"'
@@ -100,7 +121,10 @@ export default function CreatingPredictionsPage() {
           <div className="grid gap-4 md:grid-cols-2">
             <div className="rounded-lg border border-gray-700 p-4">
               <h3 className="mb-2 font-semibold text-white">
-                📝{' '}
+                <FileText
+                  className="mr-2 inline h-4 w-4 align-text-bottom text-yellow-400"
+                  aria-hidden
+                />{' '}
                 {t('docs.creating_predictions.step2.input.title', 'Your Input')}
               </h3>
               <p className="text-sm italic text-gray-400">
@@ -109,7 +133,10 @@ export default function CreatingPredictionsPage() {
             </div>
             <div className="rounded-lg border border-green-600/30 bg-green-600/10 p-4">
               <h3 className="mb-2 font-semibold text-green-300">
-                ✨{' '}
+                <Lightbulb
+                  className="mr-2 inline h-4 w-4 align-text-bottom text-yellow-400"
+                  aria-hidden
+                />{' '}
                 {t(
                   'docs.creating_predictions.step2.output.title',
                   'AI Generated Title'
@@ -125,7 +152,10 @@ export default function CreatingPredictionsPage() {
         {/* Step 3 */}
         <div className="rounded-lg bg-gray-800 p-6">
           <h2 className="mb-4 text-xl font-semibold text-white">
-            📅{' '}
+            <CalendarDays
+              className="mr-2 inline h-5 w-5 align-text-bottom text-yellow-400"
+              aria-hidden
+            />{' '}
             {t(
               'docs.creating_predictions.step3.title',
               'STEP 3 - Automatic Deadline & Category'
@@ -140,36 +170,51 @@ export default function CreatingPredictionsPage() {
           <div className="space-y-4">
             <div className="rounded-lg border border-gray-700 p-4">
               <h3 className="mb-2 font-semibold text-white">
-                ⏰{' '}
+                <Clock
+                  className="mr-2 inline h-4 w-4 align-text-bottom text-yellow-400"
+                  aria-hidden
+                />{' '}
                 {t(
                   'docs.creating_predictions.step3.deadline.title',
                   'Smart Deadlines'
                 )}
               </h3>
-              <ul className="space-y-2 text-sm text-gray-300">
+              <ul className="space-y-3 text-sm text-gray-300">
                 <li className="flex items-start">
-                  <span className="mr-2 mt-1 text-blue-400">•</span>
+                  <CircleDot
+                    className="mr-3 mt-1 h-4 w-4 flex-shrink-0 text-blue-400"
+                    aria-hidden
+                  />
                   {t(
                     'docs.creating_predictions.step3.deadline.sports',
                     'Sports: Match end time or season conclusion'
                   )}
                 </li>
                 <li className="flex items-start">
-                  <span className="mr-2 mt-1 text-blue-400">•</span>
+                  <CircleDot
+                    className="mr-3 mt-1 h-4 w-4 flex-shrink-0 text-blue-400"
+                    aria-hidden
+                  />
                   {t(
                     'docs.creating_predictions.step3.deadline.crypto',
                     'Crypto: End of day, week, or specified date'
                   )}
                 </li>
                 <li className="flex items-start">
-                  <span className="mr-2 mt-1 text-blue-400">•</span>
+                  <CircleDot
+                    className="mr-3 mt-1 h-4 w-4 flex-shrink-0 text-blue-400"
+                    aria-hidden
+                  />
                   {t(
                     'docs.creating_predictions.step3.deadline.weather',
                     'Weather: Next day or specified timeframe'
                   )}
                 </li>
                 <li className="flex items-start">
-                  <span className="mr-2 mt-1 text-blue-400">•</span>
+                  <CircleDot
+                    className="mr-3 mt-1 h-4 w-4 flex-shrink-0 text-blue-400"
+                    aria-hidden
+                  />
                   {t(
                     'docs.creating_predictions.step3.deadline.events',
                     'Events: Event conclusion or announcement date'
@@ -179,7 +224,10 @@ export default function CreatingPredictionsPage() {
             </div>
             <div className="rounded-lg border border-gray-700 p-4">
               <h3 className="mb-2 font-semibold text-white">
-                🏷️{' '}
+                <Tag
+                  className="mr-2 inline h-4 w-4 align-text-bottom text-yellow-400"
+                  aria-hidden
+                />{' '}
                 {t(
                   'docs.creating_predictions.step3.category.title',
                   'Auto-Assigned Categories'
@@ -187,28 +235,40 @@ export default function CreatingPredictionsPage() {
               </h3>
               <div className="grid grid-cols-2 gap-2 text-sm text-gray-300">
                 <div className="flex items-center">
-                  <span className="mr-2 text-green-400">💰</span>
+                  <BarChart3
+                    className="mr-2 h-4 w-4 flex-shrink-0 text-green-400"
+                    aria-hidden
+                  />
                   {t(
                     'docs.creating_predictions.step3.category.crypto',
                     'Crypto'
                   )}
                 </div>
                 <div className="flex items-center">
-                  <span className="mr-2 text-blue-400">⚽</span>
+                  <Trophy
+                    className="mr-2 h-4 w-4 flex-shrink-0 text-blue-400"
+                    aria-hidden
+                  />
                   {t(
                     'docs.creating_predictions.step3.category.sports',
                     'Sports'
                   )}
                 </div>
                 <div className="flex items-center">
-                  <span className="mr-2 text-yellow-400">🌤️</span>
+                  <Globe
+                    className="mr-2 h-4 w-4 flex-shrink-0 text-yellow-400"
+                    aria-hidden
+                  />
                   {t(
                     'docs.creating_predictions.step3.category.weather',
                     'Weather'
                   )}
                 </div>
                 <div className="flex items-center">
-                  <span className="mr-2 text-purple-400">📰</span>
+                  <Globe
+                    className="mr-2 h-4 w-4 flex-shrink-0 text-purple-400"
+                    aria-hidden
+                  />
                   {t('docs.creating_predictions.step3.category.news', 'News')}
                 </div>
               </div>
@@ -219,7 +279,10 @@ export default function CreatingPredictionsPage() {
         {/* Additional Features */}
         <div className="rounded-lg bg-gray-800 p-6">
           <h2 className="mb-4 text-xl font-semibold text-white">
-            ⚙️{' '}
+            <Tag
+              className="mr-2 inline h-5 w-5 align-text-bottom text-yellow-400"
+              aria-hidden
+            />{' '}
             {t(
               'docs.creating_predictions.additional.title',
               'Additional Features'
@@ -228,7 +291,10 @@ export default function CreatingPredictionsPage() {
           <div className="grid gap-4 md:grid-cols-2">
             <div className="rounded-lg border border-gray-700 p-4">
               <h3 className="mb-2 font-semibold text-white">
-                🔒{' '}
+                <Lock
+                  className="mr-2 inline h-4 w-4 align-text-bottom text-yellow-400"
+                  aria-hidden
+                />{' '}
                 {t(
                   'docs.creating_predictions.additional.privacy.title',
                   'Dark Pool Privacy'
@@ -243,7 +309,10 @@ export default function CreatingPredictionsPage() {
             </div>
             <div className="rounded-lg border border-gray-700 p-4">
               <h3 className="mb-2 font-semibold text-white">
-                🤖{' '}
+                <Bot
+                  className="mr-2 inline h-4 w-4 align-text-bottom text-yellow-400"
+                  aria-hidden
+                />{' '}
                 {t(
                   'docs.creating_predictions.additional.ai_resolution.title',
                   'AI-Powered Resolution'
@@ -258,7 +327,10 @@ export default function CreatingPredictionsPage() {
             </div>
             <div className="rounded-lg border border-gray-700 p-4">
               <h3 className="mb-2 font-semibold text-white">
-                📊{' '}
+                <BarChart3
+                  className="mr-2 inline h-4 w-4 align-text-bottom text-yellow-400"
+                  aria-hidden
+                />{' '}
                 {t(
                   'docs.creating_predictions.additional.dynamic_pricing.title',
                   'Dynamic Pricing'
@@ -273,7 +345,10 @@ export default function CreatingPredictionsPage() {
             </div>
             <div className="rounded-lg border border-gray-700 p-4">
               <h3 className="mb-2 font-semibold text-white">
-                🌐{' '}
+                <Globe
+                  className="mr-2 inline h-4 w-4 align-text-bottom text-yellow-400"
+                  aria-hidden
+                />{' '}
                 {t(
                   'docs.creating_predictions.additional.global.title',
                   'Global Access'
@@ -292,7 +367,10 @@ export default function CreatingPredictionsPage() {
         {/* Best Practices */}
         <div className="rounded-lg border border-blue-600/30 bg-blue-600/10 p-6">
           <div className="flex items-start">
-            <span className="mr-3 mt-1 text-blue-400">💡</span>
+            <Lightbulb
+              className="mr-3 mt-1 h-4 w-4 flex-shrink-0 text-blue-400"
+              aria-hidden
+            />
             <div>
               <h3 className="mb-2 font-semibold text-blue-300">
                 {t(
@@ -300,30 +378,42 @@ export default function CreatingPredictionsPage() {
                   'Best Practices for Creating Predictions'
                 )}
               </h3>
-              <ul className="space-y-2 text-sm text-gray-300">
+              <ul className="space-y-3 text-sm text-gray-300">
                 <li className="flex items-start">
-                  <span className="mr-2 mt-1 text-blue-400">•</span>
+                  <CircleDot
+                    className="mr-3 mt-1 h-4 w-4 flex-shrink-0 text-blue-400"
+                    aria-hidden
+                  />
                   {t(
                     'docs.creating_predictions.best_practices.clear',
                     'Be clear and specific in your description'
                   )}
                 </li>
                 <li className="flex items-start">
-                  <span className="mr-2 mt-1 text-blue-400">•</span>
+                  <CircleDot
+                    className="mr-3 mt-1 h-4 w-4 flex-shrink-0 text-blue-400"
+                    aria-hidden
+                  />
                   {t(
                     'docs.creating_predictions.best_practices.verifiable',
                     'Ensure the outcome can be objectively verified'
                   )}
                 </li>
                 <li className="flex items-start">
-                  <span className="mr-2 mt-1 text-blue-400">•</span>
+                  <CircleDot
+                    className="mr-3 mt-1 h-4 w-4 flex-shrink-0 text-blue-400"
+                    aria-hidden
+                  />
                   {t(
                     'docs.creating_predictions.best_practices.timeframe',
                     'Include clear timeframes when relevant'
                   )}
                 </li>
                 <li className="flex items-start">
-                  <span className="mr-2 mt-1 text-blue-400">•</span>
+                  <CircleDot
+                    className="mr-3 mt-1 h-4 w-4 flex-shrink-0 text-blue-400"
+                    aria-hidden
+                  />
                   {t(
                     'docs.creating_predictions.best_practices.interesting',
                     'Create predictions that others will find interesting to bet on'
