@@ -21,6 +21,9 @@ const nextConfig = {
     optimizePackageImports: ['lucide-react', '@radix-ui/react-icons'],
   },
   async headers() {
+    // Check if we're in development mode
+    const isDev = process.env.NODE_ENV === 'development';
+
     return [
       {
         source: '/(.*)',
@@ -29,18 +32,24 @@ const nextConfig = {
             key: 'Content-Security-Policy',
             value: [
               "default-src 'self'",
-              "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://auth.privy.io https://cdn.privy.io",
-              "style-src 'self' 'unsafe-inline' https://auth.privy.io https://cdn.privy.io",
+              "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://auth.privy.io https://cdn.privy.io https://*.privy.io",
+              "style-src 'self' 'unsafe-inline' https://auth.privy.io https://cdn.privy.io https://*.privy.io",
               "img-src 'self' data: https: blob:",
               "font-src 'self' data: https:",
-              "connect-src 'self' https://auth.privy.io https://api.privy.io https://bsc-dataseed1.binance.org https://bsc-dataseed.binance.org",
-              "frame-src 'self' https://auth.privy.io",
-              "frame-ancestors 'self' https://darkbet.fun https://www.darkbet.fun https://auth.privy.io http://localhost:*",
+              // Allow localhost connections in development
+              isDev
+                ? "connect-src 'self' http://localhost:* ws://localhost:* https://*.privy.io https://auth.privy.io https://api.privy.io https://bsc-dataseed1.binance.org https://bsc-dataseed.binance.org https://*.binance.org wss://*.binance.org"
+                : "connect-src 'self' https://*.privy.io https://auth.privy.io https://api.privy.io https://bsc-dataseed1.binance.org https://bsc-dataseed.binance.org https://*.binance.org wss://*.binance.org",
+              "frame-src 'self' https://*.privy.io https://auth.privy.io https://verify.walletconnect.com https://verify.walletconnect.org",
+              "frame-ancestors 'self' https://darkbet.fun https://www.darkbet.fun",
               "object-src 'none'",
               "base-uri 'self'",
               "form-action 'self'",
-              'upgrade-insecure-requests',
-            ].join('; '),
+              // Only upgrade in production
+              ...(isDev ? [] : ['upgrade-insecure-requests']),
+            ]
+              .filter(Boolean)
+              .join('; '),
           },
         ],
       },

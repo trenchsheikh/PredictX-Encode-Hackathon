@@ -937,8 +937,8 @@ export default function MyBetsPage() {
                   className="h-full border-black bg-black/90 transition-shadow hover:shadow-lg"
                 >
                   <CardContent className="p-4 sm:p-6">
-                    <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-                      <div className="min-w-0 flex-1">
+                    <div className="flex flex-col gap-4">
+                      <div className="w-full">
                         <div className="mb-2 flex items-center gap-2">
                           <Badge
                             variant="outline"
@@ -970,72 +970,76 @@ export default function MyBetsPage() {
                                 : `${t('my_bets.resolved_on')} ${new Date(prediction.resolution?.resolvedAt || prediction.expiresAt).toLocaleDateString()}`}
                             </span>
                           </div>
-                          <div className="flex items-center gap-1">
-                            <OutcomeIcon
-                              className={cn(
-                                'h-4 w-4',
-                                bet.outcome === 'yes'
-                                  ? 'text-green-400'
-                                  : 'text-red-400'
-                              )}
-                            />
-                            <span
-                              className={
-                                bet.outcome === 'yes'
-                                  ? 'text-green-400'
-                                  : 'text-red-400'
-                              }
-                            >
-                              {bet.outcome.toUpperCase()}
-                            </span>
-                          </div>
+                          {bet.outcome !== 'unknown' && (
+                            <div className="flex items-center gap-1">
+                              <OutcomeIcon
+                                className={cn(
+                                  'h-4 w-4',
+                                  bet.outcome === 'yes'
+                                    ? 'text-green-400'
+                                    : 'text-red-400'
+                                )}
+                              />
+                              <span
+                                className={
+                                  bet.outcome === 'yes'
+                                    ? 'text-green-400'
+                                    : 'text-red-400'
+                                }
+                              >
+                                {bet.outcome.toUpperCase()}
+                              </span>
+                            </div>
+                          )}
                         </div>
 
                         {/* Bet Details */}
-                        <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4">
-                          <div>
-                            <div className="text-xs text-gray-400">
-                              {t('my_bets.shares')}
+                        <div className="mt-4 rounded-lg border border-white/10 bg-white/5 p-4">
+                          <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+                            <div>
+                              <div className="font-caption mb-1 text-xs uppercase tracking-wide text-gray-400">
+                                Shares
+                              </div>
+                              <div className="font-heading text-base text-white">
+                                {bet.shares.toFixed(2)}
+                              </div>
                             </div>
-                            <div className="text-sm font-medium text-white">
-                              {bet.shares.toFixed(2)}
+                            <div>
+                              <div className="font-caption mb-1 text-xs uppercase tracking-wide text-gray-400">
+                                Amount
+                              </div>
+                              <div className="font-heading text-base text-white">
+                                {formatBNB(bet.amount)}
+                              </div>
                             </div>
-                          </div>
-                          <div>
-                            <div className="text-xs text-gray-400">
-                              {t('my_bets.amount')}
+                            <div>
+                              <div className="font-caption mb-1 text-xs uppercase tracking-wide text-gray-400">
+                                Price
+                              </div>
+                              <div className="font-heading text-base text-white">
+                                {formatBNB(bet.price)}
+                              </div>
                             </div>
-                            <div className="text-sm font-medium text-white">
-                              {formatBNB(bet.amount)}
-                            </div>
-                          </div>
-                          <div>
-                            <div className="text-xs text-gray-400">
-                              {t('my_bets.price')}
-                            </div>
-                            <div className="text-sm font-medium text-white">
-                              {formatBNB(bet.price)}
-                            </div>
-                          </div>
-                          <div>
-                            <div className="text-xs text-gray-400">
-                              {t('prediction_card.potential_payout')}
-                            </div>
-                            <div className="text-sm font-medium text-white">
-                              {prediction.status === 'resolved' &&
-                              prediction.resolution?.outcome
-                                ? formatBNB(
-                                    calculatePotentialPayout(bet, prediction)
-                                  )
-                                : formatBNB(
-                                    calculatePayout(
-                                      bet.shares,
-                                      bet.outcome === 'yes'
-                                        ? prediction.yesShares
-                                        : prediction.noShares,
-                                      prediction.totalPool
+                            <div>
+                              <div className="font-caption mb-1 text-xs uppercase tracking-wide text-gray-400">
+                                Potential Payout
+                              </div>
+                              <div className="font-heading text-base text-green-400">
+                                {prediction.status === 'resolved' &&
+                                prediction.resolution?.outcome
+                                  ? formatBNB(
+                                      calculatePotentialPayout(bet, prediction)
                                     )
-                                  )}
+                                  : formatBNB(
+                                      calculatePayout(
+                                        bet.shares,
+                                        bet.outcome === 'yes'
+                                          ? prediction.yesShares
+                                          : prediction.noShares,
+                                        prediction.totalPool
+                                      )
+                                    )}
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -1060,7 +1064,7 @@ export default function MyBetsPage() {
                       </div>
 
                       {/* Action Buttons */}
-                      <div className="flex flex-col gap-2 sm:ml-4 sm:flex-shrink-0">
+                      <div className="flex flex-wrap gap-2">
                         {/* Reveal button for unrevealed bets */}
                         {!isRevealed &&
                           hasUnrevealedCommit(bet.predictionId) &&
@@ -1113,11 +1117,11 @@ export default function MyBetsPage() {
                               className="bg-orange-600 text-white"
                             >
                               {refundCheck?.available
-                                ? 'Can Refund'
-                                : 'Expired - Check Refund'}
+                                ? 'Refund Available'
+                                : 'Expired'}
                             </Badge>
-                            {refundCheck?.reason && (
-                              <div className="max-w-32 text-xs text-gray-300">
+                            {refundCheck?.available && refundCheck?.reason && (
+                              <div className="text-xs text-gray-300">
                                 {refundCheck.reason}
                               </div>
                             )}
@@ -1137,7 +1141,7 @@ export default function MyBetsPage() {
                                 className="bg-gray-600 text-white hover:bg-gray-700"
                                 size="sm"
                               >
-                                Check Again
+                                Check Refund
                               </Button>
                             )}
                           </div>
