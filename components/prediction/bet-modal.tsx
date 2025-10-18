@@ -15,6 +15,7 @@ import { Badge } from '@/components/ui/badge';
 import { AlertCircle, TrendingUp, TrendingDown, Info } from 'lucide-react';
 import { formatBNB, calculatePayout } from '@/lib/utils';
 import { Prediction } from '@/types/prediction';
+import { InlineError } from '@/components/ui/error-display';
 
 interface BetModalProps {
   open: boolean;
@@ -33,7 +34,7 @@ export function BetModal({
 }: BetModalProps) {
   const [amount, setAmount] = useState('');
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState<any>(null);
 
   const numAmount = parseFloat(amount) || 0;
   const isYes = outcome === 'yes';
@@ -53,22 +54,22 @@ export function BetModal({
 
   const validateAmount = (): boolean => {
     if (!amount || numAmount <= 0) {
-      setError('Please enter a valid amount');
+      setError({ message: 'Please enter a valid amount' });
       return false;
     }
     if (numAmount < minBet) {
-      setError(`Minimum bet is ${minBet} BNB`);
+      setError({ message: `Minimum bet is ${minBet} BNB` });
       return false;
     }
     if (numAmount > maxBet) {
-      setError(`Maximum bet is ${maxBet} BNB`);
+      setError({ message: `Maximum bet is ${maxBet} BNB` });
       return false;
     }
     if (numAmount > userBalance) {
-      setError('Insufficient balance');
+      setError({ message: 'Insufficient balance' });
       return false;
     }
-    setError('');
+    setError(null);
     return true;
   };
 
@@ -76,14 +77,15 @@ export function BetModal({
     if (!validateAmount()) return;
 
     setLoading(true);
-    setError('');
+    setError(null);
 
     try {
       await onConfirm(numAmount);
       setAmount('');
       onOpenChange(false);
     } catch (err: any) {
-      setError(err.message || 'Failed to place bet');
+      // Store the actual error object so we can display user-friendly message
+      setError(err);
     } finally {
       setLoading(false);
     }
@@ -91,7 +93,7 @@ export function BetModal({
 
   const handleQuickAmount = (value: number) => {
     setAmount(value.toString());
-    setError('');
+    setError(null);
   };
 
   return (
@@ -139,7 +141,7 @@ export function BetModal({
               value={amount}
               onChange={e => {
                 setAmount(e.target.value);
-                setError('');
+                setError(null);
               }}
               min={minBet}
               max={maxBet}
@@ -167,12 +169,7 @@ export function BetModal({
           </div>
 
           {/* Error Message */}
-          {error && (
-            <div className="flex items-center gap-2 rounded-lg border border-red-500/20 bg-red-500/10 p-3">
-              <AlertCircle className="h-4 w-4 text-red-400" />
-              <span className="text-sm text-red-400">{error}</span>
-            </div>
-          )}
+          {error && <InlineError error={error} />}
 
           {/* Bet Summary */}
           {numAmount > 0 && !error && (

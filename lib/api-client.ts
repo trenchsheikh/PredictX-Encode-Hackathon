@@ -243,10 +243,9 @@ export async function checkBackendHealth(): Promise<boolean> {
  * Helper: Handle API errors with user-friendly messages
  */
 export function getErrorMessage(error: any): string {
-  if (typeof error === 'string') return error;
-  if (error?.error) return error.error;
-  if (error?.message) return error.message;
-  return 'An unexpected error occurred';
+  // Import the user-friendly error handler
+  const { getUserFriendlyErrorMessage } = require('./user-friendly-errors');
+  return getUserFriendlyErrorMessage(error);
 }
 
 /**

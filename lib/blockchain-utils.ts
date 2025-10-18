@@ -347,24 +347,12 @@ export async function waitForTransaction(
 }
 
 /**
- * Parse contract error message
+ * Parse contract error message (now uses user-friendly error system)
  */
 export function parseContractError(error: any): string {
-  if (error.reason) return error.reason;
-  if (error.data?.message) return error.data.message;
-  if (error.message) {
-    // Extract revert reason from error message
-    const match = error.message.match(/reason="([^"]+)"/);
-    if (match) return match[1];
-
-    // Extract user rejection
-    if (error.message.includes('user rejected')) {
-      return 'Transaction rejected by user';
-    }
-
-    return error.message;
-  }
-  return 'Unknown error occurred';
+  // Import the user-friendly error handler
+  const { getUserFriendlyErrorMessage } = require('./user-friendly-errors');
+  return getUserFriendlyErrorMessage(error);
 }
 
 /**

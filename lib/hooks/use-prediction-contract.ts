@@ -920,10 +920,76 @@ export function usePredictionContract() {
           commitHash,
         ]);
 
-        // Send transaction
-        const tx = await contract.commitBet(marketId, commitHash, {
-          value: amountWei,
-          gasLimit,
+        // Use fixed gas price for BSC Mainnet to avoid RPC issues
+        let gasPrice;
+        if (process.env.NEXT_PUBLIC_CHAIN_ID === '56') {
+          // Use 3 gwei for BSC Mainnet (reliable and fast)
+          gasPrice = ethers.parseUnits('3', 'gwei');
+        } else {
+          // For testnet, use dynamic pricing
+          const feeData = await contract.runner?.provider?.getFeeData();
+          gasPrice = feeData?.gasPrice
+            ? (feeData.gasPrice * 110n) / 100n
+            : undefined;
+        }
+
+        console.log('Gas configuration for commitBet:', {
+          gasLimit: gasLimit.toString(),
+          gasPrice: gasPrice?.toString(),
+          gasPriceGwei:
+            process.env.NEXT_PUBLIC_CHAIN_ID === '56' ? '3' : 'dynamic',
+        });
+
+        // Send transaction with retry logic for RPC errors
+        let tx;
+        try {
+          tx = await contract.commitBet(marketId, commitHash, {
+            value: amountWei,
+            gasLimit,
+            gasPrice: gasPrice ? gasPrice.toString() : undefined,
+          });
+        } catch (txError: any) {
+          console.error('Transaction failed:', txError);
+
+          // If it's an RPC error, try with a different approach
+          if (
+            txError.message.includes(
+              'Transaction does not have a transaction hash'
+            ) ||
+            txError.message.includes('-32603')
+          ) {
+            console.log(
+              'RPC error detected, trying with different gas settings...'
+            );
+
+            // Try with higher gas limit and no gas price (let network decide)
+            try {
+              tx = await contract.commitBet(marketId, commitHash, {
+                value: amountWei,
+                gasLimit: gasLimit * 2n, // Double the gas limit
+                // Don't specify gasPrice, let the network decide
+              });
+            } catch (fallbackError: any) {
+              console.error('Fallback transaction also failed:', fallbackError);
+
+              // Last resort: try with minimal settings
+              tx = await contract.commitBet(marketId, commitHash, {
+                value: amountWei,
+                // No gas settings at all - let ethers handle everything
+              });
+            }
+          } else {
+            throw txError;
+          }
+        }
+
+        if (!tx || !tx.hash) {
+          throw new Error('Transaction failed to generate hash');
+        }
+
+        console.log('Transaction submitted:', {
+          hash: tx.hash,
+          gasLimit: gasLimit.toString(),
         });
 
         setTxHash(tx.hash);
