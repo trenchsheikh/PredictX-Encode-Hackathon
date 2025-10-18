@@ -27,15 +27,17 @@ router.get('/:address/bets', async (req: Request, res: Response) => {
     );
 
     // Get all commitments for this user with timeout
+    // All addresses are stored in lowercase for consistency
     const commitments = await Commitment.find({
-      user: { $regex: new RegExp(`^${userAddress}$`, 'i') },
+      user: userAddress,
     })
       .lean()
       .maxTimeMS(5000);
 
     // Get all revealed bets for this user with timeout
+    // All addresses are stored in lowercase for consistency
     const revealedBets = await Bet.find({
-      user: { $regex: new RegExp(`^${userAddress}$`, 'i') },
+      user: userAddress,
     })
       .lean()
       .maxTimeMS(5000);
@@ -136,8 +138,9 @@ router.get('/:address/stats', async (req: Request, res: Response) => {
     const userAddress = req.params.address.toLowerCase();
 
     // Get all revealed bets
+    // All addresses are stored in lowercase for consistency
     const bets = await Bet.find({
-      user: { $regex: new RegExp(`^${userAddress}$`, 'i') },
+      user: userAddress,
     }).lean();
 
     // Calculate stats

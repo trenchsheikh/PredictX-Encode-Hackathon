@@ -41,9 +41,12 @@ class TransactionHistoryService {
     }
   ): Promise<ITransaction> {
     try {
+      // Normalize user address to lowercase for consistency
+      const normalizedAddress = userAddress.toLowerCase();
+
       const transaction = new Transaction({
         marketId,
-        userAddress,
+        userAddress: normalizedAddress,
         type,
         txHash,
         blockNumber,
@@ -116,7 +119,10 @@ class TransactionHistoryService {
     limit: number = 50
   ): Promise<ITransaction[]> {
     try {
-      return (await Transaction.find({ userAddress })
+      // Normalize user address to lowercase for consistency
+      const normalizedAddress = userAddress.toLowerCase();
+
+      return (await Transaction.find({ userAddress: normalizedAddress })
         .sort({ timestamp: -1 })
         .limit(limit)
         .lean()) as any[];

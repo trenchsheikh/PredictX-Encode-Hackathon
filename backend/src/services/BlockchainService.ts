@@ -252,13 +252,16 @@ export class BlockchainService {
     event: EventLog
   ): Promise<void> {
     try {
+      // Normalize user address to lowercase for consistency
+      const userAddress = user.toLowerCase();
+
       console.log(
-        `📢 BetCommitted: Market ${marketId}, User ${user.slice(0, 10)}...`
+        `📢 BetCommitted: Market ${marketId}, User ${userAddress.slice(0, 10)}...`
       );
 
       const commitment = new Commitment({
         marketId: Number(marketId),
-        user,
+        user: userAddress,
         commitHash,
         amount: amount.toString(),
         timestamp: new Date(),
@@ -283,7 +286,7 @@ export class BlockchainService {
 
         await transactionHistoryService.recordTransaction(
           Number(marketId),
-          user,
+          userAddress,
           'commit',
           txHash,
           blockNumber,
@@ -310,20 +313,23 @@ export class BlockchainService {
     event: EventLog
   ): Promise<void> {
     try {
+      // Normalize user address to lowercase for consistency
+      const userAddress = user.toLowerCase();
+
       console.log(
-        `📢 BetRevealed: Market ${marketId}, User ${user.slice(0, 10)}..., Outcome ${outcome ? 'YES' : 'NO'}`
+        `📢 BetRevealed: Market ${marketId}, User ${userAddress.slice(0, 10)}..., Outcome ${outcome ? 'YES' : 'NO'}`
       );
 
       // Update commitment to revealed
       await Commitment.updateOne(
-        { marketId: Number(marketId), user },
+        { marketId: Number(marketId), user: userAddress },
         { $set: { revealed: true } }
       );
 
       // Create bet record
       const bet = new Bet({
         marketId: Number(marketId),
-        user,
+        user: userAddress,
         outcome,
         shares: shares.toString(),
         amount: amount.toString(),
@@ -366,7 +372,7 @@ export class BlockchainService {
 
         await transactionHistoryService.recordTransaction(
           Number(marketId),
-          user,
+          userAddress,
           'reveal',
           txHash,
           blockNumber,
@@ -442,12 +448,15 @@ export class BlockchainService {
     event: EventLog
   ): Promise<void> {
     try {
+      // Normalize user address to lowercase for consistency
+      const userAddress = user.toLowerCase();
+
       console.log(
-        `📢 WinningsClaimed: Market ${marketId}, User ${user.slice(0, 10)}..., Amount ${ethers.formatEther(amount)} BNB`
+        `📢 WinningsClaimed: Market ${marketId}, User ${userAddress.slice(0, 10)}..., Amount ${ethers.formatEther(amount)} BNB`
       );
 
       await Bet.updateOne(
-        { marketId: Number(marketId), user },
+        { marketId: Number(marketId), user: userAddress },
         { $set: { claimed: true } }
       );
 
@@ -464,7 +473,7 @@ export class BlockchainService {
 
         await transactionHistoryService.recordTransaction(
           Number(marketId),
-          user,
+          userAddress,
           'claim',
           txHash,
           blockNumber,

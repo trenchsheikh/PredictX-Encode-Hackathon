@@ -226,8 +226,11 @@ router.post('/:id/commit', async (req: Request, res: Response) => {
       });
     }
 
+    // Normalize user address to lowercase for consistency
+    const userAddress = user.toLowerCase();
+
     // Check if commitment exists
-    const existing = await Commitment.findOne({ marketId, user });
+    const existing = await Commitment.findOne({ marketId, user: userAddress });
     if (existing) {
       return res.status(409).json({
         success: false,
@@ -237,13 +240,13 @@ router.post('/:id/commit', async (req: Request, res: Response) => {
 
     // Index the bet commitment
     console.log(
-      `[BET_COMMIT] Indexing bet for user ${user.slice(0, 10)}... on market ${marketId}`
+      `[BET_COMMIT] Indexing bet for user ${userAddress.slice(0, 10)}... on market ${marketId}`
     );
 
     // Create commitment record (if not already indexed by event listener)
     const commitment = new Commitment({
       marketId,
-      user,
+      user: userAddress,
       commitHash,
       amount,
       timestamp: new Date(),
@@ -253,7 +256,7 @@ router.post('/:id/commit', async (req: Request, res: Response) => {
 
     await commitment.save();
     console.log(
-      `[BET_COMMIT] Successfully indexed bet for user ${user.slice(0, 10)}... on market ${marketId}`
+      `[BET_COMMIT] Successfully indexed bet for user ${userAddress.slice(0, 10)}... on market ${marketId}`
     );
 
     res.json({
@@ -287,8 +290,11 @@ router.post('/:id/reveal', async (req: Request, res: Response) => {
       });
     }
 
+    // Normalize user address to lowercase for consistency
+    const userAddress = user.toLowerCase();
+
     // Check if already revealed
-    const existingBet = await Bet.findOne({ marketId, user });
+    const existingBet = await Bet.findOne({ marketId, user: userAddress });
     if (existingBet) {
       return res.status(409).json({
         success: false,
@@ -311,14 +317,14 @@ router.post('/:id/reveal', async (req: Request, res: Response) => {
 
     // Update commitment to revealed
     await Commitment.updateOne(
-      { marketId, user },
+      { marketId, user: userAddress },
       { $set: { revealed: true } }
     );
 
     // Create bet record
     const bet = new Bet({
       marketId,
-      user,
+      user: userAddress,
       outcome,
       shares,
       amount,
