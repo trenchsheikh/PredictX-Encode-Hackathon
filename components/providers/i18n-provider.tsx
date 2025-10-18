@@ -26,9 +26,16 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
   const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
+    // Only run on client side
+    if (typeof window === 'undefined') return;
+
     const savedLocale = localStorage.getItem('darkbet-locale') as Locale;
     const initialLocale = savedLocale || 'zh';
+
+    // Set the state first
     setLocaleState(initialLocale);
+
+    // Then change the i18n language
     i18n.changeLanguage(initialLocale).then(() => {
       setIsInitialized(true);
     });

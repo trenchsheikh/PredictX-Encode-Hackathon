@@ -36,7 +36,6 @@ export function AnimatedHeader() {
   const toggleLanguage = () => {
     const newLocale = locale === 'en' ? 'zh' : 'en';
     setLocale(newLocale);
-    // Also update localStorage to sync with docs
     localStorage.setItem('darkbet-locale', newLocale);
   };
 

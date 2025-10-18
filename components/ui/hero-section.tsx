@@ -25,13 +25,19 @@ export function HeroSection({
   onCryptoClick,
   onNewsClick,
 }: HeroSectionProps) {
-  const { t } = useI18n();
+  const { t, isInitialized } = useI18n();
   const [stats, setStats] = useState<PlatformStats>({
     totalVolume: 0,
     activeMarkets: 0,
     participants: 0,
   });
   const [loading, setLoading] = useState(true);
+  const [mounted, setMounted] = useState(false);
+
+  // Set mounted state to prevent hydration mismatch
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Set hardcoded platform statistics
   useEffect(() => {
@@ -67,22 +73,28 @@ export function HeroSection({
           {/* Large text - two lines */}
           <h1 className="mx-auto mb-6 mt-4 text-2xl leading-[1.12] tracking-tighter text-white md:text-4xl lg:text-5xl">
             <span className="relative z-10 block">
-              {t('hero_headline_lead')}
+              {mounted && isInitialized
+                ? t('hero_headline_lead')
+                : "Don't Just Bet,"}
             </span>
             <span className="mt-2 inline-flex max-w-full flex-wrap items-center gap-2 whitespace-nowrap font-medium md:mt-3 md:gap-3">
               <span className="text-3xl md:text-5xl lg:text-6xl">
-                {t('hero_bet_word')}
+                {mounted && isInitialized ? t('hero_bet_word') : 'Bet'}
               </span>{' '}
               <span className="relative inline-flex">
                 <span className="relative z-0 inline-flex items-center overflow-hidden rounded-2xl border border-yellow-400/40 bg-gradient-to-br from-gray-800/95 to-gray-900/95 py-1 pl-2 pr-4 text-3xl md:py-1.5 md:pl-3 md:pr-6 md:text-5xl lg:pl-4 lg:pr-8 lg:text-6xl">
                   <span className="bnb-pattern pointer-events-none absolute inset-0 opacity-20 mix-blend-overlay" />
                   <span className="relative min-w-0 font-medium italic leading-normal">
                     <WordAnimator
-                      words={[
-                        t('features.privacy'),
-                        t('features.fully_onchain'),
-                        t('features.ai_driven'),
-                      ]}
+                      words={
+                        mounted && isInitialized
+                          ? [
+                              t('features.privacy'),
+                              t('features.fully_onchain'),
+                              t('features.ai_driven'),
+                            ]
+                          : ['Privacy', 'Fully Onchain', 'AI Driven']
+                      }
                       duration={4}
                       className="whitespace-nowrap border-0 bg-transparent px-0"
                     />
@@ -94,7 +106,9 @@ export function HeroSection({
 
           {/* Normal paragraph */}
           <p className="font-body mx-auto max-w-2xl text-base leading-relaxed text-gray-300 md:text-lg">
-            {t('hero_description')}
+            {mounted && isInitialized
+              ? t('hero_description')
+              : 'Bet in completely anonymous dark pools with privacy protection and AI-driven prediction market experience.'}
           </p>
         </div>
 
@@ -105,7 +119,9 @@ export function HeroSection({
             background="linear-gradient(180deg, #ffb84d 0%, #cc6b00 100%)"
             className="h-14 min-w-[280px] rounded-full border-orange-600 px-8 text-base font-semibold tracking-wide text-white shadow-md ring-1 ring-black/40 hover:[background:linear-gradient(180deg,#ffc266_0%,#b35f00_100%)] md:text-lg"
           >
-            {t('cta.start_darkpool_betting')}
+            {mounted && isInitialized
+              ? t('cta.start_darkpool_betting')
+              : 'Start DarkPool Betting'}
           </ShimmerButton>
 
           <Button
@@ -113,7 +129,9 @@ export function HeroSection({
             variant="outline"
             className="h-14 min-w-[280px] rounded-full border-white/10 bg-gradient-to-b from-[#121726] to-[#0b111c] px-8 text-base font-semibold tracking-wide text-white shadow-md ring-1 ring-white/10 hover:from-[#161d31] hover:to-[#0e1522] md:text-lg"
           >
-            {t('cta.crypto_darkpool')}
+            {mounted && isInitialized
+              ? t('cta.crypto_darkpool')
+              : 'Crypto DarkPool'}
           </Button>
 
           <ShimmerButton
@@ -121,7 +139,7 @@ export function HeroSection({
             background="linear-gradient(180deg, #ffb84d 0%, #cc6b00 100%)"
             className="h-14 min-w-[280px] rounded-full border-orange-600 px-8 text-base font-semibold tracking-wide text-white shadow-md ring-1 ring-black/40 hover:[background:linear-gradient(180deg,#ffc266_0%,#b35f00_100%)] md:text-lg"
           >
-            {t('cta.news_events')}
+            {mounted && isInitialized ? t('cta.news_events') : 'News Events'}
           </ShimmerButton>
         </div>
 
@@ -131,10 +149,14 @@ export function HeroSection({
             <Quote className="mx-auto h-12 w-12 fill-yellow-400 text-yellow-400" />
           </div>
           <h2 className="mb-6 text-4xl font-medium leading-tight text-white md:text-6xl">
-            {t('what_is_darkpool')}
+            {mounted && isInitialized
+              ? t('what_is_darkpool')
+              : 'What is DarkPool?'}
           </h2>
           <p className="mx-auto mb-12 max-w-3xl text-sm leading-relaxed text-gray-300 sm:text-base">
-            {t('darkpool_explanation')}
+            {mounted && isInitialized
+              ? t('darkpool_explanation')
+              : 'DarkPool is a completely anonymous prediction market where all transactions are on-chain, ensuring transparency and immutability.'}
           </p>
         </div>
 
@@ -145,7 +167,9 @@ export function HeroSection({
               {loading ? '...' : `${stats.totalVolume} BNB`}
             </div>
             <div className="text-xs text-gray-300 sm:text-base">
-              {t('stats.total_volume')}
+              {mounted && isInitialized
+                ? t('stats.total_volume')
+                : 'Total Volume'}
             </div>
           </div>
           <div className="text-center">
@@ -153,7 +177,9 @@ export function HeroSection({
               {loading ? '...' : stats.activeMarkets}
             </div>
             <div className="text-xs text-gray-300 sm:text-base">
-              {t('stats.active_markets')}
+              {mounted && isInitialized
+                ? t('stats.active_markets')
+                : 'Active Markets'}
             </div>
           </div>
           <div className="text-center">
@@ -161,7 +187,9 @@ export function HeroSection({
               {loading ? '...' : stats.participants}
             </div>
             <div className="text-xs text-gray-300 sm:text-base">
-              {t('stats.participants')}
+              {mounted && isInitialized
+                ? t('stats.participants')
+                : 'Participants'}
             </div>
           </div>
         </div>

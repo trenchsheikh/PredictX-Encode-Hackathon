@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePrivy } from '@privy-io/react-auth';
@@ -19,11 +19,18 @@ const navigation = [
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { locale, setLocale, t } = useI18n();
+  const [mounted, setMounted] = useState(false);
+  const { locale, setLocale, t, isInitialized } = useI18n();
   const { ready, authenticated, user, login, logout } = usePrivy();
 
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const toggleLanguage = () => {
-    setLocale(locale === 'en' ? 'zh' : 'en');
+    const newLocale = locale === 'en' ? 'zh' : 'en';
+    setLocale(newLocale);
+    localStorage.setItem('darkbet-locale', newLocale);
   };
 
   return (
@@ -66,7 +73,12 @@ export function Header() {
                 href={item.href}
                 className="text-sm font-semibold leading-6 text-gray-200 transition-colors hover:text-white"
               >
-                {t(item.key)}
+                {mounted && isInitialized
+                  ? t(item.key)
+                  : item.key
+                      .replace('nav_', '')
+                      .replace('_', ' ')
+                      .replace(/\b\w/g, l => l.toUpperCase())}
               </Link>
             </Magnetic>
           ))}
@@ -92,7 +104,7 @@ export function Header() {
                 className="bg-secondary text-secondary-foreground"
               >
                 <Wallet className="mr-2 h-4 w-4" />
-                {t('connecting')}
+                {mounted && isInitialized ? t('connecting') : 'Connecting...'}
               </Button>
             </Magnetic>
           ) : authenticated ? (
@@ -100,7 +112,9 @@ export function Header() {
               <span className="text-sm text-muted-foreground">
                 {user?.wallet?.address
                   ? `${user.wallet.address.slice(0, 6)}...${user.wallet.address.slice(-4)}`
-                  : t('connected')}
+                  : mounted && isInitialized
+                    ? t('connected')
+                    : 'Connected'}
               </span>
               <Magnetic intensity={0.1} scale={1.05}>
                 <Button
@@ -120,7 +134,9 @@ export function Header() {
                 className="btn-primary shadow-[0_0_20px_rgba(240,185,11,0.25)]"
               >
                 <Wallet className="mr-2 h-4 w-4" />
-                {t('connect_wallet')}
+                {mounted && isInitialized
+                  ? t('connect_wallet')
+                  : 'Connect Wallet'}
               </Button>
             </Magnetic>
           )}
@@ -163,7 +179,12 @@ export function Header() {
                     className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-200 hover:bg-white/10 hover:text-white"
                     onClick={() => setMobileMenuOpen(false)}
                   >
-                    {t(item.key)}
+                    {mounted && isInitialized
+                      ? t(item.key)
+                      : item.key
+                          .replace('nav_', '')
+                          .replace('_', ' ')
+                          .replace(/\b\w/g, l => l.toUpperCase())}
                   </Link>
                 ))}
               </div>
@@ -181,14 +202,18 @@ export function Header() {
                 {!ready ? (
                   <Button disabled className="w-full bg-gray-700 text-white">
                     <Wallet className="mr-2 h-4 w-4" />
-                    {t('connecting')}
+                    {mounted && isInitialized
+                      ? t('connecting')
+                      : 'Connecting...'}
                   </Button>
                 ) : authenticated ? (
                   <div className="space-y-2">
                     <div className="text-center text-sm text-gray-300">
                       {user?.wallet?.address
                         ? `${user.wallet.address.slice(0, 6)}...${user.wallet.address.slice(-4)}`
-                        : t('connected')}
+                        : mounted && isInitialized
+                          ? t('connected')
+                          : 'Connected'}
                     </div>
                     <Button
                       variant="outline"
@@ -196,7 +221,9 @@ export function Header() {
                       onClick={logout}
                       className="w-full border-white/20 text-gray-200 hover:bg-white/10"
                     >
-                      {t('disconnect')}
+                      {mounted && isInitialized
+                        ? t('disconnect')
+                        : 'Disconnect'}
                     </Button>
                   </div>
                 ) : (
@@ -205,7 +232,9 @@ export function Header() {
                     className="w-full bg-white text-black hover:bg-gray-200"
                   >
                     <Wallet className="mr-2 h-4 w-4" />
-                    {t('connect_wallet')}
+                    {mounted && isInitialized
+                      ? t('connect_wallet')
+                      : 'Connect Wallet'}
                   </Button>
                 )}
               </div>
