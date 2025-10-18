@@ -365,13 +365,24 @@ export default function HomePage() {
           'Failed to reveal creator bet, you may need to reveal manually'
         );
       } else {
-        // Index reveal in backend
-        await api.markets.revealBet(marketId.toString(), {
-          user: userAddress,
-          outcome: data.outcome === 'yes',
-          salt,
-          txHash: revealResult.txHash,
-        });
+        // Wait for reveal to be processed on chain
+        await new Promise(resolve => setTimeout(resolve, 1500));
+
+        // Get bet details from blockchain
+        const chainBet = await contract.getUserBet(marketId, userAddress);
+
+        if (chainBet && chainBet.amount && chainBet.shares) {
+          // Index reveal in backend with correct parameters
+          await api.markets.revealBet(marketId.toString(), {
+            user: userAddress,
+            outcome: data.outcome === 'yes',
+            shares: chainBet.shares.toString(),
+            amount: chainBet.amount.toString(),
+            txHash: revealResult.txHash,
+          });
+        } else {
+          logger.warn('Could not fetch bet details from blockchain');
+        }
       }
 
       // Refresh markets
@@ -482,13 +493,24 @@ export default function HomePage() {
           'Failed to reveal creator bet, you may need to reveal manually'
         );
       } else {
-        // Index reveal in backend
-        await api.markets.revealBet(marketId.toString(), {
-          user: userAddress,
-          outcome: data.outcome === 'yes',
-          salt,
-          txHash: revealResult.txHash,
-        });
+        // Wait for reveal to be processed on chain
+        await new Promise(resolve => setTimeout(resolve, 1500));
+
+        // Get bet details from blockchain
+        const chainBet = await contract.getUserBet(marketId, userAddress);
+
+        if (chainBet && chainBet.amount && chainBet.shares) {
+          // Index reveal in backend with correct parameters
+          await api.markets.revealBet(marketId.toString(), {
+            user: userAddress,
+            outcome: data.outcome === 'yes',
+            shares: chainBet.shares.toString(),
+            amount: chainBet.amount.toString(),
+            txHash: revealResult.txHash,
+          });
+        } else {
+          logger.warn('Could not fetch bet details from blockchain');
+        }
       }
 
       // Step 3: Save event data to backend

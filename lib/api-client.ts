@@ -143,9 +143,9 @@ export const marketAPI = {
   async revealBet(
     marketId: string,
     revealData: {
-      userAddress: string;
-      outcome: 'yes' | 'no';
-      salt: string;
+      user: string;
+      outcome: boolean;
+      shares: string;
       amount: string;
       txHash: string;
     }
