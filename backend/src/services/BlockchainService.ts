@@ -256,24 +256,37 @@ export class BlockchainService {
       const userAddress = user.toLowerCase();
 
       console.log(
-        `📢 BetCommitted: Market ${marketId}, User ${userAddress.slice(0, 10)}...`
+        `[BET_COMMIT] Indexing bet for user ${userAddress.slice(0, 10)}... on market ${marketId}`
       );
 
-      const commitment = new Commitment({
-        marketId: Number(marketId),
-        user: userAddress,
-        commitHash,
-        amount: amount.toString(),
-        timestamp: new Date(),
-        revealed: false,
-        txHash:
-          (event as any).transactionHash ||
-          (event as any).log?.transactionHash ||
-          'unknown',
-      });
+      // Use updateOne with upsert to avoid duplicate key errors
+      const result = await Commitment.updateOne(
+        {
+          marketId: Number(marketId),
+          user: userAddress,
+        },
+        {
+          $set: {
+            commitHash,
+            amount: amount.toString(),
+            timestamp: new Date(),
+            revealed: false,
+            txHash:
+              (event as any).transactionHash ||
+              (event as any).log?.transactionHash ||
+              'unknown',
+          },
+        },
+        { upsert: true }
+      );
 
-      await commitment.save();
-      console.log(`✅ Commitment cached for market ${marketId}`);
+      if (result.upsertedCount > 0) {
+        console.log(`✅ New commitment created for market ${marketId}`);
+      } else {
+        console.log(
+          `✅ Commitment updated for market ${marketId} (already existed)`
+        );
+      }
 
       // Record transaction
       try {
@@ -326,22 +339,27 @@ export class BlockchainService {
         { $set: { revealed: true } }
       );
 
-      // Create bet record
-      const bet = new Bet({
-        marketId: Number(marketId),
-        user: userAddress,
-        outcome,
-        shares: shares.toString(),
-        amount: amount.toString(),
-        revealedAt: new Date(),
-        claimed: false,
-        txHash:
-          (event as any).transactionHash ||
-          (event as any).log?.transactionHash ||
-          'unknown',
-      });
-
-      await bet.save();
+      // Use updateOne with upsert to avoid duplicate key errors
+      await Bet.updateOne(
+        {
+          marketId: Number(marketId),
+          user: userAddress,
+        },
+        {
+          $set: {
+            outcome,
+            shares: shares.toString(),
+            amount: amount.toString(),
+            revealedAt: new Date(),
+            claimed: false,
+            txHash:
+              (event as any).transactionHash ||
+              (event as any).log?.transactionHash ||
+              'unknown',
+          },
+        },
+        { upsert: true }
+      );
 
       // Update market pools and shares
       const marketData = await this.getMarketFromChain(Number(marketId));
