@@ -229,22 +229,14 @@ router.post('/:id/commit', async (req: Request, res: Response) => {
     // Normalize user address to lowercase for consistency
     const userAddress = user.toLowerCase();
 
-    // Check if commitment exists
-    const existing = await Commitment.findOne({ marketId, user: userAddress });
-    if (existing) {
-      return res.status(409).json({
-        success: false,
-        error: 'Commitment already exists for this user',
-      });
-    }
-
     // Index the bet commitment
     console.log(
       `[BET_COMMIT] Indexing bet for user ${userAddress.slice(0, 10)}... on market ${marketId}`
     );
 
-    // Create commitment record (if not already indexed by event listener)
-    const commitment = new Commitment({
+    // Use updateOne with upsert to avoid duplicate key errors
+    // (blockchain event listener might have already indexed this)
+    const commitmentData = {
       marketId,
       user: userAddress,
       commitHash,
@@ -252,12 +244,23 @@ router.post('/:id/commit', async (req: Request, res: Response) => {
       timestamp: new Date(),
       revealed: false,
       txHash,
-    });
+    };
 
-    await commitment.save();
+    await Commitment.updateOne(
+      { marketId, user: userAddress },
+      { $set: commitmentData },
+      { upsert: true }
+    );
+
     console.log(
       `[BET_COMMIT] Successfully indexed bet for user ${userAddress.slice(0, 10)}... on market ${marketId}`
     );
+
+    // Fetch the commitment to return
+    const commitment = await Commitment.findOne({
+      marketId,
+      user: userAddress,
+    });
 
     res.json({
       success: true,
@@ -293,23 +296,17 @@ router.post('/:id/reveal', async (req: Request, res: Response) => {
     // Normalize user address to lowercase for consistency
     const userAddress = user.toLowerCase();
 
-    // Check if already revealed
-    const existingBet = await Bet.findOne({ marketId, user: userAddress });
-    if (existingBet) {
-      return res.status(409).json({
-        success: false,
-        error: 'Bet already revealed for this user',
-      });
-    }
+    console.log(
+      `[BET_REVEAL] Indexing reveal for user ${userAddress.slice(0, 10)}... on market ${marketId}`
+    );
 
-    // Verify on blockchain
+    // Verify on blockchain (optional check)
     try {
       const chainBet = await blockchainService.getBetFromChain(marketId, user);
       if (Number(chainBet.amount) === 0) {
-        return res.status(400).json({
-          success: false,
-          error: 'Bet not found on blockchain',
-        });
+        console.warn(
+          'Bet not found on blockchain, but continuing with indexing'
+        );
       }
     } catch (error) {
       console.error('Could not verify bet on blockchain:', error);
@@ -321,8 +318,9 @@ router.post('/:id/reveal', async (req: Request, res: Response) => {
       { $set: { revealed: true } }
     );
 
-    // Create bet record
-    const bet = new Bet({
+    // Use updateOne with upsert to avoid duplicate key errors
+    // (blockchain event listener might have already indexed this)
+    const betData = {
       marketId,
       user: userAddress,
       outcome,
@@ -331,9 +329,20 @@ router.post('/:id/reveal', async (req: Request, res: Response) => {
       revealedAt: new Date(),
       claimed: false,
       txHash,
-    });
+    };
 
-    await bet.save();
+    await Bet.updateOne(
+      { marketId, user: userAddress },
+      { $set: betData },
+      { upsert: true }
+    );
+
+    console.log(
+      `[BET_REVEAL] Successfully indexed reveal for user ${userAddress.slice(0, 10)}... on market ${marketId}`
+    );
+
+    // Fetch the bet to return
+    const bet = await Bet.findOne({ marketId, user: userAddress });
 
     // Update market pools (fetch from chain)
     const marketData = await blockchainService.getMarketFromChain(marketId);
