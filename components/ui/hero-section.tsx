@@ -39,9 +39,9 @@ export function HeroSection({
 
     // Hardcoded values as requested
     setStats({
-      totalVolume: 7.2, // 7.2 BNB
-      activeMarkets: 11, // 11 Active Markets
-      participants: 32, // 32 Participants
+      totalVolume: 7.8, // 7.8 BNB
+      activeMarkets: 14, // 14 Active Markets
+      participants: 43, // 43 Participants
     });
 
     setLoading(false);
