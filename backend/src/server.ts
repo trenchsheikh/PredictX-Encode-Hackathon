@@ -52,6 +52,15 @@ app.get('/', (req: Request, res: Response) => {
   });
 });
 
+// Simple test endpoint
+app.get('/test', (req: Request, res: Response) => {
+  res.json({
+    success: true,
+    message: 'Backend is working',
+    timestamp: new Date().toISOString(),
+  });
+});
+
 app.get('/health', (req: Request, res: Response) => {
   res.json({
     status: 'ok',

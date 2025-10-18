@@ -243,7 +243,7 @@ export function usePredictionContract() {
               process.env.NEXT_PUBLIC_CHAIN_ID === '56'
                 ? 'BSC Mainnet'
                 : 'BSC Testnet';
-            // Use multiple RPC endpoints for better reliability
+            // Use reliable RPC endpoints for BSC Mainnet
             const rpcUrls =
               process.env.NEXT_PUBLIC_CHAIN_ID === '56'
                 ? [
@@ -252,6 +252,8 @@ export function usePredictionContract() {
                     'https://bsc-dataseed3.binance.org/',
                     'https://bsc-dataseed4.binance.org/',
                     'https://bsc-dataseed5.binance.org/',
+                    'https://bsc-dataseed.binance.org/',
+                    'https://bsc.meowrpc.com/',
                   ]
                 : ['https://data-seed-prebsc-1-s1.binance.org:8545/'];
 
@@ -768,38 +770,80 @@ export function usePredictionContract() {
         // Send transaction
         console.log('Submitting transaction...');
 
-        // Get current gas price and add a buffer for BSC Mainnet
-        const feeData = await contract.runner?.provider?.getFeeData();
-        let gasPrice = feeData?.gasPrice;
-
-        // For BSC Mainnet, ensure minimum gas price of 5 gwei
+        // Use fixed gas price for BSC Mainnet to avoid RPC issues
+        let gasPrice;
         if (process.env.NEXT_PUBLIC_CHAIN_ID === '56') {
-          const minGasPrice = ethers.parseUnits('5', 'gwei'); // 5 gwei minimum
-          gasPrice =
-            gasPrice && gasPrice > minGasPrice ? gasPrice : minGasPrice;
-          gasPrice = (gasPrice * 120n) / 100n; // Add 20% buffer
+          // Use 3 gwei for BSC Mainnet (reliable and fast)
+          gasPrice = ethers.parseUnits('3', 'gwei');
         } else {
-          gasPrice = gasPrice ? (gasPrice * 110n) / 100n : undefined;
+          // For testnet, use dynamic pricing
+          const feeData = await contract.runner?.provider?.getFeeData();
+          gasPrice = feeData?.gasPrice
+            ? (feeData.gasPrice * 110n) / 100n
+            : undefined;
         }
 
         console.log('Gas price configuration:', {
-          originalGasPrice: feeData?.gasPrice?.toString(),
           finalGasPrice: gasPrice?.toString(),
-          minGasPrice:
-            process.env.NEXT_PUBLIC_CHAIN_ID === '56' ? '5000000000' : 'N/A',
+          gasPriceGwei:
+            process.env.NEXT_PUBLIC_CHAIN_ID === '56' ? '3' : 'dynamic',
           chainId: process.env.NEXT_PUBLIC_CHAIN_ID,
         });
 
-        const tx = await contract.createMarket(
-          title,
-          fullDescription,
-          expiresAt,
-          category,
-          {
-            gasLimit,
-            gasPrice: gasPrice ? gasPrice.toString() : undefined,
+        let tx;
+        try {
+          tx = await contract.createMarket(
+            title,
+            fullDescription,
+            expiresAt,
+            category,
+            {
+              gasLimit,
+              gasPrice: gasPrice ? gasPrice.toString() : undefined,
+            }
+          );
+        } catch (txError: any) {
+          console.error('Transaction failed:', txError);
+
+          // If it's an RPC error, try with a different approach
+          if (
+            txError.message.includes(
+              'Transaction does not have a transaction hash'
+            ) ||
+            txError.message.includes('-32603')
+          ) {
+            console.log(
+              'RPC error detected, trying with different gas settings...'
+            );
+
+            // Try with higher gas limit and no gas price (let network decide)
+            try {
+              tx = await contract.createMarket(
+                title,
+                fullDescription,
+                expiresAt,
+                category,
+                {
+                  gasLimit: gasLimit * 2n, // Double the gas limit
+                  // Don't specify gasPrice, let the network decide
+                }
+              );
+            } catch (fallbackError: any) {
+              console.error('Fallback transaction also failed:', fallbackError);
+
+              // Last resort: try with minimal settings
+              tx = await contract.createMarket(
+                title,
+                fullDescription,
+                expiresAt,
+                category
+                // No gas settings at all - let ethers handle everything
+              );
+            }
+          } else {
+            throw txError;
           }
-        );
+        }
 
         if (!tx || !tx.hash) {
           throw new Error('Transaction failed to generate hash');

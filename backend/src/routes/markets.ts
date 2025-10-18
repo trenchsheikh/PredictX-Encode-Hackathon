@@ -12,6 +12,15 @@ const router = Router();
  * List all markets with optional filters
  */
 router.get('/', async (req: Request, res: Response) => {
+  const timeout = setTimeout(() => {
+    if (!res.headersSent) {
+      res.status(500).json({
+        success: false,
+        error: 'Request timeout - database query took too long',
+      });
+    }
+  }, 10000);
+
   try {
     const {
       status,
@@ -23,21 +32,30 @@ router.get('/', async (req: Request, res: Response) => {
       sortOrder = 'desc',
     } = req.query;
 
+    console.log(
+      `[MARKETS] Fetching markets - status: ${status}, category: ${category}, limit: ${limit}`
+    );
+
     // Build query
     const query: any = {};
     if (status !== undefined) query.status = parseInt(status as string);
     if (category !== undefined) query.category = parseInt(category as string);
     if (creator) query.creator = creator;
 
-    // Execute query
+    // Execute query with timeout
     const markets = await Market.find(query)
       .sort({ [sortBy as string]: sortOrder === 'desc' ? -1 : 1 })
       .limit(parseInt(limit as string))
       .skip(parseInt(offset as string))
-      .lean();
+      .lean()
+      .maxTimeMS(5000);
 
-    const total = await Market.countDocuments(query);
+    const total = await Market.countDocuments(query).maxTimeMS(5000);
 
+    console.log(
+      `[MARKETS] Successfully returning ${markets.length} markets (total: ${total})`
+    );
+    clearTimeout(timeout);
     res.json({
       success: true,
       data: markets,
@@ -48,6 +66,7 @@ router.get('/', async (req: Request, res: Response) => {
       },
     });
   } catch (error) {
+    clearTimeout(timeout);
     console.error('Error fetching markets:', error);
     res.status(500).json({
       success: false,
@@ -216,22 +235,10 @@ router.post('/:id/commit', async (req: Request, res: Response) => {
       });
     }
 
-    // Verify on blockchain (optional but recommended)
-    try {
-      const chainCommitment = await blockchainService.getCommitmentFromChain(
-        marketId,
-        user
-      );
-      if (chainCommitment.commitHash !== commitHash) {
-        return res.status(400).json({
-          success: false,
-          error: 'Commit hash does not match blockchain',
-        });
-      }
-    } catch (error) {
-      console.error('Could not verify commitment on blockchain:', error);
-      // Continue anyway - event listener will sync it
-    }
+    // Index the bet commitment
+    console.log(
+      `[BET_COMMIT] Indexing bet for user ${user.slice(0, 10)}... on market ${marketId}`
+    );
 
     // Create commitment record (if not already indexed by event listener)
     const commitment = new Commitment({
@@ -245,6 +252,9 @@ router.post('/:id/commit', async (req: Request, res: Response) => {
     });
 
     await commitment.save();
+    console.log(
+      `[BET_COMMIT] Successfully indexed bet for user ${user.slice(0, 10)}... on market ${marketId}`
+    );
 
     res.json({
       success: true,

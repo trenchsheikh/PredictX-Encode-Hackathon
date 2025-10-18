@@ -231,7 +231,7 @@ export default function HomePage() {
 
       // Call backend API to index the bet
       await api.markets.commitBet(selectedPrediction.id, {
-        userAddress,
+        user: userAddress, // Backend expects 'user', not 'userAddress'
         commitHash,
         amount: ethers.parseEther(amount.toString()).toString(),
         txHash: result.txHash,

@@ -125,7 +125,7 @@ export const marketAPI = {
   async commitBet(
     marketId: string,
     commitData: {
-      userAddress: string;
+      user: string; // Changed from userAddress to user to match backend
       commitHash: string;
       amount: string;
       txHash: string;

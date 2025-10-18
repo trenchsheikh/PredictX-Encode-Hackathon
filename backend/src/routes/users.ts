@@ -10,18 +10,39 @@ const router = Router();
  * Fetch all bets (commitments and reveals) for a user
  */
 router.get('/:address/bets', async (req: Request, res: Response) => {
+  // Set response timeout
+  const timeout = setTimeout(() => {
+    if (!res.headersSent) {
+      res.status(500).json({
+        success: false,
+        error: 'Request timeout - database query took too long',
+      });
+    }
+  }, 10000); // 10 second timeout
+
   try {
     const userAddress = req.params.address.toLowerCase();
+    console.log(
+      `[USER_BETS] Fetching bets for user: ${userAddress.slice(0, 10)}...`
+    );
 
-    // Get all commitments for this user
+    // Get all commitments for this user with timeout
     const commitments = await Commitment.find({
       user: { $regex: new RegExp(`^${userAddress}$`, 'i') },
-    }).lean();
+    })
+      .lean()
+      .maxTimeMS(5000);
 
-    // Get all revealed bets for this user
+    // Get all revealed bets for this user with timeout
     const revealedBets = await Bet.find({
       user: { $regex: new RegExp(`^${userAddress}$`, 'i') },
-    }).lean();
+    })
+      .lean()
+      .maxTimeMS(5000);
+
+    console.log(
+      `[USER_BETS] Found ${commitments.length} commitments and ${revealedBets.length} revealed bets for user ${userAddress.slice(0, 10)}...`
+    );
 
     // Get market details for each bet
     const marketIds = Array.from(
@@ -33,7 +54,9 @@ router.get('/:address/bets', async (req: Request, res: Response) => {
 
     const markets = await Market.find({
       marketId: { $in: marketIds },
-    }).lean();
+    })
+      .lean()
+      .maxTimeMS(5000);
 
     const marketMap = new Map(markets.map(m => [m.marketId, m]));
 
@@ -74,6 +97,10 @@ router.get('/:address/bets', async (req: Request, res: Response) => {
       return timeB - timeA;
     });
 
+    console.log(
+      `[USER_BETS] Successfully returning ${userBets.length} total bets for user ${userAddress.slice(0, 10)}...`
+    );
+    clearTimeout(timeout);
     res.json({
       success: true,
       data: {
@@ -84,11 +111,18 @@ router.get('/:address/bets', async (req: Request, res: Response) => {
         bets: userBets,
       },
     });
-  } catch (error) {
-    console.error('Error fetching user bets:', error);
+  } catch (error: any) {
+    clearTimeout(timeout);
+    console.error('❌ Error fetching user bets:', error);
+    console.error('❌ Error details:', {
+      message: error.message,
+      stack: error.stack,
+      name: error.name,
+    });
     res.status(500).json({
       success: false,
       error: 'Failed to fetch user bets',
+      details: error.message,
     });
   }
 });
