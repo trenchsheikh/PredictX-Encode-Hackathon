@@ -765,81 +765,44 @@ export function usePredictionContract() {
           chainId: process.env.NEXT_PUBLIC_CHAIN_ID,
         });
 
-        // Send transaction with retry logic
-        let tx;
-        let retryCount = 0;
-        const maxRetries = 3;
+        // Send transaction
+        console.log('Submitting transaction...');
 
-        while (retryCount < maxRetries) {
-          try {
-            console.log(
-              `Attempting transaction (attempt ${retryCount + 1}/${maxRetries})...`
-            );
-            // Get current gas price and add a buffer for BSC Mainnet
-            const feeData = await contract.runner?.provider?.getFeeData();
-            let gasPrice = feeData?.gasPrice;
+        // Get current gas price and add a buffer for BSC Mainnet
+        const feeData = await contract.runner?.provider?.getFeeData();
+        let gasPrice = feeData?.gasPrice;
 
-            // For BSC Mainnet, ensure minimum gas price of 5 gwei
-            if (process.env.NEXT_PUBLIC_CHAIN_ID === '56') {
-              const minGasPrice = ethers.parseUnits('5', 'gwei'); // 5 gwei minimum
-              gasPrice =
-                gasPrice && gasPrice > minGasPrice ? gasPrice : minGasPrice;
-              gasPrice = (gasPrice * 120n) / 100n; // Add 20% buffer
-            } else {
-              gasPrice = gasPrice ? (gasPrice * 110n) / 100n : undefined;
-            }
-
-            console.log('Gas price configuration:', {
-              originalGasPrice: feeData?.gasPrice?.toString(),
-              finalGasPrice: gasPrice?.toString(),
-              minGasPrice:
-                process.env.NEXT_PUBLIC_CHAIN_ID === '56'
-                  ? '5000000000'
-                  : 'N/A',
-              chainId: process.env.NEXT_PUBLIC_CHAIN_ID,
-            });
-
-            tx = await contract.createMarket(
-              title,
-              fullDescription,
-              expiresAt,
-              category,
-              {
-                gasLimit,
-                gasPrice: gasPrice ? gasPrice.toString() : undefined,
-              }
-            );
-
-            if (tx && tx.hash) {
-              console.log('Transaction successful on attempt', retryCount + 1);
-              break;
-            } else {
-              throw new Error('Transaction returned without hash');
-            }
-          } catch (txError: any) {
-            retryCount++;
-            console.error(
-              `Transaction attempt ${retryCount} failed:`,
-              txError.message
-            );
-
-            if (retryCount >= maxRetries) {
-              throw new Error(
-                `Transaction failed after ${maxRetries} attempts: ${txError.message}`
-              );
-            }
-
-            // Wait before retry
-            await new Promise(resolve =>
-              setTimeout(resolve, 1000 * retryCount)
-            );
-          }
+        // For BSC Mainnet, ensure minimum gas price of 5 gwei
+        if (process.env.NEXT_PUBLIC_CHAIN_ID === '56') {
+          const minGasPrice = ethers.parseUnits('5', 'gwei'); // 5 gwei minimum
+          gasPrice =
+            gasPrice && gasPrice > minGasPrice ? gasPrice : minGasPrice;
+          gasPrice = (gasPrice * 120n) / 100n; // Add 20% buffer
+        } else {
+          gasPrice = gasPrice ? (gasPrice * 110n) / 100n : undefined;
         }
 
+        console.log('Gas price configuration:', {
+          originalGasPrice: feeData?.gasPrice?.toString(),
+          finalGasPrice: gasPrice?.toString(),
+          minGasPrice:
+            process.env.NEXT_PUBLIC_CHAIN_ID === '56' ? '5000000000' : 'N/A',
+          chainId: process.env.NEXT_PUBLIC_CHAIN_ID,
+        });
+
+        const tx = await contract.createMarket(
+          title,
+          fullDescription,
+          expiresAt,
+          category,
+          {
+            gasLimit,
+            gasPrice: gasPrice ? gasPrice.toString() : undefined,
+          }
+        );
+
         if (!tx || !tx.hash) {
-          throw new Error(
-            'Transaction failed to generate hash after all retries'
-          );
+          throw new Error('Transaction failed to generate hash');
         }
 
         console.log('Transaction submitted:', {
