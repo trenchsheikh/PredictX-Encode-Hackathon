@@ -243,10 +243,19 @@ export function usePredictionContract() {
               process.env.NEXT_PUBLIC_CHAIN_ID === '56'
                 ? 'BSC Mainnet'
                 : 'BSC Testnet';
-            const rpcUrl =
+            // Use multiple RPC endpoints for better reliability
+            const rpcUrls =
               process.env.NEXT_PUBLIC_CHAIN_ID === '56'
-                ? 'https://bsc-dataseed.binance.org/'
-                : 'https://data-seed-prebsc-1-s1.binance.org:8545/';
+                ? [
+                    'https://bsc-dataseed1.binance.org/',
+                    'https://bsc-dataseed2.binance.org/',
+                    'https://bsc-dataseed3.binance.org/',
+                    'https://bsc-dataseed4.binance.org/',
+                    'https://bsc-dataseed5.binance.org/',
+                  ]
+                : ['https://data-seed-prebsc-1-s1.binance.org:8545/'];
+
+            const rpcUrl = rpcUrls[0]; // Use first RPC for now
             const blockExplorerUrl =
               process.env.NEXT_PUBLIC_CHAIN_ID === '56'
                 ? 'https://bscscan.com/'
@@ -566,7 +575,7 @@ export function usePredictionContract() {
           : 'BSC Testnet';
       const rpcUrl =
         process.env.NEXT_PUBLIC_CHAIN_ID === '56'
-          ? 'https://bsc-dataseed.binance.org/'
+          ? 'https://bsc-dataseed1.binance.org/'
           : 'https://data-seed-prebsc-1-s1.binance.org:8545/';
       const blockExplorerUrl =
         process.env.NEXT_PUBLIC_CHAIN_ID === '56'
@@ -753,6 +762,7 @@ export function usePredictionContract() {
           expiresAt: new Date(expiresAt * 1000).toISOString(),
           category,
           gasLimit: gasLimit.toString(),
+          chainId: process.env.NEXT_PUBLIC_CHAIN_ID,
         });
 
         // Send transaction with retry logic
@@ -765,12 +775,29 @@ export function usePredictionContract() {
             console.log(
               `Attempting transaction (attempt ${retryCount + 1}/${maxRetries})...`
             );
-
-            // Get current gas price and add a buffer
+            // Get current gas price and add a buffer for BSC Mainnet
             const feeData = await contract.runner?.provider?.getFeeData();
-            const gasPrice = feeData?.gasPrice
-              ? (feeData.gasPrice * 110n) / 100n
-              : undefined;
+            let gasPrice = feeData?.gasPrice;
+
+            // For BSC Mainnet, ensure minimum gas price of 5 gwei
+            if (process.env.NEXT_PUBLIC_CHAIN_ID === '56') {
+              const minGasPrice = ethers.parseUnits('5', 'gwei'); // 5 gwei minimum
+              gasPrice =
+                gasPrice && gasPrice > minGasPrice ? gasPrice : minGasPrice;
+              gasPrice = (gasPrice * 120n) / 100n; // Add 20% buffer
+            } else {
+              gasPrice = gasPrice ? (gasPrice * 110n) / 100n : undefined;
+            }
+
+            console.log('Gas price configuration:', {
+              originalGasPrice: feeData?.gasPrice?.toString(),
+              finalGasPrice: gasPrice?.toString(),
+              minGasPrice:
+                process.env.NEXT_PUBLIC_CHAIN_ID === '56'
+                  ? '5000000000'
+                  : 'N/A',
+              chainId: process.env.NEXT_PUBLIC_CHAIN_ID,
+            });
 
             tx = await contract.createMarket(
               title,
