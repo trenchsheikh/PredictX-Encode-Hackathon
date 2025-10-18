@@ -468,14 +468,34 @@ export default function MyBetsPage() {
         throw new Error('Transaction failed');
       }
 
-      // Call backend API
-      await api.markets.revealBet(selectedBet.prediction.id, {
-        userAddress: user.wallet.address,
-        outcome: selectedBet.commitData.outcome,
-        salt: selectedBet.commitData.salt,
-        amount: selectedBet.commitData.amount,
-        txHash: result.txHash,
-      });
+      // Wait for reveal to be processed on chain
+      await new Promise(resolve => setTimeout(resolve, 1500));
+
+      // Get bet details from blockchain to get shares
+      const chainBet = await contract.getUserBet(marketId, user.wallet.address);
+
+      // Call backend API with correct parameters
+      if (chainBet && chainBet.amount && chainBet.shares) {
+        await api.markets.revealBet(selectedBet.prediction.id, {
+          user: user.wallet.address,
+          outcome: isYes,
+          shares: chainBet.shares.toString(),
+          amount: chainBet.amount.toString(),
+          txHash: result.txHash,
+        });
+      } else {
+        console.warn(
+          'Could not fetch bet details from blockchain, using local data'
+        );
+        // Fallback to using local data (though shares won't be accurate)
+        await api.markets.revealBet(selectedBet.prediction.id, {
+          user: user.wallet.address,
+          outcome: isYes,
+          shares: '0', // We don't have shares locally
+          amount: selectedBet.commitData.amount,
+          txHash: result.txHash,
+        });
+      }
 
       // Clear local commit data
       clearCommitSecret(selectedBet.prediction.id);
