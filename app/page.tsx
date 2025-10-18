@@ -301,22 +301,87 @@ export default function HomePage() {
         '0'
       );
 
-      if (!result.success || !result.txHash) {
+      if (!result.success || !result.txHash || !result.marketId) {
         const actualError = contract.error || 'Transaction failed';
         logger.error('Contract error:', contract.error);
         throw new Error(actualError);
       }
 
-      // The backend will automatically index the market via blockchain event listener
-      // Wait a moment for the event to be processed, then refresh markets
-      setTimeout(async () => {
-        await fetchMarkets();
-      }, 2000);
+      const marketId = result.marketId;
+      logger.info('Market created with ID:', marketId);
+
+      // Wait for the backend to index the market
+      await new Promise(resolve => setTimeout(resolve, 2000));
+
+      // Now automatically place the creator's initial bet
+      logger.info('Placing creator initial bet...');
+
+      // Generate commit hash and salt
+      const { commitHash, salt } = generateCommit(data.outcome, userAddress);
+
+      // Commit the bet
+      const commitResult = await contract.commitBet(
+        marketId,
+        commitHash,
+        data.amount.toString()
+      );
+
+      if (!commitResult.success || !commitResult.txHash) {
+        logger.warn('Failed to commit creator bet, but market was created');
+        throw new Error('Failed to place initial bet');
+      }
+
+      // Store commit secret
+      const commitData = {
+        commitHash,
+        salt,
+        outcome: data.outcome,
+        amount: ethers.parseEther(data.amount.toString()).toString(),
+        timestamp: Date.now(),
+      };
+      storeCommitSecret(marketId.toString(), commitData);
+
+      // Index commit in backend
+      await api.markets.commitBet(marketId.toString(), {
+        user: userAddress,
+        commitHash,
+        amount: ethers.parseEther(data.amount.toString()).toString(),
+        txHash: commitResult.txHash,
+      });
+
+      // Wait a moment for commit to be indexed
+      await new Promise(resolve => setTimeout(resolve, 1500));
+
+      // Reveal the bet immediately
+      logger.info('Revealing creator bet...');
+      const revealResult = await contract.revealBet(
+        marketId,
+        data.outcome === 'yes',
+        salt
+      );
+
+      if (!revealResult.success || !revealResult.txHash) {
+        logger.warn(
+          'Failed to reveal creator bet, you may need to reveal manually'
+        );
+      } else {
+        // Index reveal in backend
+        await api.markets.revealBet(marketId.toString(), {
+          user: userAddress,
+          outcome: data.outcome === 'yes',
+          salt,
+          txHash: revealResult.txHash,
+        });
+      }
+
+      // Refresh markets
+      await fetchMarkets();
 
       setShowCryptoModal(false);
       logger.user(t('success.crypto_prediction_created'));
     } catch (err: any) {
       logger.error('Create crypto prediction failed:', err);
+      throw err;
     }
   };
 
@@ -347,36 +412,86 @@ export default function HomePage() {
         '',
         parseInt(data.category),
         expiresAtTimestamp,
-        ethers.parseEther(data.amount.toString()).toString()
+        '0'
       );
 
-      if (!result.success || !result.txHash) {
+      if (!result.success || !result.txHash || !result.marketId) {
         const actualError = contract.error || 'Transaction failed';
         logger.error('Contract error:', contract.error);
         throw new Error(actualError);
       }
 
-      // Step 2: Extract market ID from blockchain event
-      // The backend will sync this automatically, but we'll wait for it
-      logger.info('Event prediction created on blockchain:', result.txHash);
+      const marketId = result.marketId;
+      logger.info(
+        'Event prediction created on blockchain. Market ID:',
+        marketId
+      );
 
       // Wait for backend to sync the market
-      await new Promise(resolve => setTimeout(resolve, 3000));
+      await new Promise(resolve => setTimeout(resolve, 2000));
 
-      // Step 3: Get the latest market ID (the backend will have created it)
-      const marketsResponse = await api.markets.getMarkets({ limit: 1 });
-      if (
-        !marketsResponse.success ||
-        !marketsResponse.data ||
-        marketsResponse.data.length === 0
-      ) {
-        throw new Error('Failed to get market ID from backend');
+      // Step 2: Place creator's initial bet
+      logger.info('Placing creator initial bet...');
+
+      // Generate commit hash and salt
+      const { commitHash, salt } = generateCommit(data.outcome, userAddress);
+
+      // Commit the bet
+      const commitResult = await contract.commitBet(
+        marketId,
+        commitHash,
+        data.amount.toString()
+      );
+
+      if (!commitResult.success || !commitResult.txHash) {
+        logger.warn('Failed to commit creator bet, but market was created');
+        throw new Error('Failed to place initial bet');
       }
 
-      const latestMarket = marketsResponse.data[0];
-      const marketId = latestMarket.marketId;
+      // Store commit secret
+      const commitData = {
+        commitHash,
+        salt,
+        outcome: data.outcome,
+        amount: ethers.parseEther(data.amount.toString()).toString(),
+        timestamp: Date.now(),
+      };
+      storeCommitSecret(marketId.toString(), commitData);
 
-      // Step 4: Save event data to backend
+      // Index commit in backend
+      await api.markets.commitBet(marketId.toString(), {
+        user: userAddress,
+        commitHash,
+        amount: ethers.parseEther(data.amount.toString()).toString(),
+        txHash: commitResult.txHash,
+      });
+
+      // Wait a moment for commit to be indexed
+      await new Promise(resolve => setTimeout(resolve, 1500));
+
+      // Reveal the bet immediately
+      logger.info('Revealing creator bet...');
+      const revealResult = await contract.revealBet(
+        marketId,
+        data.outcome === 'yes',
+        salt
+      );
+
+      if (!revealResult.success || !revealResult.txHash) {
+        logger.warn(
+          'Failed to reveal creator bet, you may need to reveal manually'
+        );
+      } else {
+        // Index reveal in backend
+        await api.markets.revealBet(marketId.toString(), {
+          user: userAddress,
+          outcome: data.outcome === 'yes',
+          salt,
+          txHash: revealResult.txHash,
+        });
+      }
+
+      // Step 3: Save event data to backend
       await api.eventPredictions.createEventPrediction({
         title: data.title,
         description: data.description,
@@ -393,9 +508,7 @@ export default function HomePage() {
       logger.user('Event prediction created! News monitoring started.');
 
       // Refresh markets to show the new event prediction
-      setTimeout(async () => {
-        await fetchMarkets();
-      }, 1000);
+      await fetchMarkets();
 
       setShowEventModal(false);
     } catch (err: any) {
