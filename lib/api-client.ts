@@ -198,6 +198,17 @@ export const userAPI = {
   async getUserProfile(userAddress: string) {
     return apiFetch<any>(`/users/${userAddress}/profile`, { method: 'GET' });
   },
+
+  /**
+   * Get markets created by a user
+   */
+  async getUserBetsCreated(userAddress: string) {
+    return apiFetch<{
+      address: string;
+      totalMarketsCreated: number;
+      markets: any[];
+    }>(`/users/${userAddress}/markets-created`, { method: 'GET' });
+  },
 };
 
 /**

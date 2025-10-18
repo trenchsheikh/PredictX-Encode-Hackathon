@@ -49,6 +49,7 @@ export default function MyBetsPage() {
 
   // Data state
   const [userBets, setUserBets] = useState<UserBet[]>([]);
+  const [marketsCreated, setMarketsCreated] = useState<any[]>([]);
   const [predictions, setPredictions] = useState<{ [id: string]: Prediction }>(
     {}
   );
@@ -177,9 +178,35 @@ export default function MyBetsPage() {
     }
   };
 
+  /**
+   * Fetch markets created by the user
+   */
+  const fetchUserBetsCreated = async () => {
+    if (!user?.wallet?.address) return;
+
+    try {
+      const response = await api.users.getUserBetsCreated(user.wallet.address);
+
+      if (!response.success || !response.data) {
+        throw new Error(response.error || 'Failed to fetch created markets');
+      }
+
+      console.log(
+        `📊 Found ${response.data.totalMarketsCreated} markets created by user`
+      );
+      setMarketsCreated(response.data.markets || []);
+    } catch (err: any) {
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Failed to fetch user-created markets:', err);
+      }
+      // Don't show error to user, just log it
+    }
+  };
+
   useEffect(() => {
     if (authenticated && user?.wallet?.address) {
       fetchUserBets();
+      fetchUserBetsCreated();
     }
   }, [authenticated, user?.wallet?.address]);
 
@@ -256,6 +283,7 @@ export default function MyBetsPage() {
     const interval = setInterval(() => {
       if (authenticated && user?.wallet?.address) {
         fetchUserBets();
+        fetchUserBetsCreated();
       }
     }, 10000); // Refresh every 10 seconds
 

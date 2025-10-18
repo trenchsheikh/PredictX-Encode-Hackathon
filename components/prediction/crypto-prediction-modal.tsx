@@ -50,6 +50,8 @@ export interface CryptoPredictionData {
   title: string;
   description: string;
   category: number;
+  outcome: 'yes' | 'no'; // Creator's initial bet prediction
+  amount: number; // Creator's initial bet amount in BNB
 }
 
 export function CryptoPredictionModal({
@@ -74,6 +76,8 @@ export function CryptoPredictionModal({
     description: string;
   } | null>(null);
   const [aiError, setAiError] = useState<string>('');
+  const [outcome, setOutcome] = useState<'yes' | 'no'>('yes');
+  const [amount, setAmount] = useState<string>('');
 
   const handleReset = () => {
     setSelectedCrypto(null);
@@ -84,6 +88,8 @@ export function CryptoPredictionModal({
     setCustomDescription('');
     setAiGenerated(null);
     setAiError('');
+    setOutcome('yes');
+    setAmount('');
   };
 
   const analyzeWithAI = async () => {
@@ -155,6 +161,8 @@ export function CryptoPredictionModal({
       title,
       description,
       category: 7, // Crypto category
+      outcome,
+      amount: parseFloat(amount),
     };
 
     onSubmit(data);
@@ -163,7 +171,10 @@ export function CryptoPredictionModal({
   };
 
   const isValid = () => {
-    if (!selectedCrypto || !deadline) return false;
+    if (!selectedCrypto || !deadline || !amount) return false;
+
+    const amountNum = parseFloat(amount);
+    if (isNaN(amountNum) || amountNum < 0.001 || amountNum > 100) return false;
 
     if (predictionType === 'price_target') {
       return !!targetPrice && parseFloat(targetPrice) > 0;
@@ -517,6 +528,93 @@ export function CryptoPredictionModal({
                 </div>
                 <div className="text-xs text-gray-400">
                   Minimum: 5 minutes from now
+                </div>
+              </div>
+
+              {/* Step 3: Your Initial Bet */}
+              <div className="space-y-6 border-t border-gray-700/50 pt-6">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-yellow-400 text-sm font-bold text-black">
+                    3
+                  </div>
+                  <Label className="text-lg font-semibold text-white">
+                    Your Initial Bet
+                  </Label>
+                </div>
+
+                <div className="flex items-start gap-3 rounded-xl border border-yellow-500/20 bg-yellow-500/10 p-4">
+                  <AlertCircle className="mt-0.5 h-5 w-5 flex-shrink-0 text-yellow-400" />
+                  <div className="text-sm text-yellow-200">
+                    <strong className="text-yellow-100">
+                      Market creators must place the first bet
+                    </strong>{' '}
+                    to bootstrap the market. This shows your confidence in the
+                    prediction.
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  {/* Bet Amount */}
+                  <div className="space-y-3">
+                    <Label
+                      htmlFor="betAmount"
+                      className="font-medium text-white"
+                    >
+                      Bet Amount (BNB)
+                    </Label>
+                    <div className="relative">
+                      <DollarSign className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+                      <Input
+                        id="betAmount"
+                        type="number"
+                        placeholder="0.001"
+                        value={amount}
+                        onChange={e => setAmount(e.target.value)}
+                        className="border-white/10 bg-white/5 pl-10 text-white backdrop-blur-sm transition-all duration-300 placeholder:text-gray-400 focus:border-yellow-400/50 focus:ring-yellow-400/20"
+                        min="0.001"
+                        max="100"
+                        step="0.001"
+                      />
+                    </div>
+                    <div className="text-xs text-gray-400">
+                      Min: 0.001 BNB • Max: 100 BNB
+                    </div>
+                  </div>
+
+                  {/* Your Prediction */}
+                  <div className="space-y-3">
+                    <Label
+                      htmlFor="betOutcome"
+                      className="font-medium text-white"
+                    >
+                      Your Prediction
+                    </Label>
+                    <Select
+                      value={outcome}
+                      onValueChange={v => setOutcome(v as 'yes' | 'no')}
+                    >
+                      <SelectTrigger
+                        id="betOutcome"
+                        className="border-gray-700/50 bg-gray-800/60 text-white focus:border-yellow-400/50 focus:ring-yellow-400/20"
+                      >
+                        <SelectValue placeholder="Select..." />
+                      </SelectTrigger>
+                      <SelectContent className="z-[9999] border-gray-700/50 bg-gray-800">
+                        <SelectItem
+                          value="yes"
+                          className="cursor-pointer text-green-400 hover:bg-gray-700/50"
+                        >
+                          ✓ YES
+                        </SelectItem>
+                        <SelectItem
+                          value="no"
+                          className="cursor-pointer text-red-400 hover:bg-gray-700/50"
+                        >
+                          ✗ NO
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
                 </div>
               </div>
             </div>

@@ -130,6 +130,75 @@ router.get('/:address/bets', async (req: Request, res: Response) => {
 });
 
 /**
+ * GET /api/users/:address/markets-created
+ * Fetch all markets created by a user
+ */
+router.get('/:address/markets-created', async (req: Request, res: Response) => {
+  try {
+    const userAddress = req.params.address.toLowerCase();
+    console.log(
+      `[USER_MARKETS] Fetching markets created by user: ${userAddress.slice(0, 10)}...`
+    );
+
+    // Get all markets created by this user
+    const markets = await Market.find({
+      creator: userAddress,
+    })
+      .sort({ createdAt: -1 }) // Most recent first
+      .lean()
+      .maxTimeMS(5000);
+
+    console.log(
+      `[USER_MARKETS] Found ${markets.length} markets created by user ${userAddress.slice(0, 10)}...`
+    );
+
+    // For each market, get bet statistics
+    const marketsWithStats = await Promise.all(
+      markets.map(async market => {
+        // Get all bets for this market
+        const marketBets = await Bet.find({
+          marketId: market.marketId,
+        }).lean();
+
+        // Get user's bet on their own market
+        const userBet = marketBets.find(
+          bet => bet.user.toLowerCase() === userAddress
+        );
+
+        return {
+          ...market,
+          totalBets: marketBets.length,
+          userBet: userBet
+            ? {
+                outcome: userBet.outcome,
+                shares: userBet.shares,
+                amount: userBet.amount,
+                claimed: userBet.claimed,
+              }
+            : null,
+        };
+      })
+    );
+
+    res.json({
+      success: true,
+      data: {
+        address: userAddress,
+        totalMarketsCreated: markets.length,
+        markets: marketsWithStats,
+      },
+    });
+  } catch (error: any) {
+    console.error('❌ Error fetching user-created markets:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to fetch user-created markets',
+      details: error.message,
+    });
+  }
+});
+
+/**
  * GET /api/users/:address/stats
  * Get user statistics
  */
