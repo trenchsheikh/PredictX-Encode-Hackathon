@@ -803,11 +803,10 @@ export function usePredictionContract() {
 
         const amountWei = ethers.parseEther(amount);
 
-        // Estimate gas
+        // Estimate gas (commitBet only takes marketId and commitHash, value is sent via msg.value)
         const gasLimit = await estimateGas(contract, 'commitBet', [
           marketId,
           commitHash,
-          { value: amountWei },
         ]);
 
         // Send transaction
