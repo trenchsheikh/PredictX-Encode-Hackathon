@@ -210,11 +210,8 @@ export async function checkNetwork(
     if (provider) {
       // Use provided provider
       network = await provider.getNetwork();
-    } else if (typeof window !== 'undefined' && window.ethereum) {
-      // Use window.ethereum as fallback
-      const ethersProvider = new ethers.BrowserProvider(window.ethereum);
-      network = await ethersProvider.getNetwork();
     } else {
+      // No fallback to window.ethereum - provider should be passed in
       return { isCorrect: false, chainId: undefined };
     }
 

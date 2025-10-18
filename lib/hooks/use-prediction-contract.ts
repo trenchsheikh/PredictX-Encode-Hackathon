@@ -220,117 +220,10 @@ export function usePredictionContract() {
           }
         }
 
-        // Method 2: Fallback to window.ethereum
-        if (!signer && typeof window !== 'undefined' && window.ethereum) {
-          try {
-            console.log('Fallback to window.ethereum...');
-            const provider = new ethers.BrowserProvider(window.ethereum);
-
-            // Request accounts
-            await window.ethereum.request({ method: 'eth_requestAccounts' });
-
-            // Verify wallet is on correct network
-            const network = await provider.getNetwork();
-            console.log('Current network:', {
-              chainId: network.chainId,
-              name: network.name,
-            });
-            const expectedChainId =
-              process.env.NEXT_PUBLIC_CHAIN_ID === '56' ? 56 : 97;
-            const expectedChainIdHex =
-              process.env.NEXT_PUBLIC_CHAIN_ID === '56' ? '0x38' : '0x61';
-            const networkName =
-              process.env.NEXT_PUBLIC_CHAIN_ID === '56'
-                ? 'BSC Mainnet'
-                : 'BSC Testnet';
-            // Use reliable RPC endpoints for BSC Mainnet
-            const rpcUrls =
-              process.env.NEXT_PUBLIC_CHAIN_ID === '56'
-                ? [
-                    'https://bsc-dataseed1.binance.org/',
-                    'https://bsc-dataseed2.binance.org/',
-                    'https://bsc-dataseed3.binance.org/',
-                    'https://bsc-dataseed4.binance.org/',
-                    'https://bsc-dataseed5.binance.org/',
-                    'https://bsc-dataseed.binance.org/',
-                    'https://bsc.meowrpc.com/',
-                  ]
-                : ['https://data-seed-prebsc-1-s1.binance.org:8545/'];
-
-            const rpcUrl = rpcUrls[0]; // Use first RPC for now
-            const blockExplorerUrl =
-              process.env.NEXT_PUBLIC_CHAIN_ID === '56'
-                ? 'https://bscscan.com/'
-                : 'https://testnet.bscscan.com/';
-
-            if (Number(network.chainId) !== expectedChainId) {
-              console.log(`Switching to ${networkName} via window.ethereum...`);
-              try {
-                await window.ethereum.request({
-                  method: 'wallet_switchEthereumChain',
-                  params: [{ chainId: expectedChainIdHex }],
-                });
-                console.log(`Switched to ${networkName}`);
-              } catch (switchError: any) {
-                console.warn('Failed to switch network:', switchError.message);
-                // Try adding the network if it doesn't exist
-                if (switchError.code === 4902) {
-                  try {
-                    console.log(`Adding ${networkName} network...`);
-                    await window.ethereum.request({
-                      method: 'wallet_addEthereumChain',
-                      params: [
-                        {
-                          chainId: expectedChainIdHex,
-                          chainName: networkName,
-                          nativeCurrency: {
-                            name: 'BNB',
-                            symbol: 'BNB',
-                            decimals: 18,
-                          },
-                          rpcUrls: [rpcUrl],
-                          blockExplorerUrls: [blockExplorerUrl],
-                        },
-                      ],
-                    });
-                    console.log(`Added ${networkName} network`);
-                  } catch (addError: any) {
-                    console.warn(
-                      `Failed to add ${networkName}:`,
-                      addError.message
-                    );
-                  }
-                }
-              }
-            } else {
-              console.log(`Already on ${networkName}`);
-            }
-
-            console.log(`✅ Wallet is on ${networkName}`);
-
-            signer = await provider.getSigner();
-            console.log('✅ Signer obtained via window.ethereum');
-
-            // Verify the signer is working
-            try {
-              const signerAddress = await signer.getAddress();
-              console.log('✅ Signer address verified:', signerAddress);
-            } catch (signerError: any) {
-              console.error(
-                '❌ Signer verification failed:',
-                signerError.message
-              );
-              throw new Error(
-                `Signer verification failed: ${signerError.message}`
-              );
-            }
-          } catch (windowError: any) {
-            console.warn('Window.ethereum method failed:', windowError.message);
-          }
-        }
+        // No fallback to window.ethereum - only use Privy-connected wallet
       }
 
-      // Method 3: Try Privy embedded wallet
+      // Method 2: Try Privy embedded wallet
       if (
         !signer &&
         wallet.walletClientType === 'privy' &&
@@ -386,13 +279,9 @@ export function usePredictionContract() {
       if (!signer && wallet.address) {
         try {
           console.log('🔍 Trying to create provider from wallet address...');
-          if (typeof window !== 'undefined' && window.ethereum) {
-            const provider = new ethers.BrowserProvider(window.ethereum);
-            signer = await provider.getSigner();
-            console.log(
-              'Signer created from window.ethereum with wallet address'
-            );
-          }
+          // Use only Privy-connected wallet, no window.ethereum fallback
+          console.error('No wallet connected through Privy');
+          throw new Error('Please connect your wallet through Privy');
         } catch (addressError: any) {
           console.warn(
             '⚠️ Address-based signer creation failed:',
@@ -405,37 +294,7 @@ export function usePredictionContract() {
       if (!signer && wallet.address) {
         try {
           console.log('🔍 Creating basic signer as last resort...');
-          if (typeof window !== 'undefined' && window.ethereum) {
-            const provider = new ethers.BrowserProvider(window.ethereum);
-
-            // Create a basic signer with just the address
-            const basicSigner = {
-              getAddress: async () => wallet.address,
-              signMessage: async (message: string) => {
-                return await window.ethereum.request({
-                  method: 'personal_sign',
-                  params: [message, wallet.address],
-                });
-              },
-              signTransaction: async (transaction: any) => {
-                return await window.ethereum.request({
-                  method: 'eth_signTransaction',
-                  params: [transaction],
-                });
-              },
-              sendTransaction: async (transaction: any) => {
-                return await window.ethereum.request({
-                  method: 'eth_sendTransaction',
-                  params: [transaction],
-                });
-              },
-              provider: provider,
-              _isSigner: true,
-            };
-
-            signer = basicSigner as any;
-            console.log('✅ Basic signer created');
-          }
+          // Skip window.ethereum - use only Privy-connected wallet
         } catch (basicError: any) {
           console.warn('⚠️ Basic signer creation failed:', basicError.message);
         }
@@ -587,54 +446,23 @@ export function usePredictionContract() {
       if (currentChainId !== expectedChainId) {
         console.log(`Attempting to switch to ${networkName}...`);
         try {
-          // Try to switch network automatically
-          if (typeof window !== 'undefined' && window.ethereum) {
-            await window.ethereum.request({
-              method: 'wallet_switchEthereumChain',
-              params: [{ chainId: expectedChainIdHex }],
-            });
+          // Use Privy's wallet provider for network switching
+          const activeWallet = wallets?.[0];
+          if (activeWallet && typeof activeWallet.switchChain === 'function') {
+            await activeWallet.switchChain(expectedChainId);
             console.log(`Successfully switched to ${networkName}`);
             // Wait a moment for the network switch to complete
             await new Promise(resolve => setTimeout(resolve, 1000));
             // Retry getting the contract after network switch
             return await getContract();
           } else {
-            throw new Error('No ethereum provider available');
+            throw new Error('Wallet does not support network switching');
           }
         } catch (switchError: any) {
           console.warn(
             'Failed to switch network automatically:',
             switchError.message
           );
-
-          // Try adding the network if it doesn't exist
-          if (switchError.code === 4902) {
-            try {
-              console.log(`Adding ${networkName} network...`);
-              await window.ethereum.request({
-                method: 'wallet_addEthereumChain',
-                params: [
-                  {
-                    chainId: expectedChainIdHex,
-                    chainName: networkName,
-                    nativeCurrency: {
-                      name: 'BNB',
-                      symbol: 'BNB',
-                      decimals: 18,
-                    },
-                    rpcUrls: [rpcUrl],
-                    blockExplorerUrls: [blockExplorerUrl],
-                  },
-                ],
-              });
-              console.log(`Added ${networkName} network`);
-              // Wait a moment for the network to be added
-              await new Promise(resolve => setTimeout(resolve, 1000));
-              return await getContract();
-            } catch (addError: any) {
-              console.error(`Failed to add ${networkName}:`, addError.message);
-            }
-          }
 
           const errorMsg = `Please switch to ${networkName} (Chain ID: ${expectedChainId}). Current: ${currentChainId || 'Unknown'}`;
           console.error(errorMsg);

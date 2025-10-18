@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import '@/lib/console-filter'; // Filter out noisy browser extension errors
 import { PrivyProviderWrapper } from '@/components/providers/privy-provider';
 import { AnimatedHeader } from '@/components/layout/navbar';
 import { IntroProvider } from '@/components/providers/intro-provider';
