@@ -26,7 +26,8 @@
   },
   "cta": {
     "start_darkpool_betting": "开始暗池投注",
-    "crypto_darkpool": "加密货币暗池"
+    "crypto_darkpool": "加密货币暗池",
+    "news_events": "新闻事件"
   },
   "stats": {
     "total_volume": "总交易量",
@@ -122,6 +123,41 @@
     "current_price": "当前价格",
     "deadline": "截止时间",
     "create_crypto_prediction": "创建加密货币预测"
+  },
+  "event_prediction": {
+    "title": "创建事件预测",
+    "description": "预测政治、科技、体育等领域的真实世界事件。我们监控全球新闻来源，并在事件确认时自动解析。",
+    "event_title": "事件标题",
+    "event_title_placeholder": "例如：SpaceX 能否在 2025 年成功将星舰发射到轨道？",
+    "description_label": "描述",
+    "description_placeholder": "提供有关事件的详细信息以及什么构成 YES 或 NO 结果...",
+    "category": "类别",
+    "expiration_date": "到期日期",
+    "news_keywords": "新闻关键词",
+    "news_keywords_help": "（用于监控新闻来源）",
+    "keyword_placeholder": "输入关键词（例如：SpaceX、星舰、发射）",
+    "add_keyword": "添加",
+    "keywords_count": "个关键词已添加",
+    "bet_amount": "投注金额（BNB）",
+    "your_prediction": "您的预测",
+    "select_prediction": "选择预测",
+    "yes": "是",
+    "no": "否",
+    "how_it_works": "工作原理：",
+    "how_it_works_desc": "您的事件将使用可信可靠的 API 进行监控。当知名新闻来源以高置信度确认事件结果时，市场将自动解析并分配奖金。",
+    "cancel": "取消",
+    "creating": "创建中...",
+    "create_event_prediction": "创建事件预测",
+    "categories": {
+      "politics": "政治",
+      "technology": "科技",
+      "economy": "经济",
+      "sports": "体育",
+      "entertainment": "娱乐",
+      "world_news": "世界新闻",
+      "science": "科学",
+      "health": "健康"
+    }
   },
   "filters": {
     "all_categories": "所有类别",

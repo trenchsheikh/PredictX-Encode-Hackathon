@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useI18n } from '@/components/providers/i18n-provider';
 import {
   Dialog,
   DialogContent,
@@ -57,6 +58,7 @@ export function CreateEventPredictionModal({
   onOpenChange,
   onConfirm,
 }: CreateEventPredictionModalProps) {
+  const { t } = useI18n();
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [category, setCategory] = useState('');
@@ -165,12 +167,10 @@ export function CreateEventPredictionModal({
         <DialogHeader>
           <DialogTitle className="font-heading flex items-center gap-2 text-white">
             <TrendingUp className="h-5 w-5 text-yellow-400" />
-            Create Event Prediction
+            {t('event_prediction.title')}
           </DialogTitle>
           <DialogDescription className="pt-2 text-left text-gray-300">
-            Predict real-world events in politics, technology, sports, and more.
-            We monitor global news sources and automatically resolve when events
-            are confirmed.
+            {t('event_prediction.description')}
           </DialogDescription>
         </DialogHeader>
 
@@ -178,11 +178,11 @@ export function CreateEventPredictionModal({
           {/* Title */}
           <div className="space-y-2">
             <label className="text-sm font-medium text-white">
-              Event Title
+              {t('event_prediction.event_title')}
             </label>
             <Input
               type="text"
-              placeholder="e.g., Will SpaceX successfully launch Starship to orbit in 2025?"
+              placeholder={t('event_prediction.event_title_placeholder')}
               value={title}
               onChange={e => setTitle(e.target.value)}
               disabled={loading}
@@ -193,10 +193,10 @@ export function CreateEventPredictionModal({
           {/* Description */}
           <div className="space-y-2">
             <label className="text-sm font-medium text-white">
-              Description
+              {t('event_prediction.description_label')}
             </label>
             <Textarea
-              placeholder="Provide details about the event and what would constitute a YES or NO outcome..."
+              placeholder={t('event_prediction.description_placeholder')}
               value={description}
               onChange={e => setDescription(e.target.value)}
               disabled={loading}
@@ -207,7 +207,9 @@ export function CreateEventPredictionModal({
 
           {/* Category */}
           <div className="space-y-2">
-            <label className="text-sm font-medium text-white">Category</label>
+            <label className="text-sm font-medium text-white">
+              {t('event_prediction.category')}
+            </label>
             <Select
               value={category}
               onValueChange={setCategory}
@@ -217,15 +219,54 @@ export function CreateEventPredictionModal({
                 <SelectValue placeholder="Select a category" />
               </SelectTrigger>
               <SelectContent className="z-[9999] border-white/10 bg-gray-900 text-white">
-                {categories.map(cat => (
-                  <SelectItem
-                    key={cat.value}
-                    value={cat.value}
-                    className="cursor-pointer text-white hover:bg-white/10 focus:bg-white/10"
-                  >
-                    {cat.icon} {cat.label}
-                  </SelectItem>
-                ))}
+                <SelectItem
+                  value="2"
+                  className="cursor-pointer text-white hover:bg-white/10 focus:bg-white/10"
+                >
+                  🏛️ {t('event_prediction.categories.politics')}
+                </SelectItem>
+                <SelectItem
+                  value="6"
+                  className="cursor-pointer text-white hover:bg-white/10 focus:bg-white/10"
+                >
+                  💻 {t('event_prediction.categories.technology')}
+                </SelectItem>
+                <SelectItem
+                  value="5"
+                  className="cursor-pointer text-white hover:bg-white/10 focus:bg-white/10"
+                >
+                  💰 {t('event_prediction.categories.economy')}
+                </SelectItem>
+                <SelectItem
+                  value="0"
+                  className="cursor-pointer text-white hover:bg-white/10 focus:bg-white/10"
+                >
+                  ⚽ {t('event_prediction.categories.sports')}
+                </SelectItem>
+                <SelectItem
+                  value="3"
+                  className="cursor-pointer text-white hover:bg-white/10 focus:bg-white/10"
+                >
+                  🎬 {t('event_prediction.categories.entertainment')}
+                </SelectItem>
+                <SelectItem
+                  value="8"
+                  className="cursor-pointer text-white hover:bg-white/10 focus:bg-white/10"
+                >
+                  🌍 {t('event_prediction.categories.world_news')}
+                </SelectItem>
+                <SelectItem
+                  value="9"
+                  className="cursor-pointer text-white hover:bg-white/10 focus:bg-white/10"
+                >
+                  🔬 {t('event_prediction.categories.science')}
+                </SelectItem>
+                <SelectItem
+                  value="10"
+                  className="cursor-pointer text-white hover:bg-white/10 focus:bg-white/10"
+                >
+                  🏥 {t('event_prediction.categories.health')}
+                </SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -234,7 +275,7 @@ export function CreateEventPredictionModal({
           <div className="space-y-2">
             <label className="text-sm font-medium text-white">
               <Calendar className="mr-1 inline h-4 w-4" />
-              Expiration Date
+              {t('event_prediction.expiration_date')}
             </label>
             <Input
               type="datetime-local"
@@ -248,15 +289,15 @@ export function CreateEventPredictionModal({
           {/* Keywords */}
           <div className="space-y-2">
             <label className="text-sm font-medium text-white">
-              News Keywords
+              {t('event_prediction.news_keywords')}
               <span className="ml-2 text-xs text-gray-400">
-                (Used to monitor news sources)
+                {t('event_prediction.news_keywords_help')}
               </span>
             </label>
             <div className="flex gap-2">
               <Input
                 type="text"
-                placeholder="Enter keyword (e.g., SpaceX, Starship, launch)"
+                placeholder={t('event_prediction.keyword_placeholder')}
                 value={keywordInput}
                 onChange={e => setKeywordInput(e.target.value)}
                 onKeyPress={e => e.key === 'Enter' && addKeyword()}
@@ -269,7 +310,7 @@ export function CreateEventPredictionModal({
                 disabled={loading || keywords.length >= 10 || !keywordInput}
                 className="bg-yellow-500 text-black hover:bg-yellow-600"
               >
-                Add
+                {t('event_prediction.add_keyword')}
               </Button>
             </div>
             {keywords.length > 0 && (
@@ -292,7 +333,7 @@ export function CreateEventPredictionModal({
               </div>
             )}
             <p className="text-xs text-gray-400">
-              {keywords.length}/10 keywords added
+              {keywords.length}/10 {t('event_prediction.keywords_count')}
             </p>
           </div>
 
@@ -300,7 +341,7 @@ export function CreateEventPredictionModal({
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
               <label className="text-sm font-medium text-white">
-                Bet Amount (BNB)
+                {t('event_prediction.bet_amount')}
               </label>
               <Input
                 type="number"
@@ -316,7 +357,7 @@ export function CreateEventPredictionModal({
             </div>
             <div className="space-y-2">
               <label className="text-sm font-medium text-white">
-                Your Prediction
+                {t('event_prediction.your_prediction')}
               </label>
               <Select
                 value={outcome}
@@ -324,20 +365,22 @@ export function CreateEventPredictionModal({
                 disabled={loading}
               >
                 <SelectTrigger className="border-white/10 bg-white/5 text-white focus:border-yellow-400/50 focus:ring-2 focus:ring-yellow-400/20">
-                  <SelectValue placeholder="Select prediction" />
+                  <SelectValue
+                    placeholder={t('event_prediction.select_prediction')}
+                  />
                 </SelectTrigger>
                 <SelectContent className="z-[9999] border-white/10 bg-gray-900 text-white">
                   <SelectItem
                     value="yes"
                     className="cursor-pointer text-green-400 hover:bg-white/10 focus:bg-white/10"
                   >
-                    ✓ YES
+                    ✓ {t('event_prediction.yes')}
                   </SelectItem>
                   <SelectItem
                     value="no"
                     className="cursor-pointer text-red-400 hover:bg-white/10 focus:bg-white/10"
                   >
-                    ✗ NO
+                    ✗ {t('event_prediction.no')}
                   </SelectItem>
                 </SelectContent>
               </Select>
@@ -350,10 +393,10 @@ export function CreateEventPredictionModal({
           {/* Info Banner */}
           <div className="rounded-xl border border-blue-500/20 bg-blue-500/10 p-4">
             <p className="text-xs text-gray-300">
-              <strong className="text-white">How it works:</strong> Your event
-              will be monitored using trusted and reliable APIs. When reputable
-              news sources confirm the event outcome with high confidence, the
-              market will be automatically resolved and payouts distributed.
+              <strong className="text-white">
+                {t('event_prediction.how_it_works')}
+              </strong>{' '}
+              {t('event_prediction.how_it_works_desc')}
             </p>
           </div>
         </div>
@@ -366,7 +409,7 @@ export function CreateEventPredictionModal({
             disabled={loading}
             className="border-white/10 bg-white/5 text-white"
           >
-            Cancel
+            {t('event_prediction.cancel')}
           </Button>
           <Button
             type="button"
@@ -374,7 +417,9 @@ export function CreateEventPredictionModal({
             disabled={loading}
             className="bg-gradient-to-r from-yellow-500 to-yellow-600 font-semibold text-black hover:from-yellow-600 hover:to-yellow-700"
           >
-            {loading ? 'Creating...' : 'Create Event Prediction'}
+            {loading
+              ? t('event_prediction.creating')
+              : t('event_prediction.create_event_prediction')}
           </Button>
         </DialogFooter>
       </DialogContent>

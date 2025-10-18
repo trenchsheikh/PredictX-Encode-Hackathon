@@ -121,7 +121,7 @@ export function HeroSection({
             background="linear-gradient(180deg, #ffb84d 0%, #cc6b00 100%)"
             className="h-14 min-w-[280px] rounded-full border-orange-600 px-8 text-base font-semibold tracking-wide text-white shadow-md ring-1 ring-black/40 hover:[background:linear-gradient(180deg,#ffc266_0%,#b35f00_100%)] md:text-lg"
           >
-            News Events
+            {t('cta.news_events')}
           </ShimmerButton>
         </div>
 

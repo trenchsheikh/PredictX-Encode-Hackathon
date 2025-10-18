@@ -26,7 +26,8 @@
   },
   "cta": {
     "start_darkpool_betting": "Start DarkPool Betting",
-    "crypto_darkpool": "Crypto DarkPool"
+    "crypto_darkpool": "Crypto DarkPool",
+    "news_events": "News Events"
   },
   "stats": {
     "total_volume": "Total Volume",
@@ -122,6 +123,41 @@
     "current_price": "Current Price",
     "deadline": "Deadline",
     "create_crypto_prediction": "Create Crypto Prediction"
+  },
+  "event_prediction": {
+    "title": "Create Event Prediction",
+    "description": "Predict real-world events in politics, technology, sports, and more. We monitor global news sources and automatically resolve when events are confirmed.",
+    "event_title": "Event Title",
+    "event_title_placeholder": "e.g., Will SpaceX successfully launch Starship to orbit in 2025?",
+    "description_label": "Description",
+    "description_placeholder": "Provide details about the event and what would constitute a YES or NO outcome...",
+    "category": "Category",
+    "expiration_date": "Expiration Date",
+    "news_keywords": "News Keywords",
+    "news_keywords_help": "(Used to monitor news sources)",
+    "keyword_placeholder": "Enter keyword (e.g., SpaceX, Starship, launch)",
+    "add_keyword": "Add",
+    "keywords_count": "keywords added",
+    "bet_amount": "Bet Amount (BNB)",
+    "your_prediction": "Your Prediction",
+    "select_prediction": "Select prediction",
+    "yes": "YES",
+    "no": "NO",
+    "how_it_works": "How it works:",
+    "how_it_works_desc": "Your event will be monitored using trusted and reliable APIs. When reputable news sources confirm the event outcome with high confidence, the market will be automatically resolved and payouts distributed.",
+    "cancel": "Cancel",
+    "creating": "Creating...",
+    "create_event_prediction": "Create Event Prediction",
+    "categories": {
+      "politics": "Politics",
+      "technology": "Technology",
+      "economy": "Economy",
+      "sports": "Sports",
+      "entertainment": "Entertainment",
+      "world_news": "World News",
+      "science": "Science",
+      "health": "Health"
+    }
   },
   "filters": {
     "all_categories": "All Categories",
