@@ -230,7 +230,7 @@ export default function HowItWorksPage() {
             </h1>
           </div>
           <p className="mx-auto max-w-3xl text-lg leading-8 text-gray-300">
-            {t('how_it_works.platform_description')}
+            {t('how_it_works.subheader')}
           </p>
         </div>
 
@@ -255,10 +255,10 @@ export default function HowItWorksPage() {
                   <Database className="h-6 w-6 text-black" />
                 </div>
                 <h3 className="mb-2 text-lg font-semibold text-white">
-                  {t('how_it_works.blockchain_based')}
+                  {t('how_it_works.darkpool_markets')}
                 </h3>
                 <p className="text-sm text-gray-200">
-                  {t('how_it_works.blockchain_description')}
+                  {t('how_it_works.darkpool_description')}
                 </p>
               </div>
 
@@ -267,10 +267,10 @@ export default function HowItWorksPage() {
                   <Bot className="h-6 w-6 text-black" />
                 </div>
                 <h3 className="mb-2 text-lg font-semibold text-white">
-                  {t('how_it_works.ai_powered')}
+                  {t('how_it_works.ai_powered_oracles')}
                 </h3>
                 <p className="text-sm text-gray-200">
-                  {t('how_it_works.ai_description')}
+                  {t('how_it_works.ai_oracles_description')}
                 </p>
               </div>
 
@@ -279,10 +279,10 @@ export default function HowItWorksPage() {
                   <Zap className="h-6 w-6 text-black" />
                 </div>
                 <h3 className="mb-2 text-lg font-semibold text-white">
-                  {t('how_it_works.real_time')}
+                  {t('how_it_works.on_chain_settlements')}
                 </h3>
                 <p className="text-sm text-gray-200">
-                  {t('how_it_works.real_time_description')}
+                  {t('how_it_works.on_chain_settlements_description')}
                 </p>
               </div>
             </div>
@@ -310,10 +310,10 @@ export default function HowItWorksPage() {
                   <Lock className="h-6 w-6 text-white" />
                 </div>
                 <h3 className="mb-2 text-lg font-semibold text-white">
-                  {t('how_it_works.privacy')}
+                  {t('how_it_works.zk-encrypted_privacy')}
                 </h3>
                 <p className="text-sm text-gray-200">
-                  {t('how_it_works.privacy_description')}
+                  {t('how_it_works.zk-encrypted_privacy_description')}
                 </p>
               </div>
 
@@ -322,10 +322,10 @@ export default function HowItWorksPage() {
                   <Shield className="h-6 w-6 text-white" />
                 </div>
                 <h3 className="mb-2 text-lg font-semibold text-white">
-                  {t('how_it_works.anti_manipulation')}
+                  {t('how_it_works.signal_integrity')}
                 </h3>
                 <p className="text-sm text-gray-200">
-                  {t('how_it_works.anti_manipulation_description')}
+                  {t('how_it_works.signal_integrity_description')}
                 </p>
               </div>
 
@@ -334,10 +334,10 @@ export default function HowItWorksPage() {
                   <Users className="h-6 w-6 text-white" />
                 </div>
                 <h3 className="mb-2 text-lg font-semibold text-white">
-                  {t('how_it_works.clean_slate')}
+                  {t('how_it_works.trutless_resolution')}
                 </h3>
                 <p className="text-sm text-gray-200">
-                  {t('how_it_works.clean_slate_description')}
+                  {t('how_it_works.trutless_resolution_description')}
                 </p>
               </div>
             </div>
