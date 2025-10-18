@@ -251,11 +251,67 @@ export function getErrorMessage(error: any): string {
 /**
  * Export all API methods
  */
+/**
+ * Event Predictions API Methods
+ */
+export const eventPredictionsAPI = {
+  /**
+   * Create a new event-based prediction
+   */
+  async createEventPrediction(data: {
+    title: string;
+    description: string;
+    category: string;
+    expiresAt: Date;
+    keywords: string[];
+    newsSearchQuery?: string;
+    verificationThreshold?: number;
+    creator: string;
+    txHash: string;
+    marketId: number;
+  }) {
+    return apiFetch<any>('/event-predictions', {
+      method: 'POST',
+      body: JSON.stringify({
+        ...data,
+        expiresAt: data.expiresAt.toISOString(),
+      }),
+    });
+  },
+
+  /**
+   * Get all event predictions
+   */
+  async getEventPredictions(filters?: {
+    status?: string;
+    limit?: number;
+    offset?: number;
+  }) {
+    const params = new URLSearchParams();
+    if (filters?.status) params.append('status', filters.status);
+    if (filters?.limit) params.append('limit', filters.limit.toString());
+    if (filters?.offset) params.append('offset', filters.offset.toString());
+
+    const query = params.toString() ? `?${params.toString()}` : '';
+    return apiFetch<any[]>(`/event-predictions${query}`, { method: 'GET' });
+  },
+
+  /**
+   * Manually trigger news check for an event prediction
+   */
+  async checkEventManually(marketId: number) {
+    return apiFetch<any>(`/event-predictions/${marketId}/check`, {
+      method: 'POST',
+    });
+  },
+};
+
 export const api = {
   markets: marketAPI,
   users: userAPI,
   leaderboard: leaderboardAPI,
   health: healthAPI,
+  eventPredictions: eventPredictionsAPI,
 };
 
 export default api;

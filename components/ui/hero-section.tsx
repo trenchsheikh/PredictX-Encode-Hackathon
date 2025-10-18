@@ -11,6 +11,7 @@ import { useI18n } from '@/components/providers/i18n-provider';
 interface HeroSectionProps {
   onCreateClick: () => void;
   onCryptoClick: () => void;
+  onNewsClick: () => void;
 }
 
 interface PlatformStats {
@@ -22,6 +23,7 @@ interface PlatformStats {
 export function HeroSection({
   onCreateClick,
   onCryptoClick,
+  onNewsClick,
 }: HeroSectionProps) {
   const { t } = useI18n();
   const [stats, setStats] = useState<PlatformStats>({
@@ -113,6 +115,14 @@ export function HeroSection({
           >
             {t('cta.crypto_darkpool')}
           </Button>
+
+          <ShimmerButton
+            onClick={onNewsClick}
+            background="linear-gradient(180deg, #ffb84d 0%, #cc6b00 100%)"
+            className="h-14 min-w-[280px] rounded-full border-orange-600 px-8 text-base font-semibold tracking-wide text-white shadow-md ring-1 ring-black/40 hover:[background:linear-gradient(180deg,#ffc266_0%,#b35f00_100%)] md:text-lg"
+          >
+            News Events
+          </ShimmerButton>
         </div>
 
         {/* DarkPool Explanation Section (static) */}

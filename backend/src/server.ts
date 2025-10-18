@@ -4,11 +4,13 @@ import dotenv from 'dotenv';
 import { connectDatabase } from './config/database';
 import { blockchainService } from './services/BlockchainService';
 import { marketResolutionService } from './services/MarketResolutionService';
+import { newsMonitoringService } from './services/NewsMonitoringService';
 import marketsRouter from './routes/markets';
 import usersRouter from './routes/users';
 import oracleRouter from './routes/oracle';
 import resolutionRouter from './routes/resolution';
 import transactionsRouter from './routes/transactions';
+import eventPredictionsRouter from './routes/eventPredictions';
 
 // Load environment variables
 dotenv.config({ path: '../.env' });
@@ -83,6 +85,7 @@ app.use('/api/users', usersRouter);
 app.use('/api/oracle', oracleRouter);
 app.use('/api/resolution', resolutionRouter);
 app.use('/api/transactions', transactionsRouter);
+app.use('/api/event-predictions', eventPredictionsRouter);
 
 // 404 handler
 app.use((req: Request, res: Response) => {
@@ -116,6 +119,16 @@ async function startServer() {
     // Start market resolution service
     marketResolutionService.startAutoResolution();
 
+    // Start news monitoring service for event predictions
+    if (process.env.NEWSAPI_KEY) {
+      newsMonitoringService.startMonitoring();
+      console.log('📰 News monitoring service started');
+    } else {
+      console.warn(
+        '⚠️  NEWSAPI_KEY not configured - event predictions will not be monitored'
+      );
+    }
+
     // Optional: Sync historical events on startup
     if (process.env.SYNC_ON_STARTUP === 'true') {
       const fromBlock = parseInt(process.env.SYNC_FROM_BLOCK || '0');
@@ -146,12 +159,14 @@ async function startServer() {
 process.on('SIGINT', () => {
   console.log('\n⏹️  Shutting down gracefully...');
   blockchainService.stopEventListeners();
+  newsMonitoringService.stopMonitoring();
   process.exit(0);
 });
 
 process.on('SIGTERM', () => {
   console.log('\n⏹️  Shutting down gracefully...');
   blockchainService.stopEventListeners();
+  newsMonitoringService.stopMonitoring();
   process.exit(0);
 });
 

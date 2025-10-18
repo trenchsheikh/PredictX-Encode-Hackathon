@@ -31,6 +31,30 @@ const marketSchema = new Schema<IMarketDocument>(
     outcome: { type: Boolean },
     resolutionReasoning: { type: String },
     txHash: { type: String, required: true },
+    // Event prediction fields
+    predictionType: {
+      type: String,
+      enum: ['crypto', 'event'],
+      default: 'crypto',
+    },
+    eventData: {
+      type: {
+        keywords: [String],
+        newsSearchQuery: String,
+        verificationThreshold: Number,
+        monitoringStartDate: Date,
+        lastChecked: Date,
+        newsArticles: [
+          {
+            title: String,
+            url: String,
+            source: String,
+            publishedAt: Date,
+          },
+        ],
+      },
+      required: false,
+    },
   },
   {
     timestamps: true,

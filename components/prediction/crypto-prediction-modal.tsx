@@ -181,7 +181,7 @@ export function CryptoPredictionModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-h-[90vh] max-w-4xl overflow-y-auto border border-white/10 bg-gradient-to-br from-gray-900/95 via-gray-800/90 to-gray-900/95 shadow-2xl backdrop-blur-md">
+      <DialogContent className="max-h-[90vh] max-w-4xl overflow-y-auto border border-white/10 bg-gradient-to-br from-gray-900/95 via-gray-800/90 to-gray-900/95 pr-2 shadow-2xl backdrop-blur-md">
         <DialogHeader>
           <DialogTitle className="font-heading flex items-center gap-2 text-2xl font-bold text-white">
             <TrendingUp className="h-6 w-6 text-yellow-400" />
@@ -239,10 +239,10 @@ export function CryptoPredictionModal({
                   >
                     <SelectValue placeholder="Select prediction type..." />
                   </SelectTrigger>
-                  <SelectContent className="border-gray-700/50 bg-gray-800">
+                  <SelectContent className="z-[9999] border-gray-700/50 bg-gray-800">
                     <SelectItem
                       value="price_target"
-                      className="text-white hover:bg-gray-700/50"
+                      className="cursor-pointer text-white hover:bg-gray-700/50"
                     >
                       <div className="flex items-center gap-2">
                         <DollarSign className="h-4 w-4 text-yellow-400" />
@@ -251,7 +251,7 @@ export function CryptoPredictionModal({
                     </SelectItem>
                     <SelectItem
                       value="custom"
-                      className="text-white hover:bg-gray-700/50"
+                      className="cursor-pointer text-white hover:bg-gray-700/50"
                     >
                       <div className="flex items-center gap-2">
                         <Bot className="h-4 w-4 text-blue-400" />
@@ -317,10 +317,10 @@ export function CryptoPredictionModal({
                       >
                         <SelectValue placeholder="Select direction..." />
                       </SelectTrigger>
-                      <SelectContent className="border-gray-700/50 bg-gray-800">
+                      <SelectContent className="z-[9999] border-gray-700/50 bg-gray-800">
                         <SelectItem
                           value="above"
-                          className="text-white hover:bg-gray-700/50"
+                          className="cursor-pointer text-white hover:bg-gray-700/50"
                         >
                           <div className="flex items-center gap-2">
                             <TrendingUp className="h-4 w-4 text-green-400" />
@@ -329,7 +329,7 @@ export function CryptoPredictionModal({
                         </SelectItem>
                         <SelectItem
                           value="below"
-                          className="text-white hover:bg-gray-700/50"
+                          className="cursor-pointer text-white hover:bg-gray-700/50"
                         >
                           <div className="flex items-center gap-2">
                             <TrendingDown className="h-4 w-4 text-red-400" />

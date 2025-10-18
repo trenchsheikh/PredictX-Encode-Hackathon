@@ -19,6 +19,10 @@ import {
   CryptoPredictionModal,
   CryptoPredictionData,
 } from '@/components/prediction/crypto-prediction-modal';
+import {
+  CreateEventPredictionModal,
+  EventPredictionData,
+} from '@/components/prediction/create-event-prediction-modal';
 import { TransactionHistoryModal } from '@/components/prediction/transaction-history-modal';
 import { TransactionStatus } from '@/components/ui/transaction-status';
 import {
@@ -61,6 +65,7 @@ export default function HomePage() {
   // Modal state
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showCryptoModal, setShowCryptoModal] = useState(false);
+  const [showEventModal, setShowEventModal] = useState(false);
   const [showBetModal, setShowBetModal] = useState(false);
   const [showHistoryModal, setShowHistoryModal] = useState(false);
   const [showOracleErrorModal, setShowOracleErrorModal] = useState(false);
@@ -316,6 +321,90 @@ export default function HomePage() {
   };
 
   /**
+   * Handle create event prediction
+   */
+  const handleCreateEventPrediction = async (data: EventPredictionData) => {
+    if (!authenticated || !user?.wallet?.address) {
+      logger.user(t('errors.wallet_required'));
+      return;
+    }
+
+    try {
+      const userAddress = user.wallet.address.toLowerCase();
+      const expiresAtTimestamp = Math.floor(data.expiresAt.getTime() / 1000);
+
+      logger.info('Creating event prediction:', {
+        title: data.title,
+        keywords: data.keywords,
+        expiresAt: data.expiresAt.toISOString(),
+      });
+
+      // Step 1: Create market on blockchain
+      const result = await contract.createMarket(
+        data.title,
+        data.description,
+        '',
+        '',
+        parseInt(data.category),
+        expiresAtTimestamp,
+        ethers.parseEther(data.amount.toString()).toString()
+      );
+
+      if (!result.success || !result.txHash) {
+        const actualError = contract.error || 'Transaction failed';
+        logger.error('Contract error:', contract.error);
+        throw new Error(actualError);
+      }
+
+      // Step 2: Extract market ID from blockchain event
+      // The backend will sync this automatically, but we'll wait for it
+      logger.info('Event prediction created on blockchain:', result.txHash);
+
+      // Wait for backend to sync the market
+      await new Promise(resolve => setTimeout(resolve, 3000));
+
+      // Step 3: Get the latest market ID (the backend will have created it)
+      const marketsResponse = await api.markets.getMarkets({ limit: 1 });
+      if (
+        !marketsResponse.success ||
+        !marketsResponse.data ||
+        marketsResponse.data.length === 0
+      ) {
+        throw new Error('Failed to get market ID from backend');
+      }
+
+      const latestMarket = marketsResponse.data[0];
+      const marketId = latestMarket.marketId;
+
+      // Step 4: Save event data to backend
+      await api.eventPredictions.createEventPrediction({
+        title: data.title,
+        description: data.description,
+        category: data.category,
+        expiresAt: data.expiresAt,
+        keywords: data.keywords,
+        newsSearchQuery: data.newsSearchQuery,
+        verificationThreshold: data.verificationThreshold || 0.6,
+        creator: userAddress,
+        txHash: result.txHash!,
+        marketId: marketId,
+      });
+
+      logger.user('Event prediction created! News monitoring started.');
+
+      // Refresh markets to show the new event prediction
+      setTimeout(async () => {
+        await fetchMarkets();
+      }, 1000);
+
+      setShowEventModal(false);
+    } catch (err: any) {
+      logger.error('Create event prediction failed:', err);
+      throw err;
+    }
+  };
+
+  /**
    * Calculate stats
    */
   const stats = {
@@ -353,6 +442,7 @@ export default function HomePage() {
       <HeroSection
         onCreateClick={() => setShowCreateModal(true)}
         onCryptoClick={() => setShowCryptoModal(true)}
+        onNewsClick={() => setShowEventModal(true)}
       />
 
       {/* Error Banner */}
@@ -500,6 +590,13 @@ export default function HomePage() {
         open={showCryptoModal}
         onOpenChange={setShowCryptoModal}
         onSubmit={handleCreateCryptoPrediction}
+      />
+
+      {/* Event Prediction Modal */}
+      <CreateEventPredictionModal
+        open={showEventModal}
+        onOpenChange={setShowEventModal}
+        onConfirm={handleCreateEventPrediction}
       />
 
       {/* Bet Modal */}

@@ -16,6 +16,22 @@ export interface IMarket {
   outcome?: boolean;
   resolutionReasoning?: string;
   txHash: string;
+  // Event prediction fields
+  predictionType?: 'crypto' | 'event';
+  eventData?: {
+    keywords: string[]; // Keywords to monitor in news
+    newsSearchQuery: string; // Primary search query for NewsAPI
+    verificationThreshold?: number; // Confidence threshold (0-1)
+    monitoringStartDate: Date; // When to start checking news
+    lastChecked?: Date; // Last time news was checked
+    newsArticles?: Array<{
+      // Supporting news articles
+      title: string;
+      url: string;
+      source: string;
+      publishedAt: Date;
+    }>;
+  };
 }
 
 export enum MarketStatus {
