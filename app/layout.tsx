@@ -7,6 +7,7 @@ import { ErrorBoundary } from '@/components/ui/error-boundary';
 import { FooterGate } from '@/components/layout/footer-gate';
 import Image from 'next/image';
 import { Be_Vietnam_Pro } from 'next/font/google';
+import { Analytics } from '@vercel/analytics/next';
 
 const beVietnamPro = Be_Vietnam_Pro({
   subsets: ['latin'],
@@ -93,6 +94,7 @@ export default function RootLayout({
             </div>
           </IntroProvider>
         </PrivyProviderWrapper>
+        <Analytics />
       </body>
     </html>
   );
