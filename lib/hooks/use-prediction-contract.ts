@@ -1485,12 +1485,12 @@ export function usePredictionContract() {
         } else {
           return {
             available: false,
-            reason: `Refunds not available. Market status: ${market.status}, Expired: ${now > expiresAt}, Timeout: ${now > expiresAt + commitRevealTimeout}`,
+            reason: 'Refund not available for this bet',
           };
         }
       } catch (err: any) {
         console.error('Error checking refund availability:', err);
-        return { available: false, reason: `Error: ${err.message}` };
+        return { available: false, reason: 'Unable to check refund status' };
       }
     },
     [getContract, wallets]

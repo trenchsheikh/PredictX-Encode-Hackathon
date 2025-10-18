@@ -173,33 +173,60 @@ export function BetModal({
 
           {/* Bet Summary */}
           {numAmount > 0 && !error && (
-            <div className="space-y-3 rounded-xl border border-white/10 bg-gradient-to-r from-gray-800/60 to-gray-700/40 p-4 backdrop-blur-sm">
-              <div className="flex justify-between text-sm">
-                <span className="text-gray-400">Estimated Shares</span>
-                <span className="font-medium text-white">
-                  {estimatedShares.toFixed(4)}
-                </span>
-              </div>
-              <div className="flex justify-between text-sm">
-                <span className="text-gray-400">Potential Payout</span>
-                <span className="font-medium text-green-400">
-                  {formatBNB(potentialPayout)}
-                </span>
-              </div>
-              <div className="flex justify-between text-sm">
-                <span className="text-gray-400">Potential ROI</span>
-                <span
-                  className={`font-medium ${roi >= 0 ? 'text-green-400' : 'text-red-400'}`}
-                >
-                  {roi >= 0 ? '+' : ''}
-                  {roi.toFixed(2)}%
-                </span>
-              </div>
-              <div className="flex justify-between border-t border-gray-600/50 pt-2 text-sm">
-                <span className="text-gray-400">Platform Fee (1.5%)</span>
-                <span className="font-medium text-white">
-                  {formatBNB(numAmount * 0.015)}
-                </span>
+            <div className="space-y-2 rounded-xl border border-white/10 bg-gradient-to-r from-gray-800/60 to-gray-700/40 p-4 backdrop-blur-sm">
+              <h4 className="mb-3 text-xs font-semibold uppercase tracking-wide text-gray-400">
+                Bet Summary
+              </h4>
+
+              <div className="space-y-2.5">
+                <div className="flex items-center justify-between gap-4">
+                  <span className="text-sm text-gray-400">Shares</span>
+                  <span className="font-mono text-sm font-medium text-white">
+                    {estimatedShares.toFixed(2)}
+                  </span>
+                </div>
+
+                <div className="flex items-center justify-between gap-4">
+                  <span className="text-sm text-gray-400">Amount</span>
+                  <span className="font-mono text-sm font-medium text-white">
+                    {formatBNB(numAmount)}
+                  </span>
+                </div>
+
+                <div className="flex items-center justify-between gap-4">
+                  <span className="text-sm text-gray-400">Price</span>
+                  <span className="font-mono text-sm font-medium text-white">
+                    {formatBNB(currentPrice)}
+                  </span>
+                </div>
+
+                <div className="flex items-center justify-between gap-4 border-t border-gray-600/30 pt-2.5">
+                  <span className="text-sm font-medium text-gray-300">
+                    Potential Payout
+                  </span>
+                  <span className="font-mono text-sm font-semibold text-green-400">
+                    {formatBNB(potentialPayout)}
+                  </span>
+                </div>
+
+                <div className="flex items-center justify-between gap-4">
+                  <span className="text-sm text-gray-400">ROI</span>
+                  <span
+                    className={`font-mono text-sm font-medium ${roi >= 0 ? 'text-green-400' : 'text-red-400'}`}
+                  >
+                    {roi >= 0 ? '+' : ''}
+                    {roi.toFixed(1)}%
+                  </span>
+                </div>
+
+                <div className="flex items-center justify-between gap-4 border-t border-gray-600/30 pt-2.5">
+                  <span className="text-xs text-gray-500">
+                    Platform Fee (1.5%)
+                  </span>
+                  <span className="font-mono text-xs font-medium text-gray-400">
+                    {formatBNB(numAmount * 0.015)}
+                  </span>
+                </div>
               </div>
             </div>
           )}
