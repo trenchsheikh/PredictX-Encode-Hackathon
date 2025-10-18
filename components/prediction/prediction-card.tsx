@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -36,10 +36,15 @@ export function PredictionCard({
   onViewHistory,
   userBets,
 }: PredictionCardProps) {
-  const { t } = useI18n();
+  const { t, isInitialized } = useI18n();
   const [isLoading, setIsLoading] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const userBet = userBets?.[prediction.id];
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const handleBet = async (outcome: 'yes' | 'no') => {
     setIsLoading(true);
@@ -104,7 +109,7 @@ export function PredictionCard({
           </div>
           <div className="text-right">
             <div className="text-xs text-gray-300">
-              {t('prediction_card.pool')}
+              {mounted && isInitialized ? t('prediction_card.pool') : 'Pool'}
             </div>
             <div className="text-sm font-bold text-white">
               {formatBNB(prediction.totalPool)}
@@ -127,9 +132,13 @@ export function PredictionCard({
             >
               <span className="flex items-center gap-1">
                 <Info className="h-3 w-3" />
-                {isExpanded
-                  ? t('prediction_card.hide_analysis')
-                  : t('prediction_card.view_detailed_analysis')}
+                {mounted && isInitialized
+                  ? isExpanded
+                    ? t('prediction_card.hide_analysis')
+                    : t('prediction_card.view_detailed_analysis')
+                  : isExpanded
+                    ? 'Hide Analysis'
+                    : 'View Detailed Analysis'}
               </span>
               {isExpanded ? (
                 <ChevronUp className="h-3 w-3" />
@@ -141,7 +150,9 @@ export function PredictionCard({
               <div className="mt-2 rounded-lg border border-yellow-500/30 bg-yellow-500/10 p-3">
                 <div className="mb-2 flex items-center gap-1 text-xs font-medium text-yellow-400">
                   <Info className="h-3 w-3" />
-                  {t('prediction_card.unbiased_market_analysis')}
+                  {mounted && isInitialized
+                    ? t('prediction_card.unbiased_market_analysis')
+                    : 'Unbiased Market Analysis'}
                 </div>
                 <p className="whitespace-pre-wrap text-xs leading-relaxed text-gray-200">
                   {prediction.summary}
@@ -155,7 +166,7 @@ export function PredictionCard({
         <div className="mb-3 grid grid-cols-2 gap-2">
           <div className="rounded-lg border border-green-500/30 bg-gradient-to-br from-green-600/90 to-green-700/90 p-3 text-center shadow-lg transition-all duration-300 hover:shadow-green-500/25">
             <div className="mb-1 text-xs font-medium text-green-100">
-              {t('prediction_card.yes')}
+              {mounted && isInitialized ? t('prediction_card.yes') : 'Yes'}
             </div>
             <div className="text-lg font-bold text-white">
               {prediction.yesPrice.toFixed(3)}
@@ -166,7 +177,7 @@ export function PredictionCard({
           </div>
           <div className="rounded-lg border border-red-500/30 bg-gradient-to-br from-red-600/90 to-red-700/90 p-3 text-center shadow-lg transition-all duration-300 hover:shadow-red-500/25">
             <div className="mb-1 text-xs font-medium text-red-100">
-              {t('prediction_card.no')}
+              {mounted && isInitialized ? t('prediction_card.no') : 'No'}
             </div>
             <div className="text-lg font-bold text-white">
               {prediction.noPrice.toFixed(3)}
@@ -183,11 +194,15 @@ export function PredictionCard({
             <div className="flex items-center justify-between">
               <div>
                 <div className="text-sm font-medium text-yellow-400">
-                  {t('prediction_card.your_bet')}
+                  {mounted && isInitialized
+                    ? t('prediction_card.your_bet')
+                    : 'Your Bet'}
                 </div>
                 <div className="text-xs text-yellow-300">
                   {userBet.outcome.toUpperCase()} • {userBet.shares.toFixed(2)}{' '}
-                  {t('prediction_card.shares')}
+                  {mounted && isInitialized
+                    ? t('prediction_card.shares')
+                    : 'shares'}
                 </div>
               </div>
             </div>
@@ -204,7 +219,7 @@ export function PredictionCard({
               disabled={isLoading}
             >
               <ArrowUp className="mr-1 h-3 w-3" />
-              {t('prediction_card.yes')}
+              {mounted && isInitialized ? t('prediction_card.yes') : 'Yes'}
             </Button>
             <Button
               size="sm"
@@ -213,7 +228,7 @@ export function PredictionCard({
               disabled={isLoading}
             >
               <ArrowDown className="mr-1 h-3 w-3" />
-              {t('prediction_card.no')}
+              {mounted && isInitialized ? t('prediction_card.no') : 'No'}
             </Button>
           </div>
         )}
@@ -229,7 +244,9 @@ export function PredictionCard({
                 className="w-full"
                 onClick={() => onViewHistory(prediction.id)}
               >
-                {t('prediction_card.view_history')}
+                {mounted && isInitialized
+                  ? t('prediction_card.view_history')
+                  : 'View History'}
               </Button>
             </div>
           )}
@@ -238,8 +255,10 @@ export function PredictionCard({
         {prediction.resolution && (
           <div className="mb-3 rounded-lg border border-yellow-400/30 bg-gradient-to-r from-yellow-400/20 to-yellow-600/20 p-3">
             <div className="mb-1 text-sm font-medium text-yellow-400">
-              {t('prediction_card.resolved')}:{' '}
-              {prediction.resolution.outcome.toUpperCase()}
+              {mounted && isInitialized
+                ? t('prediction_card.resolved')
+                : 'Resolved'}
+              : {prediction.resolution.outcome.toUpperCase()}
             </div>
             <div className="text-xs text-yellow-300">
               {prediction.resolution.reasoning}
@@ -258,7 +277,9 @@ export function PredictionCard({
             <span>
               {prediction.status === 'resolved' ||
               prediction.status === 'cancelled'
-                ? t('prediction_card.expired')
+                ? mounted && isInitialized
+                  ? t('prediction_card.expired')
+                  : 'Expired'
                 : formatTimeRemaining(prediction.expiresAt)}
             </span>
           </div>

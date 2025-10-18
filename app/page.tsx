@@ -52,9 +52,10 @@ import { logger } from '@/lib/logger';
 import { ethers } from 'ethers';
 
 export default function HomePage() {
-  const { t } = useI18n();
+  const { t, isInitialized } = useI18n();
   const { authenticated, user } = usePrivy();
   const contract = usePredictionContract();
+  const [mounted, setMounted] = useState(false);
 
   // Data state
   const [predictions, setPredictions] = useState<Prediction[]>([]);
@@ -80,7 +81,10 @@ export default function HomePage() {
     [predictionId: string]: { outcome: 'yes' | 'no'; shares: number };
   }>({});
 
-  // Removed homepage background bubbles/dust; no mounted gating needed
+  // Set mounted state to prevent hydration mismatch
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   /**
    * Fetch markets from backend API
@@ -595,7 +599,7 @@ export default function HomePage() {
                   className="ml-auto border-red-400/70 bg-red-500/10 text-red-100 hover:border-red-400 hover:bg-red-500/30"
                 >
                   <RefreshCw className="mr-2 h-4 w-4" />
-                  {t('errors.retry')}
+                  {mounted && isInitialized ? t('errors.retry') : 'Retry'}
                 </Button>
               </div>
             </CardContent>
@@ -616,7 +620,9 @@ export default function HomePage() {
                 <BarChart3 className="h-6 w-6 text-yellow-400" />
               </div>
               <h2 className="font-heading text-2xl text-white">
-                {t('markets.all_markets')}
+                {mounted && isInitialized
+                  ? t('markets.all_markets')
+                  : 'All Markets'}
               </h2>
             </div>
           </div>
@@ -640,10 +646,14 @@ export default function HomePage() {
                   <TrendingUp className="h-12 w-12 text-yellow-400" />
                 </div>
                 <h3 className="font-heading mb-2 text-lg text-white">
-                  {t('markets.no_predictions_found')}
+                  {mounted && isInitialized
+                    ? t('markets.no_predictions_found')
+                    : 'No Predictions Found'}
                 </h3>
                 <p className="mb-4 text-gray-300">
-                  {t('markets.try_adjusting_filters')}
+                  {mounted && isInitialized
+                    ? t('markets.try_adjusting_filters')
+                    : 'Try adjusting your filters'}
                 </p>
                 <Button
                   onClick={() => setShowCreateModal(true)}
@@ -651,7 +661,9 @@ export default function HomePage() {
                   disabled={!authenticated}
                 >
                   <Plus className="mr-2 h-4 w-4" />
-                  {t('markets.create_first_prediction')}
+                  {mounted && isInitialized
+                    ? t('markets.create_first_prediction')
+                    : 'Create First Prediction'}
                 </Button>
               </CardContent>
             </Card>
@@ -685,7 +697,9 @@ export default function HomePage() {
                 <CheckCircle className="h-6 w-6 text-green-400" />
               </div>
               <h2 className="font-heading text-2xl text-white">
-                {t('markets.completed_predictions')}
+                {mounted && isInitialized
+                  ? t('markets.completed_predictions')
+                  : 'Completed Predictions'}
               </h2>
             </div>
 
