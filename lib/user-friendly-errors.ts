@@ -66,11 +66,56 @@ export function getUserFriendlyError(error: any): UserFriendlyError {
     };
   }
 
+  // Bet too low
+  if (
+    errorString.includes('Bet too low') ||
+    errorString.includes('bet too low')
+  ) {
+    return {
+      title: 'Bet Amount Too Low',
+      message:
+        'Your bet amount is below the minimum required by the smart contract.',
+      suggestion:
+        'The minimum bet is typically 0.01 BNB. Please increase your bet amount and try again.',
+      action: 'Increase Amount',
+    };
+  }
+
   // Gas estimation failed
   if (
     errorString.includes('gas') &&
     (errorString.includes('estimate') || errorString.includes('estimation'))
   ) {
+    // Check if there's a specific reason in the error
+    if (errorString.includes('Bet too low')) {
+      return {
+        title: 'Bet Amount Too Low',
+        message: 'Your bet amount is below the minimum required.',
+        suggestion:
+          'The minimum bet is typically 0.01 BNB. Please increase your bet amount and try again.',
+      };
+    }
+
+    if (errorString.includes('Already committed')) {
+      return {
+        title: 'Already Placed Bet',
+        message: "You've already placed a bet on this market.",
+        suggestion:
+          'You can only place one bet per market. Wait for the reveal period to reveal your bet.',
+        action: 'Go to My Bets',
+      };
+    }
+
+    if (errorString.includes('expired')) {
+      return {
+        title: 'Market Closed',
+        message: 'This prediction market has already closed.',
+        suggestion:
+          'You can no longer place bets on this market. Check out other active markets!',
+        action: 'View Active Markets',
+      };
+    }
+
     return {
       title: 'Transaction Would Fail',
       message: 'This transaction cannot be completed in its current state.',
@@ -188,13 +233,13 @@ export function getUserFriendlyError(error: any): UserFriendlyError {
     };
   }
 
-  // Amount too low
+  // Amount too low (also catches "Bet too low" from smart contract)
   if (errorString.includes('too low') || errorString.includes('minimum')) {
     return {
-      title: 'Amount Too Low',
-      message: 'The bet amount is below the minimum required.',
+      title: 'Bet Amount Too Low',
+      message: 'Your bet amount is below the minimum required.',
       suggestion:
-        'Please increase your bet amount and try again. Minimum is usually 0.001 BNB.',
+        'The minimum bet is typically 0.01 BNB on this platform. Please increase your bet amount and try again.',
     };
   }
 

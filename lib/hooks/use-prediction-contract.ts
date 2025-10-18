@@ -915,10 +915,18 @@ export function usePredictionContract() {
         const amountWei = ethers.parseEther(amount);
 
         // Estimate gas (commitBet only takes marketId and commitHash, value is sent via msg.value)
-        const gasLimit = await estimateGas(contract, 'commitBet', [
-          marketId,
-          commitHash,
-        ]);
+        let gasLimit;
+        try {
+          gasLimit = await estimateGas(contract, 'commitBet', [
+            marketId,
+            commitHash,
+          ]);
+        } catch (gasError: any) {
+          // Gas estimation failed - this means the transaction will fail
+          // Don't retry, just throw the error with user-friendly message
+          console.error('Gas estimation failed:', gasError);
+          throw gasError; // Will be caught by outer try-catch and made user-friendly
+        }
 
         // Use fixed gas price for BSC Mainnet to avoid RPC issues
         let gasPrice;
@@ -951,6 +959,24 @@ export function usePredictionContract() {
         } catch (txError: any) {
           console.error('Transaction failed:', txError);
 
+          // Check if it's a business logic error (not an RPC issue)
+          const errorMessage = txError.message || '';
+          const isBusinessLogicError =
+            errorMessage.includes('Already committed') ||
+            errorMessage.includes('Bet too low') ||
+            errorMessage.includes('Bet too high') ||
+            errorMessage.includes('Market has expired') ||
+            errorMessage.includes('execution reverted');
+
+          // Don't retry business logic errors - they will fail again
+          if (isBusinessLogicError) {
+            console.log(
+              'Business logic error detected, not retrying:',
+              errorMessage
+            );
+            throw txError;
+          }
+
           // If it's an RPC error, try with a different approach
           if (
             txError.message.includes(
@@ -971,6 +997,17 @@ export function usePredictionContract() {
               });
             } catch (fallbackError: any) {
               console.error('Fallback transaction also failed:', fallbackError);
+
+              // Check if fallback also hit a business logic error
+              const fallbackMessage = fallbackError.message || '';
+              if (
+                fallbackMessage.includes('Already committed') ||
+                fallbackMessage.includes('Bet too low') ||
+                fallbackMessage.includes('Bet too high')
+              ) {
+                // Don't try again - throw the fallback error
+                throw fallbackError;
+              }
 
               // Last resort: try with minimal settings
               tx = await contract.commitBet(marketId, commitHash, {
