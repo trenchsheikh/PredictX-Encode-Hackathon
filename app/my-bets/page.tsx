@@ -970,25 +970,27 @@ export default function MyBetsPage() {
                                 : `${t('my_bets.resolved_on')} ${new Date(prediction.resolution?.resolvedAt || prediction.expiresAt).toLocaleDateString()}`}
                             </span>
                           </div>
-                          <div className="flex items-center gap-1">
-                            <OutcomeIcon
-                              className={cn(
-                                'h-4 w-4',
-                                bet.outcome === 'yes'
-                                  ? 'text-green-400'
-                                  : 'text-red-400'
-                              )}
-                            />
-                            <span
-                              className={
-                                bet.outcome === 'yes'
-                                  ? 'text-green-400'
-                                  : 'text-red-400'
-                              }
-                            >
-                              {bet.outcome.toUpperCase()}
-                            </span>
-                          </div>
+                          {bet.outcome !== 'unknown' && (
+                            <div className="flex items-center gap-1">
+                              <OutcomeIcon
+                                className={cn(
+                                  'h-4 w-4',
+                                  bet.outcome === 'yes'
+                                    ? 'text-green-400'
+                                    : 'text-red-400'
+                                )}
+                              />
+                              <span
+                                className={
+                                  bet.outcome === 'yes'
+                                    ? 'text-green-400'
+                                    : 'text-red-400'
+                                }
+                              >
+                                {bet.outcome.toUpperCase()}
+                              </span>
+                            </div>
+                          )}
                         </div>
 
                         {/* Bet Details */}
