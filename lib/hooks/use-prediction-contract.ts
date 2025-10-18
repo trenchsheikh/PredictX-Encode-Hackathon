@@ -726,6 +726,19 @@ export function usePredictionContract() {
           fullDescription += `\n\nResolution: ${resolutionInstructions}`;
         }
 
+        // Validate parameters before sending
+        if (!title || title.length === 0 || title.length > 200) {
+          throw new Error('Invalid title: must be 1-200 characters');
+        }
+        if (category < 0 || category > 7) {
+          throw new Error('Invalid category: must be 0-7');
+        }
+        if (expiresAt <= Math.floor(Date.now() / 1000) + 300) {
+          throw new Error(
+            'Invalid expiration: must be at least 5 minutes from now'
+          );
+        }
+
         // Estimate gas
         const gasLimit = await estimateGas(contract, 'createMarket', [
           title,
@@ -734,14 +747,78 @@ export function usePredictionContract() {
           category,
         ]);
 
-        // Send transaction with correct parameter order: title, description, expiresAt, category
-        const tx = await contract.createMarket(
+        console.log('Creating market with parameters:', {
           title,
-          fullDescription,
-          expiresAt,
+          description: fullDescription.substring(0, 100) + '...',
+          expiresAt: new Date(expiresAt * 1000).toISOString(),
           category,
-          { gasLimit }
-        );
+          gasLimit: gasLimit.toString(),
+        });
+
+        // Send transaction with retry logic
+        let tx;
+        let retryCount = 0;
+        const maxRetries = 3;
+
+        while (retryCount < maxRetries) {
+          try {
+            console.log(
+              `Attempting transaction (attempt ${retryCount + 1}/${maxRetries})...`
+            );
+
+            // Get current gas price and add a buffer
+            const feeData = await contract.runner?.provider?.getFeeData();
+            const gasPrice = feeData?.gasPrice
+              ? (feeData.gasPrice * 110n) / 100n
+              : undefined;
+
+            tx = await contract.createMarket(
+              title,
+              fullDescription,
+              expiresAt,
+              category,
+              {
+                gasLimit,
+                gasPrice: gasPrice ? gasPrice.toString() : undefined,
+              }
+            );
+
+            if (tx && tx.hash) {
+              console.log('Transaction successful on attempt', retryCount + 1);
+              break;
+            } else {
+              throw new Error('Transaction returned without hash');
+            }
+          } catch (txError: any) {
+            retryCount++;
+            console.error(
+              `Transaction attempt ${retryCount} failed:`,
+              txError.message
+            );
+
+            if (retryCount >= maxRetries) {
+              throw new Error(
+                `Transaction failed after ${maxRetries} attempts: ${txError.message}`
+              );
+            }
+
+            // Wait before retry
+            await new Promise(resolve =>
+              setTimeout(resolve, 1000 * retryCount)
+            );
+          }
+        }
+
+        if (!tx || !tx.hash) {
+          throw new Error(
+            'Transaction failed to generate hash after all retries'
+          );
+        }
+
+        console.log('Transaction submitted:', {
+          hash: tx.hash,
+          gasLimit: gasLimit.toString(),
+        });
 
         setTxHash(tx.hash);
 

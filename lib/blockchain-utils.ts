@@ -328,8 +328,8 @@ export async function estimateGas(
     return (gasEstimate * 120n) / 100n;
   } catch (error) {
     console.error('Gas estimation failed:', error);
-    // Return default gas limit for BSC
-    return 500000n;
+    // Return higher default gas limit for BSC to handle complex transactions
+    return 1000000n;
   }
 }
 
