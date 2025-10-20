@@ -344,6 +344,12 @@
     "confirmed": "已确认",
     "failed": "失败"
   },
+  "wallet_prompt": {
+    "title": "连接您的钱包",
+    "description": "您需要连接钱包才能创建或参与预测",
+    "message": "要参与 DarkBet 预测，您需要连接 Web3 钱包。我们支持 MetaMask、WalletConnect 等。"
+  },
+  "cancel": "取消",
   "errors": {
     "wallet_required": "请连接您的钱包以进行投注",
     "transaction_failed": "交易失败",

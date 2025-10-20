@@ -344,6 +344,12 @@
     "confirmed": "Confirmed",
     "failed": "Failed"
   },
+  "wallet_prompt": {
+    "title": "Connect Your Wallet",
+    "description": "You need to connect your wallet to create or place predictions",
+    "message": "To participate in DarkBet predictions, you need to connect a Web3 wallet. We support MetaMask, WalletConnect, and more."
+  },
+  "cancel": "Cancel",
   "errors": {
     "wallet_required": "Please connect your wallet to place a bet",
     "transaction_failed": "Transaction failed",

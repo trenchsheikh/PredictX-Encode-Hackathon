@@ -40,6 +40,7 @@ import {
   RefreshCw,
   AlertCircle,
   CheckCircle,
+  Wallet,
 } from 'lucide-react';
 import { HeroSection } from '@/components/ui/hero-section';
 import { AnimatedCard } from '@/components/ui/animated-card';
@@ -53,7 +54,7 @@ import { ethers } from 'ethers';
 
 export default function HomePage() {
   const { t, isInitialized } = useI18n();
-  const { authenticated, user } = usePrivy();
+  const { authenticated, user, login } = usePrivy();
   const contract = usePredictionContract();
   const [mounted, setMounted] = useState(false);
 
@@ -70,6 +71,7 @@ export default function HomePage() {
   const [showBetModal, setShowBetModal] = useState(false);
   const [showHistoryModal, setShowHistoryModal] = useState(false);
   const [showOracleErrorModal, setShowOracleErrorModal] = useState(false);
+  const [showWalletPrompt, setShowWalletPrompt] = useState(false);
   const [selectedPrediction, setSelectedPrediction] =
     useState<Prediction | null>(null);
   const [selectedOutcome, setSelectedOutcome] = useState<'yes' | 'no'>('yes');
@@ -181,6 +183,28 @@ export default function HomePage() {
   });
 
   /**
+   * Handle crypto prediction button click
+   */
+  const handleCryptoClick = () => {
+    if (!authenticated) {
+      setShowWalletPrompt(true);
+      return;
+    }
+    setShowCryptoModal(true);
+  };
+
+  /**
+   * Handle news event prediction button click
+   */
+  const handleNewsClick = () => {
+    if (!authenticated) {
+      setShowWalletPrompt(true);
+      return;
+    }
+    setShowEventModal(true);
+  };
+
+  /**
    * Open bet modal
    */
   const handleBetClick = (predictionId: string, outcome: 'yes' | 'no') => {
@@ -188,7 +212,7 @@ export default function HomePage() {
     if (!prediction) return;
 
     if (!authenticated) {
-      logger.user(t('errors.wallet_required'));
+      setShowWalletPrompt(true);
       return;
     }
 
@@ -580,8 +604,8 @@ export default function HomePage() {
       {/* Hero Section */}
       <HeroSection
         onCreateClick={() => setShowCreateModal(true)}
-        onCryptoClick={() => setShowCryptoModal(true)}
-        onNewsClick={() => setShowEventModal(true)}
+        onCryptoClick={handleCryptoClick}
+        onNewsClick={handleNewsClick}
       />
 
       {/* Error Banner */}
@@ -851,6 +875,61 @@ export default function HomePage() {
               className="flex-1 bg-gradient-to-r from-yellow-400 to-yellow-600 font-semibold text-black shadow-md hover:from-yellow-500 hover:to-yellow-700"
             >
               Open Crypto DarkPool
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Wallet Connection Prompt */}
+      <Dialog open={showWalletPrompt} onOpenChange={setShowWalletPrompt}>
+        <DialogContent className="max-w-md border border-yellow-400/50 bg-gray-900/95 shadow-2xl backdrop-blur-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2 text-yellow-400">
+              <Wallet className="h-5 w-5" />
+              {mounted && isInitialized
+                ? t('wallet_prompt.title')
+                : 'Connect Your Wallet'}
+            </DialogTitle>
+            <DialogDescription className="text-gray-300">
+              {mounted && isInitialized
+                ? t('wallet_prompt.description')
+                : 'You need to connect your wallet to create or place predictions'}
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-4">
+            <div className="rounded-lg border border-yellow-400/20 bg-yellow-400/10 p-4">
+              <div className="flex items-start gap-3">
+                <AlertCircle className="mt-0.5 h-5 w-5 flex-shrink-0 text-yellow-400" />
+                <div className="space-y-2 text-sm text-gray-300">
+                  <p>
+                    {mounted && isInitialized
+                      ? t('wallet_prompt.message')
+                      : 'To participate in DarkBet predictions, you need to connect a Web3 wallet. We support MetaMask, WalletConnect, and more.'}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex gap-3 pt-4">
+            <Button
+              variant="outline"
+              onClick={() => setShowWalletPrompt(false)}
+              className="flex-1 border-gray-700/50 bg-gray-800/60 text-white hover:bg-gray-800/80"
+            >
+              {mounted && isInitialized ? t('cancel') : 'Cancel'}
+            </Button>
+            <Button
+              onClick={() => {
+                setShowWalletPrompt(false);
+                login();
+              }}
+              className="flex-1 bg-gradient-to-r from-yellow-400 to-yellow-600 font-semibold text-black shadow-md hover:from-yellow-500 hover:to-yellow-700"
+            >
+              {mounted && isInitialized
+                ? t('connect_wallet')
+                : 'Connect Wallet'}
             </Button>
           </div>
         </DialogContent>
