@@ -1,4 +1,4 @@
-# DarkBet - DarkPool Betting Platform
+# DarkBet - DarkPool Betting Platform!
 
 A decentralized prediction market platform built on BNB Smart Chain with AI-driven results and fully on-chain execution. DarkBet combines the privacy and efficiency of dark pools with prediction markets, ensuring fair outcomes while preventing market manipulation.
 
