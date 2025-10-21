@@ -992,13 +992,15 @@ export default function MyBetsPage() {
                             variant="outline"
                             className="border-white text-white"
                           >
-                            {prediction.category}
+                            {prediction.category.charAt(0).toUpperCase() +
+                              prediction.category.slice(1)}
                           </Badge>
                           <Badge
                             variant={getStatusColor(prediction.status) as any}
                             className="bg-yellow-500 text-black"
                           >
-                            {prediction.status}
+                            {prediction.status.charAt(0).toUpperCase() +
+                              prediction.status.slice(1)}
                           </Badge>
                           {prediction.isHot && (
                             <Badge variant="warning">Hot</Badge>

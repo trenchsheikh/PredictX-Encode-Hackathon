@@ -43,7 +43,6 @@ import {
   Wallet,
 } from 'lucide-react';
 import { HeroSection } from '@/components/ui/hero-section';
-import { AnimatedCard } from '@/components/ui/animated-card';
 import { useI18n } from '@/components/providers/i18n-provider';
 import { api, getErrorMessage } from '@/lib/api-client';
 import { usePredictionContract } from '@/lib/hooks/use-prediction-contract';
@@ -681,8 +680,9 @@ export default function HomePage() {
                 </p>
                 <Button
                   onClick={() => setShowCreateModal(true)}
-                  variant="default"
+                  variant="outline"
                   disabled={!authenticated}
+                  className="border-gray-600 bg-gray-800/60 text-white hover:bg-gray-700/80"
                 >
                   <Plus className="mr-2 h-4 w-4" />
                   {mounted && isInitialized
@@ -694,18 +694,13 @@ export default function HomePage() {
           ) : (
             <div className="grid auto-rows-fr grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
               {filteredPredictions.map((prediction, index) => (
-                <AnimatedCard
+                <PredictionCard
                   key={prediction.id}
-                  delay={index * 0.1}
-                  className="p-0"
-                >
-                  <PredictionCard
-                    prediction={prediction}
-                    onBet={handleBetClick}
-                    onViewHistory={handleViewHistory}
-                    userBets={userBets}
-                  />
-                </AnimatedCard>
+                  prediction={prediction}
+                  onBet={handleBetClick}
+                  onViewHistory={handleViewHistory}
+                  userBets={userBets}
+                />
               ))}
             </div>
           )}
@@ -733,18 +728,13 @@ export default function HomePage() {
                   p => p.status === 'resolved' || p.status === 'cancelled'
                 )
                 .map((prediction, index) => (
-                  <AnimatedCard
+                  <PredictionCard
                     key={prediction.id}
-                    delay={index * 0.1}
-                    className="p-0"
-                  >
-                    <PredictionCard
-                      prediction={prediction}
-                      onBet={handleBetClick}
-                      onViewHistory={handleViewHistory}
-                      userBets={userBets}
-                    />
-                  </AnimatedCard>
+                    prediction={prediction}
+                    onBet={handleBetClick}
+                    onViewHistory={handleViewHistory}
+                    userBets={userBets}
+                  />
                 ))}
             </div>
           </div>
@@ -872,7 +862,8 @@ export default function HomePage() {
                 setShowOracleErrorModal(false);
                 setShowCryptoModal(true);
               }}
-              className="flex-1 bg-gradient-to-r from-yellow-400 to-yellow-600 font-semibold text-black shadow-md hover:from-yellow-500 hover:to-yellow-700"
+              variant="outline"
+              className="flex-1 border-green-600 bg-green-800/60 text-white hover:bg-green-700/80"
             >
               Open Crypto DarkPool
             </Button>
@@ -925,7 +916,8 @@ export default function HomePage() {
                 setShowWalletPrompt(false);
                 login();
               }}
-              className="flex-1 bg-gradient-to-r from-yellow-400 to-yellow-600 font-semibold text-black shadow-md hover:from-yellow-500 hover:to-yellow-700"
+              variant="outline"
+              className="flex-1 border-blue-600 bg-blue-800/60 text-white hover:bg-blue-700/80"
             >
               {mounted && isInitialized
                 ? t('connect_wallet')

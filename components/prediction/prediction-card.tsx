@@ -15,8 +15,6 @@ import {
   ChevronDown,
   ChevronUp,
   Info,
-  CheckCircle,
-  XCircle,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useI18n } from '@/components/providers/i18n-provider';
@@ -56,50 +54,28 @@ export function PredictionCard({
   };
 
   return (
-    <Card
-      className={cn(
-        'relative flex h-full flex-col overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:shadow-xl',
-        prediction.isHot &&
-          'shadow-lg shadow-yellow-400/25 ring-2 ring-yellow-400'
-      )}
-    >
+    <Card className={cn('relative flex h-full flex-col overflow-hidden')}>
       <CardContent className="flex flex-1 flex-col p-4">
         <div className="mb-3 flex items-start justify-between">
           <div className="flex-1">
             <div className="mb-2 flex items-center gap-2">
               <Badge variant="secondary" className="text-xs">
-                {prediction.category}
+                {prediction.category.charAt(0).toUpperCase() +
+                  prediction.category.slice(1)}
               </Badge>
               {(prediction.status === 'resolved' ||
                 prediction.status === 'cancelled') && (
                 <Badge
-                  variant={
-                    prediction.status === 'resolved' ? 'success' : 'warning'
-                  }
-                  className="text-xs"
+                  variant="outline"
+                  className="bg-yellow-500 text-xs text-black"
                 >
-                  {prediction.status === 'resolved' ? (
-                    <>
-                      <CheckCircle className="mr-1 h-3 w-3" />
-                      Resolved
-                    </>
-                  ) : (
-                    <>
-                      <XCircle className="mr-1 h-3 w-3" />
-                      Expired
-                    </>
-                  )}
+                  {prediction.status === 'resolved' ? 'Resolved' : 'Expired'}
                 </Badge>
               )}
               {prediction.isHot && (
                 <Badge variant="hot" className="text-xs">
                   <Flame className="mr-1 h-3 w-3" />
                   HOT
-                </Badge>
-              )}
-              {prediction.status !== 'active' && (
-                <Badge variant="secondary" className="text-xs">
-                  {prediction.status}
                 </Badge>
               )}
             </div>
@@ -128,7 +104,7 @@ export function PredictionCard({
               variant="ghost"
               size="sm"
               onClick={() => setIsExpanded(!isExpanded)}
-              className="flex w-full items-center justify-between p-2 text-xs text-gray-300 hover:bg-white/10 hover:text-white"
+              className="flex w-full items-center justify-between p-2 text-xs text-gray-300"
             >
               <span className="flex items-center gap-1">
                 <Info className="h-3 w-3" />
@@ -164,7 +140,7 @@ export function PredictionCard({
 
         {/* Odds Display - Enhanced Betting Style */}
         <div className="mb-3 grid grid-cols-2 gap-2">
-          <div className="rounded-lg border border-green-500/30 bg-gradient-to-br from-green-600/90 to-green-700/90 p-3 text-center shadow-lg transition-all duration-300 hover:shadow-green-500/25">
+          <div className="rounded-lg border border-green-500/30 bg-gradient-to-br from-green-600/90 to-green-700/90 p-3 text-center shadow-lg">
             <div className="mb-1 text-xs font-medium text-green-100">
               {mounted && isInitialized ? t('prediction_card.yes') : 'Yes'}
             </div>
@@ -175,7 +151,7 @@ export function PredictionCard({
               {formatBNB(prediction.yesPool)}
             </div>
           </div>
-          <div className="rounded-lg border border-red-500/30 bg-gradient-to-br from-red-600/90 to-red-700/90 p-3 text-center shadow-lg transition-all duration-300 hover:shadow-red-500/25">
+          <div className="rounded-lg border border-red-500/30 bg-gradient-to-br from-red-600/90 to-red-700/90 p-3 text-center shadow-lg">
             <div className="mb-1 text-xs font-medium text-red-100">
               {mounted && isInitialized ? t('prediction_card.no') : 'No'}
             </div>
@@ -214,7 +190,7 @@ export function PredictionCard({
           <div className="mb-3 grid grid-cols-2 gap-2">
             <Button
               size="sm"
-              className="bg-gradient-to-r from-green-500 to-green-600 font-semibold text-white shadow-lg transition-all duration-300 hover:from-green-600 hover:to-green-700 hover:shadow-green-500/25"
+              className="bg-gradient-to-r from-green-500 to-green-600 font-semibold text-white shadow-lg hover:from-green-600 hover:to-green-700"
               onClick={() => handleBet('yes')}
               disabled={isLoading}
             >
@@ -223,7 +199,7 @@ export function PredictionCard({
             </Button>
             <Button
               size="sm"
-              className="bg-gradient-to-r from-red-500 to-red-600 font-semibold text-white shadow-lg transition-all duration-300 hover:from-red-600 hover:to-red-700 hover:shadow-red-500/25"
+              className="bg-gradient-to-r from-red-500 to-red-600 font-semibold text-white shadow-lg hover:from-red-600 hover:to-red-700"
               onClick={() => handleBet('no')}
               disabled={isLoading}
             >
@@ -240,8 +216,7 @@ export function PredictionCard({
             <div className="mb-3 mt-auto">
               <Button
                 size="sm"
-                variant="accent"
-                className="w-full"
+                className="w-full bg-gradient-to-r from-purple-500 to-purple-600 font-semibold text-white shadow-lg hover:from-purple-600 hover:to-purple-700"
                 onClick={() => onViewHistory(prediction.id)}
               >
                 {mounted && isInitialized
