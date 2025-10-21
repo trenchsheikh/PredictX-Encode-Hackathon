@@ -605,9 +605,9 @@ export default function HomePage() {
         <div className="space-y-6">
           {/* Section Header */}
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="rounded-lg border border-yellow-400/30 bg-gradient-to-r from-yellow-400/20 to-yellow-600/20 p-2">
-                <BarChart3 className="h-6 w-6 text-yellow-400" />
+            <div className="flex items-center">
+              <div className="rounded-lg p-2">
+                <BarChart3 className="h-6 w-6 text-white" />
               </div>
               <h2 className="font-heading text-2xl text-white">
                 {mounted && isInitialized
@@ -671,9 +671,9 @@ export default function HomePage() {
           p => p.status === 'resolved' || p.status === 'cancelled'
         ).length > 0 && (
           <div className="mt-12">
-            <div className="mb-6 flex items-center gap-3">
-              <div className="rounded-lg border border-green-400/30 bg-gradient-to-r from-green-400/20 to-green-600/20 p-2">
-                <CheckCircle className="h-6 w-6 text-green-400" />
+            <div className="mb-6 flex items-center">
+              <div className="rounded-lg p-2">
+                <CheckCircle className="h-6 w-6 text-white" />
               </div>
               <h2 className="font-heading text-2xl text-white">
                 {mounted && isInitialized

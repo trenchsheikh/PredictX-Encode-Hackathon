@@ -4,18 +4,15 @@ import { useState, useEffect } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import { Prediction } from '@/types/prediction';
 import { formatBNB, formatTimeRemaining } from '@/lib/utils';
-import {
-  Clock,
-  Users,
-  ArrowUp,
-  ArrowDown,
-  Flame,
-  ChevronDown,
-  ChevronUp,
-  Info,
-} from 'lucide-react';
+import { Clock, Users, ArrowUp, ArrowDown, Flame, Info } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useI18n } from '@/components/providers/i18n-provider';
 
@@ -36,7 +33,7 @@ export function PredictionCard({
 }: PredictionCardProps) {
   const { t, isInitialized } = useI18n();
   const [isLoading, setIsLoading] = useState(false);
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [showAnalysisDialog, setShowAnalysisDialog] = useState(false);
   const [mounted, setMounted] = useState(false);
   const userBet = userBets?.[prediction.id];
 
@@ -84,50 +81,40 @@ export function PredictionCard({
           </div>
         </div>
 
-        <p className="mb-3 line-clamp-2 text-xs text-gray-200">
+        <p
+          className="mb-3 min-h-[2.5rem] text-xs text-gray-200"
+          style={{
+            display: '-webkit-box',
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: 'vertical',
+            overflow: 'hidden',
+            lineHeight: '1.25rem',
+          }}
+        >
           {prediction.description}
         </p>
 
-        {/* Expandable Summary Section */}
+        {/* View Detailed Analysis Button */}
         {prediction.summary && (
-          <div className="mb-3">
+          <div className="mb-3 min-h-[2rem]">
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => setIsExpanded(!isExpanded)}
-              className="flex w-full items-center justify-between p-2 text-xs text-gray-300"
+              onClick={() => setShowAnalysisDialog(true)}
+              className="flex w-full items-center justify-center p-2 text-xs text-gray-300 hover:text-white"
             >
               <span className="flex items-center gap-1">
                 <Info className="h-3 w-3" />
                 {mounted && isInitialized
-                  ? isExpanded
-                    ? t('prediction_card.hide_analysis')
-                    : t('prediction_card.view_detailed_analysis')
-                  : isExpanded
-                    ? 'Hide Analysis'
-                    : 'View Detailed Analysis'}
+                  ? t('prediction_card.view_detailed_analysis')
+                  : 'View Detailed Analysis'}
               </span>
-              {isExpanded ? (
-                <ChevronUp className="h-3 w-3" />
-              ) : (
-                <ChevronDown className="h-3 w-3" />
-              )}
             </Button>
-            {isExpanded && (
-              <div className="mt-2 rounded-lg border border-yellow-500/30 bg-yellow-500/10 p-3">
-                <div className="mb-2 flex items-center gap-1 text-xs font-medium text-yellow-400">
-                  <Info className="h-3 w-3" />
-                </div>
-                <p className="whitespace-pre-wrap text-xs leading-relaxed text-gray-200">
-                  {prediction.summary}
-                </p>
-              </div>
-            )}
           </div>
         )}
 
         {/* Odds Display - Enhanced Betting Style */}
-        <div className="mb-3 grid grid-cols-2 gap-2">
+        <div className="mb-3 mt-auto grid grid-cols-2 gap-2">
           <div className="rounded-lg border border-green-500/30 bg-gradient-to-br from-green-600/90 to-green-700/90 p-3 text-center shadow-lg">
             <div className="mb-1 text-xs font-medium text-green-100">
               {mounted && isInitialized ? t('prediction_card.yes') : 'Yes'}
@@ -201,7 +188,7 @@ export function PredictionCard({
         {(prediction.status === 'resolved' ||
           prediction.status === 'cancelled') &&
           onViewHistory && (
-            <div className="mb-3 mt-auto">
+            <div className="mb-3">
               <Button
                 size="sm"
                 className="w-full bg-gradient-to-r from-purple-500 to-purple-600 font-semibold text-white shadow-lg hover:from-purple-600 hover:to-purple-700"
@@ -248,6 +235,22 @@ export function PredictionCard({
           </div>
         </div>
       </CardContent>
+
+      {/* Detailed Analysis Dialog */}
+      <Dialog open={showAnalysisDialog} onOpenChange={setShowAnalysisDialog}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle className="text-white">
+              Detailed Description
+            </DialogTitle>
+          </DialogHeader>
+          <div className="mt-4">
+            <p className="whitespace-pre-wrap text-sm leading-relaxed text-gray-200">
+              {prediction.summary}
+            </p>
+          </div>
+        </DialogContent>
+      </Dialog>
     </Card>
   );
 }
