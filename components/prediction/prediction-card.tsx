@@ -126,9 +126,6 @@ export function PredictionCard({
               <div className="mt-2 rounded-lg border border-yellow-500/30 bg-yellow-500/10 p-3">
                 <div className="mb-2 flex items-center gap-1 text-xs font-medium text-yellow-400">
                   <Info className="h-3 w-3" />
-                  {mounted && isInitialized
-                    ? t('prediction_card.unbiased_market_analysis')
-                    : 'Unbiased Market Analysis'}
                 </div>
                 <p className="whitespace-pre-wrap text-xs leading-relaxed text-gray-200">
                   {prediction.summary}
