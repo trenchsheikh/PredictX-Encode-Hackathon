@@ -12,7 +12,6 @@ import {
   DialogDescription,
 } from '@/components/ui/dialog';
 import { PredictionCard } from '@/components/prediction/prediction-card';
-import { Filters } from '@/components/prediction/filters';
 import { CreateBetModal } from '@/components/prediction/create-bet-modal';
 import { BetModal } from '@/components/prediction/bet-modal';
 import {
@@ -27,7 +26,6 @@ import { TransactionHistoryModal } from '@/components/prediction/transaction-his
 import { TransactionStatus } from '@/components/ui/transaction-status';
 import {
   Prediction,
-  FilterOptions,
   CreatePredictionData,
   PredictionCategory,
   PredictionStatus,
@@ -42,7 +40,6 @@ import {
   CheckCircle,
   Wallet,
 } from 'lucide-react';
-import { HeroSection } from '@/components/ui/hero-section';
 import { useI18n } from '@/components/providers/i18n-provider';
 import { api, getErrorMessage } from '@/lib/api-client';
 import { usePredictionContract } from '@/lib/hooks/use-prediction-contract';
@@ -61,7 +58,6 @@ export default function HomePage() {
   const [predictions, setPredictions] = useState<Prediction[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string>();
-  const [filters, setFilters] = useState<FilterOptions>({});
 
   // Modal state
   const [showCreateModal, setShowCreateModal] = useState(false);
@@ -95,10 +91,7 @@ export default function HomePage() {
     setError(undefined);
 
     try {
-      const response = await api.markets.getMarkets({
-        status: filters.status,
-        category: filters.category,
-      });
+      const response = await api.markets.getMarkets();
 
       if (!response.success || !response.data) {
         throw new Error(response.error || 'Failed to fetch markets');
@@ -156,30 +149,11 @@ export default function HomePage() {
   };
 
   /**
-   * Fetch markets on mount and when filters change
+   * Fetch markets on mount
    */
   useEffect(() => {
     fetchMarkets();
-  }, [filters.status, filters.category]);
-
-  /**
-   * Filter predictions locally (for client-side filters)
-   */
-  const filteredPredictions = predictions.filter(prediction => {
-    if (filters.isHot && !prediction.isHot) return false;
-    if (filters.timeRange) {
-      const now = Date.now();
-      const timeRanges = {
-        '24h': 86400000,
-        '7d': 86400000 * 7,
-        '30d': 86400000 * 30,
-      };
-      const timeRange =
-        timeRanges[filters.timeRange as keyof typeof timeRanges];
-      if (timeRange && prediction.createdAt < now - timeRange) return false;
-    }
-    return true;
-  });
+  }, []);
 
   /**
    * Handle crypto prediction button click
@@ -600,13 +574,6 @@ export default function HomePage() {
 
       {/* Removed rising dust/bubbles from left and right sides */}
 
-      {/* Hero Section */}
-      <HeroSection
-        onCreateClick={() => setShowCreateModal(true)}
-        onCryptoClick={handleCryptoClick}
-        onNewsClick={handleNewsClick}
-      />
-
       {/* Error Banner */}
       {error && (
         <div className="relative z-10 mx-auto mb-6 max-w-7xl px-6 lg:px-8">
@@ -650,19 +617,12 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Filters */}
-          <Filters
-            filters={filters}
-            onFiltersChange={setFilters}
-            totalCount={filteredPredictions.length}
-          />
-
           {/* Markets Grid */}
           {loading ? (
             <div className="flex items-center justify-center py-12">
               <Loader2 className="h-12 w-12 animate-spin text-yellow-400" />
             </div>
-          ) : filteredPredictions.length === 0 ? (
+          ) : predictions.length === 0 ? (
             <Card className="border-gray-700/50 bg-gray-900/60 py-12 text-center backdrop-blur-sm">
               <CardContent>
                 <div className="mx-auto mb-4 flex h-24 w-24 items-center justify-center rounded-full border border-yellow-400/30 bg-yellow-400/20">
@@ -693,7 +653,7 @@ export default function HomePage() {
             </Card>
           ) : (
             <div className="grid auto-rows-fr grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {filteredPredictions.map((prediction, index) => (
+              {predictions.map((prediction, index) => (
                 <PredictionCard
                   key={prediction.id}
                   prediction={prediction}

@@ -63,15 +63,6 @@ export function PredictionCard({
                 {prediction.category.charAt(0).toUpperCase() +
                   prediction.category.slice(1)}
               </Badge>
-              {(prediction.status === 'resolved' ||
-                prediction.status === 'cancelled') && (
-                <Badge
-                  variant="outline"
-                  className="bg-yellow-500 text-xs text-black"
-                >
-                  {prediction.status === 'resolved' ? 'Resolved' : 'Expired'}
-                </Badge>
-              )}
               {prediction.isHot && (
                 <Badge variant="hot" className="text-xs">
                   <Flame className="mr-1 h-3 w-3" />

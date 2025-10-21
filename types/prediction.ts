@@ -66,12 +66,3 @@ export interface CreatePredictionData {
   bnbAmount: number;
   expiresAt: number;
 }
-
-export interface FilterOptions {
-  status?: PredictionStatus;
-  category?: PredictionCategory;
-  timeRange?: 'all' | '24h' | '7d' | '30d';
-  minPrice?: number;
-  maxPrice?: number;
-  isHot?: boolean;
-}

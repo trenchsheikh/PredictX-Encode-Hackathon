@@ -27,9 +27,9 @@ export function mapCategory(num: number): string {
     'weather',
     'finance',
     'technology',
-    'custom',
+    'crypto',
   ];
-  return mapping[num] || 'custom';
+  return mapping[num] || 'crypto';
 }
 
 export function mapStatusToNumber(status: string): number {

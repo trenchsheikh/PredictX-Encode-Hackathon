@@ -202,7 +202,7 @@ export function BetModal({
 
                 <div className="flex items-center justify-between gap-4 border-t border-gray-600/30 pt-2.5">
                   <span className="text-sm font-medium text-gray-300">
-                    Potential Payout
+                    Profit
                   </span>
                   <span className="font-mono text-sm font-semibold text-green-400">
                     {formatBNB(potentialPayout)}

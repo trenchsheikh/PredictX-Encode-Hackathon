@@ -49,7 +49,6 @@ export default function MyBetsPage() {
 
   // Data state
   const [userBets, setUserBets] = useState<UserBet[]>([]);
-  const [marketsCreated, setMarketsCreated] = useState<any[]>([]);
   const [predictions, setPredictions] = useState<{ [id: string]: Prediction }>(
     {}
   );
@@ -194,7 +193,6 @@ export default function MyBetsPage() {
       console.log(
         `📊 Found ${response.data.totalMarketsCreated} markets created by user`
       );
-      setMarketsCreated(response.data.markets || []);
     } catch (err: any) {
       if (process.env.NODE_ENV === 'development') {
         console.error('Failed to fetch user-created markets:', err);
@@ -995,13 +993,6 @@ export default function MyBetsPage() {
                             {prediction.category.charAt(0).toUpperCase() +
                               prediction.category.slice(1)}
                           </Badge>
-                          <Badge
-                            variant={getStatusColor(prediction.status) as any}
-                            className="bg-yellow-500 text-black"
-                          >
-                            {prediction.status.charAt(0).toUpperCase() +
-                              prediction.status.slice(1)}
-                          </Badge>
                           {prediction.isHot && (
                             <Badge variant="warning">Hot</Badge>
                           )}
@@ -1072,7 +1063,7 @@ export default function MyBetsPage() {
                             </div>
                             <div>
                               <div className="font-caption mb-1 text-xs uppercase tracking-wide text-gray-400">
-                                Potential Payout
+                                Profit
                               </div>
                               <div className="font-heading text-base text-green-400">
                                 {prediction.status === 'resolved' &&
@@ -1160,61 +1151,12 @@ export default function MyBetsPage() {
                           >
                             Claimed
                           </Badge>
-                        ) : !isRevealed && isExpired ? (
-                          <div className="flex flex-col gap-2">
-                            <Badge
-                              variant="warning"
-                              className="bg-orange-600 text-white"
-                            >
-                              {refundCheck?.available
-                                ? 'Refund Available'
-                                : 'Expired'}
-                            </Badge>
-                            {refundCheck?.available && refundCheck?.reason && (
-                              <div className="text-xs text-gray-300">
-                                {refundCheck.reason}
-                              </div>
-                            )}
-                            {refundCheck?.available ? (
-                              <Button
-                                onClick={() => handleClaimClick(bet.id)}
-                                className="bg-orange-600 text-white hover:bg-orange-700"
-                                size="sm"
-                                disabled={contract.loading}
-                              >
-                                <DollarSign className="mr-2 h-4 w-4" />
-                                Claim Refund
-                              </Button>
-                            ) : (
-                              <Button
-                                onClick={() => checkAllRefunds()}
-                                className="bg-gray-600 text-white hover:bg-gray-700"
-                                size="sm"
-                              >
-                                Check Refund
-                              </Button>
-                            )}
-                          </div>
-                        ) : !isRevealed ? (
-                          <Badge
-                            variant="secondary"
-                            className="bg-gray-600 text-white"
-                          >
-                            Unrevealed
-                          </Badge>
                         ) : waitingForResolution ? (
                           <Badge
                             variant="secondary"
                             className="bg-yellow-600 text-white"
                           >
                             Waiting for Resolution
-                          </Badge>
-                        ) : hasLost ? (
-                          <Badge
-                            variant="destructive"
-                            className="bg-red-600 text-white"
-                          >
-                            Lost
                           </Badge>
                         ) : canClaimWinnings ? (
                           <div className="flex flex-col gap-2">
@@ -1252,14 +1194,7 @@ export default function MyBetsPage() {
                               Try Claim
                             </Button>
                           </div>
-                        ) : (
-                          <Badge
-                            variant="destructive"
-                            className="bg-red-600 text-white"
-                          >
-                            Lost
-                          </Badge>
-                        )}
+                        ) : null}
                       </div>
                     </div>
                   </CardContent>
