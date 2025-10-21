@@ -7,20 +7,12 @@ import Image from 'next/image';
 import { usePrivy } from '@privy-io/react-auth';
 import { useI18n } from '@/components/providers/i18n-provider';
 import { AnimatedButton } from '@/components/ui/animated-button';
-import { Menu, X, Wallet, Home, HelpCircle, BookOpen } from 'lucide-react';
+import { Menu, X, Wallet, Home, HelpCircle } from 'lucide-react';
 
 const getNavigation = (locale: string) => [
   { key: 'nav_home', href: '/', icon: Home, isHome: true },
   { key: 'nav_my_bets', href: '/my-bets', icon: Wallet },
   { key: 'nav_how', href: '/how-it-works', icon: HelpCircle },
-  {
-    key: 'nav_docs',
-    href:
-      locale === 'en'
-        ? 'https://docs.darkbet.fun/en'
-        : 'https://docs.darkbet.fun/zh',
-    icon: BookOpen,
-  },
   // { key: 'nav_leaderboard', href: '/leaderboard', icon: Zap },
 ];
 
