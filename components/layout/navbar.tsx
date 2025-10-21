@@ -7,13 +7,12 @@ import Image from 'next/image';
 import { usePrivy } from '@privy-io/react-auth';
 import { useI18n } from '@/components/providers/i18n-provider';
 import { AnimatedButton } from '@/components/ui/animated-button';
-import { Menu, X, Wallet, Home, HelpCircle, BookOpen } from 'lucide-react';
+import { Menu, X, Wallet, Home, HelpCircle } from 'lucide-react';
 
-const navigation = [
+const getNavigation = (locale: string) => [
   { key: 'nav_home', href: '/', icon: Home, isHome: true },
   { key: 'nav_my_bets', href: '/my-bets', icon: Wallet },
   { key: 'nav_how', href: '/how-it-works', icon: HelpCircle },
-  { key: 'nav_docs', href: '/docs', icon: BookOpen },
   // { key: 'nav_leaderboard', href: '/leaderboard', icon: Zap },
 ];
 
@@ -22,7 +21,7 @@ export function AnimatedHeader() {
   const [mounted, setMounted] = useState(false);
   const { locale, setLocale, t } = useI18n();
   const { ready, authenticated, user, login, logout } = usePrivy();
-  const navItems = navigation.filter(
+  const navItems = getNavigation(locale).filter(
     item => item.key !== 'nav_my_bets' || authenticated
   );
   const pathname = usePathname();

@@ -5,6 +5,7 @@ import { NotepadTextDashed } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Press_Start_2P } from 'next/font/google';
 import { usePathname } from 'next/navigation';
+import { useI18n } from '@/components/providers/i18n-provider';
 
 const pixelFont = Press_Start_2P({ subsets: ['latin'], weight: '400' });
 
@@ -50,6 +51,7 @@ export const Footer = ({
 }: FooterProps) => {
   const pathname = usePathname();
   const isDocs = pathname.startsWith('/docs');
+  const { locale, t } = useI18n();
   return (
     <section className={cn('relative mt-0 w-full overflow-hidden', className)}>
       <footer className={cn('relative', isDocs ? 'mt-0' : 'mt-8')}>
@@ -109,6 +111,30 @@ export const Footer = ({
           </div>
         </div>
 
+        <div className="absolute bottom-6 right-6 z-50 flex items-center gap-6">
+          <Link
+            href={
+              locale === 'en'
+                ? 'https://docs.darkbet.fun/en'
+                : 'https://docs.darkbet.fun/zh'
+            }
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm text-gray-400 transition-colors duration-200 hover:text-gray-300"
+          >
+            Documentation
+          </Link>
+
+          <Link
+            href="https://x.com/DarkbetBNB"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm text-gray-400 transition-colors duration-200 hover:text-gray-300"
+          >
+            Twitter
+          </Link>
+        </div>
+
         {showBackgroundBrandText && brandName && (
           <div
             className={cn(
@@ -152,7 +178,6 @@ export const Footer = ({
           ></div>
         )}
 
-        {/* Long shadow; fixed on docs to ensure fade even with short content */}
         {isDocs ? (
           <div
             className="pointer-events-none fixed inset-x-0 bottom-0 z-[1] h-[60vh] sm:h-[56vh] md:h-[52vh]"

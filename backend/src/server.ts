@@ -1,6 +1,8 @@
+import dotenv from 'dotenv';
+dotenv.config({ path: '../.env' });
+
 import express, { Application, Request, Response } from 'express';
 import cors from 'cors';
-import dotenv from 'dotenv';
 import { connectDatabase } from './config/database';
 import { blockchainService } from './services/BlockchainService';
 import { marketResolutionService } from './services/MarketResolutionService';
@@ -11,9 +13,6 @@ import oracleRouter from './routes/oracle';
 import resolutionRouter from './routes/resolution';
 import transactionsRouter from './routes/transactions';
 import eventPredictionsRouter from './routes/eventPredictions';
-
-// Load environment variables
-dotenv.config({ path: '../.env' });
 
 const app: Application = express();
 const PORT = process.env.PORT || 3001;
