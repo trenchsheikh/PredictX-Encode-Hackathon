@@ -27,7 +27,7 @@ export const privyClientConfig: PrivyClientConfig = {
     theme: 'dark',
     accentColor: '#F0B90B',
   },
-  loginMethods: ['wallet'],
+  loginMethods: ['wallet', 'email', 'sms', 'google', 'twitter', 'discord'],
   embeddedWallets: {
     ethereum: {
       createOnLogin: 'users-without-wallets',
