@@ -12,7 +12,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
-import { AlertCircle, TrendingUp, TrendingDown, Info } from 'lucide-react';
+import { TrendingUp, TrendingDown, Info } from 'lucide-react';
 import { formatBNB, calculatePayout } from '@/lib/utils';
 import { Prediction } from '@/types/prediction';
 import { InlineError } from '@/components/ui/error-display';

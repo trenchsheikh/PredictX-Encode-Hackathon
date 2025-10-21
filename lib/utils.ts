@@ -1,31 +1,37 @@
-import { type ClassValue, clsx } from 'clsx';
+import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+// Format BNB amount for display
 export function formatBNB(amount: number | string): string {
-  const num = typeof amount === 'string' ? parseFloat(amount) : amount;
-
-  // Format with appropriate decimal places based on value
-  if (num >= 1000) {
-    return `${num.toFixed(0)} BNB`;
-  } else if (num >= 100) {
-    return `${num.toFixed(0)} BNB`;
-  } else if (num >= 1) {
-    return `${num.toFixed(2)} BNB`;
-  } else if (num >= 0.01) {
-    return `${num.toFixed(3)} BNB`;
-  } else {
-    return `${num.toFixed(4)} BNB`;
-  }
+  const numAmount = typeof amount === 'string' ? parseFloat(amount) : amount;
+  if (isNaN(numAmount) || numAmount === 0) return '0.000';
+  if (numAmount < 0.001) return '<0.001';
+  return numAmount.toFixed(3);
 }
 
-export function formatAddress(address: string): string {
-  return `${address.slice(0, 6)}...${address.slice(-4)}`;
+// Calculate potential payout based on shares and pool distribution
+export function calculatePayout(
+  userShares: number,
+  totalShares: number,
+  totalPool: number
+): number {
+  if (totalShares === 0) return 0;
+  const sharePercentage = userShares / totalShares;
+  return totalPool * sharePercentage;
 }
 
+// Format wallet address for display
+export function formatAddress(address: string, length: number = 6): string {
+  if (!address) return '';
+  if (address.length <= length * 2) return address;
+  return `${address.slice(0, length)}...${address.slice(-length)}`;
+}
+
+// Format time remaining for display
 export function formatTimeRemaining(timestamp: number): string {
   const now = Date.now();
   const diff = timestamp - now;
@@ -39,13 +45,4 @@ export function formatTimeRemaining(timestamp: number): string {
   if (days > 0) return `${days}d ${hours}h`;
   if (hours > 0) return `${hours}h ${minutes}m`;
   return `${minutes}m`;
-}
-
-export function calculatePayout(
-  shares: number,
-  totalWinningShares: number,
-  totalPool: number
-): number {
-  if (totalWinningShares === 0) return 0;
-  return (shares / totalWinningShares) * totalPool * 0.985;
 }

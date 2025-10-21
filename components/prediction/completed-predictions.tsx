@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -10,14 +10,12 @@ import {
   XCircle,
   Clock,
   History,
-  ExternalLink,
   TrendingUp,
   TrendingDown,
   DollarSign,
   Users,
   Calendar,
 } from 'lucide-react';
-import { cn } from '@/lib/utils';
 import { Prediction } from '@/types/prediction';
 
 interface CompletedPredictionProps {
@@ -135,7 +133,7 @@ export function CompletedPrediction({
           <div className="rounded-lg bg-gray-50 p-3 text-center dark:bg-gray-800/50">
             <DollarSign className="mx-auto mb-1 h-4 w-4 text-gray-500" />
             <div className="text-sm font-medium">
-              {formatBNB(prediction.totalPool.toString())} BNB
+              {formatBNB(prediction.totalPool)} BNB
             </div>
             <div className="text-xs text-gray-500">Total Pool</div>
           </div>
@@ -149,7 +147,7 @@ export function CompletedPrediction({
           <div className="rounded-lg bg-gray-50 p-3 text-center dark:bg-gray-800/50">
             <TrendingUp className="mx-auto mb-1 h-4 w-4 text-green-500" />
             <div className="text-sm font-medium">
-              {formatBNB(prediction.yesPool.toString())} BNB
+              {formatBNB(prediction.yesPool)} BNB
             </div>
             <div className="text-xs text-gray-500">YES Pool</div>
           </div>
@@ -157,7 +155,7 @@ export function CompletedPrediction({
           <div className="rounded-lg bg-gray-50 p-3 text-center dark:bg-gray-800/50">
             <TrendingDown className="mx-auto mb-1 h-4 w-4 text-red-500" />
             <div className="text-sm font-medium">
-              {formatBNB(prediction.noPool.toString())} BNB
+              {formatBNB(prediction.noPool)} BNB
             </div>
             <div className="text-xs text-gray-500">NO Pool</div>
           </div>
