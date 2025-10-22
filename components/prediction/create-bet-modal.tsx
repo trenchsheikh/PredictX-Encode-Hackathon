@@ -83,7 +83,7 @@ interface CreateBetModalProps {
 }
 
 const getCategories = (
-  t: any
+  t: (key: string) => string
 ): { value: PredictionCategory; label: string; icon: string }[] => [
   { value: 'sports', label: t('categories.sports'), icon: '⚽' },
   { value: 'crypto', label: t('categories.crypto'), icon: '₿' },
@@ -130,14 +130,22 @@ export function CreateBetModal({
       );
       const data = await response.json();
 
-      const cryptoData: CryptoOption[] = data.map((coin: any) => ({
-        id: coin.id,
-        name: coin.name,
-        symbol: coin.symbol.toUpperCase(),
-        icon: coin.symbol.charAt(0).toUpperCase(),
-        price: coin.current_price,
-        change: coin.price_change_percentage_24h,
-      }));
+      const cryptoData: CryptoOption[] = data.map(
+        (coin: {
+          id: string;
+          name: string;
+          symbol: string;
+          current_price: number;
+          price_change_percentage_24h: number;
+        }) => ({
+          id: coin.id,
+          name: coin.name,
+          symbol: coin.symbol.toUpperCase(),
+          icon: coin.symbol.charAt(0).toUpperCase(),
+          price: coin.current_price,
+          change: coin.price_change_percentage_24h,
+        })
+      );
 
       setCryptoOptions(cryptoData);
     } catch (error) {
@@ -237,6 +245,7 @@ export function CreateBetModal({
   // Fetch crypto data when component mounts
   useEffect(() => {
     fetchCryptoData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const {

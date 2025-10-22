@@ -13,11 +13,15 @@ export interface UserFriendlyError {
 /**
  * Convert any error into a user-friendly message
  */
-export function getUserFriendlyError(error: any): UserFriendlyError {
-  const errorString = error?.message || error?.reason || String(error);
-  const errorCode = error?.code;
-  const errorData = error?.data;
+export function getUserFriendlyError(error: unknown): UserFriendlyError {
+  const errorString =
+    (error as { message?: string; reason?: string })?.message ||
+    (error as { reason?: string })?.reason ||
+    String(error);
+  const errorCode = (error as { code?: string | number })?.code;
+  const _errorData = (error as { data?: unknown })?.data;
 
+  // eslint-disable-next-line no-console
   console.error('Original error:', error);
 
   // User rejected transaction
@@ -393,7 +397,7 @@ export function getUserFriendlyError(error: any): UserFriendlyError {
 /**
  * Get a simple error message string (for backwards compatibility)
  */
-export function getUserFriendlyErrorMessage(error: any): string {
+export function getUserFriendlyErrorMessage(error: unknown): string {
   const friendly = getUserFriendlyError(error);
   let message = `${friendly.title}: ${friendly.message}`;
   if (friendly.suggestion) {
@@ -405,7 +409,7 @@ export function getUserFriendlyErrorMessage(error: any): string {
 /**
  * Check if an error is recoverable (user can try again)
  */
-export function isRecoverableError(error: any): boolean {
+export function isRecoverableError(error: unknown): boolean {
   const friendly = getUserFriendlyError(error);
   const recoverableKeywords = [
     'Network Connection',
@@ -420,7 +424,7 @@ export function isRecoverableError(error: any): boolean {
 /**
  * Check if error needs user to switch network
  */
-export function needsNetworkSwitch(error: any): boolean {
+export function needsNetworkSwitch(error: unknown): boolean {
   const friendly = getUserFriendlyError(error);
   return friendly.title.includes('Wrong Network');
 }
@@ -428,7 +432,7 @@ export function needsNetworkSwitch(error: any): boolean {
 /**
  * Check if error is due to user cancellation
  */
-export function isUserCancellation(error: any): boolean {
+export function isUserCancellation(error: unknown): boolean {
   const friendly = getUserFriendlyError(error);
   return friendly.title.includes('Cancelled');
 }

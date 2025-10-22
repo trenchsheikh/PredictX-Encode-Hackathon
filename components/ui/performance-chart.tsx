@@ -103,7 +103,7 @@ export function PerformanceChart({
                   borderRadius: '8px',
                   color: '#FFFFFF',
                 }}
-                formatter={(value: any, name: string) => [
+                formatter={(value: number | string, name: string) => [
                   `${value} ${name === 'winnings' ? 'BNB' : 'bets'}`,
                   name === 'winnings' ? 'Winnings' : 'Bets',
                 ]}
@@ -144,7 +144,7 @@ export function PerformanceChart({
                   borderRadius: '8px',
                   color: '#FFFFFF',
                 }}
-                formatter={(value: any, name: string) => [
+                formatter={(value: number | string, name: string) => [
                   `${value} ${name === 'winnings' ? 'BNB' : 'bets'}`,
                   name === 'winnings' ? 'Winnings' : 'Bets',
                 ]}

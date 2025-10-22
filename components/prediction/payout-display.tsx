@@ -50,7 +50,7 @@ export function PayoutDisplay({
   txHash,
   className,
 }: PayoutDisplayProps) {
-  const [copied, setCopied] = useState(false);
+  const [_copied, setCopied] = useState(false);
 
   const isWinner =
     outcome !== null &&

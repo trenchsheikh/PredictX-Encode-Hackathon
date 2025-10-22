@@ -43,18 +43,18 @@ export const Footer = ({
   brandDescription = '',
   socialLinks = [],
   navLinks = [],
-  creatorName,
-  creatorUrl,
+  creatorName: _creatorName,
+  creatorUrl: _creatorUrl,
   brandIcon,
   brandLinkHref,
   className,
   showTopInfo = false,
   showBackgroundBrandText = true,
-  showCopyright = true,
+  showCopyright: _showCopyright = true,
 }: FooterProps) => {
   const pathname = usePathname();
   const isDocs = pathname.startsWith('/docs');
-  const { locale, t } = useI18n();
+  const { locale, t: _t } = useI18n();
   return (
     <section className={cn('relative mt-0 w-full overflow-hidden', className)}>
       <footer className={cn('relative', isDocs ? 'mt-0' : 'mt-8')}>

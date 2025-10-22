@@ -7,7 +7,6 @@ import { ethers } from 'ethers';
 import {
   Plus,
   TrendingUp,
-  BarChart3,
   Loader2,
   RefreshCw,
   AlertCircle,
@@ -33,7 +32,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from '@/components/ui/dialog';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { TransactionStatus } from '@/components/ui/transaction-status';
 import { api, getErrorMessage } from '@/lib/api-client';
 import { mapCategory, mapStatus, calculatePrice } from '@/lib/blockchain-utils';
@@ -73,7 +72,7 @@ export default function HomePage() {
     useState<string>('');
 
   // User bets tracking
-  const [userBets, setUserBets] = useState<{
+  const [userBets, _setUserBets] = useState<{
     [predictionId: string]: { outcome: 'yes' | 'no'; shares: number };
   }>({});
 
@@ -101,49 +100,63 @@ export default function HomePage() {
       }
 
       // Map backend data to frontend Prediction format
-      const mappedPredictions: Prediction[] = response.data.map(
-        (market: any) => ({
-          id: market.marketId.toString(),
-          title: market.title,
-          description: market.description,
-          summary: market.summary || market.description,
-          category: mapCategory(market.category) as PredictionCategory,
-          status: mapStatus(market.status) as PredictionStatus,
-          createdAt: new Date(market.createdAt).getTime(),
-          expiresAt: new Date(market.expiresAt).getTime(),
-          creator: market.creator,
-          totalPool: parseFloat(ethers.formatEther(market.totalPool || '0')),
-          yesPool: parseFloat(ethers.formatEther(market.yesPool || '0')),
-          noPool: parseFloat(ethers.formatEther(market.noPool || '0')),
-          yesPrice: calculatePrice(
-            market.yesPool || '0',
-            market.totalPool || '1'
-          ),
-          noPrice: calculatePrice(
-            market.noPool || '0',
-            market.totalPool || '1'
-          ),
-          totalShares:
-            parseFloat(ethers.formatEther(market.yesShares || '0')) +
-            parseFloat(ethers.formatEther(market.noShares || '0')),
-          yesShares: parseFloat(ethers.formatEther(market.yesShares || '0')),
-          noShares: parseFloat(ethers.formatEther(market.noShares || '0')),
-          participants: market.participants || 0,
-          isHot:
-            market.participants > 10 ||
-            parseFloat(ethers.formatEther(market.totalPool || '0')) > 1,
-          outcome:
-            market.outcome === true
-              ? 'yes'
-              : market.outcome === false
-                ? 'no'
-                : undefined,
-          resolutionReasoning: market.resolutionReasoning,
-        })
-      );
+      const mappedPredictions: Prediction[] = (
+        response.data as Array<{
+          marketId: number;
+          title: string;
+          description: string;
+          summary?: string;
+          category: number;
+          status: number;
+          createdAt: string;
+          expiresAt: string;
+          creator: string;
+          totalPool: string;
+          yesShares: string;
+          noShares: string;
+          commitPhaseEnds: string;
+          totalYesShares: string;
+          totalNoShares: string;
+          liquidity: string;
+        }>
+      ).map(market => ({
+        id: market.marketId.toString(),
+        title: market.title,
+        description: market.description,
+        summary: market.summary || market.description,
+        category: mapCategory(market.category) as PredictionCategory,
+        status: mapStatus(market.status) as PredictionStatus,
+        createdAt: new Date(market.createdAt).getTime(),
+        expiresAt: new Date(market.expiresAt).getTime(),
+        creator: market.creator,
+        totalPool: parseFloat(ethers.formatEther(market.totalPool || '0')),
+        yesPool: parseFloat(ethers.formatEther(market.yesPool || '0')),
+        noPool: parseFloat(ethers.formatEther(market.noPool || '0')),
+        yesPrice: calculatePrice(
+          market.yesPool || '0',
+          market.totalPool || '1'
+        ),
+        noPrice: calculatePrice(market.noPool || '0', market.totalPool || '1'),
+        totalShares:
+          parseFloat(ethers.formatEther(market.yesShares || '0')) +
+          parseFloat(ethers.formatEther(market.noShares || '0')),
+        yesShares: parseFloat(ethers.formatEther(market.yesShares || '0')),
+        noShares: parseFloat(ethers.formatEther(market.noShares || '0')),
+        participants: market.participants || 0,
+        isHot:
+          market.participants > 10 ||
+          parseFloat(ethers.formatEther(market.totalPool || '0')) > 1,
+        outcome:
+          market.outcome === true
+            ? 'yes'
+            : market.outcome === false
+              ? 'no'
+              : undefined,
+        resolutionReasoning: market.resolutionReasoning,
+      }));
 
       setPredictions(mappedPredictions);
-    } catch (err: any) {
+    } catch (err: unknown) {
       logger.error('Failed to fetch markets:', err);
       setError(getErrorMessage(err));
     } finally {
@@ -250,7 +263,7 @@ export default function HomePage() {
       await fetchMarkets();
 
       logger.user(t('success.bet_placed'));
-    } catch (err: any) {
+    } catch (err: unknown) {
       logger.error('Bet failed:', err);
       throw new Error(getErrorMessage(err));
     }
@@ -259,7 +272,7 @@ export default function HomePage() {
   /**
    * Handle create prediction - Currently disabled, redirect to Crypto DarkPool
    */
-  const handleCreatePrediction = async (data: CreatePredictionData) => {
+  const handleCreatePrediction = async (_data: CreatePredictionData) => {
     if (!authenticated || !user?.wallet?.address) {
       logger.user(t('errors.wallet_required'));
       return;
@@ -394,7 +407,7 @@ export default function HomePage() {
 
       setShowCryptoModal(false);
       logger.user(t('success.crypto_prediction_created'));
-    } catch (err: any) {
+    } catch (err: unknown) {
       logger.error('Create crypto prediction failed:', err);
       throw err;
     }
@@ -537,7 +550,7 @@ export default function HomePage() {
       await fetchMarkets();
 
       setShowEventModal(false);
-    } catch (err: any) {
+    } catch (err: unknown) {
       logger.error('Create event prediction failed:', err);
       throw err;
     }
@@ -546,7 +559,7 @@ export default function HomePage() {
   /**
    * Calculate stats
    */
-  const stats = {
+  const _stats = {
     totalPredictions: predictions.length,
     activePredictions: predictions.filter(p => p.status === 'active').length,
     totalVolume: predictions.reduce((sum, p) => sum + p.totalPool, 0),
@@ -739,7 +752,7 @@ export default function HomePage() {
             </Card>
           ) : (
             <div className="grid auto-rows-fr grid-cols-1 gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {filteredPredictions.map((prediction, index) => (
+              {filteredPredictions.map(prediction => (
                 <PredictionCard
                   key={prediction.id}
                   prediction={prediction}
@@ -773,7 +786,7 @@ export default function HomePage() {
                 .filter(
                   p => p.status === 'resolved' || p.status === 'cancelled'
                 )
-                .map((prediction, index) => (
+                .map(prediction => (
                   <PredictionCard
                     key={prediction.id}
                     prediction={prediction}

@@ -56,6 +56,7 @@ export function InteractiveGridPattern({
     if (squares.length === 0) {
       generateSquares();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [squares.length, maxSquares, width, height]);
 
   const handleMouseMove = (e: React.MouseEvent<SVGSVGElement>) => {

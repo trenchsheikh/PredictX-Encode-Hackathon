@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 
-import { TrendingUp, TrendingDown, Loader2 } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -37,7 +37,7 @@ export function CryptoSelector({
   const [cryptos, setCryptos] = useState<CryptoData[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
-  const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
+  const [_lastUpdated, setLastUpdated] = useState<Date | null>(null);
 
   useEffect(() => {
     fetchCryptoPrices();
@@ -45,6 +45,7 @@ export function CryptoSelector({
     // Refresh prices every 30 seconds for more frequent updates
     const interval = setInterval(fetchCryptoPrices, 30000);
     return () => clearInterval(interval);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   async function fetchCryptoPrices() {
@@ -256,6 +257,7 @@ export function CryptoSelector({
                 <div className="flex flex-1 items-center space-x-2">
                   <div className="flex h-8 w-8 items-center justify-center">
                     {crypto.image ? (
+                      // eslint-disable-next-line @next/next/no-img-element
                       <img
                         src={crypto.image}
                         alt={crypto.name}

@@ -62,11 +62,11 @@ async function apiFetch<T>(
       data: data.data || data,
       message: data.message,
     };
-  } catch (error: any) {
+  } catch (error: unknown) {
     logger.error(`API Error [${endpoint}]:`, error);
     return {
       success: false,
-      error: error.message || 'Network error occurred',
+      error: error instanceof Error ? error.message : 'Network error occurred',
     };
   }
 }
@@ -91,14 +91,14 @@ export const marketAPI = {
     if (filters?.offset) params.append('offset', filters.offset.toString());
 
     const query = params.toString() ? `?${params.toString()}` : '';
-    return apiFetch<any[]>(`/markets${query}`, { method: 'GET' });
+    return apiFetch<unknown[]>(`/markets${query}`, { method: 'GET' });
   },
 
   /**
    * Get a single market by ID
    */
   async getMarket(marketId: string) {
-    return apiFetch<any>(`/markets/${marketId}`, { method: 'GET' });
+    return apiFetch<unknown>(`/markets/${marketId}`, { method: 'GET' });
   },
 
   /**
@@ -113,7 +113,7 @@ export const marketAPI = {
     userAddress: string;
     txHash?: string;
   }) {
-    return apiFetch<any>('/markets', {
+    return apiFetch<unknown>('/markets', {
       method: 'POST',
       body: JSON.stringify(marketData),
     });
@@ -131,7 +131,7 @@ export const marketAPI = {
       txHash: string;
     }
   ) {
-    return apiFetch<any>(`/markets/${marketId}/commit`, {
+    return apiFetch<unknown>(`/markets/${marketId}/commit`, {
       method: 'POST',
       body: JSON.stringify(commitData),
     });
@@ -150,7 +150,7 @@ export const marketAPI = {
       txHash: string;
     }
   ) {
-    return apiFetch<any>(`/markets/${marketId}/reveal`, {
+    return apiFetch<unknown>(`/markets/${marketId}/reveal`, {
       method: 'POST',
       body: JSON.stringify(revealData),
     });
@@ -168,7 +168,7 @@ export const marketAPI = {
       txHash: string;
     }
   ) {
-    return apiFetch<any>(`/markets/${marketId}/resolve`, {
+    return apiFetch<unknown>(`/markets/${marketId}/resolve`, {
       method: 'POST',
       body: JSON.stringify(resolutionData),
     });
@@ -188,7 +188,7 @@ export const userAPI = {
       totalBets: number;
       commitments: number;
       revealedBets: number;
-      bets: any[];
+      bets: unknown[];
     }>(`/users/${userAddress}/bets`, { method: 'GET' });
   },
 
@@ -196,7 +196,9 @@ export const userAPI = {
    * Get user's profile/stats
    */
   async getUserProfile(userAddress: string) {
-    return apiFetch<any>(`/users/${userAddress}/profile`, { method: 'GET' });
+    return apiFetch<unknown>(`/users/${userAddress}/profile`, {
+      method: 'GET',
+    });
   },
 
   /**
@@ -206,7 +208,7 @@ export const userAPI = {
     return apiFetch<{
       address: string;
       totalMarketsCreated: number;
-      markets: any[];
+      markets: unknown[];
     }>(`/users/${userAddress}/markets-created`, { method: 'GET' });
   },
 };
@@ -227,7 +229,7 @@ export const leaderboardAPI = {
     if (filters?.limit) params.append('limit', filters.limit.toString());
 
     const query = params.toString() ? `?${params.toString()}` : '';
-    return apiFetch<any>(`/users/leaderboard${query}`, { method: 'GET' });
+    return apiFetch<unknown>(`/users/leaderboard${query}`, { method: 'GET' });
   },
 };
 
@@ -253,7 +255,7 @@ export async function checkBackendHealth(): Promise<boolean> {
 /**
  * Helper: Handle API errors with user-friendly messages
  */
-export function getErrorMessage(error: any): string {
+export function getErrorMessage(error: unknown): string {
   // Import the user-friendly error handler
   const { getUserFriendlyErrorMessage } = require('./user-friendly-errors');
   return getUserFriendlyErrorMessage(error);
@@ -281,7 +283,7 @@ export const eventPredictionsAPI = {
     txHash: string;
     marketId: number;
   }) {
-    return apiFetch<any>('/event-predictions', {
+    return apiFetch<unknown>('/event-predictions', {
       method: 'POST',
       body: JSON.stringify({
         ...data,
@@ -304,14 +306,14 @@ export const eventPredictionsAPI = {
     if (filters?.offset) params.append('offset', filters.offset.toString());
 
     const query = params.toString() ? `?${params.toString()}` : '';
-    return apiFetch<any[]>(`/event-predictions${query}`, { method: 'GET' });
+    return apiFetch<unknown[]>(`/event-predictions${query}`, { method: 'GET' });
   },
 
   /**
    * Manually trigger news check for an event prediction
    */
   async checkEventManually(marketId: number) {
-    return apiFetch<any>(`/event-predictions/${marketId}/check`, {
+    return apiFetch<unknown>(`/event-predictions/${marketId}/check`, {
       method: 'POST',
     });
   },

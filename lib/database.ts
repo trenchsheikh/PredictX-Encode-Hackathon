@@ -1,10 +1,18 @@
 import mongoose from 'mongoose';
 
+interface CachedConnection {
+  conn: typeof mongoose | null;
+  promise: Promise<typeof mongoose> | null;
+}
+
 // Global variable to cache the connection
-let cached = (global as any).mongoose;
+let cached = (global as { mongoose?: CachedConnection }).mongoose;
 
 if (!cached) {
-  cached = (global as any).mongoose = { conn: null, promise: null };
+  cached = (global as { mongoose?: CachedConnection }).mongoose = {
+    conn: null,
+    promise: null,
+  };
 }
 
 /**
@@ -25,6 +33,7 @@ export async function connectDatabase() {
       process.env.MONGODB_URI || 'mongodb://localhost:27017/darkbet';
 
     cached.promise = mongoose.connect(mongoUri, opts).then(mongoose => {
+      // eslint-disable-next-line no-console
       console.log('✅ MongoDB connected successfully');
       return mongoose;
     });

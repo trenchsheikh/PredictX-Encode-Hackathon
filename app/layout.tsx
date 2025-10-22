@@ -1,3 +1,7 @@
+import { Be_Vietnam_Pro } from 'next/font/google';
+import Image from 'next/image';
+
+import { Analytics } from '@vercel/analytics/next';
 import type { Metadata } from 'next';
 
 import './globals.css';
@@ -7,11 +11,6 @@ import { AnimatedHeader } from '@/components/layout/navbar';
 import { IntroProvider } from '@/components/providers/intro-provider';
 import { PrivyProviderWrapper } from '@/components/providers/privy-provider';
 import { ErrorBoundary } from '@/components/ui/error-boundary';
-
-import Image from 'next/image';
-import { Be_Vietnam_Pro } from 'next/font/google';
-
-import { Analytics } from '@vercel/analytics/next';
 
 const beVietnamPro = Be_Vietnam_Pro({
   subsets: ['latin'],

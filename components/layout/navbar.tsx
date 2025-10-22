@@ -12,7 +12,7 @@ import { Menu, X, Wallet, Home, HelpCircle } from 'lucide-react';
 import { useI18n } from '@/components/providers/i18n-provider';
 import { AnimatedButton } from '@/components/ui/animated-button';
 
-const getNavigation = (locale: string) => [
+const getNavigation = (_locale: string) => [
   { key: 'nav_home', href: '/', icon: Home, isHome: true },
   { key: 'nav_my_bets', href: '/my-bets', icon: Wallet },
   { key: 'nav_how', href: '/how-it-works', icon: HelpCircle },
@@ -76,7 +76,7 @@ export function AnimatedHeader() {
 
         {/* Right side: desktop navigation + actions, right-aligned with even spacing */}
         <div className="hidden lg:flex lg:flex-1 lg:flex-nowrap lg:items-center lg:justify-end lg:gap-x-1">
-          {navItems.map((item, index) => {
+          {navItems.map(item => {
             const Icon = item.icon;
             return (
               <div key={item.key}>
@@ -180,7 +180,7 @@ export function AnimatedHeader() {
 
             <div className="space-y-5 p-6">
               <div className="space-y-1.5">
-                {navItems.map((item, index) => {
+                {navItems.map(item => {
                   const Icon = item.icon;
                   return (
                     <div key={item.key}>

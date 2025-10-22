@@ -53,7 +53,7 @@ export function CompletedPrediction({
     useState<TransactionHistory | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const fetchTransactionHistory = async () => {
+  const _fetchTransactionHistory = async () => {
     setLoading(true);
     try {
       const response = await fetch(`/api/transactions/market/${prediction.id}`);

@@ -63,8 +63,8 @@ export function RevealModal({
     try {
       await onConfirm();
       onOpenChange(false);
-    } catch (err: any) {
-      setError(err.message || 'Failed to reveal bet');
+    } catch (err) {
+      setError((err as Error).message || 'Failed to reveal bet');
     } finally {
       setLoading(false);
     }

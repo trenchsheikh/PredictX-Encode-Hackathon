@@ -14,8 +14,8 @@ export function ShimmeringText({
   children,
   className,
   shimmerColor = '#F0B90B',
-  duration = 2000,
-  delay = 0,
+  duration: _duration = 2000,
+  delay: _delay = 0,
 }: ShimmeringTextProps) {
   return (
     <span

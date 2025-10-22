@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 import {
   Trophy,
@@ -70,7 +70,7 @@ export default function LeaderboardPage() {
   /**
    * Fetch leaderboard data from API
    */
-  const fetchLeaderboard = async () => {
+  const fetchLeaderboard = useCallback(async () => {
     setLoading(true);
     setError(undefined);
 
@@ -93,12 +93,12 @@ export default function LeaderboardPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [selectedTimeframe]);
 
   // Fetch data on component mount and when filters change
   useEffect(() => {
     fetchLeaderboard();
-  }, [selectedTimeframe, selectedCategory]);
+  }, [fetchLeaderboard]);
 
   const getRankIcon = (rank: number) => {
     switch (rank) {
@@ -346,7 +346,15 @@ export default function LeaderboardPage() {
                 </label>
                 <select
                   value={sortBy}
-                  onChange={e => setSortBy(e.target.value as any)}
+                  onChange={e =>
+                    setSortBy(
+                      e.target.value as
+                        | 'winnings'
+                        | 'winrate'
+                        | 'volume'
+                        | 'bets'
+                    )
+                  }
                   className="w-full rounded-md border border-gray-700/50 bg-gray-800/60 p-2 text-white focus:border-white/50 focus:ring-white/20"
                 >
                   <option value="winnings">{t('total_winnings_sort')}</option>
@@ -361,7 +369,7 @@ export default function LeaderboardPage() {
 
         {/* Leaderboard */}
         <div className="space-y-4">
-          {sortedLeaderboard.map((entry, index) => (
+          {sortedLeaderboard.map(entry => (
             <Card
               key={entry.address}
               className={cn(

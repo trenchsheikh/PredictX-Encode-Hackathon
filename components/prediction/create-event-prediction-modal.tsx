@@ -44,7 +44,7 @@ export interface EventPredictionData {
   outcome: 'yes' | 'no';
 }
 
-const categories = [
+const _categories = [
   { value: '2', label: 'Politics', icon: '🏛️' },
   { value: '6', label: 'Technology', icon: '💻' },
   { value: '5', label: 'Economy', icon: '💰' },
@@ -70,7 +70,7 @@ export function CreateEventPredictionModal({
   const [amount, setAmount] = useState('');
   const [outcome, setOutcome] = useState<'yes' | 'no'>('yes');
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<any>(null);
+  const [error, setError] = useState<{ message: string } | null>(null);
 
   const minBet = 0.001;
   const maxBet = 100;
@@ -156,8 +156,8 @@ export function CreateEventPredictionModal({
       setAmount('');
       setOutcome('yes');
       onOpenChange(false);
-    } catch (err: any) {
-      setError(err);
+    } catch (err) {
+      setError(err as { message: string });
     } finally {
       setLoading(false);
     }

@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 
-import { TrendingUp, TrendingDown, Info } from 'lucide-react';
+import { TrendingUp, TrendingDown } from 'lucide-react';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -36,7 +36,7 @@ export function BetModal({
 }: BetModalProps) {
   const [amount, setAmount] = useState('');
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<any>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const numAmount = parseFloat(amount) || 0;
   const isYes = outcome === 'yes';
@@ -85,9 +85,9 @@ export function BetModal({
       await onConfirm(numAmount);
       setAmount('');
       onOpenChange(false);
-    } catch (err: any) {
+    } catch (err: unknown) {
       // Store the actual error object so we can display user-friendly message
-      setError(err);
+      setError(err instanceof Error ? err.message : String(err));
     } finally {
       setLoading(false);
     }

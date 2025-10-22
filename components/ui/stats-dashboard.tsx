@@ -43,7 +43,7 @@ export function StatsDashboard({
 
   return (
     <div className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-      {stats.map((stat, index) => (
+      {stats.map((stat, _index) => (
         <StatsCard
           key={stat.title}
           title={stat.title}

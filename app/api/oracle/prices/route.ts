@@ -3,11 +3,24 @@ import { NextResponse } from 'next/server';
 
 import { logger } from '@/lib/logger';
 
+interface CoinGeckoMarket {
+  id: string;
+  symbol: string;
+  name: string;
+  current_price: number;
+  market_cap: number;
+  price_change_percentage_24h?: number;
+  image: string;
+  total_volume: number;
+  high_24h: number;
+  low_24h: number;
+}
+
 // CoinGecko API configuration
 const COINGECKO_API_URL = 'https://api.coingecko.com/api/v3';
 const COINGECKO_API_KEY = process.env.COINGECKO_API_KEY; // Optional for higher rate limits
 
-export async function GET(request: NextRequest) {
+export async function GET(_request: NextRequest) {
   try {
     // Add cache busting parameter to ensure fresh data
     const cacheBuster = Date.now();
@@ -37,7 +50,7 @@ export async function GET(request: NextRequest) {
     const data = await response.json();
 
     // Transform CoinGecko data to our format
-    const prices = data.map((coin: any) => ({
+    const prices = (data as CoinGeckoMarket[]).map(coin => ({
       id: coin.id,
       symbol: coin.symbol.toUpperCase(),
       name: coin.name,
@@ -67,7 +80,7 @@ export async function GET(request: NextRequest) {
         fresh: true,
       },
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     logger.error('Error fetching crypto prices from CoinGecko:', error);
 
     // Fallback to static data if API fails

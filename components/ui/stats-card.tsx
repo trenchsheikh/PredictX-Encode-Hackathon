@@ -24,7 +24,7 @@ export function StatsCard({
   icon: Icon,
   trend,
   className,
-  delay = 0,
+  delay: _delay = 0,
 }: StatsCardProps) {
   return (
     <div

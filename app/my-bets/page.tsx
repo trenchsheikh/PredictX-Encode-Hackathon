@@ -34,8 +34,12 @@ import {
   clearCommitSecret,
 } from '@/lib/commit-reveal';
 import { usePredictionContract } from '@/lib/hooks/use-prediction-contract';
-import { formatBNB, formatTimeRemaining, calculatePayout } from '@/lib/utils';
-import { cn } from '@/lib/utils';
+import {
+  formatBNB,
+  formatTimeRemaining,
+  calculatePayout,
+  cn,
+} from '@/lib/utils';
 import type {
   UserBet,
   Prediction,
@@ -68,11 +72,15 @@ export default function MyBetsPage() {
   const [showRevealModal, setShowRevealModal] = useState(false);
   const [selectedBet, setSelectedBet] = useState<{
     prediction: Prediction;
-    commitData: any;
+    commitData: {
+      outcome: string;
+      amount: string;
+      salt: string;
+    };
   } | null>(null);
 
   // Claim modal state
-  const [showClaimModal, setShowClaimModal] = useState(false);
+  const [_showClaimModal, setShowClaimModal] = useState(false);
   const [claimBet, setClaimBet] = useState<{
     bet: UserBet;
     prediction: Prediction;
@@ -97,24 +105,36 @@ export default function MyBetsPage() {
       }
 
       // Map backend data to frontend UserBet format
-      const bets: UserBet[] = (response.data?.bets || []).map((bet: any) => {
-        const isRevealed = bet.type === 'bet' && bet.outcome !== undefined;
-        return {
-          id: bet.txHash || `${bet.marketId}-${Date.now()}`,
-          predictionId: bet.marketId.toString(),
-          user: response.data?.address || user?.wallet?.address || '',
-          outcome: isRevealed ? (bet.outcome ? 'yes' : 'no') : 'unknown',
-          shares: bet.shares ? parseFloat(ethers.formatEther(bet.shares)) : 0,
-          amount: parseFloat(ethers.formatEther(bet.amount)),
-          price: 0, // Would calculate from market data
-          createdAt: new Date(
-            isRevealed ? bet.revealedAt : bet.timestamp
-          ).getTime(),
-          claimed: bet.claimed || false,
-          payout: undefined, // Calculate from market if claimed
-          revealed: isRevealed,
-        };
-      });
+      const bets: UserBet[] = (response.data?.bets || []).map(
+        (bet: {
+          txHash?: string;
+          marketId: number;
+          outcome?: boolean;
+          type: string;
+          shares?: string;
+          amount: string;
+          timestamp: string;
+          revealedAt?: string;
+          claimed?: boolean;
+        }) => {
+          const isRevealed = bet.type === 'bet' && bet.outcome !== undefined;
+          return {
+            id: bet.txHash || `${bet.marketId}-${Date.now()}`,
+            predictionId: bet.marketId.toString(),
+            user: response.data?.address || user?.wallet?.address || '',
+            outcome: isRevealed ? (bet.outcome ? 'yes' : 'no') : 'unknown',
+            shares: bet.shares ? parseFloat(ethers.formatEther(bet.shares)) : 0,
+            amount: parseFloat(ethers.formatEther(bet.amount)),
+            price: 0, // Would calculate from market data
+            createdAt: new Date(
+              isRevealed ? bet.revealedAt : bet.timestamp
+            ).getTime(),
+            claimed: bet.claimed || false,
+            payout: undefined, // Calculate from market if claimed
+            revealed: isRevealed,
+          };
+        }
+      );
 
       setUserBets(bets);
 
@@ -170,8 +190,9 @@ export default function MyBetsPage() {
       }
 
       setPredictions(marketData);
-    } catch (err: any) {
+    } catch (err: unknown) {
       if (process.env.NODE_ENV === 'development') {
+        // eslint-disable-next-line no-console
         console.error('Failed to fetch user bets:', err);
       }
       setError(getErrorMessage(err));
@@ -193,11 +214,13 @@ export default function MyBetsPage() {
         throw new Error(response.error || 'Failed to fetch created markets');
       }
 
+      // eslint-disable-next-line no-console
       console.log(
         `📊 Found ${response.data.totalMarketsCreated} markets created by user`
       );
-    } catch (err: any) {
+    } catch (err: unknown) {
       if (process.env.NODE_ENV === 'development') {
+        // eslint-disable-next-line no-console
         console.error('Failed to fetch user-created markets:', err);
       }
       // Don't show error to user, just log it
@@ -209,6 +232,7 @@ export default function MyBetsPage() {
       fetchUserBets();
       fetchUserBetsCreated();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [authenticated, user?.wallet?.address]);
 
   // Redirect unauthenticated users to home and render nothing
@@ -235,6 +259,7 @@ export default function MyBetsPage() {
         const result = await contract.checkRefundAvailability(marketId);
         checks[bet.id] = result;
       } catch (error) {
+        // eslint-disable-next-line no-console
         console.error(`Failed to check refund for bet ${bet.id}:`, error);
         checks[bet.id] = { available: false, reason: 'Check failed' };
       }
@@ -251,6 +276,7 @@ export default function MyBetsPage() {
     ) {
       checkAllRefunds();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userBets, contract.checkRefundAvailability]);
 
   // Auto-trigger resolution for expired markets (with debounce to avoid spam)
@@ -265,6 +291,7 @@ export default function MyBetsPage() {
       });
 
       if (expiredBets.length > 0) {
+        // eslint-disable-next-line no-console
         console.log(
           '🕐 Found expired bets, triggering instant resolution...',
           expiredBets.length
@@ -277,6 +304,7 @@ export default function MyBetsPage() {
         return () => clearTimeout(timeoutId);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userBets, predictions]);
 
   // Real-time refresh every 10 seconds to show updates without being intrusive
@@ -289,19 +317,20 @@ export default function MyBetsPage() {
     }, 10000); // Refresh every 10 seconds
 
     return () => clearInterval(interval);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [authenticated, user?.wallet?.address]);
 
   /**
    * Test backend connection
    */
-  const testBackendConnection = async () => {
+  const _testBackendConnection = async () => {
     // Debug function removed for production safety
   };
 
   /**
    * Test wallet connection
    */
-  const testWalletConnection = async () => {
+  const _testWalletConnection = async () => {
     // Debug function removed for production safety
   };
 
@@ -322,7 +351,9 @@ export default function MyBetsPage() {
 
       if (!response.ok) {
         const errorText = await response.text();
+        // eslint-disable-next-line no-console
         console.error('Backend response error:', response.status, errorText);
+        // eslint-disable-next-line no-console
         console.error(`Backend error (${response.status}): ${errorText}`);
         return;
       }
@@ -330,13 +361,16 @@ export default function MyBetsPage() {
       const result = await response.json();
 
       if (result.success) {
+        // eslint-disable-next-line no-console
         console.log('✅ Market resolution triggered successfully');
         // Silently refresh data without page reload
         await fetchUserBets();
       } else {
+        // eslint-disable-next-line no-console
         console.error(`❌ Failed to trigger resolution: ${result.error}`);
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
+      // eslint-disable-next-line no-console
       console.error('Failed to trigger resolution:', error);
     }
   };
@@ -344,8 +378,9 @@ export default function MyBetsPage() {
   /**
    * Manually resolve market 6 (Bitcoin prediction)
    */
-  const manualResolveMarket6 = async () => {
+  const _manualResolveMarket6 = async () => {
     try {
+      // eslint-disable-next-line no-console
       console.log('🔄 Manually resolving market 6...');
 
       const response = await fetch('/api/markets/resolve-market', {
@@ -364,15 +399,18 @@ export default function MyBetsPage() {
       const result = await response.json();
 
       if (response.ok && result.success) {
+        // eslint-disable-next-line no-console
         console.log('✅ Market 6 resolved successfully:', result);
         // Refresh bets after a short delay
         setTimeout(() => {
           fetchUserBets();
         }, 2000);
       } else {
+        // eslint-disable-next-line no-console
         console.error('❌ Failed to resolve market 6:', result);
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
+      // eslint-disable-next-line no-console
       console.error('❌ Error resolving market 6:', error);
     }
   };
@@ -380,13 +418,15 @@ export default function MyBetsPage() {
   /**
    * Switch to BSC Testnet
    */
-  const switchToBSC = async () => {
+  const _switchToBSC = async () => {
     if (!wallets || wallets.length === 0) {
+      // eslint-disable-next-line no-console
       console.info('No wallet found');
       return;
     }
 
     const wallet = wallets[0];
+    // eslint-disable-next-line no-console
     console.log('🔄 Switching to BSC Testnet...', {
       currentChainId: wallet.chainId,
     });
@@ -395,7 +435,9 @@ export default function MyBetsPage() {
       // Try Privy's switchChain method
       if (typeof wallet.switchChain === 'function') {
         await wallet.switchChain(97);
+        // eslint-disable-next-line no-console
         console.log('✅ Switched via Privy');
+        // eslint-disable-next-line no-console
         console.info('Switched to BSC Testnet!');
         return;
       }
@@ -406,17 +448,22 @@ export default function MyBetsPage() {
           method: 'wallet_switchEthereumChain',
           params: [{ chainId: '0x61' }],
         });
+        // eslint-disable-next-line no-console
         console.log('✅ Switched via window.ethereum');
+        // eslint-disable-next-line no-console
         console.info('Switched to BSC Testnet!');
         return;
       }
 
+      // eslint-disable-next-line no-console
       console.info(
         'Unable to switch network. Please switch manually in your wallet.'
       );
-    } catch (error: any) {
+    } catch (error: unknown) {
+      // eslint-disable-next-line no-console
       console.error('Network switch failed:', error);
-      if (error.code === 4902) {
+      const err = error as { code?: number; message?: string };
+      if (err.code === 4902) {
         // Network not added, try to add it
         try {
           await window.ethereum.request({
@@ -431,15 +478,19 @@ export default function MyBetsPage() {
               },
             ],
           });
+          // eslint-disable-next-line no-console
           console.info('Added and switched to BSC Testnet!');
-        } catch (addError: any) {
+        } catch (addError: unknown) {
+          // eslint-disable-next-line no-console
           console.error('Failed to add network:', addError);
+          // eslint-disable-next-line no-console
           console.info(
             'Failed to add BSC Testnet. Please add it manually in your wallet.'
           );
         }
       } else {
-        console.error(`Failed to switch network: ${error.message}`);
+        // eslint-disable-next-line no-console
+        console.error(`Failed to switch network: ${err.message}`);
       }
     }
   };
@@ -466,6 +517,7 @@ export default function MyBetsPage() {
     const commitData = getCommitSecret(predictionId);
 
     if (!prediction || !commitData) {
+      // eslint-disable-next-line no-console
       console.info(
         'Reveal data not found. Make sure you placed this bet on this device.'
       );
@@ -533,9 +585,12 @@ export default function MyBetsPage() {
       await fetchUserBets();
 
       setShowRevealModal(false);
+      // eslint-disable-next-line no-console
       console.info('Bet revealed successfully!');
-    } catch (err: any) {
+    } catch (err: unknown) {
+      // eslint-disable-next-line no-console
       console.error('Reveal failed:', err);
+      // eslint-disable-next-line no-console
       console.error(getErrorMessage(err));
     }
   };
@@ -553,7 +608,7 @@ export default function MyBetsPage() {
     const isWinning = prediction.resolution?.outcome === bet.outcome;
     const canClaim =
       prediction.status === 'resolved' && isWinning && !bet.claimed;
-    const canRefund =
+    const _canRefund =
       !bet.revealed &&
       (prediction.status === 'cancelled' ||
         (prediction.status === 'resolved' && !prediction.resolution));
@@ -592,9 +647,12 @@ export default function MyBetsPage() {
       // Refresh bets
       await fetchUserBets();
 
+      // eslint-disable-next-line no-console
       console.info(`Winnings claimed! Amount: ${result.amount} BNB`);
-    } catch (err: any) {
+    } catch (err: unknown) {
+      // eslint-disable-next-line no-console
       console.error('Claim failed:', err);
+      // eslint-disable-next-line no-console
       console.error(getErrorMessage(err));
     }
   };
@@ -626,15 +684,18 @@ export default function MyBetsPage() {
       // Refresh bets
       await fetchUserBets();
 
+      // eslint-disable-next-line no-console
       console.info(`Refund claimed! Amount: ${result.amount} BNB`);
-    } catch (err: any) {
+    } catch (err: unknown) {
+      // eslint-disable-next-line no-console
       console.error('Refund failed:', err);
       const errorMsg = getErrorMessage(err);
+      // eslint-disable-next-line no-console
       console.error(`Refund failed: ${errorMsg}`);
     }
   };
 
-  const getOutcomeColor = (outcome: 'yes' | 'no') => {
+  const _getOutcomeColor = (outcome: 'yes' | 'no') => {
     return outcome === 'yes' ? 'text-green-600' : 'text-red-600';
   };
 
@@ -642,7 +703,7 @@ export default function MyBetsPage() {
     return outcome === 'yes' ? TrendingUp : TrendingDown;
   };
 
-  const getStatusColor = (status: string) => {
+  const _getStatusColor = (status: string) => {
     const colors = {
       active: 'success',
       resolved: 'secondary',
@@ -682,7 +743,7 @@ export default function MyBetsPage() {
     return null;
   }
 
-  const totalInvested = userBets.reduce((sum, bet) => sum + bet.amount, 0);
+  const _totalInvested = userBets.reduce((sum, bet) => sum + bet.amount, 0);
   const totalPayout = userBets.reduce((sum, bet) => sum + (bet.payout || 0), 0);
   const activeBets = userBets.filter(
     bet => predictions[bet.predictionId]?.status === 'active'
@@ -858,7 +919,9 @@ export default function MyBetsPage() {
               ].map(tab => (
                 <button
                   key={tab.key}
-                  onClick={() => setActiveTab(tab.key as any)}
+                  onClick={() =>
+                    setActiveTab(tab.key as 'active' | 'resolved' | 'all')
+                  }
                   className={cn(
                     'whitespace-nowrap border-b-2 px-1 py-2 text-sm font-medium transition-all duration-300',
                     activeTab === tab.key
@@ -957,6 +1020,7 @@ export default function MyBetsPage() {
 
               // Debug logging (development only)
               if (process.env.NODE_ENV === 'development') {
+                // eslint-disable-next-line no-console
                 console.log('Bet Debug:', {
                   betId: bet.id,
                   predictionId: bet.predictionId,

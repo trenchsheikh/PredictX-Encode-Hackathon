@@ -71,10 +71,14 @@ const VerticalCutReveal = forwardRef<VerticalCutRevealRef, TextProps>(
     // handy function to split text into characters with support for unicode and emojis
     const splitIntoCharacters = (text: string): string[] => {
       if (typeof Intl !== 'undefined' && 'Segmenter' in Intl) {
-        const SegmenterCtor = (Intl as any).Segmenter as new (
-          locale: string,
-          options: { granularity: 'grapheme' | 'word' | 'sentence' }
-        ) => { segment: (input: string) => Iterable<{ segment: string }> };
+        const SegmenterCtor = (
+          Intl as typeof Intl & {
+            Segmenter: new (
+              locale: string,
+              options: { granularity: 'grapheme' | 'word' | 'sentence' }
+            ) => { segment: (input: string) => Iterable<{ segment: string }> };
+          }
+        ).Segmenter;
         const segmenter = new SegmenterCtor('en', { granularity: 'grapheme' });
         return Array.from(segmenter.segment(text), ({ segment }) => segment);
       }
@@ -125,7 +129,7 @@ const VerticalCutReveal = forwardRef<VerticalCutRevealRef, TextProps>(
         }
         return Math.abs(staggerFrom - index) * staggerDuration;
       },
-      [elements.length, staggerFrom, staggerDuration, splitBy]
+      [elements, staggerFrom, staggerDuration, splitBy]
     );
 
     const startAnimation = useCallback(() => {
