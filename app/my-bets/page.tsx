@@ -1,18 +1,11 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+
 import { useRouter } from 'next/navigation';
+
 import { usePrivy, useWallets } from '@privy-io/react-auth';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import {
-  UserBet,
-  Prediction,
-  PredictionCategory,
-  PredictionStatus,
-} from '@/types/prediction';
-import { formatBNB, formatTimeRemaining, calculatePayout } from '@/lib/utils';
+import { ethers } from 'ethers';
 import {
   Wallet,
   TrendingUp,
@@ -23,22 +16,32 @@ import {
   Loader2,
   AlertCircle,
 } from 'lucide-react';
-import { StatsDashboard } from '@/components/ui/stats-dashboard';
-import { PerformanceChart } from '@/components/ui/performance-chart';
-import { cn } from '@/lib/utils';
+
+import { RevealModal } from '@/components/prediction/reveal-modal';
 import { useI18n } from '@/components/providers/i18n-provider';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { PerformanceChart } from '@/components/ui/performance-chart';
+import { StatsDashboard } from '@/components/ui/stats-dashboard';
+import { TransactionStatus } from '@/components/ui/transaction-status';
 import { api, getErrorMessage } from '@/lib/api-client';
-import { usePredictionContract } from '@/lib/hooks/use-prediction-contract';
+import { mapCategory, mapStatus, calculatePrice } from '@/lib/blockchain-utils';
 import {
   getCommitSecret,
   hasUnrevealedCommit,
   canReveal,
   clearCommitSecret,
 } from '@/lib/commit-reveal';
-import { RevealModal } from '@/components/prediction/reveal-modal';
-import { TransactionStatus } from '@/components/ui/transaction-status';
-import { mapCategory, mapStatus, calculatePrice } from '@/lib/blockchain-utils';
-import { ethers } from 'ethers';
+import { usePredictionContract } from '@/lib/hooks/use-prediction-contract';
+import { formatBNB, formatTimeRemaining, calculatePayout } from '@/lib/utils';
+import { cn } from '@/lib/utils';
+import type {
+  UserBet,
+  Prediction,
+  PredictionCategory,
+  PredictionStatus,
+} from '@/types/prediction';
 
 export default function MyBetsPage() {
   const { t } = useI18n();

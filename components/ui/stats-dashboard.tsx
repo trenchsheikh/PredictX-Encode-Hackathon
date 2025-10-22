@@ -1,7 +1,9 @@
 'use client';
-import { StatsCard } from './stats-card';
 import { TrendingUp, DollarSign, Target, Trophy } from 'lucide-react';
+
 import { formatBNB } from '@/lib/utils';
+
+import { StatsCard } from './stats-card';
 
 interface StatsDashboardProps {
   totalBets: number;

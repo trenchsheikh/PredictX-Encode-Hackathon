@@ -1,31 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useForm } from 'react-hook-form';
+
 import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-} from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { CreatePredictionData, PredictionCategory } from '@/types/prediction';
-import { formatBNB } from '@/lib/utils';
-import { formatDateTimeLocal } from '@/lib/blockchain-utils';
 import {
   Bot,
   Plus,
@@ -36,15 +13,44 @@ import {
   Sparkles,
   Loader2,
 } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+
 import { useI18n } from '@/components/providers/i18n-provider';
+import { AnimatedButton } from '@/components/ui/animated-button';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import type { CryptoOption } from '@/components/ui/crypto-selector';
+import { CryptoSelector } from '@/components/ui/crypto-selector';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { Textarea } from '@/components/ui/textarea';
 import {
   getAIService,
   getDefaultAIConfig,
   initializeAI,
 } from '@/lib/ai-service';
-import { CryptoSelector, CryptoOption } from '@/components/ui/crypto-selector';
-import { AnimatedButton } from '@/components/ui/animated-button';
+import { formatDateTimeLocal } from '@/lib/blockchain-utils';
+import { formatBNB } from '@/lib/utils';
+import { cn } from '@/lib/utils';
+import type {
+  CreatePredictionData,
+  PredictionCategory,
+} from '@/types/prediction';
 
 const createPredictionSchema = z.object({
   description: z.string().min(10, 'Description must be at least 10 characters'),

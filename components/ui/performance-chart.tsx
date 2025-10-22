@@ -1,6 +1,8 @@
 'use client';
 
 import React from 'react';
+
+import { TrendingUp, BarChart3 } from 'lucide-react';
 import {
   LineChart,
   Line,
@@ -12,7 +14,6 @@ import {
   AreaChart,
   Area,
 } from 'recharts';
-import { TrendingUp, BarChart3 } from 'lucide-react';
 
 interface PerformanceChartProps {
   data: Array<{

@@ -1,7 +1,12 @@
 'use client';
 
 import { useState } from 'react';
+
+import { Calendar, TrendingUp, X } from 'lucide-react';
+
 import { useI18n } from '@/components/providers/i18n-provider';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -10,9 +15,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
+import { InlineError } from '@/components/ui/error-display';
 import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
 import {
   Select,
   SelectContent,
@@ -20,9 +24,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Badge } from '@/components/ui/badge';
-import { Calendar, TrendingUp, X } from 'lucide-react';
-import { InlineError } from '@/components/ui/error-display';
+import { Textarea } from '@/components/ui/textarea';
 
 interface CreateEventPredictionModalProps {
   open: boolean;

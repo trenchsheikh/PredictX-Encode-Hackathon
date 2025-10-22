@@ -1,4 +1,4 @@
-import { PrivyClientConfig } from '@privy-io/react-auth';
+import type { PrivyClientConfig } from '@privy-io/react-auth';
 import { bsc, bscTestnet } from 'viem/chains';
 
 // Export separate APP ID and client config for the real Privy Provider

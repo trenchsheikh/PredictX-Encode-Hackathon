@@ -1,8 +1,7 @@
 'use client';
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
+import { useState } from 'react';
+
 import {
   TrendingUp,
   TrendingDown,
@@ -13,9 +12,12 @@ import {
   ExternalLink,
   Copy,
 } from 'lucide-react';
+
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { formatBNB } from '@/lib/utils';
 import { cn } from '@/lib/utils';
-import { useState } from 'react';
 
 interface PayoutDisplayProps {
   marketId: string;

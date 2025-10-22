@@ -1,6 +1,11 @@
 'use client';
 
 import { useState } from 'react';
+
+import { TrendingUp, TrendingDown, Info } from 'lucide-react';
+
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -9,13 +14,10 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
-import { TrendingUp, TrendingDown, Info } from 'lucide-react';
-import { formatBNB, calculatePayout } from '@/lib/utils';
-import { Prediction } from '@/types/prediction';
 import { InlineError } from '@/components/ui/error-display';
+import { Input } from '@/components/ui/input';
+import { formatBNB, calculatePayout } from '@/lib/utils';
+import type { Prediction } from '@/types/prediction';
 
 interface BetModalProps {
   open: boolean;

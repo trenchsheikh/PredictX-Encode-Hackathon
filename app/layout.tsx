@@ -1,13 +1,16 @@
 import type { Metadata } from 'next';
+
 import './globals.css';
 import '@/lib/console-filter';
-import { PrivyProviderWrapper } from '@/components/providers/privy-provider';
+import { FooterGate } from '@/components/layout/footer-gate';
 import { AnimatedHeader } from '@/components/layout/navbar';
 import { IntroProvider } from '@/components/providers/intro-provider';
+import { PrivyProviderWrapper } from '@/components/providers/privy-provider';
 import { ErrorBoundary } from '@/components/ui/error-boundary';
-import { FooterGate } from '@/components/layout/footer-gate';
+
 import Image from 'next/image';
 import { Be_Vietnam_Pro } from 'next/font/google';
+
 import { Analytics } from '@vercel/analytics/next';
 
 const beVietnamPro = Be_Vietnam_Pro({

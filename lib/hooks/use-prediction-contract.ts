@@ -1,8 +1,11 @@
 'use client';
 
 import { useState, useCallback, useEffect } from 'react';
-import { ethers } from 'ethers';
+
 import { usePrivy, useWallets } from '@privy-io/react-auth';
+import { ethers } from 'ethers';
+
+import type { TransactionStatus } from '@/components/ui/transaction-status';
 import {
   getContractAddresses,
   checkNetwork,
@@ -10,7 +13,6 @@ import {
   waitForTransaction,
   parseContractError,
 } from '@/lib/blockchain-utils';
-import { TransactionStatus } from '@/components/ui/transaction-status';
 
 /**
  * Custom hook for interacting with PredictionMarket contract

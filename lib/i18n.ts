@@ -1,10 +1,10 @@
 import i18n from 'i18next';
-import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
+import { initReactI18next } from 'react-i18next';
 
 // Import translation files
-import zhCommon from '../locales/zh/common.json';
 import enCommon from '../locales/en/common.json';
+import zhCommon from '../locales/zh/common.json';
 
 const resources = {
   zh: {

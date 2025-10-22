@@ -1,11 +1,14 @@
 'use client';
 import React from 'react';
-import Link from 'next/link';
-import { NotepadTextDashed } from 'lucide-react';
-import { cn } from '@/lib/utils';
+
 import { Press_Start_2P } from 'next/font/google';
+import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+
+import { NotepadTextDashed } from 'lucide-react';
+
 import { useI18n } from '@/components/providers/i18n-provider';
+import { cn } from '@/lib/utils';
 
 const pixelFont = Press_Start_2P({ subsets: ['latin'], weight: '400' });
 

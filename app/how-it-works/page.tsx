@@ -1,8 +1,5 @@
 'use client';
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import {
   Bot,
   Target,
@@ -28,7 +25,11 @@ import {
   CircleDot,
   XCircle,
 } from 'lucide-react';
+
 import { useI18n } from '@/components/providers/i18n-provider';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 export default function HowItWorksPage() {
   const { t } = useI18n();

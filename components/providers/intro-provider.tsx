@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+
 import { IntroAnimation } from '@/components/ui/intro-animation';
 
 interface IntroProviderProps {

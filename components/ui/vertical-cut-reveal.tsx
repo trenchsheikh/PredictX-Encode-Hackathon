@@ -1,4 +1,3 @@
-import { type AnimationOptions, motion } from 'framer-motion';
 import {
   forwardRef,
   useCallback,
@@ -8,6 +7,8 @@ import {
   useRef,
   useState,
 } from 'react';
+
+import { type AnimationOptions, motion } from 'framer-motion';
 
 import { cn } from '@/lib/utils';
 

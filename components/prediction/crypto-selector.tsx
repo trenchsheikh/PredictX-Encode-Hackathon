@@ -1,11 +1,13 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Card, CardContent } from '@/components/ui/card';
+
 import { TrendingUp, TrendingDown, Loader2 } from 'lucide-react';
+
+import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { cn } from '@/lib/utils';
 import { logger } from '@/lib/logger';
+import { cn } from '@/lib/utils';
 
 export interface CryptoData {
   id: string;

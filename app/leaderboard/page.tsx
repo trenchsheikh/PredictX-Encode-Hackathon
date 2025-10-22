@@ -1,10 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { formatBNB, formatAddress } from '@/lib/utils';
+
 import {
   Trophy,
   Medal,
@@ -19,9 +16,14 @@ import {
   Loader2,
   AlertCircle,
 } from 'lucide-react';
-import { cn } from '@/lib/utils';
+
 import { useI18n } from '@/components/providers/i18n-provider';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
 import { api } from '@/lib/api-client';
+import { formatBNB, formatAddress } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 
 interface LeaderboardEntry {
   rank: number;

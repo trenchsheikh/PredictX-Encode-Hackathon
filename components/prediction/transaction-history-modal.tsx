@@ -1,16 +1,18 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+
+import { Clock, ExternalLink } from 'lucide-react';
+
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent } from '@/components/ui/card';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent } from '@/components/ui/card';
 import { formatBNB } from '@/lib/utils';
-import { Clock, ExternalLink } from 'lucide-react';
 
 interface TransactionHistoryModalProps {
   open: boolean;

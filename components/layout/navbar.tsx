@@ -1,13 +1,16 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+
+import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import Image from 'next/image';
+
 import { usePrivy } from '@privy-io/react-auth';
+import { Menu, X, Wallet, Home, HelpCircle } from 'lucide-react';
+
 import { useI18n } from '@/components/providers/i18n-provider';
 import { AnimatedButton } from '@/components/ui/animated-button';
-import { Menu, X, Wallet, Home, HelpCircle } from 'lucide-react';
 
 const getNavigation = (locale: string) => [
   { key: 'nav_home', href: '/', icon: Home, isHome: true },

@@ -1,36 +1,9 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+
 import { usePrivy } from '@privy-io/react-auth';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-} from '@/components/ui/dialog';
-import { PredictionCard } from '@/components/prediction/prediction-card';
-import { CreateBetModal } from '@/components/prediction/create-bet-modal';
-import { BetModal } from '@/components/prediction/bet-modal';
-import {
-  CryptoPredictionModal,
-  CryptoPredictionData,
-} from '@/components/prediction/crypto-prediction-modal';
-import {
-  CreateEventPredictionModal,
-  EventPredictionData,
-} from '@/components/prediction/create-event-prediction-modal';
-import { TransactionHistoryModal } from '@/components/prediction/transaction-history-modal';
-import { TransactionStatus } from '@/components/ui/transaction-status';
-import {
-  Prediction,
-  CreatePredictionData,
-  PredictionCategory,
-  PredictionStatus,
-} from '@/types/prediction';
+import { ethers } from 'ethers';
 import {
   Plus,
   TrendingUp,
@@ -41,13 +14,38 @@ import {
   CheckCircle,
   Wallet,
 } from 'lucide-react';
+
+import { BetModal } from '@/components/prediction/bet-modal';
+import { CreateBetModal } from '@/components/prediction/create-bet-modal';
+import type { EventPredictionData } from '@/components/prediction/create-event-prediction-modal';
+import { CreateEventPredictionModal } from '@/components/prediction/create-event-prediction-modal';
+import type { CryptoPredictionData } from '@/components/prediction/crypto-prediction-modal';
+import { CryptoPredictionModal } from '@/components/prediction/crypto-prediction-modal';
+import { PredictionCard } from '@/components/prediction/prediction-card';
+import { TransactionHistoryModal } from '@/components/prediction/transaction-history-modal';
 import { useI18n } from '@/components/providers/i18n-provider';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from '@/components/ui/dialog';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { TransactionStatus } from '@/components/ui/transaction-status';
 import { api, getErrorMessage } from '@/lib/api-client';
-import { usePredictionContract } from '@/lib/hooks/use-prediction-contract';
-import { generateCommit, storeCommitSecret } from '@/lib/commit-reveal';
 import { mapCategory, mapStatus, calculatePrice } from '@/lib/blockchain-utils';
+import { generateCommit, storeCommitSecret } from '@/lib/commit-reveal';
+import { usePredictionContract } from '@/lib/hooks/use-prediction-contract';
 import { logger } from '@/lib/logger';
-import { ethers } from 'ethers';
+import type {
+  Prediction,
+  CreatePredictionData,
+  PredictionCategory,
+  PredictionStatus,
+} from '@/types/prediction';
 
 export default function HomePage() {
   const { t, isInitialized } = useI18n();
