@@ -98,13 +98,13 @@ export function BetModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="border border-white/10 bg-gradient-to-br from-gray-900/95 via-gray-800/90 to-gray-900/95 shadow-2xl backdrop-blur-md sm:max-w-[500px]">
+      <DialogContent className="border border-border bg-card shadow-2xl backdrop-blur-md sm:max-w-[500px]">
         <DialogHeader>
           <DialogTitle className="font-heading flex items-center gap-2 text-white">
             {isYes ? (
-              <TrendingUp className="h-5 w-5 text-green-400" />
+              <TrendingUp className="h-5 w-5 text-white" />
             ) : (
-              <TrendingDown className="h-5 w-5 text-red-400" />
+              <TrendingDown className="h-5 w-5 text-white" />
             )}
             Betting {isYes ? 'YES' : 'NO'}
           </DialogTitle>
@@ -113,15 +113,12 @@ export function BetModal({
           </DialogDescription>
         </DialogHeader>
 
-        <div className="space-y-4 py-4">
+        <div className="space-y-3 py-2">
           {/* Current Odds */}
-          <div className="flex items-center justify-between rounded-xl border border-white/10 bg-gradient-to-r from-gray-800/60 to-gray-700/40 p-4 backdrop-blur-sm">
+          <div className="flex items-center justify-between rounded-xl border border-border bg-muted p-3">
             <span className="text-sm text-gray-400">Current Odds</span>
             <div className="flex items-center gap-2">
-              <Badge
-                variant={isYes ? 'success' : 'destructive'}
-                className="text-xs"
-              >
+              <Badge variant="success" className="text-xs">
                 {isYes ? 'YES' : 'NO'}
               </Badge>
               <span className="font-semibold text-white">
@@ -131,7 +128,7 @@ export function BetModal({
           </div>
 
           {/* Amount Input */}
-          <div className="space-y-3">
+          <div className="space-y-2">
             <label className="text-sm font-medium text-white">
               Bet Amount (BNB)
             </label>
@@ -147,7 +144,7 @@ export function BetModal({
               max={maxBet}
               step="0.001"
               disabled={loading}
-              className="border-white/10 bg-white/5 text-white backdrop-blur-sm transition-all duration-300 placeholder:text-gray-400 focus:border-yellow-400/50 focus:ring-yellow-400/20"
+              className="border-border bg-input text-foreground transition-all duration-300 placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-primary/20"
             />
 
             {/* Quick Amount Buttons */}
@@ -160,7 +157,7 @@ export function BetModal({
                   size="sm"
                   onClick={() => handleQuickAmount(value)}
                   disabled={loading}
-                  className="flex-1 border-white/10 bg-white/5 text-white transition-all duration-300 hover:border-yellow-400/50 hover:bg-yellow-400/10"
+                  className="flex-1 border-border bg-secondary px-2 py-1 text-xs text-secondary-foreground transition-all duration-300 hover:border-primary/50 hover:bg-primary/10"
                 >
                   {value} BNB
                 </Button>
@@ -173,12 +170,12 @@ export function BetModal({
 
           {/* Bet Summary */}
           {numAmount > 0 && !error && (
-            <div className="space-y-2 rounded-xl border border-white/10 bg-gradient-to-r from-gray-800/60 to-gray-700/40 p-4 backdrop-blur-sm">
-              <h4 className="mb-3 text-xs font-semibold uppercase tracking-wide text-gray-400">
+            <div className="space-y-2 rounded-xl border border-border bg-muted p-3">
+              <h4 className="mb-2 text-xs font-semibold uppercase tracking-wide text-gray-400">
                 Bet Summary
               </h4>
 
-              <div className="space-y-2.5">
+              <div className="space-y-2">
                 <div className="flex items-center justify-between gap-4">
                   <span className="text-sm text-gray-400">Shares</span>
                   <span className="font-mono text-sm font-medium text-white">
@@ -202,9 +199,9 @@ export function BetModal({
 
                 <div className="flex items-center justify-between gap-4 border-t border-gray-600/30 pt-2.5">
                   <span className="text-sm font-medium text-gray-300">
-                    Potential Payout
+                    Profit
                   </span>
-                  <span className="font-mono text-sm font-semibold text-green-400">
+                  <span className="font-mono text-sm font-semibold text-white">
                     {formatBNB(potentialPayout)}
                   </span>
                 </div>
@@ -212,7 +209,7 @@ export function BetModal({
                 <div className="flex items-center justify-between gap-4">
                   <span className="text-sm text-gray-400">ROI</span>
                   <span
-                    className={`font-mono text-sm font-medium ${roi >= 0 ? 'text-green-400' : 'text-red-400'}`}
+                    className={`font-mono text-sm font-medium ${roi >= 0 ? 'text-white' : 'text-red-400'}`}
                   >
                     {roi >= 0 ? '+' : ''}
                     {roi.toFixed(1)}%
@@ -232,30 +229,24 @@ export function BetModal({
           )}
 
           {/* Info Banner */}
-          <div className="flex items-start gap-2 rounded-xl border border-blue-500/20 bg-blue-500/10 p-4">
-            <Info className="mt-0.5 h-4 w-4 flex-shrink-0 text-blue-400" />
+          <div className="flex items-start gap-2 rounded-xl border border-white/20 bg-white/10 p-3">
             <div className="space-y-1 text-xs text-gray-300">
               <p>
-                <strong className="text-white">Darkpool Betting:</strong> Your
-                bet choice will be hidden until you reveal it after market
-                expiration.
-              </p>
-              <p>
-                <strong className="text-white">Important:</strong> Save your
-                reveal secret! You must reveal within 1 hour after market
-                expiration to claim winnings.
+                Your bet choice will be hidden until you reveal it after market
+                expiration. Save your reveal secret! You must reveal within 1
+                hour after market expiration to claim winnings.
               </p>
             </div>
           </div>
         </div>
 
-        <DialogFooter className="gap-3">
+        <DialogFooter className="gap-2">
           <Button
             type="button"
             variant="outline"
             onClick={() => onOpenChange(false)}
             disabled={loading}
-            className="border-white/10 bg-white/5 text-white transition-all duration-300 hover:border-white/20 hover:bg-white/10"
+            className="border-border bg-secondary px-2 py-1 text-xs text-secondary-foreground transition-all duration-300 hover:border-border/80 hover:bg-secondary/80"
           >
             Cancel
           </Button>
@@ -263,11 +254,7 @@ export function BetModal({
             type="button"
             onClick={handleConfirm}
             disabled={loading || !amount || !!error}
-            className={`font-semibold transition-all duration-200 ${
-              isYes
-                ? 'bg-gradient-to-r from-green-500 to-green-600 text-white shadow-lg hover:from-green-600 hover:to-green-700 hover:shadow-green-500/25'
-                : 'bg-gradient-to-r from-red-500 to-red-600 text-white shadow-lg hover:from-red-600 hover:to-red-700 hover:shadow-red-500/25'
-            }`}
+            className="bg-white px-2 py-1 text-xs font-semibold text-black shadow-lg transition-all duration-200 hover:bg-white/90 hover:shadow-white/25"
           >
             {loading ? 'Placing Bet...' : `Bet ${formatBNB(numAmount)}`}
           </Button>

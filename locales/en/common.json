@@ -110,7 +110,7 @@
     "betting_on": "Betting on",
     "outcome": "Outcome",
     "price": "Price",
-    "potential_payout": "Potential Payout",
+    "potential_payout": "Profit",
     "transaction_fee": "Transaction Fee",
     "total_cost": "Total Cost"
   },
@@ -349,6 +349,7 @@
     "description": "You need to connect your wallet to create or place predictions",
     "message": "To participate in DarkBet predictions, you need to connect a Web3 wallet. We support MetaMask, WalletConnect, and more."
   },
+  "create": "Create",
   "cancel": "Cancel",
   "errors": {
     "wallet_required": "Please connect your wallet to place a bet",

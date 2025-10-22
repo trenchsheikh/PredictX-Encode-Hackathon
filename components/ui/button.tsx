@@ -9,7 +9,7 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          'bg-gradient-to-r from-yellow-400 to-yellow-600 text-black font-semibold shadow-lg hover:from-yellow-500 hover:to-yellow-700 hover:shadow-xl',
+          'bg-primary text-primary-foreground font-semibold shadow-lg hover:bg-primary/90 hover:shadow-xl',
         destructive:
           'bg-destructive text-destructive-foreground hover:bg-destructive/90',
         outline:
@@ -17,12 +17,12 @@ const buttonVariants = cva(
         secondary:
           'bg-secondary text-secondary-foreground hover:bg-secondary/80',
         ghost: 'hover:bg-white/10 text-white',
-        link: 'text-yellow-400 underline-offset-4 hover:underline hover:text-yellow-300',
+        link: 'text-purple-400 underline-offset-4 hover:underline hover:text-purple-300',
         accent:
-          'bg-gradient-to-r from-green-400 to-green-600 text-white font-semibold shadow-lg hover:from-green-500 hover:to-green-700',
-        glow: 'bg-gradient-to-r from-yellow-400 to-yellow-600 text-black font-semibold shadow-lg shadow-yellow-500/25 hover:shadow-yellow-500/40 animate-glow',
+          'bg-accent text-accent-foreground font-semibold shadow-lg hover:bg-accent/90',
+        glow: 'bg-primary text-primary-foreground font-semibold shadow-lg shadow-primary/25 hover:shadow-primary/40 animate-glow',
         shimmer:
-          'bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 text-black font-semibold shadow-lg hover:shadow-xl relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:bg-gradient-to-r before:from-transparent before:via-white/20 before:to-transparent before:animate-shimmer',
+          'bg-primary text-primary-foreground font-semibold shadow-lg hover:shadow-xl',
       },
       size: {
         default: 'h-10 px-4 py-2',

@@ -7,20 +7,10 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { formatBNB } from '@/lib/utils';
-import {
-  ExternalLink,
-  Copy,
-  CheckCircle,
-  XCircle,
-  Clock,
-  DollarSign,
-  TrendingUp,
-  Hash,
-} from 'lucide-react';
+import { Clock, ExternalLink } from 'lucide-react';
 
 interface TransactionHistoryModalProps {
   open: boolean;
@@ -61,7 +51,6 @@ export function TransactionHistoryModal({
 }: TransactionHistoryModalProps) {
   const [history, setHistory] = useState<TransactionHistory | null>(null);
   const [loading, setLoading] = useState(false);
-  const [copied, setCopied] = useState<string | null>(null);
 
   useEffect(() => {
     if (open && predictionId) {
@@ -75,67 +64,46 @@ export function TransactionHistoryModal({
       const response = await fetch(`/api/transactions/market/${predictionId}`);
       const data = await response.json();
 
-      if (data.success) {
+      if (data.success && data.data) {
         setHistory(data.data);
+      } else {
+        console.error(
+          'Failed to fetch transaction history:',
+          data.error || 'Unknown error'
+        );
+        setHistory(null);
       }
     } catch (error) {
       console.error('Failed to fetch transaction history:', error);
+      setHistory(null);
     } finally {
       setLoading(false);
     }
   };
 
-  const copyToClipboard = (text: string, id: string) => {
-    navigator.clipboard.writeText(text);
-    setCopied(id);
-    setTimeout(() => setCopied(null), 2000);
-  };
-
   const getTransactionIcon = (type: string) => {
-    switch (type) {
-      case 'create':
-        return <Hash className="h-4 w-4 text-blue-500" />;
-      case 'commit':
-        return <Clock className="h-4 w-4 text-yellow-500" />;
-      case 'reveal':
-        return <CheckCircle className="h-4 w-4 text-green-500" />;
-      case 'claim':
-        return <DollarSign className="h-4 w-4 text-purple-500" />;
-      case 'resolve':
-        return <TrendingUp className="h-4 w-4 text-orange-500" />;
-      default:
-        return <Hash className="h-4 w-4 text-gray-500" />;
-    }
+    return null; // Remove all transaction icons
   };
 
   const getTransactionColor = (type: string) => {
     switch (type) {
       case 'create':
-        return 'bg-blue-500/20 text-blue-700 border-blue-500/30';
+        return 'bg-white/20 text-white border-white/30';
       case 'commit':
-        return 'bg-yellow-500/20 text-yellow-700 border-yellow-500/30';
+        return 'bg-white/20 text-white border-white/30';
       case 'reveal':
-        return 'bg-green-500/20 text-green-700 border-green-500/30';
+        return 'bg-white/20 text-white border-white/30';
       case 'claim':
-        return 'bg-purple-500/20 text-purple-700 border-purple-500/30';
+        return 'bg-white/20 text-white border-white/30';
       case 'resolve':
-        return 'bg-orange-500/20 text-orange-700 border-orange-500/30';
+        return 'bg-white/20 text-white border-white/30';
       default:
-        return 'bg-gray-500/20 text-gray-700 border-gray-500/30';
+        return 'bg-white/20 text-white border-white/30';
     }
   };
 
   const getStatusIcon = (status: string) => {
-    switch (status) {
-      case 'confirmed':
-        return <CheckCircle className="h-3 w-3 text-green-500" />;
-      case 'failed':
-        return <XCircle className="h-3 w-3 text-red-500" />;
-      case 'pending':
-        return <Clock className="h-3 w-3 text-yellow-500" />;
-      default:
-        return <Clock className="h-3 w-3 text-gray-500" />;
-    }
+    return null; // Remove all status icons
   };
 
   const formatDate = (timestamp: number) => {
@@ -157,12 +125,12 @@ export function TransactionHistoryModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-h-[90vh] max-w-4xl overflow-y-auto border border-white/10 bg-gradient-to-br from-gray-900/95 via-gray-800/90 to-gray-900/95 p-4 text-white shadow-2xl backdrop-blur-md sm:p-6">
+      <DialogContent className="max-h-[80vh] max-w-4xl overflow-y-auto border border-white/20 bg-card p-4 text-foreground shadow-2xl backdrop-blur-md sm:p-6">
         <DialogHeader>
-          <DialogTitle className="text-xl font-bold text-white sm:text-2xl">
+          <DialogTitle className="text-xl font-bold text-foreground sm:text-2xl">
             Transaction History
           </DialogTitle>
-          <div className="text-xs text-gray-400 sm:text-sm">
+          <div className="text-xs text-muted-foreground sm:text-sm">
             {predictionTitle}
           </div>
         </DialogHeader>
@@ -170,8 +138,8 @@ export function TransactionHistoryModal({
         {loading ? (
           <div className="flex items-center justify-center py-8">
             <div className="text-center">
-              <Clock className="mx-auto mb-2 h-8 w-8 animate-spin text-white" />
-              <div className="text-sm text-gray-500">
+              <Clock className="mx-auto mb-2 h-8 w-8 animate-spin text-foreground" />
+              <div className="text-sm text-muted-foreground">
                 Loading transaction history...
               </div>
             </div>
@@ -180,157 +148,123 @@ export function TransactionHistoryModal({
           <div className="space-y-6">
             {/* Summary Stats */}
             <div className="grid grid-cols-2 gap-2 sm:gap-4 md:grid-cols-4">
-              <Card className="border-white/10 bg-gradient-to-r from-gray-800/60 to-gray-700/40 backdrop-blur-sm">
+              <Card className="border-white/20 bg-card backdrop-blur-sm">
                 <CardContent className="p-3 text-center sm:p-4">
                   <div
-                    className="truncate text-xl font-bold text-blue-400 sm:text-2xl"
-                    title={`${history.summary.totalTransactions}`}
+                    className="truncate text-xl font-bold text-foreground sm:text-2xl"
+                    title={`${history.summary?.totalTransactions || 0}`}
                   >
-                    {history.summary.totalTransactions}
+                    {history.summary?.totalTransactions || 0}
                   </div>
-                  <div className="text-xs text-gray-400 sm:text-sm">
+                  <div className="text-xs text-muted-foreground sm:text-sm">
                     Total Transactions
                   </div>
                 </CardContent>
               </Card>
 
-              <Card className="border-white/10 bg-gradient-to-r from-gray-800/60 to-gray-700/40 backdrop-blur-sm">
+              <Card className="border-white/20 bg-card backdrop-blur-sm">
                 <CardContent className="p-3 text-center sm:p-4">
                   <div
-                    className="truncate text-xl font-bold text-green-400 sm:text-2xl"
-                    title={`${history.summary.totalVolume}`}
+                    className="truncate text-xl font-bold text-foreground sm:text-2xl"
+                    title={`${history.summary?.totalVolume || '0'}`}
                   >
-                    {formatBNB(history.summary.totalVolume)}
+                    {formatBNB(history.summary?.totalVolume || '0')}
                   </div>
-                  <div className="text-xs text-gray-400 sm:text-sm">
+                  <div className="text-xs text-muted-foreground sm:text-sm">
                     Total Volume (BNB)
                   </div>
                 </CardContent>
               </Card>
 
-              <Card className="border-white/10 bg-gradient-to-r from-gray-800/60 to-gray-700/40 backdrop-blur-sm">
+              <Card className="border-white/20 bg-card backdrop-blur-sm">
                 <CardContent className="p-3 text-center sm:p-4">
                   <div
-                    className="truncate text-xl font-bold text-purple-400 sm:text-2xl"
-                    title={`${history.summary.userBets}`}
+                    className="truncate text-xl font-bold text-foreground sm:text-2xl"
+                    title={`${history.summary?.userBets || 0}`}
                   >
-                    {history.summary.userBets}
+                    {history.summary?.userBets || 0}
                   </div>
-                  <div className="text-xs text-gray-400 sm:text-sm">
+                  <div className="text-xs text-muted-foreground sm:text-sm">
                     User Bets
                   </div>
                 </CardContent>
               </Card>
 
-              <Card className="border-white/10 bg-gradient-to-r from-gray-800/60 to-gray-700/40 backdrop-blur-sm">
+              <Card className="border-white/20 bg-card backdrop-blur-sm">
                 <CardContent className="p-3 text-center sm:p-4">
                   <div
-                    className="truncate text-xl font-bold text-orange-400 sm:text-2xl"
-                    title={`${history.summary.userClaims}`}
+                    className="truncate text-xl font-bold text-foreground sm:text-2xl"
+                    title={`${history.summary?.userClaims || 0}`}
                   >
-                    {history.summary.userClaims}
+                    {history.summary?.userClaims || 0}
                   </div>
-                  <div className="text-xs text-gray-400 sm:text-sm">Claims</div>
+                  <div className="text-xs text-muted-foreground sm:text-sm">
+                    Claims
+                  </div>
                 </CardContent>
               </Card>
             </div>
 
             {/* Transaction List */}
             <div className="space-y-2 sm:space-y-3">
-              <div className="text-base font-semibold text-white sm:text-lg">
+              <div className="text-base font-semibold text-foreground sm:text-lg">
                 Transaction Details
               </div>
-              {history.transactions.map((tx, index) => (
-                <Card
-                  key={index}
-                  className="border-white/10 bg-gradient-to-r from-gray-800/50 to-gray-700/30 backdrop-blur-sm transition-all duration-300 hover:shadow-lg hover:shadow-yellow-500/10"
-                >
-                  <CardContent className="p-3 sm:p-4">
-                    <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-                      <div className="flex items-center gap-2 sm:gap-3">
-                        {getTransactionIcon(tx.type)}
-                        <div>
-                          <div className="flex items-center gap-2">
-                            <Badge className={getTransactionColor(tx.type)}>
-                              {tx.type.toUpperCase()}
-                            </Badge>
-                            <div className="flex items-center gap-1">
-                              {getStatusIcon(tx.status)}
-                              <span className="text-xs text-gray-400">
-                                {tx.status}
+              {history.transactions?.length > 0 ? (
+                history.transactions.map((tx, index) => (
+                  <Card
+                    key={index}
+                    className="border-white/20 bg-card backdrop-blur-sm"
+                  >
+                    <CardContent className="p-3 sm:p-4">
+                      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                        <div className="flex items-center gap-2 sm:gap-3">
+                          {getTransactionIcon(tx.type)}
+                          <div>
+                            <div className="flex items-center gap-2">
+                              <span className="text-sm font-medium text-foreground">
+                                {tx.type.charAt(0).toUpperCase() +
+                                  tx.type.slice(1)}{' '}
+                                {tx.status.charAt(0).toUpperCase() +
+                                  tx.status.slice(1)}
                               </span>
                             </div>
-                          </div>
-                          <div className="mt-1 text-sm text-gray-300">
-                            {formatAddress(tx.userAddress)}
-                          </div>
-                          <div className="text-xs text-gray-400">
-                            {formatDate(tx.timestamp)}
+                            <a
+                              href={`https://testnet.bscscan.com/tx/${tx.txHash}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="mt-1 flex cursor-pointer items-center gap-1 text-sm text-foreground transition-colors hover:text-white"
+                            >
+                              <ExternalLink className="h-3 w-3" />
+                              {formatAddress(tx.userAddress)}
+                            </a>
+                            <div className="text-xs text-muted-foreground">
+                              {formatDate(tx.timestamp)}
+                            </div>
                           </div>
                         </div>
-                      </div>
 
-                      <div className="mt-2 flex flex-wrap items-center gap-3 sm:mt-0 sm:text-right">
-                        {tx.amount && (
-                          <div className="text-sm font-medium">
-                            {formatBNB(tx.amount)} BNB
-                          </div>
-                        )}
-                        {tx.outcome !== undefined && (
-                          <div className="text-xs text-gray-500">
-                            {tx.outcome ? 'YES' : 'NO'}
-                          </div>
-                        )}
-                        {tx.shares && (
-                          <div className="text-xs text-gray-500">
-                            {formatBNB(tx.shares)} shares
-                          </div>
-                        )}
+                        <div className="mt-2 flex flex-wrap items-center justify-end gap-3 sm:mt-0 sm:text-right">
+                          {tx.amount && (
+                            <div className="text-sm font-medium text-foreground">
+                              {formatBNB(tx.amount)} BNB
+                            </div>
+                          )}
+                        </div>
                       </div>
-                    </div>
-
-                    {/* Transaction Hash */}
-                    <div className="mt-3 flex flex-col gap-2 border-t border-white/10 pt-3 sm:flex-row sm:items-center sm:justify-between">
-                      <div className="flex items-center gap-2">
-                        <code className="max-w-[140px] truncate rounded border border-white/10 bg-gray-900 px-2 py-1 text-xs text-gray-200 sm:max-w-none">
-                          {tx.txHash.slice(0, 6)}...{tx.txHash.slice(-6)}
-                        </code>
-                        <Button
-                          size="sm"
-                          variant="ghost"
-                          onClick={() => copyToClipboard(tx.txHash, tx.txHash)}
-                          className="h-6 w-6 p-0 text-gray-300 hover:text-white"
-                        >
-                          <Copy className="h-3 w-3" />
-                        </Button>
-                        {copied === tx.txHash && (
-                          <span className="text-xs text-green-400">
-                            Copied!
-                          </span>
-                        )}
-                      </div>
-                      <Button
-                        size="sm"
-                        variant="ghost"
-                        onClick={() =>
-                          window.open(
-                            `https://testnet.bscscan.com/tx/${tx.txHash}`,
-                            '_blank'
-                          )
-                        }
-                        className="h-6 w-6 p-0 text-gray-300 hover:text-white"
-                      >
-                        <ExternalLink className="h-3 w-3" />
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
+                    </CardContent>
+                  </Card>
+                ))
+              ) : (
+                <div className="py-8 text-center text-muted-foreground">
+                  <div>No transactions found</div>
+                </div>
+              )}
             </div>
           </div>
         ) : (
-          <div className="py-8 text-center text-gray-500">
-            <Clock className="mx-auto mb-2 h-8 w-8 text-gray-400" />
+          <div className="py-8 text-center text-muted-foreground">
+            <Clock className="mx-auto mb-2 h-8 w-8 text-muted-foreground" />
             <div>No transaction history found</div>
           </div>
         )}

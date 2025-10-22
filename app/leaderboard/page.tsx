@@ -301,7 +301,7 @@ export default function LeaderboardPage() {
         </div>
 
         {/* Filters */}
-        <Card className="mb-8 border border-gray-700/50 border-yellow-500/20 bg-gray-800/60 backdrop-blur-sm">
+        <Card className="mb-8 border border-gray-700/50 border-white/20 bg-gray-800/60 backdrop-blur-sm">
           <CardContent className="p-6">
             <div className="flex flex-col gap-4 sm:flex-row">
               <div className="flex-1">
@@ -311,7 +311,7 @@ export default function LeaderboardPage() {
                 <select
                   value={selectedTimeframe}
                   onChange={e => setSelectedTimeframe(e.target.value)}
-                  className="w-full rounded-md border border-gray-700/50 bg-gray-800/60 p-2 text-white focus:border-yellow-400/50 focus:ring-yellow-400/20"
+                  className="w-full rounded-md border border-gray-700/50 bg-gray-800/60 p-2 text-white focus:border-white/50 focus:ring-white/20"
                 >
                   {timeframes.map(timeframe => (
                     <option key={timeframe.value} value={timeframe.value}>
@@ -328,7 +328,7 @@ export default function LeaderboardPage() {
                 <select
                   value={selectedCategory}
                   onChange={e => setSelectedCategory(e.target.value)}
-                  className="w-full rounded-md border border-gray-700/50 bg-gray-800/60 p-2 text-white focus:border-yellow-400/50 focus:ring-yellow-400/20"
+                  className="w-full rounded-md border border-gray-700/50 bg-gray-800/60 p-2 text-white focus:border-white/50 focus:ring-white/20"
                 >
                   {categories.map(category => (
                     <option key={category.value} value={category.value}>
@@ -345,7 +345,7 @@ export default function LeaderboardPage() {
                 <select
                   value={sortBy}
                   onChange={e => setSortBy(e.target.value as any)}
-                  className="w-full rounded-md border border-gray-700/50 bg-gray-800/60 p-2 text-white focus:border-yellow-400/50 focus:ring-yellow-400/20"
+                  className="w-full rounded-md border border-gray-700/50 bg-gray-800/60 p-2 text-white focus:border-white/50 focus:ring-white/20"
                 >
                   <option value="winnings">{t('total_winnings_sort')}</option>
                   <option value="winrate">{t('win_rate_sort')}</option>

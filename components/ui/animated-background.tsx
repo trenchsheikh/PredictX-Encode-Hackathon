@@ -28,23 +28,21 @@ export function AnimatedBackground({
         return (
           <div className="fixed inset-0 -z-50">
             {/* Base dark gradient */}
-            <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-black to-gray-800" />
+            <div className="absolute inset-0 bg-black" />
 
-            {/* Static overlay gradient */}
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-yellow-500/5 to-transparent" />
-
-            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-yellow-400/5 to-transparent" />
+            {/* Static overlay */}
+            <div className="absolute inset-0 bg-white/5" />
           </div>
         );
 
       case 'particles':
         return (
-          <div className="fixed inset-0 -z-50 overflow-hidden bg-gradient-to-br from-gray-900 via-black to-gray-800">
+          <div className="fixed inset-0 -z-50 overflow-hidden bg-black">
             {/* Floating particles */}
             {Array.from({ length: 50 }).map((_, i) => (
               <div
                 key={`particle-${i}`}
-                className="absolute h-2 w-2 rounded-full bg-yellow-400/30"
+                className="absolute h-2 w-2 rounded-full bg-white/30"
                 style={{
                   left: `${Math.random() * 100}%`,
                   top: `${Math.random() * 100}%`,
@@ -56,7 +54,7 @@ export function AnimatedBackground({
             {Array.from({ length: 8 }).map((_, i) => (
               <div
                 key={`orb-${i}`}
-                className="absolute h-16 w-16 rounded-full bg-yellow-400/10 blur-xl"
+                className="absolute h-16 w-16 rounded-full bg-white/10 blur-xl"
                 style={{
                   left: `${Math.random() * 100}%`,
                   top: `${Math.random() * 100}%`,
@@ -68,7 +66,7 @@ export function AnimatedBackground({
 
       case 'grid':
         return (
-          <div className="fixed inset-0 -z-50 bg-gradient-to-br from-gray-900 via-black to-gray-800">
+          <div className="fixed inset-0 -z-50 bg-black">
             {/* Static grid pattern */}
             <div className="absolute inset-0 opacity-20">
               <div
@@ -101,10 +99,10 @@ export function AnimatedBackground({
         return (
           <div className="fixed inset-0 -z-50">
             {/* Base dark gradient */}
-            <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-black to-gray-800" />
+            <div className="absolute inset-0 bg-black" />
 
             {/* Static overlay */}
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-yellow-500/5 to-transparent" />
+            <div className="absolute inset-0 bg-white/5" />
           </div>
         );
     }

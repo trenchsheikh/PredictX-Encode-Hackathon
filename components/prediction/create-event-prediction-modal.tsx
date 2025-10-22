@@ -163,21 +163,21 @@ export function CreateEventPredictionModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-h-[90vh] border border-white/10 bg-gradient-to-br from-gray-900/95 via-gray-800/90 to-gray-900/95 shadow-2xl backdrop-blur-md sm:max-w-[600px]">
+      <DialogContent className="max-h-[90vh] border border-white/20 bg-card shadow-2xl backdrop-blur-md sm:max-w-[600px]">
         <DialogHeader>
-          <DialogTitle className="font-heading flex items-center gap-2 text-white">
-            <TrendingUp className="h-5 w-5 text-yellow-400" />
+          <DialogTitle className="font-heading flex items-center gap-2 text-foreground">
+            <TrendingUp className="h-5 w-5 text-white" />
             {t('event_prediction.title')}
           </DialogTitle>
-          <DialogDescription className="pt-2 text-left text-gray-300">
+          <DialogDescription className="pt-2 text-left text-muted-foreground">
             {t('event_prediction.description')}
           </DialogDescription>
         </DialogHeader>
 
-        <div className="max-h-[calc(90vh-200px)] space-y-4 overflow-y-auto py-4 pr-2">
+        <div className="max-h-[calc(90vh-200px)] space-y-4 overflow-y-auto py-4">
           {/* Title */}
           <div className="space-y-2">
-            <label className="text-sm font-medium text-white">
+            <label className="text-sm font-medium text-foreground">
               {t('event_prediction.event_title')}
             </label>
             <Input
@@ -186,13 +186,13 @@ export function CreateEventPredictionModal({
               value={title}
               onChange={e => setTitle(e.target.value)}
               disabled={loading}
-              className="border-white/10 bg-white/5 text-white placeholder:text-gray-400"
+              className="border-white/20 bg-card text-foreground placeholder:text-muted-foreground focus:border-white/20 focus:ring-0"
             />
           </div>
 
           {/* Description */}
           <div className="space-y-2">
-            <label className="text-sm font-medium text-white">
+            <label className="text-sm font-medium text-foreground">
               {t('event_prediction.description_label')}
             </label>
             <Textarea
@@ -201,13 +201,13 @@ export function CreateEventPredictionModal({
               onChange={e => setDescription(e.target.value)}
               disabled={loading}
               rows={4}
-              className="border-white/10 bg-white/5 text-white placeholder:text-gray-400"
+              className="border-white/20 bg-card text-foreground placeholder:text-muted-foreground focus:border-white/20 focus:ring-0"
             />
           </div>
 
           {/* Category */}
           <div className="space-y-2">
-            <label className="text-sm font-medium text-white">
+            <label className="text-sm font-medium text-foreground">
               {t('event_prediction.category')}
             </label>
             <Select
@@ -215,55 +215,55 @@ export function CreateEventPredictionModal({
               onValueChange={setCategory}
               disabled={loading}
             >
-              <SelectTrigger className="border-white/10 bg-white/5 text-white focus:border-yellow-400/50 focus:ring-2 focus:ring-yellow-400/20">
+              <SelectTrigger className="border-white/20 bg-card text-foreground focus:border-white/20 focus:ring-0">
                 <SelectValue placeholder="Select a category" />
               </SelectTrigger>
-              <SelectContent className="z-[9999] border-white/10 bg-gray-900 text-white">
+              <SelectContent className="z-[9999] border-white/20 bg-card">
                 <SelectItem
                   value="2"
-                  className="cursor-pointer text-white hover:bg-white/10 focus:bg-white/10"
+                  className="cursor-pointer text-foreground"
                 >
                   🏛️ {t('event_prediction.categories.politics')}
                 </SelectItem>
                 <SelectItem
                   value="6"
-                  className="cursor-pointer text-white hover:bg-white/10 focus:bg-white/10"
+                  className="cursor-pointer text-foreground"
                 >
                   💻 {t('event_prediction.categories.technology')}
                 </SelectItem>
                 <SelectItem
                   value="5"
-                  className="cursor-pointer text-white hover:bg-white/10 focus:bg-white/10"
+                  className="cursor-pointer text-foreground"
                 >
                   💰 {t('event_prediction.categories.economy')}
                 </SelectItem>
                 <SelectItem
                   value="0"
-                  className="cursor-pointer text-white hover:bg-white/10 focus:bg-white/10"
+                  className="cursor-pointer text-foreground"
                 >
                   ⚽ {t('event_prediction.categories.sports')}
                 </SelectItem>
                 <SelectItem
                   value="3"
-                  className="cursor-pointer text-white hover:bg-white/10 focus:bg-white/10"
+                  className="cursor-pointer text-foreground"
                 >
                   🎬 {t('event_prediction.categories.entertainment')}
                 </SelectItem>
                 <SelectItem
                   value="8"
-                  className="cursor-pointer text-white hover:bg-white/10 focus:bg-white/10"
+                  className="cursor-pointer text-foreground"
                 >
                   🌍 {t('event_prediction.categories.world_news')}
                 </SelectItem>
                 <SelectItem
                   value="9"
-                  className="cursor-pointer text-white hover:bg-white/10 focus:bg-white/10"
+                  className="cursor-pointer text-foreground"
                 >
                   🔬 {t('event_prediction.categories.science')}
                 </SelectItem>
                 <SelectItem
                   value="10"
-                  className="cursor-pointer text-white hover:bg-white/10 focus:bg-white/10"
+                  className="cursor-pointer text-foreground"
                 >
                   🏥 {t('event_prediction.categories.health')}
                 </SelectItem>
@@ -273,7 +273,7 @@ export function CreateEventPredictionModal({
 
           {/* Expiration Date */}
           <div className="space-y-2">
-            <label className="text-sm font-medium text-white">
+            <label className="text-sm font-medium text-foreground">
               <Calendar className="mr-1 inline h-4 w-4" />
               {t('event_prediction.expiration_date')}
             </label>
@@ -282,15 +282,15 @@ export function CreateEventPredictionModal({
               value={expiresAt}
               onChange={e => setExpiresAt(e.target.value)}
               disabled={loading}
-              className="border-white/10 bg-white/5 text-white"
+              className="border-white/20 bg-card text-foreground focus:border-white/20 focus:ring-0"
             />
           </div>
 
           {/* Keywords */}
           <div className="space-y-2">
-            <label className="text-sm font-medium text-white">
+            <label className="text-sm font-medium text-foreground">
               {t('event_prediction.news_keywords')}
-              <span className="ml-2 text-xs text-gray-400">
+              <span className="ml-2 text-xs text-muted-foreground">
                 {t('event_prediction.news_keywords_help')}
               </span>
             </label>
@@ -302,13 +302,13 @@ export function CreateEventPredictionModal({
                 onChange={e => setKeywordInput(e.target.value)}
                 onKeyPress={e => e.key === 'Enter' && addKeyword()}
                 disabled={loading || keywords.length >= 10}
-                className="flex-1 border-white/10 bg-white/5 text-white placeholder:text-gray-400"
+                className="flex-1 border-white/20 bg-card text-foreground placeholder:text-muted-foreground focus:border-white/20 focus:ring-0"
               />
               <Button
                 type="button"
                 onClick={addKeyword}
                 disabled={loading || keywords.length >= 10 || !keywordInput}
-                className="bg-yellow-500 text-black hover:bg-yellow-600"
+                className="bg-white text-black"
               >
                 {t('event_prediction.add_keyword')}
               </Button>
@@ -319,7 +319,7 @@ export function CreateEventPredictionModal({
                   <Badge
                     key={keyword}
                     variant="secondary"
-                    className="bg-yellow-500/20 text-yellow-300"
+                    className="bg-white/10 text-white"
                   >
                     {keyword}
                     <button
@@ -332,7 +332,7 @@ export function CreateEventPredictionModal({
                 ))}
               </div>
             )}
-            <p className="text-xs text-gray-400">
+            <p className="text-xs text-muted-foreground">
               {keywords.length}/10 {t('event_prediction.keywords_count')}
             </p>
           </div>
@@ -340,7 +340,7 @@ export function CreateEventPredictionModal({
           {/* Bet Amount & Outcome */}
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <label className="text-sm font-medium text-white">
+              <label className="text-sm font-medium text-foreground">
                 {t('event_prediction.bet_amount')}
               </label>
               <Input
@@ -352,11 +352,11 @@ export function CreateEventPredictionModal({
                 max={maxBet}
                 step="0.001"
                 disabled={loading}
-                className="border-white/10 bg-white/5 text-white"
+                className="border-white/20 bg-card text-foreground focus:border-white/20 focus:ring-0"
               />
             </div>
             <div className="space-y-2">
-              <label className="text-sm font-medium text-white">
+              <label className="text-sm font-medium text-foreground">
                 {t('event_prediction.your_prediction')}
               </label>
               <Select
@@ -364,22 +364,16 @@ export function CreateEventPredictionModal({
                 onValueChange={value => setOutcome(value as 'yes' | 'no')}
                 disabled={loading}
               >
-                <SelectTrigger className="border-white/10 bg-white/5 text-white focus:border-yellow-400/50 focus:ring-2 focus:ring-yellow-400/20">
+                <SelectTrigger className="border-white/20 bg-card text-foreground focus:border-white/20 focus:ring-0">
                   <SelectValue
                     placeholder={t('event_prediction.select_prediction')}
                   />
                 </SelectTrigger>
-                <SelectContent className="z-[9999] border-white/10 bg-gray-900 text-white">
-                  <SelectItem
-                    value="yes"
-                    className="cursor-pointer text-green-400 hover:bg-white/10 focus:bg-white/10"
-                  >
+                <SelectContent className="z-[9999] border-white/20 bg-card">
+                  <SelectItem value="yes" className="cursor-pointer text-white">
                     ✓ {t('event_prediction.yes')}
                   </SelectItem>
-                  <SelectItem
-                    value="no"
-                    className="cursor-pointer text-red-400 hover:bg-white/10 focus:bg-white/10"
-                  >
+                  <SelectItem value="no" className="cursor-pointer text-white">
                     ✗ {t('event_prediction.no')}
                   </SelectItem>
                 </SelectContent>
@@ -391,8 +385,8 @@ export function CreateEventPredictionModal({
           {error && <InlineError error={error} />}
 
           {/* Info Banner */}
-          <div className="rounded-xl border border-blue-500/20 bg-blue-500/10 p-4">
-            <p className="text-xs text-gray-300">
+          <div className="rounded-xl border border-white/20 bg-white/10 p-4">
+            <p className="text-xs text-white">
               <strong className="text-white">
                 {t('event_prediction.how_it_works')}
               </strong>{' '}
@@ -407,7 +401,7 @@ export function CreateEventPredictionModal({
             variant="outline"
             onClick={() => onOpenChange(false)}
             disabled={loading}
-            className="border-white/10 bg-white/5 text-white"
+            className="border-white/20 bg-card text-foreground"
           >
             {t('event_prediction.cancel')}
           </Button>
@@ -415,7 +409,7 @@ export function CreateEventPredictionModal({
             type="button"
             onClick={handleConfirm}
             disabled={loading}
-            className="bg-gradient-to-r from-yellow-500 to-yellow-600 font-semibold text-black hover:from-yellow-600 hover:to-yellow-700"
+            className="bg-white font-semibold text-black"
           >
             {loading
               ? t('event_prediction.creating')

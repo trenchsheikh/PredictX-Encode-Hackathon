@@ -138,7 +138,7 @@ export const Footer = ({
         {showBackgroundBrandText && brandName && (
           <div
             className={cn(
-              'pointer-events-none absolute bottom-36 left-1/2 -translate-x-1/2 select-none bg-gradient-to-b from-yellow-400/30 via-yellow-300/15 to-transparent bg-clip-text px-4 text-center font-extrabold leading-none tracking-tighter text-transparent md:bottom-28',
+              'pointer-events-none absolute bottom-36 left-1/2 -translate-x-1/2 select-none bg-white/30 bg-clip-text px-4 text-center font-extrabold leading-none tracking-tighter text-transparent md:bottom-28',
               pixelFont.className
             )}
             style={{
@@ -155,16 +155,16 @@ export const Footer = ({
             href={brandLinkHref}
             target="_blank"
             rel="noopener noreferrer"
-            className="duration-400 absolute bottom-24 left-1/2 z-10 flex -translate-x-1/2 items-center justify-center rounded-3xl border-2 border-yellow-500/60 bg-black/30 p-3 shadow-[0_0_24px_0_rgba(234,179,8,0.22)] backdrop-blur-sm hover:border-yellow-400/80 md:bottom-20"
+            className="duration-400 absolute bottom-24 left-1/2 z-10 flex -translate-x-1/2 items-center justify-center rounded-3xl border-2 border-white/60 bg-black/30 p-3 shadow-[0_0_24px_0_rgba(255,255,255,0.22)] backdrop-blur-sm hover:border-white/80 md:bottom-20"
           >
             {brandIcon || (
-              <NotepadTextDashed className="h-10 w-10 text-yellow-400 drop-shadow-lg sm:h-12 sm:w-12 md:h-16 md:w-16" />
+              <NotepadTextDashed className="h-10 w-10 text-white drop-shadow-lg sm:h-12 sm:w-12 md:h-16 md:w-16" />
             )}
           </Link>
         ) : (
-          <div className="duration-400 absolute bottom-24 left-1/2 z-10 flex -translate-x-1/2 items-center justify-center rounded-3xl border-2 border-yellow-500/60 bg-black/30 p-3 shadow-[0_0_24px_0_rgba(234,179,8,0.22)] backdrop-blur-sm hover:border-yellow-400/80 md:bottom-20">
+          <div className="duration-400 absolute bottom-24 left-1/2 z-10 flex -translate-x-1/2 items-center justify-center rounded-3xl border-2 border-white/60 bg-black/30 p-3 shadow-[0_0_24px_0_rgba(255,255,255,0.22)] backdrop-blur-sm hover:border-white/80 md:bottom-20">
             {brandIcon || (
-              <NotepadTextDashed className="h-10 w-10 text-yellow-400 drop-shadow-lg sm:h-12 sm:w-12 md:h-16 md:w-16" />
+              <NotepadTextDashed className="h-10 w-10 text-white drop-shadow-lg sm:h-12 sm:w-12 md:h-16 md:w-16" />
             )}
           </div>
         )}
@@ -172,8 +172,8 @@ export const Footer = ({
         {!isDocs && (
           <div
             className={cn(
-              'sm:bottom-34 absolute bottom-32 left-1/2 h-px w-full -translate-x-1/2 bg-gradient-to-r from-transparent to-transparent backdrop-blur-[1px]',
-              'via-yellow-400/25'
+              'sm:bottom-34 absolute bottom-32 left-1/2 h-px w-full -translate-x-1/2 bg-transparent backdrop-blur-[1px]',
+              'via-white/25'
             )}
           ></div>
         )}

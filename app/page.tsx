@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { usePrivy } from '@privy-io/react-auth';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import {
   Dialog,
   DialogContent,
@@ -12,7 +13,6 @@ import {
   DialogDescription,
 } from '@/components/ui/dialog';
 import { PredictionCard } from '@/components/prediction/prediction-card';
-import { Filters } from '@/components/prediction/filters';
 import { CreateBetModal } from '@/components/prediction/create-bet-modal';
 import { BetModal } from '@/components/prediction/bet-modal';
 import {
@@ -27,7 +27,6 @@ import { TransactionHistoryModal } from '@/components/prediction/transaction-his
 import { TransactionStatus } from '@/components/ui/transaction-status';
 import {
   Prediction,
-  FilterOptions,
   CreatePredictionData,
   PredictionCategory,
   PredictionStatus,
@@ -42,7 +41,6 @@ import {
   CheckCircle,
   Wallet,
 } from 'lucide-react';
-import { HeroSection } from '@/components/ui/hero-section';
 import { useI18n } from '@/components/providers/i18n-provider';
 import { api, getErrorMessage } from '@/lib/api-client';
 import { usePredictionContract } from '@/lib/hooks/use-prediction-contract';
@@ -61,7 +59,6 @@ export default function HomePage() {
   const [predictions, setPredictions] = useState<Prediction[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string>();
-  const [filters, setFilters] = useState<FilterOptions>({});
 
   // Modal state
   const [showCreateModal, setShowCreateModal] = useState(false);
@@ -82,6 +79,10 @@ export default function HomePage() {
     [predictionId: string]: { outcome: 'yes' | 'no'; shares: number };
   }>({});
 
+  // Filtering state
+  const [activeFilter, setActiveFilter] = useState<string>('all');
+  const [activeCategory, setActiveCategory] = useState<string>('all');
+
   // Set mounted state to prevent hydration mismatch
   useEffect(() => {
     setMounted(true);
@@ -95,10 +96,7 @@ export default function HomePage() {
     setError(undefined);
 
     try {
-      const response = await api.markets.getMarkets({
-        status: filters.status,
-        category: filters.category,
-      });
+      const response = await api.markets.getMarkets();
 
       if (!response.success || !response.data) {
         throw new Error(response.error || 'Failed to fetch markets');
@@ -156,30 +154,11 @@ export default function HomePage() {
   };
 
   /**
-   * Fetch markets on mount and when filters change
+   * Fetch markets on mount
    */
   useEffect(() => {
     fetchMarkets();
-  }, [filters.status, filters.category]);
-
-  /**
-   * Filter predictions locally (for client-side filters)
-   */
-  const filteredPredictions = predictions.filter(prediction => {
-    if (filters.isHot && !prediction.isHot) return false;
-    if (filters.timeRange) {
-      const now = Date.now();
-      const timeRanges = {
-        '24h': 86400000,
-        '7d': 86400000 * 7,
-        '30d': 86400000 * 30,
-      };
-      const timeRange =
-        timeRanges[filters.timeRange as keyof typeof timeRanges];
-      if (timeRange && prediction.createdAt < now - timeRange) return false;
-    }
-    return true;
-  });
+  }, []);
 
   /**
    * Handle crypto prediction button click
@@ -576,40 +555,61 @@ export default function HomePage() {
     totalParticipants: predictions.reduce((sum, p) => sum + p.participants, 0),
   };
 
+  /**
+   * Filter predictions based on active filters
+   */
+  const getFilteredPredictions = () => {
+    let filtered = [...predictions];
+
+    // Apply category filter
+    if (activeCategory !== 'all') {
+      filtered = filtered.filter(p => p.category === activeCategory);
+    }
+
+    // Apply sorting filter
+    switch (activeFilter) {
+      case 'new':
+        filtered = filtered.sort((a, b) => b.createdAt - a.createdAt);
+        break;
+      case 'trending':
+        filtered = filtered.sort((a, b) => b.participants - a.participants);
+        break;
+      case 'all':
+      default:
+        // Keep original order
+        break;
+    }
+
+    return filtered;
+  };
+
+  const filteredPredictions = getFilteredPredictions();
+
+  /**
+   * Get unique categories from predictions
+   */
+  const getCategories = () => {
+    const categories = Array.from(new Set(predictions.map(p => p.category)));
+    return categories.sort();
+  };
+
   return (
     <div className="relative overflow-hidden">
       {/* Removed page-specific animated background */}
 
       <style jsx>{`
-        /* Animations removed for performance and to avoid fade/scale effects */
+        /* Flat design - no animations or transitions */
         .bold-title {
           font-weight: 900;
           letter-spacing: -0.02em;
-        }
-        .rotating-border-btn,
-        button.rotating-border-btn {
-          border: 5px solid #00ff00 !important;
-          outline: 3px solid #00ff00 !important;
-          outline-offset: 3px !important;
-          transition:
-            transform 0.25s ease,
-            box-shadow 0.25s ease,
-            background 0.25s ease !important;
         }
       `}</style>
 
       {/* Removed rising dust/bubbles from left and right sides */}
 
-      {/* Hero Section */}
-      <HeroSection
-        onCreateClick={() => setShowCreateModal(true)}
-        onCryptoClick={handleCryptoClick}
-        onNewsClick={handleNewsClick}
-      />
-
       {/* Error Banner */}
       {error && (
-        <div className="relative z-10 mx-auto mb-6 max-w-7xl px-6 lg:px-8">
+        <div className="relative z-10 mx-auto mb-6 max-w-7xl px-4 sm:px-6 lg:px-8">
           <Card className="border-red-500/50 bg-red-900/30 backdrop-blur-sm">
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
@@ -619,7 +619,7 @@ export default function HomePage() {
                   size="sm"
                   variant="outline"
                   onClick={fetchMarkets}
-                  className="ml-auto border-red-400/70 bg-red-500/10 text-red-100 hover:border-red-400 hover:bg-red-500/30"
+                  className="ml-auto border-red-400/70 bg-red-500/10 text-red-100"
                 >
                   <RefreshCw className="mr-2 h-4 w-4" />
                   {mounted && isInitialized ? t('errors.retry') : 'Retry'}
@@ -633,47 +633,95 @@ export default function HomePage() {
       {/* All Markets Section */}
       <div
         id="all-markets"
-        className="relative z-10 mx-auto max-w-7xl px-6 pb-16 lg:px-8"
+        className="relative z-10 mx-auto max-w-7xl px-4 pb-16 sm:px-6 lg:px-8"
       >
         <div className="space-y-6">
-          {/* Section Header */}
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="rounded-lg border border-yellow-400/30 bg-gradient-to-r from-yellow-400/20 to-yellow-600/20 p-2">
-                <BarChart3 className="h-6 w-6 text-yellow-400" />
-              </div>
-              <h2 className="font-heading text-2xl text-white">
-                {mounted && isInitialized
-                  ? t('markets.all_markets')
-                  : 'All Markets'}
-              </h2>
+          {/* Filtering Tabs and Create Buttons */}
+          <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <Tabs
+              value={`${activeFilter}-${activeCategory}`}
+              onValueChange={value => {
+                const [filter, category] = value.split('-');
+                setActiveFilter(filter);
+                setActiveCategory(category);
+              }}
+              className="w-full sm:flex-1"
+            >
+              <TabsList className="scrollbar-hide inline-flex w-full justify-start gap-1 overflow-x-auto sm:w-auto">
+                <TabsTrigger
+                  value="new-all"
+                  className="flex-shrink-0 text-center"
+                >
+                  New
+                </TabsTrigger>
+                <TabsTrigger
+                  value="trending-all"
+                  className="flex-shrink-0 text-center"
+                >
+                  Trending
+                </TabsTrigger>
+                <TabsTrigger
+                  value="all-all"
+                  className="flex-shrink-0 text-center"
+                >
+                  All
+                </TabsTrigger>
+                {getCategories().map(category => (
+                  <TabsTrigger
+                    key={category}
+                    value={`all-${category}`}
+                    className="flex-shrink-0 whitespace-nowrap text-center"
+                  >
+                    {category.charAt(0).toUpperCase() + category.slice(1)}
+                  </TabsTrigger>
+                ))}
+              </TabsList>
+            </Tabs>
+
+            {/* Three Create Buttons - Stack on mobile */}
+            <div className="flex flex-col gap-2 sm:flex-row">
+              <Button
+                onClick={() => setShowCreateModal(true)}
+                size="sm"
+                className="bg-white text-black"
+              >
+                Start DarkPool Betting
+              </Button>
+              <Button
+                onClick={handleCryptoClick}
+                variant="outline"
+                size="sm"
+                className="border-2 border-white text-white"
+              >
+                Crypto DarkPool
+              </Button>
+              <Button
+                onClick={handleNewsClick}
+                size="sm"
+                className="bg-white text-black"
+              >
+                News Events
+              </Button>
             </div>
           </div>
-
-          {/* Filters */}
-          <Filters
-            filters={filters}
-            onFiltersChange={setFilters}
-            totalCount={filteredPredictions.length}
-          />
 
           {/* Markets Grid */}
           {loading ? (
             <div className="flex items-center justify-center py-12">
-              <Loader2 className="h-12 w-12 animate-spin text-yellow-400" />
+              <Loader2 className="h-12 w-12 animate-spin text-white" />
             </div>
           ) : filteredPredictions.length === 0 ? (
-            <Card className="border-gray-700/50 bg-gray-900/60 py-12 text-center backdrop-blur-sm">
+            <Card className="border-white/20 bg-card py-12 text-center backdrop-blur-sm">
               <CardContent>
-                <div className="mx-auto mb-4 flex h-24 w-24 items-center justify-center rounded-full border border-yellow-400/30 bg-yellow-400/20">
-                  <TrendingUp className="h-12 w-12 text-yellow-400" />
+                <div className="mx-auto mb-4 flex h-24 w-24 items-center justify-center rounded-full border border-white/30 bg-white/20">
+                  <TrendingUp className="h-12 w-12 text-white" />
                 </div>
-                <h3 className="font-heading mb-2 text-lg text-white">
+                <h3 className="font-heading mb-2 text-lg text-foreground">
                   {mounted && isInitialized
                     ? t('markets.no_predictions_found')
                     : 'No Predictions Found'}
                 </h3>
-                <p className="mb-4 text-gray-300">
+                <p className="mb-4 text-muted-foreground">
                   {mounted && isInitialized
                     ? t('markets.try_adjusting_filters')
                     : 'Try adjusting your filters'}
@@ -682,7 +730,7 @@ export default function HomePage() {
                   onClick={() => setShowCreateModal(true)}
                   variant="outline"
                   disabled={!authenticated}
-                  className="border-gray-600 bg-gray-800/60 text-white hover:bg-gray-700/80"
+                  className="border-white/20 bg-card text-foreground"
                 >
                   <Plus className="mr-2 h-4 w-4" />
                   {mounted && isInitialized
@@ -692,7 +740,7 @@ export default function HomePage() {
               </CardContent>
             </Card>
           ) : (
-            <div className="grid auto-rows-fr grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <div className="grid auto-rows-fr grid-cols-1 gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-3">
               {filteredPredictions.map((prediction, index) => (
                 <PredictionCard
                   key={prediction.id}
@@ -707,15 +755,15 @@ export default function HomePage() {
         </div>
 
         {/* Completed Predictions Section */}
-        {predictions.filter(
+        {filteredPredictions.filter(
           p => p.status === 'resolved' || p.status === 'cancelled'
         ).length > 0 && (
           <div className="mt-12">
-            <div className="mb-6 flex items-center gap-3">
-              <div className="rounded-lg border border-green-400/30 bg-gradient-to-r from-green-400/20 to-green-600/20 p-2">
-                <CheckCircle className="h-6 w-6 text-green-400" />
+            <div className="mb-6 flex items-center">
+              <div className="rounded-lg p-2">
+                <CheckCircle className="h-6 w-6 text-white" />
               </div>
-              <h2 className="font-heading text-2xl text-white">
+              <h2 className="font-heading text-2xl text-foreground">
                 {mounted && isInitialized
                   ? t('markets.completed_predictions')
                   : 'Completed Predictions'}
@@ -723,7 +771,7 @@ export default function HomePage() {
             </div>
 
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {predictions
+              {filteredPredictions
                 .filter(
                   p => p.status === 'resolved' || p.status === 'cancelled'
                 )
@@ -799,28 +847,28 @@ export default function HomePage() {
         open={showOracleErrorModal}
         onOpenChange={setShowOracleErrorModal}
       >
-        <DialogContent className="max-w-md border border-orange-500/50 bg-gray-900/95 shadow-2xl backdrop-blur-md">
+        <DialogContent className="max-w-md border border-white/20 bg-card shadow-2xl backdrop-blur-md">
           <DialogHeader>
-            <DialogTitle className="flex items-center gap-2 text-orange-400">
+            <DialogTitle className="flex items-center gap-2 text-white">
               <AlertCircle className="h-5 w-5" />
               Oracle Not Available
             </DialogTitle>
-            <DialogDescription className="text-gray-300">
+            <DialogDescription className="text-muted-foreground">
               Regular prediction markets are temporarily disabled
             </DialogDescription>
           </DialogHeader>
 
           <div className="space-y-4">
-            <div className="rounded-lg border border-orange-500/20 bg-orange-500/10 p-4">
+            <div className="rounded-lg border border-white/20 bg-white/10 p-4">
               <div className="flex items-start gap-3">
-                <AlertCircle className="mt-0.5 h-5 w-5 flex-shrink-0 text-orange-400" />
+                <AlertCircle className="mt-0.5 h-5 w-5 flex-shrink-0 text-white" />
                 <div className="space-y-2">
-                  <p className="text-sm text-orange-200">
+                  <p className="text-sm text-white">
                     <strong>Oracle system is under development.</strong> We
                     don't have a way to automatically resolve regular prediction
                     outcomes yet.
                   </p>
-                  <p className="text-sm text-orange-200">
+                  <p className="text-sm text-white">
                     However, you can create <strong>crypto predictions</strong>{' '}
                     that are automatically verified using real-time price data!
                   </p>
@@ -829,20 +877,20 @@ export default function HomePage() {
             </div>
 
             <div className="space-y-3">
-              <h4 className="font-medium text-white">
+              <h4 className="font-medium text-foreground">
                 Try Crypto DarkPool instead:
               </h4>
-              <ul className="space-y-2 text-sm text-gray-300">
+              <ul className="space-y-2 text-sm text-muted-foreground">
                 <li className="flex items-center gap-2">
-                  <CheckCircle className="h-4 w-4 text-green-400" />
+                  <CheckCircle className="h-4 w-4 text-white" />
                   <span>Automatic price verification</span>
                 </li>
                 <li className="flex items-center gap-2">
-                  <CheckCircle className="h-4 w-4 text-green-400" />
+                  <CheckCircle className="h-4 w-4 text-white" />
                   <span>Real-time crypto data</span>
                 </li>
                 <li className="flex items-center gap-2">
-                  <CheckCircle className="h-4 w-4 text-green-400" />
+                  <CheckCircle className="h-4 w-4 text-white" />
                   <span>No manual resolution needed</span>
                 </li>
               </ul>
@@ -853,7 +901,7 @@ export default function HomePage() {
             <Button
               variant="outline"
               onClick={() => setShowOracleErrorModal(false)}
-              className="flex-1 border-gray-700/50 bg-gray-800/60 text-white hover:bg-gray-800/80"
+              className="flex-1 border-white/20 bg-card text-foreground"
             >
               Cancel
             </Button>
@@ -863,7 +911,7 @@ export default function HomePage() {
                 setShowCryptoModal(true);
               }}
               variant="outline"
-              className="flex-1 border-green-600 bg-green-800/60 text-white hover:bg-green-700/80"
+              className="flex-1 border-white/20 bg-white text-black"
             >
               Open Crypto DarkPool
             </Button>
@@ -873,15 +921,15 @@ export default function HomePage() {
 
       {/* Wallet Connection Prompt */}
       <Dialog open={showWalletPrompt} onOpenChange={setShowWalletPrompt}>
-        <DialogContent className="max-w-md border border-yellow-400/50 bg-gray-900/95 shadow-2xl backdrop-blur-md">
+        <DialogContent className="max-w-md border border-white/20 bg-card shadow-2xl backdrop-blur-md">
           <DialogHeader>
-            <DialogTitle className="flex items-center gap-2 text-yellow-400">
+            <DialogTitle className="flex items-center gap-2 text-foreground">
               <Wallet className="h-5 w-5" />
               {mounted && isInitialized
                 ? t('wallet_prompt.title')
                 : 'Connect Your Wallet'}
             </DialogTitle>
-            <DialogDescription className="text-gray-300">
+            <DialogDescription className="text-muted-foreground">
               {mounted && isInitialized
                 ? t('wallet_prompt.description')
                 : 'You need to connect your wallet to create or place predictions'}
@@ -889,10 +937,10 @@ export default function HomePage() {
           </DialogHeader>
 
           <div className="space-y-4">
-            <div className="rounded-lg border border-yellow-400/20 bg-yellow-400/10 p-4">
+            <div className="rounded-lg border border-white/20 bg-white/10 p-4">
               <div className="flex items-start gap-3">
-                <AlertCircle className="mt-0.5 h-5 w-5 flex-shrink-0 text-yellow-400" />
-                <div className="space-y-2 text-sm text-gray-300">
+                <AlertCircle className="mt-0.5 h-5 w-5 flex-shrink-0 text-white" />
+                <div className="space-y-2 text-sm text-white">
                   <p>
                     {mounted && isInitialized
                       ? t('wallet_prompt.message')
@@ -907,7 +955,7 @@ export default function HomePage() {
             <Button
               variant="outline"
               onClick={() => setShowWalletPrompt(false)}
-              className="flex-1 border-gray-700/50 bg-gray-800/60 text-white hover:bg-gray-800/80"
+              className="flex-1 border-white/20 bg-card text-foreground"
             >
               {mounted && isInitialized ? t('cancel') : 'Cancel'}
             </Button>
@@ -917,7 +965,7 @@ export default function HomePage() {
                 login();
               }}
               variant="outline"
-              className="flex-1 border-blue-600 bg-blue-800/60 text-white hover:bg-blue-700/80"
+              className="flex-1 border-white/20 bg-white text-black"
             >
               {mounted && isInitialized
                 ? t('connect_wallet')

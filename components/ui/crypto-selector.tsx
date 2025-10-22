@@ -38,7 +38,7 @@ export function CryptoSelector({
       <button
         onClick={() => setIsOpen(!isOpen)}
         className={cn(
-          'flex w-full items-center justify-between rounded-xl bg-gradient-to-r from-gray-900/60 to-gray-800/40 p-4',
+          'flex w-full items-center justify-between rounded-xl bg-gray-900/60 p-4',
           'border border-gray-700/50 text-left backdrop-blur-sm',
           'transition-all duration-300 hover:border-yellow-500/30 hover:shadow-lg hover:shadow-yellow-500/10',
           'focus:outline-none focus:ring-2 focus:ring-yellow-500/20'

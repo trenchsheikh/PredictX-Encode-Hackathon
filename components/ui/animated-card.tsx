@@ -23,13 +23,13 @@ export function AnimatedCard({
     <div
       onClick={onClick}
       className={cn(
-        'relative overflow-hidden rounded-2xl border border-gray-700/50 bg-gradient-to-br from-gray-900/50 to-gray-800/30 shadow-2xl backdrop-blur-sm',
+        'relative overflow-hidden rounded-2xl border border-gray-700/50 bg-gray-900/50 shadow-2xl backdrop-blur-sm',
         'transition-all duration-300 hover:border-yellow-500/30 hover:shadow-yellow-500/20',
         className
       )}
     >
       {/* Subtle gradient overlay */}
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-yellow-500/5 to-transparent" />
+      <div className="pointer-events-none absolute inset-0 bg-yellow-500/5" />
 
       {/* Content */}
       <div className="relative z-10">{children}</div>
