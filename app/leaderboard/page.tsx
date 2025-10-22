@@ -24,20 +24,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { api } from '@/lib/api-client';
 import { formatBNB, formatAddress } from '@/lib/utils';
 import { cn } from '@/lib/utils';
-
-interface LeaderboardEntry {
-  rank: number;
-  address: string;
-  username?: string;
-  totalWinnings: number;
-  totalBets: number;
-  winRate: number;
-  totalVolume: number;
-  badges: string[];
-  isVerified: boolean;
-  streak: number;
-  lastActive: number;
-}
+import type { LeaderboardEntry } from '@/types';
 
 // Leaderboard data will be fetched from API
 

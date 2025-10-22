@@ -100,7 +100,9 @@ export function usePredictionContract() {
         type: wallet.walletClientType,
         chainId: wallet.chainId,
         availableMethods: Object.keys(wallet).filter(
-          key => typeof (wallet as Record<string, unknown>)[key] === 'function'
+          key =>
+            typeof (wallet as unknown as Record<string, unknown>)[key] ===
+            'function'
         ),
       });
 
@@ -171,7 +173,14 @@ export function usePredictionContract() {
                 console.log(`Switched to ${networkName}`);
               } catch (switchError: unknown) {
                 // eslint-disable-next-line no-console
-                console.warn('Failed to switch chain:', switchError.message);
+                console.warn(
+                  'Failed to switch chain:',
+                  switchError instanceof Error
+                    ? switchError instanceof Error
+                      ? switchError.message
+                      : String(switchError)
+                    : String(switchError)
+                );
                 // Try alternative method
                 try {
                   // eslint-disable-next-line no-console
@@ -183,7 +192,11 @@ export function usePredictionContract() {
                   // eslint-disable-next-line no-console
                   console.warn(
                     'Alternative switch also failed:',
-                    altError.message
+                    altError instanceof Error
+                      ? altError instanceof Error
+                        ? altError.message
+                        : String(altError)
+                      : String(altError)
                   );
                   // Continue anyway, user can switch manually
                 }
@@ -237,15 +250,24 @@ export function usePredictionContract() {
               // eslint-disable-next-line no-console
               console.error(
                 '❌ Signer verification failed:',
-                signerError.message
+                signerError instanceof Error
+                  ? signerError instanceof Error
+                    ? signerError.message
+                    : String(signerError)
+                  : String(signerError)
               );
               throw new Error(
-                `Signer verification failed: ${signerError.message}`
+                `Signer verification failed: ${signerError instanceof Error ? (signerError instanceof Error ? signerError.message : String(signerError)) : String(signerError)}`
               );
             }
           } catch (privyError: unknown) {
             // eslint-disable-next-line no-console
-            console.warn('Privy method failed:', privyError.message);
+            console.warn(
+              'Privy method failed:',
+              privyError instanceof Error
+                ? privyError.message
+                : String(privyError)
+            );
           }
         }
 
@@ -268,7 +290,12 @@ export function usePredictionContract() {
           console.log('Signer obtained via Privy embedded wallet');
         } catch (privyError: unknown) {
           // eslint-disable-next-line no-console
-          console.warn('Privy embedded wallet failed:', privyError.message);
+          console.warn(
+            'Privy embedded wallet failed:',
+            privyError instanceof Error
+              ? privyError.message
+              : String(privyError)
+          );
         }
       }
 
@@ -278,7 +305,8 @@ export function usePredictionContract() {
         console.log('Trying any available signer method...');
         const methods = Object.keys(wallet).filter(
           key =>
-            typeof (wallet as Record<string, unknown>)[key] === 'function' &&
+            typeof (wallet as unknown as Record<string, unknown>)[key] ===
+              'function' &&
             (key.includes('signer') ||
               key.includes('provider') ||
               key.includes('ethereum'))
@@ -292,26 +320,41 @@ export function usePredictionContract() {
             // eslint-disable-next-line no-console
             console.log(`Trying wallet.${method}...`);
             const result = await (
-              wallet as Record<string, () => Promise<unknown>>
+              wallet as unknown as Record<string, () => Promise<unknown>>
             )[method]();
             // eslint-disable-next-line no-console
             console.log(`Result from wallet.${method}:`, result);
 
-            if (result && typeof result.getSigner === 'function') {
-              signer = await result.getSigner();
+            if (
+              result &&
+              typeof (result as { getSigner?: unknown }).getSigner ===
+                'function'
+            ) {
+              signer = await (
+                result as { getSigner: () => Promise<ethers.Signer> }
+              ).getSigner();
               // eslint-disable-next-line no-console
               console.log(`Signer obtained via wallet.${method}`);
               break;
-            } else if (result && typeof result.getSigner === 'function') {
+            } else if (
+              result &&
+              typeof (result as { getSigner?: unknown }).getSigner ===
+                'function'
+            ) {
               // Some wallets might have getSigner as a property
-              signer = result.getSigner;
+              signer = (result as { getSigner: ethers.Signer }).getSigner;
               // eslint-disable-next-line no-console
               console.log(`Signer obtained via wallet.${method} (property)`);
               break;
             }
           } catch (methodError: unknown) {
             // eslint-disable-next-line no-console
-            console.warn(`wallet.${method} failed:`, methodError.message);
+            console.warn(
+              `wallet.${method} failed:`,
+              methodError instanceof Error
+                ? methodError.message
+                : String(methodError)
+            );
           }
         }
       }
@@ -329,7 +372,9 @@ export function usePredictionContract() {
           // eslint-disable-next-line no-console
           console.warn(
             '⚠️ Address-based signer creation failed:',
-            addressError.message
+            addressError instanceof Error
+              ? addressError.message
+              : String(addressError)
           );
         }
       }
@@ -342,7 +387,12 @@ export function usePredictionContract() {
           // Skip window.ethereum - use only Privy-connected wallet
         } catch (basicError: unknown) {
           // eslint-disable-next-line no-console
-          console.warn('⚠️ Basic signer creation failed:', basicError.message);
+          console.warn(
+            '⚠️ Basic signer creation failed:',
+            basicError instanceof Error
+              ? basicError.message
+              : String(basicError)
+          );
         }
       }
 
@@ -353,7 +403,8 @@ export function usePredictionContract() {
           )
             .filter(
               key =>
-                typeof (wallet as Record<string, unknown>)[key] === 'function'
+                typeof (wallet as unknown as Record<string, unknown>)[key] ===
+                'function'
             )
             .join(', ')}`
         );
@@ -373,7 +424,12 @@ export function usePredictionContract() {
         );
       } catch (addressError: unknown) {
         // eslint-disable-next-line no-console
-        console.warn('⚠️ Could not get signer address:', addressError.message);
+        console.warn(
+          '⚠️ Could not get signer address:',
+          addressError instanceof Error
+            ? addressError.message
+            : String(addressError)
+        );
         // eslint-disable-next-line no-console
         console.log('Signer object:', signer);
         // eslint-disable-next-line no-console
@@ -397,7 +453,7 @@ export function usePredictionContract() {
     } catch (err: unknown) {
       // eslint-disable-next-line no-console
       console.error('❌ Failed to get signer:', err);
-      const errorMsg = `Failed to get wallet signer: ${err.message}`;
+      const errorMsg = `Failed to get wallet signer: ${err instanceof Error ? (err instanceof Error ? err.message : String(err)) : String(err)}`;
       setError(errorMsg);
       return null;
     }
@@ -455,7 +511,9 @@ export function usePredictionContract() {
       } catch (signerTestError: unknown) {
         // eslint-disable-next-line no-console
         console.error('❌ Signer test failed:', signerTestError);
-        throw new Error(`Signer is invalid: ${signerTestError.message}`);
+        throw new Error(
+          `Signer is invalid: ${signerTestError instanceof Error ? signerTestError.message : String(signerTestError)}`
+        );
       }
 
       if (contractABI.length === 0) {
@@ -533,7 +591,9 @@ export function usePredictionContract() {
           // eslint-disable-next-line no-console
           console.warn(
             'Failed to switch network automatically:',
-            switchError.message
+            switchError instanceof Error
+              ? switchError.message
+              : String(switchError)
           );
 
           const errorMsg = `Please switch to ${networkName} (Chain ID: ${expectedChainId}). Current: ${currentChainId || 'Unknown'}`;
@@ -558,7 +618,12 @@ export function usePredictionContract() {
         }
       } catch (networkError: unknown) {
         // eslint-disable-next-line no-console
-        console.warn('Network check failed:', networkError.message);
+        console.warn(
+          'Network check failed:',
+          networkError instanceof Error
+            ? networkError.message
+            : String(networkError)
+        );
         // Continue anyway since wallet chainId check passed
       }
 
@@ -594,7 +659,9 @@ export function usePredictionContract() {
       } catch (signerTestError: unknown) {
         // eslint-disable-next-line no-console
         console.error('Signer test failed:', signerTestError);
-        throw new Error(`Signer is invalid: ${signerTestError.message}`);
+        throw new Error(
+          `Signer is invalid: ${signerTestError instanceof Error ? signerTestError.message : String(signerTestError)}`
+        );
       }
 
       const contract = new ethers.Contract(
@@ -608,7 +675,10 @@ export function usePredictionContract() {
     } catch (err: unknown) {
       // eslint-disable-next-line no-console
       console.error('Failed to create contract instance:', err);
-      const errorMessage = err.message || 'Unknown error occurred';
+      const errorMessage =
+        err instanceof Error
+          ? err.message
+          : String(err) || 'Unknown error occurred';
       setError(`Failed to get contract instance: ${errorMessage}`);
       return null;
     }
@@ -723,10 +793,17 @@ export function usePredictionContract() {
 
           // If it's an RPC error, try with a different approach
           if (
-            txError.message.includes(
-              'Transaction does not have a transaction hash'
-            ) ||
-            txError.message.includes('-32603')
+            txError instanceof Error
+              ? txError instanceof Error
+                ? txError.message
+                : String(txError)
+              : String(txError).includes(
+                    'Transaction does not have a transaction hash'
+                  ) || txError instanceof Error
+                ? txError instanceof Error
+                  ? txError.message
+                  : String(txError)
+                : String(txError).includes('-32603')
           ) {
             // eslint-disable-next-line no-console
             console.log(
@@ -882,7 +959,12 @@ export function usePredictionContract() {
           console.error('Transaction failed:', txError);
 
           // Check if it's a business logic error (not an RPC issue)
-          const errorMessage = txError.message || '';
+          const errorMessage =
+            txError instanceof Error
+              ? txError instanceof Error
+                ? txError.message
+                : String(txError)
+              : String(txError) || '';
           const isBusinessLogicError =
             errorMessage.includes('Already committed') ||
             errorMessage.includes('Bet too low') ||
@@ -902,10 +984,17 @@ export function usePredictionContract() {
 
           // If it's an RPC error, try with a different approach
           if (
-            txError.message.includes(
-              'Transaction does not have a transaction hash'
-            ) ||
-            txError.message.includes('-32603')
+            txError instanceof Error
+              ? txError instanceof Error
+                ? txError.message
+                : String(txError)
+              : String(txError).includes(
+                    'Transaction does not have a transaction hash'
+                  ) || txError instanceof Error
+                ? txError instanceof Error
+                  ? txError.message
+                  : String(txError)
+                : String(txError).includes('-32603')
           ) {
             // eslint-disable-next-line no-console
             console.log(
@@ -924,7 +1013,10 @@ export function usePredictionContract() {
               console.error('Fallback transaction also failed:', fallbackError);
 
               // Check if fallback also hit a business logic error
-              const fallbackMessage = fallbackError.message || '';
+              const fallbackMessage =
+                fallbackError instanceof Error
+                  ? fallbackError.message
+                  : String(fallbackError) || '';
               if (
                 fallbackMessage.includes('Already committed') ||
                 fallbackMessage.includes('Bet too low') ||
@@ -1070,7 +1162,7 @@ export function usePredictionContract() {
             // eslint-disable-next-line no-console
             console.error('Market does not exist on blockchain:', marketError);
             throw new Error(
-              `Market ${marketId} does not exist on blockchain. Error: ${marketError.message}`
+              `Market ${marketId} does not exist on blockchain. Error: ${marketError instanceof Error ? marketError.message : String(marketError)}`
             );
           }
 
@@ -1148,7 +1240,9 @@ export function usePredictionContract() {
                 .getAddress === 'function'
             ) {
               userAddress = await (
-                contract.signer as { getAddress: () => Promise<string> }
+                contract.signer as unknown as {
+                  getAddress: () => Promise<string>;
+                }
               ).getAddress();
               // eslint-disable-next-line no-console
               console.log('User address from signer:', userAddress);
@@ -1159,7 +1253,9 @@ export function usePredictionContract() {
             // eslint-disable-next-line no-console
             console.warn(
               'Failed to get address from signer:',
-              addressError.message
+              addressError instanceof Error
+                ? addressError.message
+                : String(addressError)
             );
             // Fallback to wallet address
             if (wallets && wallets.length > 0) {
@@ -1180,7 +1276,9 @@ export function usePredictionContract() {
             // eslint-disable-next-line no-console
             console.warn(
               'getBet failed, trying alternative method:',
-              getBetError.message
+              getBetError instanceof Error
+                ? getBetError.message
+                : String(getBetError)
             );
 
             // Try alternative method - check if bet exists in the bets mapping
@@ -1190,9 +1288,14 @@ export function usePredictionContract() {
               console.log('Raw bet data from bets mapping:', bet);
             } catch (betsError: unknown) {
               // eslint-disable-next-line no-console
-              console.error('bets mapping also failed:', betsError.message);
+              console.error(
+                'bets mapping also failed:',
+                betsError instanceof Error
+                  ? betsError.message
+                  : String(betsError)
+              );
               throw new Error(
-                `Failed to fetch bet data: ${getBetError.message}`
+                `Failed to fetch bet data: ${getBetError instanceof Error ? getBetError.message : String(getBetError)}`
               );
             }
           }
@@ -1311,15 +1414,20 @@ export function usePredictionContract() {
 
           // Check if it's a contract call error
           if (
-            debugError.code === 'CALL_EXCEPTION' ||
-            debugError.message.includes('missing revert data')
+            (debugError as { code?: string }).code === 'CALL_EXCEPTION' ||
+            (debugError instanceof Error
+              ? debugError.message
+              : String(debugError)
+            ).includes('missing revert data')
           ) {
             throw new Error(
               `Market ${marketId} does not exist on blockchain or contract call failed. Please check if the market is properly deployed.`
             );
           }
 
-          throw new Error(`Pre-claim validation failed: ${debugError.message}`);
+          throw new Error(
+            `Pre-claim validation failed: ${debugError instanceof Error ? debugError.message : String(debugError)}`
+          );
         }
 
         // Estimate gas
@@ -1386,7 +1494,7 @@ export function usePredictionContract() {
         let userAddress: string;
         try {
           userAddress = await (
-            contract.signer as { getAddress: () => Promise<string> }
+            contract.signer as unknown as { getAddress: () => Promise<string> }
           ).getAddress();
         } catch (addressError: unknown) {
           // eslint-disable-next-line no-console
@@ -1591,7 +1699,15 @@ export function usePredictionContract() {
    * Get user's bet info
    */
   const getUserBet = useCallback(
-    async (marketId: number, userAddress: string): Promise<unknown | null> => {
+    async (
+      marketId: number,
+      userAddress: string
+    ): Promise<{
+      amount: bigint;
+      shares: bigint;
+      outcome: boolean;
+      claimed: boolean;
+    } | null> => {
       try {
         const contract = await getContract();
         if (!contract) return null;

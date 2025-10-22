@@ -100,26 +100,7 @@ export default function HomePage() {
       }
 
       // Map backend data to frontend Prediction format
-      const mappedPredictions: Prediction[] = (
-        response.data as Array<{
-          marketId: number;
-          title: string;
-          description: string;
-          summary?: string;
-          category: number;
-          status: number;
-          createdAt: string;
-          expiresAt: string;
-          creator: string;
-          totalPool: string;
-          yesShares: string;
-          noShares: string;
-          commitPhaseEnds: string;
-          totalYesShares: string;
-          totalNoShares: string;
-          liquidity: string;
-        }>
-      ).map(market => ({
+      const mappedPredictions: Prediction[] = response.data.map(market => ({
         id: market.marketId.toString(),
         title: market.title,
         description: market.description,
@@ -146,13 +127,15 @@ export default function HomePage() {
         isHot:
           market.participants > 10 ||
           parseFloat(ethers.formatEther(market.totalPool || '0')) > 1,
-        outcome:
-          market.outcome === true
-            ? 'yes'
-            : market.outcome === false
-              ? 'no'
-              : undefined,
-        resolutionReasoning: market.resolutionReasoning,
+        resolution:
+          market.outcome !== undefined && market.resolvedAt
+            ? {
+                outcome: market.outcome ? 'yes' : ('no' as const),
+                resolvedAt: new Date(market.resolvedAt).getTime(),
+                reasoning: market.resolutionReasoning || '',
+                evidence: [],
+              }
+            : undefined,
       }));
 
       setPredictions(mappedPredictions);

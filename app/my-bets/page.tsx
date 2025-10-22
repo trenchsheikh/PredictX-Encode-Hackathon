@@ -73,9 +73,11 @@ export default function MyBetsPage() {
   const [selectedBet, setSelectedBet] = useState<{
     prediction: Prediction;
     commitData: {
-      outcome: string;
-      amount: string;
+      commitHash: string;
       salt: string;
+      outcome: 'yes' | 'no';
+      amount: string;
+      timestamp: number;
     };
   } | null>(null);
 
@@ -105,36 +107,39 @@ export default function MyBetsPage() {
       }
 
       // Map backend data to frontend UserBet format
-      const bets: UserBet[] = (response.data?.bets || []).map(
-        (bet: {
-          txHash?: string;
-          marketId: number;
-          outcome?: boolean;
-          type: string;
-          shares?: string;
-          amount: string;
-          timestamp: string;
-          revealedAt?: string;
-          claimed?: boolean;
-        }) => {
-          const isRevealed = bet.type === 'bet' && bet.outcome !== undefined;
+      const bets: UserBet[] = (response.data?.bets || []).map(bet => {
+        if (bet.type === 'bet') {
+          // Revealed bet
           return {
             id: bet.txHash || `${bet.marketId}-${Date.now()}`,
             predictionId: bet.marketId.toString(),
             user: response.data?.address || user?.wallet?.address || '',
-            outcome: isRevealed ? (bet.outcome ? 'yes' : 'no') : 'unknown',
-            shares: bet.shares ? parseFloat(ethers.formatEther(bet.shares)) : 0,
+            outcome: bet.outcome ? 'yes' : ('no' as const),
+            shares: parseFloat(ethers.formatEther(bet.shares)),
             amount: parseFloat(ethers.formatEther(bet.amount)),
             price: 0, // Would calculate from market data
-            createdAt: new Date(
-              isRevealed ? bet.revealedAt : bet.timestamp
-            ).getTime(),
-            claimed: bet.claimed || false,
+            createdAt: new Date(bet.revealedAt).getTime(),
+            claimed: bet.claimed,
             payout: undefined, // Calculate from market if claimed
-            revealed: isRevealed,
+            revealed: true,
+          };
+        } else {
+          // Commitment (not yet revealed)
+          return {
+            id: bet.txHash || `${bet.marketId}-${Date.now()}`,
+            predictionId: bet.marketId.toString(),
+            user: response.data?.address || user?.wallet?.address || '',
+            outcome: 'unknown' as const,
+            shares: 0,
+            amount: parseFloat(ethers.formatEther(bet.amount)),
+            price: 0,
+            createdAt: new Date(bet.timestamp).getTime(),
+            claimed: false,
+            payout: undefined,
+            revealed: false,
           };
         }
-      );
+      });
 
       setUserBets(bets);
 

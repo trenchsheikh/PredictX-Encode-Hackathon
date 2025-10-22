@@ -122,50 +122,49 @@ export function usePrivy(): PrivyAuthState {
 // Mock PrivyProvider component
 export function PrivyProvider({
   children,
-  _appId,
-  _config,
 }: {
   children: React.ReactNode;
-  _appId: string;
-  _config: unknown;
+  appId?: string;
+  config?: unknown;
 }) {
   return children;
+}
 
-  // Mock useLoginWithEmail hook
-  export function useLoginWithEmail() {
-    const { sendCode, loginWithCode } = usePrivy();
-    return { sendCode, loginWithCode };
-  }
+// Mock useLoginWithEmail hook
+export function useLoginWithEmail() {
+  const { sendCode, loginWithCode } = usePrivy();
+  return { sendCode, loginWithCode };
+}
 
-  // Mock useSendTransaction hook
-  export function useSendTransaction() {
-    const sendTransaction = async (tx: unknown) => {
-      // eslint-disable-next-line no-console
-      console.log('Mock transaction:', tx);
-      // eslint-disable-next-line no-console
-      console.info(`Mock transaction sent: ${JSON.stringify(tx, null, 2)}`);
-    };
-    return { sendTransaction };
-  }
+// Mock useSendTransaction hook
+export function useSendTransaction() {
+  const sendTransaction = async (tx: unknown) => {
+    // eslint-disable-next-line no-console
+    console.log('Mock transaction:', tx);
+    // eslint-disable-next-line no-console
+    console.info(`Mock transaction sent: ${JSON.stringify(tx, null, 2)}`);
+    return { hash: '0xmockhash' };
+  };
+  return { sendTransaction };
+}
 
-  // Mock useWallets hook
-  export function useWallets() {
-    const wallets = [
-      {
-        address: '0x1234567890123456789012345678901234567890',
-        chainId: '0x38',
-        connector: { name: 'MetaMask' },
-      },
-    ];
-    return { wallets };
-  }
+// Mock useWallets hook
+export function useWallets() {
+  const wallets = [
+    {
+      address: '0x1234567890123456789012345678901234567890',
+      chainId: '0x38',
+      connector: { name: 'MetaMask' },
+    },
+  ];
+  return { wallets };
+}
 
-  // Mock usePrivyWagmi hook
-  export function usePrivyWagmi() {
-    return {
-      walletClient: null,
-      publicClient: null,
-      chain: { id: 56, name: 'BNB Smart Chain' },
-    };
-  }
+// Mock usePrivyWagmi hook
+export function usePrivyWagmi() {
+  return {
+    walletClient: null,
+    publicClient: null,
+    chain: { id: 56, name: 'BNB Smart Chain' },
+  };
 }

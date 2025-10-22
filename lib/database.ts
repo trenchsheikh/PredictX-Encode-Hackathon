@@ -20,6 +20,10 @@ if (!cached) {
  * This prevents multiple connections in serverless environments
  */
 export async function connectDatabase() {
+  if (!cached) {
+    throw new Error('Cached connection not initialized');
+  }
+
   if (cached.conn) {
     return cached.conn;
   }
@@ -53,7 +57,7 @@ export async function connectDatabase() {
  * Disconnect from MongoDB (useful for testing)
  */
 export async function disconnectDatabase() {
-  if (cached.conn) {
+  if (cached && cached.conn) {
     await cached.conn.disconnect();
     cached.conn = null;
   }

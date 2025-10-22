@@ -56,19 +56,19 @@ export function BetModal({
 
   const validateAmount = (): boolean => {
     if (!amount || numAmount <= 0) {
-      setError({ message: 'Please enter a valid amount' });
+      setError('Please enter a valid amount');
       return false;
     }
     if (numAmount < minBet) {
-      setError({ message: `Minimum bet is ${minBet} BNB` });
+      setError(`Minimum bet is ${minBet} BNB`);
       return false;
     }
     if (numAmount > maxBet) {
-      setError({ message: `Maximum bet is ${maxBet} BNB` });
+      setError(`Maximum bet is ${maxBet} BNB`);
       return false;
     }
     if (numAmount > userBalance) {
-      setError({ message: 'Insufficient balance' });
+      setError('Insufficient balance');
       return false;
     }
     setError(null);
