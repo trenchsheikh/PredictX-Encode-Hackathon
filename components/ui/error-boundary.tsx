@@ -49,7 +49,7 @@ export class ErrorBoundary extends React.Component<
       }
 
       return (
-        <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-gray-900 via-black to-gray-800 p-4">
+        <div className="flex min-h-screen items-center justify-center bg-black p-4">
           <Card className="w-full max-w-md border border-gray-700/50 bg-gray-800/60 backdrop-blur-sm">
             <CardHeader className="text-center">
               <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-red-500/20">
@@ -64,7 +64,7 @@ export class ErrorBoundary extends React.Component<
               </p>
               <Button
                 onClick={this.resetError}
-                className="w-full bg-gradient-to-r from-yellow-400 to-yellow-600 font-semibold text-black hover:from-yellow-500 hover:to-yellow-700"
+                className="w-full bg-yellow-500 font-semibold text-black hover:bg-yellow-600"
               >
                 <RefreshCw className="mr-2 h-4 w-4" />
                 Try Again

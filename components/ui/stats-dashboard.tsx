@@ -21,25 +21,21 @@ export function StatsDashboard({
       title: 'Total Bets',
       value: totalBets,
       icon: Target,
-      trend: { value: 12, isPositive: true },
     },
     {
       title: 'Total Winnings',
       value: formatBNB(totalWinnings),
       icon: DollarSign,
-      trend: { value: 8, isPositive: true },
     },
     {
       title: 'Win Rate',
       value: `${winRate.toFixed(1)}%`,
       icon: Trophy,
-      trend: { value: 5, isPositive: winRate > 50 },
     },
     {
       title: 'Active Bets',
       value: activeBets,
       icon: TrendingUp,
-      trend: { value: 15, isPositive: true },
     },
   ];
 
@@ -51,7 +47,6 @@ export function StatsDashboard({
           title={stat.title}
           value={stat.value}
           icon={stat.icon}
-          trend={stat.trend}
           delay={0}
         />
       ))}

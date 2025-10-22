@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
-import '@/lib/console-filter'; // Filter out noisy browser extension errors
+import '@/lib/console-filter';
 import { PrivyProviderWrapper } from '@/components/providers/privy-provider';
 import { AnimatedHeader } from '@/components/layout/navbar';
 import { IntroProvider } from '@/components/providers/intro-provider';
@@ -70,7 +70,7 @@ export default function RootLayout({
       <body className={beVietnamPro.className}>
         <PrivyProviderWrapper>
           <IntroProvider>
-            <div className="relative flex min-h-screen flex-col bg-gradient-to-br from-gray-900 via-black to-gray-800">
+            <div className="relative flex min-h-screen flex-col bg-background">
               <AnimatedHeader />
               <main className="relative z-10 flex-1">
                 <ErrorBoundary>{children}</ErrorBoundary>

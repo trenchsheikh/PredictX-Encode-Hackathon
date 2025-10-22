@@ -356,71 +356,71 @@ export function CreateBetModal({
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className="max-h-[90vh] max-w-2xl overflow-y-auto border border-white/10 bg-gradient-to-br from-gray-900/95 via-gray-800/90 to-gray-900/95 shadow-2xl backdrop-blur-md">
+      <DialogContent className="max-h-[90vh] max-w-2xl overflow-y-auto border border-white/20 bg-card">
         <DialogHeader>
-          <DialogTitle className="font-heading flex items-center gap-2 text-white">
-            <Target className="h-5 w-5 text-yellow-400" />
+          <DialogTitle className="font-heading flex items-center gap-2 text-foreground">
+            <Target className="h-5 w-5 text-white" />
             {t('create_prediction.title')}
           </DialogTitle>
-          <DialogDescription className="text-gray-300">
+          <DialogDescription className="text-muted-foreground">
             {t('create_prediction.description')}
           </DialogDescription>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit(onFormSubmit)} className="space-y-6">
+        <form onSubmit={handleSubmit(onFormSubmit)} className="space-y-4">
           {/* Wallet Requirement Notice */}
-          <Card className="border-white/10 bg-gradient-to-r from-gray-800/60 to-gray-700/40 backdrop-blur-sm">
-            <CardContent className="p-4">
-              <div className="flex items-center gap-2 text-sm">
-                <DollarSign className="h-4 w-4 text-yellow-400" />
-                <span className="font-medium text-white">
+          <Card className="border-white/20 bg-card">
+            <CardContent className="p-3">
+              <div className="flex items-center gap-2 text-xs">
+                <DollarSign className="h-3 w-3 text-white" />
+                <span className="font-medium text-foreground">
                   {t('create_prediction.wallet_required')}
                 </span>
               </div>
-              <p className="mt-1 text-xs text-gray-300">
+              <p className="mt-1 text-xs text-muted-foreground">
                 {t('create_prediction.connect_wallet_to_create')}
               </p>
             </CardContent>
           </Card>
 
           {/* Bet Type Selection */}
-          <div className="space-y-2">
-            <label className="text-sm font-medium text-white">
+          <div className="space-y-1">
+            <label className="text-xs font-medium text-foreground">
               {t('create_prediction.bet_type')} *
             </label>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-3">
               <Card
                 className={cn(
-                  'cursor-pointer border-white/10 bg-gradient-to-r from-gray-800/60 to-gray-700/40 backdrop-blur-sm transition-all duration-300',
+                  'cursor-pointer border-white/20 bg-card',
                   watchedBetType === 'custom'
-                    ? 'bg-gradient-to-r from-yellow-400/20 to-yellow-600/20 ring-2 ring-yellow-400/50'
-                    : 'hover:bg-white/10'
+                    ? 'bg-white/20 ring-2 ring-white/50'
+                    : ''
                 )}
                 onClick={() => setValue('betType', 'custom')}
               >
-                <CardContent className="p-4">
-                  <div className="text-sm font-medium text-white">
+                <CardContent className="p-3">
+                  <div className="text-xs font-medium text-foreground">
                     {t('create_prediction.custom_bet')}
                   </div>
-                  <div className="text-xs text-gray-300">
+                  <div className="text-xs text-muted-foreground">
                     {t('create_prediction.manual_resolution')}
                   </div>
                 </CardContent>
               </Card>
               <Card
                 className={cn(
-                  'cursor-pointer border-white/10 bg-gradient-to-r from-gray-800/60 to-gray-700/40 backdrop-blur-sm transition-all duration-300',
+                  'cursor-pointer border-white/20 bg-card',
                   watchedBetType === 'auto-verified'
-                    ? 'bg-gradient-to-r from-yellow-400/20 to-yellow-600/20 ring-2 ring-yellow-400/50'
-                    : 'hover:bg-white/10'
+                    ? 'bg-white/20 ring-2 ring-white/50'
+                    : ''
                 )}
                 onClick={() => setValue('betType', 'auto-verified')}
               >
-                <CardContent className="p-4">
-                  <div className="text-sm font-medium text-white">
+                <CardContent className="p-3">
+                  <div className="text-xs font-medium text-foreground">
                     {t('create_prediction.auto_verified_outcome')}
                   </div>
-                  <div className="text-xs text-gray-300">
+                  <div className="text-xs text-muted-foreground">
                     {t('create_prediction.price_oracle')}
                   </div>
                 </CardContent>
@@ -429,25 +429,25 @@ export function CreateBetModal({
           </div>
 
           {/* Bet Description */}
-          <div className="space-y-2">
-            <label className="text-sm font-medium text-white">
+          <div className="space-y-1">
+            <label className="text-xs font-medium text-foreground">
               {t('create_prediction.bet_description')} *
             </label>
             <Textarea
               {...register('description')}
               placeholder={t('create_prediction.describe_prediction')}
-              className="min-h-[100px] border-white/10 bg-white/5 text-white backdrop-blur-sm transition-all duration-300 placeholder:text-gray-400 focus:border-yellow-400/50 focus:ring-yellow-400/20"
+              className="min-h-[80px] border-white/20 bg-card text-foreground placeholder:text-muted-foreground focus:border-white/20 focus:ring-0"
             />
             {errors.description && (
-              <p className="text-sm font-medium text-red-400">
+              <p className="text-xs font-medium text-red-400">
                 {errors.description.message}
               </p>
             )}
           </div>
 
           {/* Category Selection */}
-          <div className="space-y-2">
-            <label className="text-sm font-medium text-white">
+          <div className="space-y-1">
+            <label className="text-xs font-medium text-foreground">
               {t('create_prediction.category')} *
             </label>
             <Select
@@ -456,17 +456,17 @@ export function CreateBetModal({
                 setValue('category', value)
               }
             >
-              <SelectTrigger className="border-gray-700/50 bg-gray-800/60 text-white focus:border-yellow-400/50 focus:ring-yellow-400/20">
+              <SelectTrigger className="border-white/20 bg-card text-foreground focus:border-white/20 focus:ring-0">
                 <SelectValue
                   placeholder={t('create_prediction.select_category')}
                 />
               </SelectTrigger>
-              <SelectContent className="border-gray-700/50 bg-gray-800">
+              <SelectContent className="border-white/20 bg-card">
                 {categories.map(category => (
                   <SelectItem
                     key={category.value}
                     value={category.value}
-                    className="text-white hover:bg-gray-700/50"
+                    className="text-foreground"
                   >
                     <div className="flex items-center gap-2">
                       <span>{category.icon}</span>
@@ -477,7 +477,7 @@ export function CreateBetModal({
               </SelectContent>
             </Select>
             {errors.category && (
-              <p className="text-sm font-medium text-red-400">
+              <p className="text-xs font-medium text-red-400">
                 {errors.category.message}
               </p>
             )}
@@ -485,14 +485,14 @@ export function CreateBetModal({
 
           {/* Crypto Selection (only show for crypto category) */}
           {watch('category') === 'crypto' && (
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-white">
+            <div className="space-y-1">
+              <label className="text-xs font-medium text-foreground">
                 {t('crypto_prediction.select_crypto')}
               </label>
               {cryptoLoading ? (
-                <div className="flex items-center justify-center p-8">
-                  <Loader2 className="mr-2 h-6 w-6 animate-spin text-yellow-400" />
-                  <span className="text-gray-400">
+                <div className="flex items-center justify-center p-4">
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin text-white" />
+                  <span className="text-xs text-muted-foreground">
                     {t('crypto_prediction.loading_cryptocurrencies')}
                   </span>
                 </div>
@@ -509,9 +509,9 @@ export function CreateBetModal({
 
           {/* AI Analysis */}
           {watchedDescription.length > 10 && (
-            <div className="space-y-2">
+            <div className="space-y-1">
               <div className="flex items-center justify-between">
-                <label className="text-sm font-medium text-white">
+                <label className="text-xs font-medium text-foreground">
                   {t('create_prediction.ai_resolution_instructions')}
                 </label>
                 <Button
@@ -520,7 +520,7 @@ export function CreateBetModal({
                   size="sm"
                   onClick={analyzeWithAI}
                   disabled={isAnalyzing}
-                  className="flex items-center gap-2 border-gray-700/50 bg-gray-800/60 text-white transition-all duration-200 hover:bg-gray-800/80"
+                  className="flex items-center gap-2 border-white/20 bg-card text-foreground"
                 >
                   <Bot className="h-4 w-4" />
                   {isAnalyzing
@@ -530,71 +530,73 @@ export function CreateBetModal({
               </div>
 
               {/* Generate Analysis Checkbox */}
-              <div className="flex items-center gap-2 rounded-lg border border-gray-700/50 bg-gray-800/60 p-3">
+              <div className="flex items-center gap-2 rounded-lg border border-white/20 bg-card p-2">
                 <input
                   type="checkbox"
                   id="generateAnalysis"
                   checked={generateAnalysis}
                   onChange={e => setGenerateAnalysis(e.target.checked)}
-                  className="h-4 w-4 rounded border-gray-600/50 bg-gray-700/50 text-yellow-400 focus:ring-yellow-400/20"
+                  className="h-3 w-3 rounded border-white/20 bg-card text-white focus:ring-white/20"
                 />
                 <label
                   htmlFor="generateAnalysis"
-                  className="flex-1 cursor-pointer text-sm text-white"
+                  className="flex-1 cursor-pointer text-xs text-foreground"
                 >
                   {t('create_prediction.generate_analysis_checkbox')}
                 </label>
               </div>
 
               {aiGenerated && (
-                <Card className="border-white/10 bg-gradient-to-r from-gray-800/60 to-gray-700/40 backdrop-blur-sm">
-                  <CardHeader className="pb-2">
-                    <CardTitle className="flex items-center gap-2 text-sm text-yellow-400">
-                      <Sparkles className="h-4 w-4 text-yellow-400" />
+                <Card className="border-white/20 bg-card">
+                  <CardHeader className="pb-1">
+                    <CardTitle className="flex items-center gap-2 text-xs text-white">
+                      <Sparkles className="h-3 w-3 text-white" />
                       {t('create_prediction.ai_generated')}
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="space-y-3">
+                  <CardContent className="space-y-2">
                     <div>
-                      <div className="text-xs text-gray-400">
+                      <div className="text-xs text-muted-foreground">
                         {t('create_prediction.title_label')}
                       </div>
-                      <div className="text-sm font-medium text-white">
+                      <div className="text-xs font-medium text-foreground">
                         {aiGenerated.title}
                       </div>
                     </div>
                     <div>
-                      <div className="text-xs text-gray-400">Description</div>
-                      <div className="text-sm text-gray-300">
+                      <div className="text-xs text-muted-foreground">
+                        Description
+                      </div>
+                      <div className="text-xs text-foreground">
                         {aiGenerated.description}
                       </div>
                     </div>
                     {generateAnalysis && aiGenerated.summary && (
                       <div>
-                        <div className="text-xs text-gray-400">
+                        <div className="text-xs text-muted-foreground">
                           Detailed Analysis
                         </div>
-                        <div className="max-h-40 overflow-y-auto whitespace-pre-wrap text-sm text-gray-300">
+                        <div className="max-h-32 overflow-y-auto whitespace-pre-wrap text-xs text-foreground">
                           {aiGenerated.summary}
                         </div>
                       </div>
                     )}
                     <div>
-                      <div className="text-xs text-gray-400">
+                      <div className="text-xs text-muted-foreground">
                         {t('create_prediction.resolution_instructions')}
                       </div>
-                      <div className="text-sm text-gray-300">
+                      <div className="text-xs text-foreground">
                         {aiGenerated.resolutionInstructions}
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
                       <Badge
                         variant="outline"
-                        className="border-gray-600/50 text-gray-300"
+                        className="border-white/30 text-foreground"
                       >
                         {aiGenerated.category}
                       </Badge>
-                      <span className="text-xs text-gray-400">
+                      <span className="text-xs text-muted-foreground">
                         Expires:{' '}
                         {new Date(aiGenerated.expiresAt).toLocaleDateString()}
                       </span>
@@ -606,17 +608,17 @@ export function CreateBetModal({
               <Textarea
                 {...register('resolutionInstructions')}
                 placeholder="AI will generate resolution instructions automatically based on your bet"
-                className="min-h-[80px] border-gray-700/50 bg-gray-800/60 text-white placeholder:text-gray-400 focus:border-yellow-400/50 focus:ring-yellow-400/20"
+                className="min-h-[60px] border-white/20 bg-card text-foreground placeholder:text-muted-foreground focus:border-white/20 focus:ring-0"
               />
             </div>
           )}
 
           {/* Options */}
-          <div className="space-y-2">
-            <label className="text-sm font-medium text-white">
+          <div className="space-y-1">
+            <label className="text-xs font-medium text-foreground">
               {t('create_prediction.options')} * (min 2)
             </label>
-            <div className="space-y-2">
+            <div className="space-y-1">
               {options.map((option, index) => (
                 <div key={index} className="flex items-center gap-2">
                   <Input
@@ -626,7 +628,7 @@ export function CreateBetModal({
                       newOptions[index] = e.target.value;
                       setOptions(newOptions);
                     }}
-                    className="flex-1 border-gray-700/50 bg-gray-800/60 text-white placeholder:text-gray-400 focus:border-yellow-400/50 focus:ring-yellow-400/20"
+                    className="flex-1 border-white/20 bg-card text-foreground placeholder:text-muted-foreground focus:border-white/20 focus:ring-0"
                   />
                   {options.length > 2 && (
                     <Button
@@ -634,7 +636,7 @@ export function CreateBetModal({
                       variant="outline"
                       size="sm"
                       onClick={() => removeOption(index)}
-                      className="border-gray-700/50 bg-gray-800/60 text-white transition-all duration-200 hover:bg-gray-800/80"
+                      className="border-white/20 bg-card text-foreground"
                     >
                       <X className="h-4 w-4" />
                     </Button>
@@ -646,7 +648,7 @@ export function CreateBetModal({
                 variant="outline"
                 size="sm"
                 onClick={addOption}
-                className="w-full border-gray-700/50 bg-gray-800/60 text-white transition-all duration-200 hover:bg-gray-800/80"
+                className="w-full border-white/20 bg-card text-foreground"
               >
                 <Plus className="mr-2 h-4 w-4" />
                 {t('create_prediction.add_option')}
@@ -655,9 +657,9 @@ export function CreateBetModal({
           </div>
 
           {/* Expiration Date */}
-          <div className="space-y-2">
-            <label className="flex items-center gap-2 text-sm font-medium text-white">
-              <Calendar className="h-4 w-4 text-yellow-400" />
+          <div className="space-y-1">
+            <label className="flex items-center gap-2 text-xs font-medium text-foreground">
+              <Calendar className="h-3 w-3 text-white" />
               {t('create_prediction.bet_expiration_date')} *
             </label>
             <Input
@@ -668,33 +670,33 @@ export function CreateBetModal({
               })}
               min={formatDateTimeLocal(Date.now() + 300000)}
               defaultValue={formatDateTimeLocal(Date.now() + 300000)}
-              className="border-gray-700/50 bg-gray-800/60 text-white focus:border-yellow-400/50 focus:ring-yellow-400/20"
+              className="border-white/20 bg-card text-foreground focus:border-white/20 focus:ring-0"
             />
             {errors.expiresAt && (
-              <p className="text-sm font-medium text-red-400">
+              <p className="text-xs font-medium text-red-400">
                 {errors.expiresAt.message}
               </p>
             )}
-            <p className="text-xs text-gray-400">
+            <p className="text-xs text-muted-foreground">
               {t('create_prediction.set_expiration_help')}
             </p>
           </div>
 
           {/* Place Initial Bet */}
-          <Card className="border-white/10 bg-gradient-to-r from-gray-800/60 to-gray-700/40 backdrop-blur-sm">
-            <CardHeader className="pb-2">
-              <CardTitle className="flex items-center gap-2 text-sm text-yellow-400">
-                <Target className="h-4 w-4 text-yellow-400" />
+          <Card className="border-white/20 bg-card">
+            <CardHeader className="pb-1">
+              <CardTitle className="flex items-center gap-2 text-xs text-white">
+                <Target className="h-3 w-3 text-white" />
                 {t('create_prediction.place_initial_bet')}
               </CardTitle>
-              <p className="text-xs text-gray-300">
+              <p className="text-xs text-muted-foreground">
                 {t('create_prediction.prevent_spam')}
               </p>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-white">
+            <CardContent className="space-y-3">
+              <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-1">
+                  <label className="text-xs font-medium text-foreground">
                     {t('create_prediction.your_prediction')} *
                   </label>
                   <Select
@@ -703,27 +705,21 @@ export function CreateBetModal({
                       setValue('userPrediction', value)
                     }
                   >
-                    <SelectTrigger className="border-gray-700/50 bg-gray-800/60 text-white focus:border-yellow-400/50 focus:ring-yellow-400/20">
-                      <SelectValue />
+                    <SelectTrigger className="border-white/20 bg-card text-foreground focus:border-white/20 focus:ring-0">
+                      <SelectValue placeholder="Select prediction" />
                     </SelectTrigger>
-                    <SelectContent className="border-gray-700/50 bg-gray-800">
-                      <SelectItem
-                        value="yes"
-                        className="text-white hover:bg-gray-700/50"
-                      >
+                    <SelectContent className="z-50 border-white/20 bg-card">
+                      <SelectItem value="yes" className="text-foreground">
                         {t('prediction_card.yes')}
                       </SelectItem>
-                      <SelectItem
-                        value="no"
-                        className="text-white hover:bg-gray-700/50"
-                      >
+                      <SelectItem value="no" className="text-foreground">
                         {t('prediction_card.no')}
                       </SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-white">
+                <div className="space-y-1">
+                  <label className="text-xs font-medium text-foreground">
                     {t('create_prediction.bnb_amount')} *
                   </label>
                   <Input
@@ -732,7 +728,7 @@ export function CreateBetModal({
                     min="0.001"
                     max="10"
                     {...register('bnbAmount', { valueAsNumber: true })}
-                    className="border-gray-700/50 bg-gray-800/60 text-white placeholder:text-gray-400 focus:border-yellow-400/50 focus:ring-yellow-400/20"
+                    className="border-white/20 bg-card text-foreground placeholder:text-muted-foreground focus:border-white/20 focus:ring-0"
                   />
                   {errors.bnbAmount && (
                     <p className="text-xs font-medium text-red-400">
@@ -741,7 +737,7 @@ export function CreateBetModal({
                   )}
                 </div>
               </div>
-              <div className="text-center text-sm text-gray-300">
+              <div className="text-center text-xs text-muted-foreground">
                 {t('create_prediction.click_create_will_prompt').replace(
                   '{amount}',
                   formatBNB(watch('bnbAmount'))
@@ -751,12 +747,13 @@ export function CreateBetModal({
           </Card>
 
           {/* Dialog Footer */}
-          <div className="flex justify-end gap-3 border-t border-gray-700/50 pt-4">
+          <div className="flex justify-end gap-3 pt-3">
             <AnimatedButton
               type="button"
               variant="outline"
+              size="sm"
               onClick={handleClose}
-              className="border-gray-700/50 bg-gray-800/60 text-white transition-all duration-200 hover:bg-gray-800/80"
+              className="rounded-none border-white/20 bg-card px-3 py-1.5 text-sm text-foreground"
             >
               {t('create_prediction.cancel')}
             </AnimatedButton>
@@ -764,7 +761,8 @@ export function CreateBetModal({
               type="submit"
               disabled={isSubmitting}
               loading={isSubmitting}
-              className="bg-gradient-to-r from-yellow-400 to-yellow-600 font-semibold text-black shadow-md transition-all duration-200 hover:from-yellow-500 hover:to-yellow-700 hover:shadow-lg"
+              size="sm"
+              className="rounded-none bg-white px-3 py-1.5 text-sm text-black"
             >
               {isSubmitting
                 ? t('create_prediction.creating')

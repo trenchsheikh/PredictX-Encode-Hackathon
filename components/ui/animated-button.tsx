@@ -27,15 +27,14 @@ export function AnimatedButton({
   ...props
 }: AnimatedButtonProps) {
   const baseClasses =
-    'relative overflow-hidden rounded-xl font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-yellow-500/20';
+    'relative overflow-hidden rounded-xl font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-white/20';
 
   const variants = {
     primary:
-      'bg-gradient-to-r from-yellow-400 to-yellow-600 text-black hover:from-yellow-500 hover:to-yellow-700 shadow-lg hover:shadow-yellow-500/25',
+      'bg-white text-black hover:bg-white/90 shadow-lg hover:shadow-white/25',
     secondary:
-      'bg-gradient-to-r from-gray-800 to-gray-700 text-white hover:from-gray-700 hover:to-gray-600 border border-gray-600',
-    outline:
-      'border-2 border-yellow-400 text-yellow-400 hover:bg-yellow-400 hover:text-black',
+      'bg-secondary text-secondary-foreground hover:bg-secondary/80 border border-border',
+    outline: 'border-2 border-white text-white hover:bg-white hover:text-black',
     ghost: 'text-gray-400 hover:text-white hover:bg-gray-800/50',
   };
 
@@ -60,7 +59,7 @@ export function AnimatedButton({
       {...props}
     >
       {/* Static background */}
-      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
+      <div className="absolute inset-0 bg-white/5 opacity-0 transition-opacity group-hover:opacity-100" />
 
       {/* Content */}
       <div className="relative z-10 flex items-center justify-center space-x-2">

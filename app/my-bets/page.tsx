@@ -763,19 +763,18 @@ export default function MyBetsPage() {
   };
 
   return (
-    <div className="relative min-h-screen">
+    <div className="relative min-h-screen bg-background">
       <div className="relative z-10 mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-16 lg:px-8">
         {/* Header */}
         <div className="mb-8">
-          <div className="mb-4 flex items-center gap-3">
-            <div className="rounded-lg border border-yellow-400/30 bg-gradient-to-r from-yellow-400/20 to-yellow-600/20 p-2">
-              <Wallet className="h-6 w-6 text-yellow-400" />
+          <div className="flex items-center">
+            <div className="rounded-lg p-2">
+              <Wallet className="h-6 w-6 text-white" />
             </div>
-            <h1 className="font-display text-4xl text-white">
+            <h2 className="font-heading text-2xl text-white">
               {t('my_bets.title')}
-            </h1>
+            </h2>
           </div>
-          <p className="font-body text-gray-300">{t('my_bets.subtitle')}</p>
 
           {/* Connection Status */}
           {/* <div className="mt-4 rounded-xl border border-gray-700/50 bg-gray-900/60 p-3 backdrop-blur-sm sm:p-4"> */}
@@ -860,14 +859,14 @@ export default function MyBetsPage() {
                   className={cn(
                     'whitespace-nowrap border-b-2 px-1 py-2 text-sm font-medium transition-all duration-300',
                     activeTab === tab.key
-                      ? 'border-yellow-400 text-yellow-400'
-                      : 'border-transparent text-white/60 hover:border-yellow-400/50 hover:text-yellow-300'
+                      ? 'border-primary text-primary'
+                      : 'border-transparent text-white/60 hover:border-primary/50 hover:text-primary/80'
                   )}
                 >
                   {tab.label}
                   <Badge
                     variant="secondary"
-                    className="ml-2 bg-black/90 text-white"
+                    className="ml-2 bg-card text-white"
                   >
                     {tab.count}
                   </Badge>
@@ -879,9 +878,9 @@ export default function MyBetsPage() {
 
         {/* Bets List */}
         {filteredBets.length === 0 ? (
-          <Card className="border-black bg-black/90 py-12 text-center">
+          <Card className="border-border bg-card py-12 text-center">
             <CardContent>
-              <div className="mx-auto mb-4 flex h-24 w-24 items-center justify-center rounded-full bg-yellow-500">
+              <div className="mx-auto mb-4 flex h-24 w-24 items-center justify-center bg-white">
                 <TrendingUp className="h-12 w-12 text-black" />
               </div>
               <h3 className="mb-2 text-lg font-medium text-white">
@@ -980,7 +979,7 @@ export default function MyBetsPage() {
               return (
                 <Card
                   key={bet.id}
-                  className="h-full border-black bg-black/90 transition-shadow hover:shadow-lg"
+                  className="h-full border-border bg-card transition-shadow"
                 >
                   <CardContent className="p-4 sm:p-6">
                     <div className="flex flex-col gap-4">
@@ -1035,7 +1034,7 @@ export default function MyBetsPage() {
                         </div>
 
                         {/* Bet Details */}
-                        <div className="mt-4 rounded-lg border border-white/10 bg-white/5 p-4">
+                        <div className="mt-4  border border-white/10 bg-white/5 p-4">
                           <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
                             <div>
                               <div className="font-caption mb-1 text-xs uppercase tracking-wide text-gray-400">
@@ -1088,7 +1087,7 @@ export default function MyBetsPage() {
                         {/* Resolution Info */}
                         {prediction.status === 'resolved' &&
                           prediction.resolution?.outcome !== undefined && (
-                            <div className="mt-4 rounded-lg border border-yellow-500/30 bg-yellow-500/20 p-3">
+                            <div className="mt-4 border border-white/30 bg-white/20 p-3">
                               <div className="mb-1 text-sm font-medium text-white">
                                 Resolution:{' '}
                                 {prediction.resolution.outcome === 'yes'
@@ -1114,7 +1113,7 @@ export default function MyBetsPage() {
                               onClick={() =>
                                 handleRevealClick(bet.predictionId)
                               }
-                              className="bg-yellow-600 text-white hover:bg-yellow-700"
+                              className="bg-white text-black hover:bg-white/90"
                               size="sm"
                               disabled={!canReveal(prediction.expiresAt)}
                             >
@@ -1154,7 +1153,7 @@ export default function MyBetsPage() {
                         ) : waitingForResolution ? (
                           <Badge
                             variant="secondary"
-                            className="bg-yellow-600 text-white"
+                            className="bg-white text-black"
                           >
                             Waiting for Resolution
                           </Badge>
@@ -1219,7 +1218,7 @@ export default function MyBetsPage() {
       {/* Claim Confirmation Modal */}
       {claimBet && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-          <Card className="w-full max-w-md border-black bg-black/90">
+          <Card className="w-full max-w-md border-border bg-card">
             <CardHeader>
               <CardTitle className="text-center text-white">
                 {claimBet.type === 'winnings'
@@ -1229,7 +1228,7 @@ export default function MyBetsPage() {
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="text-center">
-                <div className="mb-2 text-2xl font-bold text-yellow-400">
+                <div className="mb-2 text-2xl font-bold text-white">
                   {formatBNB(claimBet.amount)} BNB
                 </div>
                 <p className="text-sm text-gray-300">
@@ -1239,8 +1238,8 @@ export default function MyBetsPage() {
                 </p>
               </div>
 
-              <div className="rounded-lg border border-yellow-500/30 bg-yellow-500/20 p-3">
-                <p className="text-sm text-yellow-200">
+              <div className="border border-white/30 bg-white/20 p-3">
+                <p className="text-sm text-white/80">
                   <strong>Note:</strong> You'll need to sign a transaction to{' '}
                   {claimBet.type === 'winnings'
                     ? 'claim your winnings'

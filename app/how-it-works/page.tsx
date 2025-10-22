@@ -222,66 +222,66 @@ export default function HowItWorksPage() {
         {/* Header */}
         <div className="mb-16 text-center">
           <div className="mb-6 flex items-center justify-center gap-3">
-            <div className="rounded-lg border border-yellow-400/30 bg-gradient-to-r from-yellow-400/20 to-yellow-600/20 p-3">
-              <Target className="h-8 w-8 text-yellow-400" />
+            <div className="rounded-lg border border-white/20 bg-white/10 p-3">
+              <Target className="h-8 w-8 text-white" />
             </div>
-            <h1 className="font-brand-large gradient-text-brand text-4xl font-bold tracking-tight text-white sm:text-6xl">
+            <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-6xl">
               {t('how_it_works.how_darkbet_works')}
             </h1>
           </div>
-          <p className="mx-auto max-w-3xl text-lg leading-8 text-gray-300">
+          <p className="mx-auto max-w-3xl text-lg leading-8 text-muted-foreground">
             {t('how_it_works.subheader')}
           </p>
         </div>
 
         {/* Platform Overview */}
-        <Card className="mb-16 border-black bg-black/90">
+        <Card className="mb-16 border-white/20 bg-card">
           <CardContent className="p-4 sm:p-8">
             <div className="mb-8 text-center">
-              <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-yellow-500">
-                <Target className="h-8 w-8 text-black" />
+              <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-white/10">
+                <Target className="h-8 w-8 text-white" />
               </div>
-              <h2 className="mb-2 text-2xl font-bold text-white">
+              <h2 className="mb-2 text-2xl font-bold text-foreground">
                 {t('how_it_works.platform_overview')}
               </h2>
-              <p className="text-gray-200">
+              <p className="text-muted-foreground">
                 {t('how_it_works.platform_description')}
               </p>
             </div>
 
             <div className="grid grid-cols-1 gap-4 sm:gap-6 md:grid-cols-3">
               <div className="text-center">
-                <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-yellow-500">
-                  <Database className="h-6 w-6 text-black" />
+                <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-white/10">
+                  <Database className="h-6 w-6 text-white" />
                 </div>
-                <h3 className="mb-2 text-lg font-semibold text-white">
+                <h3 className="mb-2 text-lg font-semibold text-foreground">
                   {t('how_it_works.darkpool_markets')}
                 </h3>
-                <p className="text-sm text-gray-200">
+                <p className="text-sm text-muted-foreground">
                   {t('how_it_works.darkpool_description')}
                 </p>
               </div>
 
               <div className="text-center">
-                <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-yellow-500">
-                  <Bot className="h-6 w-6 text-black" />
+                <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-white/10">
+                  <Bot className="h-6 w-6 text-white" />
                 </div>
-                <h3 className="mb-2 text-lg font-semibold text-white">
+                <h3 className="mb-2 text-lg font-semibold text-foreground">
                   {t('how_it_works.ai_powered_oracles')}
                 </h3>
-                <p className="text-sm text-gray-200">
+                <p className="text-sm text-muted-foreground">
                   {t('how_it_works.ai_oracles_description')}
                 </p>
               </div>
 
               <div className="text-center">
-                <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-yellow-500">
-                  <Zap className="h-6 w-6 text-black" />
+                <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-white/10">
+                  <Zap className="h-6 w-6 text-white" />
                 </div>
-                <h3 className="mb-2 text-lg font-semibold text-white">
+                <h3 className="mb-2 text-lg font-semibold text-foreground">
                   {t('how_it_works.on_chain_settlements')}
                 </h3>
-                <p className="text-sm text-gray-200">
+                <p className="text-sm text-muted-foreground">
                   {t('how_it_works.on_chain_settlements_description')}
                 </p>
               </div>
@@ -290,59 +290,59 @@ export default function HowItWorksPage() {
         </Card>
 
         {/* Dark Pools Section */}
-        <Card className="mb-16 border-black bg-black/90">
+        <Card className="mb-16 border-white/20 bg-card">
           <CardContent className="p-4 sm:p-8">
             <div className="mb-8 text-center">
-              <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-yellow-500">
-                <Eye className="h-8 w-8 text-black" />
+              <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-white/10">
+                <Eye className="h-8 w-8 text-white" />
               </div>
-              <h2 className="mb-2 text-2xl font-bold text-white">
+              <h2 className="mb-2 text-2xl font-bold text-foreground">
                 {t('how_it_works.dark_pools_title')}
               </h2>
-              <p className="mx-auto max-w-4xl text-gray-200">
+              <p className="mx-auto max-w-4xl text-muted-foreground">
                 {t('how_it_works.dark_pools_description')}
               </p>
             </div>
 
             <div className="mb-8 grid grid-cols-1 gap-4 sm:gap-6 md:grid-cols-3">
-              <div className="rounded-lg border border-yellow-500/30 bg-yellow-500/20 p-6 text-center">
-                <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-yellow-500">
+              <div className="rounded-lg border border-white/20 bg-white/10 p-6 text-center">
+                <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-white/10">
                   <Lock className="h-6 w-6 text-white" />
                 </div>
-                <h3 className="mb-2 text-lg font-semibold text-white">
+                <h3 className="mb-2 text-lg font-semibold text-foreground">
                   {t('how_it_works.zk-encrypted_privacy')}
                 </h3>
-                <p className="text-sm text-gray-200">
+                <p className="text-sm text-muted-foreground">
                   {t('how_it_works.zk-encrypted_privacy_description')}
                 </p>
               </div>
 
-              <div className="rounded-lg border border-yellow-500/30 bg-yellow-500/20 p-6 text-center">
-                <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-yellow-500">
+              <div className="rounded-lg border border-white/20 bg-white/10 p-6 text-center">
+                <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-white/10">
                   <Shield className="h-6 w-6 text-white" />
                 </div>
-                <h3 className="mb-2 text-lg font-semibold text-white">
+                <h3 className="mb-2 text-lg font-semibold text-foreground">
                   {t('how_it_works.signal_integrity')}
                 </h3>
-                <p className="text-sm text-gray-200">
+                <p className="text-sm text-muted-foreground">
                   {t('how_it_works.signal_integrity_description')}
                 </p>
               </div>
 
-              <div className="rounded-lg border border-yellow-500/30 bg-yellow-500/20 p-6 text-center">
-                <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-yellow-500">
+              <div className="rounded-lg border border-white/20 bg-white/10 p-6 text-center">
+                <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-white/10">
                   <Users className="h-6 w-6 text-white" />
                 </div>
-                <h3 className="mb-2 text-lg font-semibold text-white">
+                <h3 className="mb-2 text-lg font-semibold text-foreground">
                   {t('how_it_works.trutless_resolution')}
                 </h3>
-                <p className="text-sm text-gray-200">
+                <p className="text-sm text-muted-foreground">
                   {t('how_it_works.trutless_resolution_description')}
                 </p>
               </div>
             </div>
 
-            <div className="rounded-lg border border-yellow-500/30 bg-black/50 p-4 sm:p-6">
+            <div className="rounded-lg border border-white/20 bg-card p-4 sm:p-6">
               <h3 className="mb-4 text-center text-lg font-semibold text-white">
                 {t('how_it_works.dark_pools_comparison_title')}
               </h3>
@@ -382,14 +382,14 @@ export default function HowItWorksPage() {
             <div key={step.number} className="relative">
               <div className="flex flex-col items-start gap-4 sm:flex-row sm:gap-8">
                 <div className="flex-shrink-0">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-yellow-400 to-yellow-600 text-xl font-bold text-black sm:h-16 sm:w-16">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-xl font-bold text-white sm:h-16 sm:w-16">
                     {step.number}
                   </div>
                 </div>
 
                 <div className="flex-1">
                   <div className="mb-3 flex items-center gap-3 sm:mb-4">
-                    <step.icon className="h-8 w-8 text-yellow-400" />
+                    <step.icon className="h-8 w-8 text-white" />
                     <h2 className="font-heading text-2xl font-bold text-white sm:text-3xl">
                       {step.title}
                     </h2>
@@ -418,7 +418,7 @@ export default function HowItWorksPage() {
                                 </Badge>
                               </div>
                               <div className="flex-1">
-                                <h3 className="mb-2 text-lg font-semibold text-white">
+                                <h3 className="mb-2 text-lg font-semibold text-foreground">
                                   {detail.title}
                                 </h3>
                                 <p className="mb-3 text-gray-200">
@@ -481,16 +481,16 @@ export default function HowItWorksPage() {
                         {step.layers.map((layer, layerIndex) => (
                           <Card
                             key={layerIndex}
-                            className="border-black bg-black/90 text-center"
+                            className="border-white/20 bg-card text-center"
                           >
                             <CardContent className="p-4 sm:p-6">
-                              <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-yellow-500">
-                                <layer.icon className="h-6 w-6 text-black" />
+                              <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-white/10">
+                                <layer.icon className="h-6 w-6 text-white" />
                               </div>
-                              <h3 className="mb-2 text-lg font-semibold text-white">
+                              <h3 className="mb-2 text-lg font-semibold text-foreground">
                                 {layer.title}
                               </h3>
-                              <p className="text-sm text-gray-200">
+                              <p className="text-sm text-muted-foreground">
                                 {layer.description}
                               </p>
                             </CardContent>
@@ -591,10 +591,10 @@ export default function HowItWorksPage() {
         </div>
 
         {/* Security & Transparency */}
-        <Card className="mt-16 border-black bg-black/90">
+        <Card className="mt-16 border-white/20 bg-card">
           <CardHeader>
-            <CardTitle className="flex items-center justify-center gap-2 text-center text-2xl font-bold text-white">
-              <Shield className="h-6 w-6 text-yellow-400" />
+            <CardTitle className="flex items-center justify-center gap-2 text-center text-2xl font-bold text-foreground">
+              <Shield className="h-6 w-6 text-white" />
               {t('how_it_works.security_transparency')}
             </CardTitle>
           </CardHeader>
@@ -603,8 +603,8 @@ export default function HowItWorksPage() {
               {securityFeatures.map((feature, index) => (
                 <div key={index}>
                   <div className="mb-4 flex items-center gap-3">
-                    <feature.icon className="h-6 w-6 text-yellow-400" />
-                    <h3 className="text-lg font-semibold text-white">
+                    <feature.icon className="h-6 w-6 text-white" />
+                    <h3 className="text-lg font-semibold text-foreground">
                       {feature.title}
                     </h3>
                   </div>
@@ -623,14 +623,14 @@ export default function HowItWorksPage() {
               ))}
             </div>
 
-            <div className="mt-8 rounded-lg border-l-4 border-l-yellow-400 bg-yellow-500/20 p-4">
+            <div className="mt-8 rounded-lg border-l-4 border-l-white bg-white/10 p-4">
               <div className="flex items-start gap-3">
-                <Eye className="mt-0.5 h-5 w-5 flex-shrink-0 text-yellow-400" />
+                <Eye className="mt-0.5 h-5 w-5 flex-shrink-0 text-white" />
                 <div>
                   <p className="mb-1 text-sm font-medium text-white">
                     {t('how_it_works.api_keys_masked')}
                   </p>
-                  <p className="text-xs text-gray-200">
+                  <p className="text-xs text-muted-foreground">
                     {t('how_it_works.api_keys_description')}
                   </p>
                 </div>
@@ -644,13 +644,10 @@ export default function HowItWorksPage() {
           <h2 className="font-heading mb-4 text-2xl font-bold text-white">
             {t('how_it_works.ready_to_start')}
           </h2>
-          <p className="mb-6 text-gray-300">
+          <p className="mb-6 text-muted-foreground">
             {t('how_it_works.ready_description')}
           </p>
-          <Button
-            size="lg"
-            className="bg-gradient-to-r from-yellow-400 to-yellow-600 font-semibold text-black hover:from-yellow-500 hover:to-yellow-700"
-          >
+          <Button size="lg" className="bg-white font-semibold text-black">
             <Target className="mr-2 h-5 w-5" />
             {t('how_it_works.explore_markets')}
             <ArrowRight className="ml-2 h-4 w-4" />

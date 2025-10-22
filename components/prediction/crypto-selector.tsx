@@ -2,8 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { TrendingUp, TrendingDown, Loader2, Search } from 'lucide-react';
+import { TrendingUp, TrendingDown, Loader2 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 import { logger } from '@/lib/logger';
@@ -220,7 +219,7 @@ export function CryptoSelector({
   if (loading) {
     return (
       <div className="flex items-center justify-center p-8">
-        <Loader2 className="h-8 w-8 animate-spin text-yellow-400" />
+        <Loader2 className="h-8 w-8 animate-spin text-white" />
       </div>
     );
   }
@@ -229,32 +228,23 @@ export function CryptoSelector({
     <div className={cn('space-y-4', className)}>
       {/* Search */}
       <div className="relative">
-        <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
         <Input
           type="text"
           placeholder="Search cryptocurrencies..."
           value={searchQuery}
           onChange={e => setSearchQuery(e.target.value)}
-          className="border-white/10 bg-white/5 pl-10 text-white backdrop-blur-sm transition-all duration-300 placeholder:text-gray-400 focus:border-yellow-400/50 focus:ring-yellow-400/20"
+          className="border-white/20 bg-card text-foreground placeholder:text-muted-foreground focus:border-white/20 focus:ring-0"
         />
       </div>
-      {lastUpdated && (
-        <div className="text-xs text-gray-400">
-          📊 Real-time prices updated: {lastUpdated.toLocaleTimeString()} |
-          Source: CoinGecko API
-        </div>
-      )}
 
       {/* Crypto Grid */}
-      <div className="custom-scrollbar grid max-h-[400px] grid-cols-1 gap-4 overflow-y-auto pr-2 md:grid-cols-2 lg:grid-cols-3">
+      <div className="custom-scrollbar grid max-h-[400px] grid-cols-1 gap-4 overflow-y-auto md:grid-cols-2 lg:grid-cols-3">
         {filteredCryptos.map(crypto => (
           <Card
             key={crypto.id}
             className={cn(
-              'cursor-pointer border-white/10 bg-gradient-to-r from-gray-800/60 to-gray-700/40 backdrop-blur-sm transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:shadow-yellow-500/10',
-              value === crypto.id
-                ? 'bg-yellow-400/10 ring-2 ring-yellow-400/50'
-                : 'hover:bg-gray-800/80 hover:ring-1 hover:ring-yellow-400/30'
+              'cursor-pointer bg-card',
+              value === crypto.id ? 'bg-white/10' : ''
             )}
             onClick={() => onChange(crypto)}
           >
@@ -262,49 +252,33 @@ export function CryptoSelector({
               <div className="mb-3 flex items-center justify-between">
                 {/* Crypto Info */}
                 <div className="flex flex-1 items-center space-x-2">
-                  <div className="flex h-8 w-8 items-center justify-center overflow-hidden rounded-full bg-yellow-400/20">
+                  <div className="flex h-8 w-8 items-center justify-center">
                     {crypto.image ? (
                       <img
                         src={crypto.image}
                         alt={crypto.name}
-                        className="h-6 w-6 rounded-full object-cover"
-                        onError={e => {
-                          // Fallback to symbol if image fails to load
-                          e.currentTarget.style.display = 'none';
-                          const fallback = e.currentTarget
-                            .nextElementSibling as HTMLElement;
-                          if (fallback) fallback.style.display = 'flex';
-                        }}
+                        className="h-8 w-8 rounded-full object-cover"
                       />
                     ) : null}
-                    <div className="flex h-6 w-6 items-center justify-center text-xs font-bold text-yellow-400">
-                      {crypto.symbol.charAt(0)}
-                    </div>
                   </div>
                   <div>
                     <div className="text-sm font-semibold text-white">
                       {crypto.name}
                     </div>
-                    <div className="text-xs text-gray-400">{crypto.symbol}</div>
+                    <div className="text-xs text-muted-foreground">
+                      {crypto.symbol}
+                    </div>
                   </div>
                 </div>
 
                 {/* Selected Indicator */}
-                {value === crypto.id && (
-                  <Badge
-                    variant="default"
-                    className="bg-yellow-400 text-xs text-black"
-                  >
-                    Selected
-                  </Badge>
-                )}
               </div>
 
               {/* Price Info */}
               <div className="flex-grow space-y-2">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs text-gray-400">Price</span>
-                  <span className="text-sm font-bold text-white">
+                  <span className="text-xs text-muted-foreground">Price</span>
+                  <span className="text-sm font-bold text-foreground">
                     $
                     {crypto.currentPrice.toLocaleString(undefined, {
                       minimumFractionDigits: 2,
@@ -314,30 +288,22 @@ export function CryptoSelector({
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <span className="text-xs text-gray-400">Market Cap</span>
-                  <span className="text-xs font-medium text-gray-300">
+                  <span className="text-xs text-muted-foreground">
+                    Market Cap
+                  </span>
+                  <span className="text-xs font-medium text-foreground">
                     ${(crypto.marketCap / 1e9).toFixed(2)}B
                   </span>
                 </div>
 
                 {/* 24h Change */}
                 <div className="flex items-center justify-between">
-                  <span className="text-xs text-gray-400">24h Change</span>
-                  <div
-                    className={cn(
-                      'flex items-center gap-1 rounded px-2 py-1 text-xs font-medium',
-                      crypto.priceChange24h >= 0
-                        ? 'bg-green-500/10 text-green-400'
-                        : 'bg-red-500/10 text-red-400'
-                    )}
-                  >
-                    {crypto.priceChange24h >= 0 ? (
-                      <TrendingUp className="h-3 w-3" />
-                    ) : (
-                      <TrendingDown className="h-3 w-3" />
-                    )}
-                    {Math.abs(crypto.priceChange24h).toFixed(2)}%
-                  </div>
+                  <span className="text-xs text-muted-foreground">
+                    24h Change
+                  </span>
+                  <span className="text-xs font-medium text-foreground">
+                    {crypto.priceChange24h.toFixed(2)}%
+                  </span>
                 </div>
               </div>
             </CardContent>
@@ -346,7 +312,7 @@ export function CryptoSelector({
       </div>
 
       {filteredCryptos.length === 0 && (
-        <div className="py-8 text-center text-gray-400">
+        <div className="py-8 text-center text-muted-foreground">
           No cryptocurrencies found matching "{searchQuery}"
         </div>
       )}
