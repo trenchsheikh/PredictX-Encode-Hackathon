@@ -1,26 +1,25 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { IntroAnimation } from '@/components/ui/intro-animation';
 
 interface IntroProviderProps {
   children: React.ReactNode;
 }
 
 export function IntroProvider({ children }: IntroProviderProps) {
-  const [showIntro, setShowIntro] = useState(false);
-  const [mounted, setMounted] = useState(false);
+  const [_showIntro, _setShowIntro] = useState(false);
+  const [_mounted, _setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
+    _setMounted(true);
     // Check if user has seen intro before
-    const hasSeenIntro = localStorage.getItem('darkbet-intro-seen');
+    const _hasSeenIntro = localStorage.getItem('darkbet-intro-seen');
     // Disable intro animation entirely
-    setShowIntro(false);
+    _setShowIntro(false);
   }, []);
 
-  const handleIntroComplete = () => {
-    setShowIntro(false);
+  const _handleIntroComplete = () => {
+    _setShowIntro(false);
     localStorage.setItem('darkbet-intro-seen', 'true');
   };
 

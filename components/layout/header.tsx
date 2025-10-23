@@ -1,13 +1,16 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Link from 'next/link';
+
 import Image from 'next/image';
+import Link from 'next/link';
+
 import { usePrivy } from '@privy-io/react-auth';
+import { Menu, X, Globe, Wallet } from 'lucide-react';
+
 import { useI18n } from '@/components/providers/i18n-provider';
 import { Button } from '@/components/ui/button';
 import { Magnetic } from '@/components/ui/magnetic';
-import { Menu, X, Globe, Wallet } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const navigation = [

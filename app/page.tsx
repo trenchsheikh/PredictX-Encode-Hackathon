@@ -1,10 +1,30 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+
 import { usePrivy } from '@privy-io/react-auth';
+import { ethers } from 'ethers';
+import {
+  Plus,
+  TrendingUp,
+  Loader2,
+  RefreshCw,
+  AlertCircle,
+  CheckCircle,
+  Wallet,
+} from 'lucide-react';
+
+import { BetModal } from '@/components/prediction/bet-modal';
+import { CreateBetModal } from '@/components/prediction/create-bet-modal';
+import type { EventPredictionData } from '@/components/prediction/create-event-prediction-modal';
+import { CreateEventPredictionModal } from '@/components/prediction/create-event-prediction-modal';
+import type { CryptoPredictionData } from '@/components/prediction/crypto-prediction-modal';
+import { CryptoPredictionModal } from '@/components/prediction/crypto-prediction-modal';
+import { PredictionCard } from '@/components/prediction/prediction-card';
+import { TransactionHistoryModal } from '@/components/prediction/transaction-history-modal';
+import { useI18n } from '@/components/providers/i18n-provider';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import {
   Dialog,
   DialogContent,
@@ -12,42 +32,19 @@ import {
   DialogTitle,
   DialogDescription,
 } from '@/components/ui/dialog';
-import { PredictionCard } from '@/components/prediction/prediction-card';
-import { CreateBetModal } from '@/components/prediction/create-bet-modal';
-import { BetModal } from '@/components/prediction/bet-modal';
-import {
-  CryptoPredictionModal,
-  CryptoPredictionData,
-} from '@/components/prediction/crypto-prediction-modal';
-import {
-  CreateEventPredictionModal,
-  EventPredictionData,
-} from '@/components/prediction/create-event-prediction-modal';
-import { TransactionHistoryModal } from '@/components/prediction/transaction-history-modal';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { TransactionStatus } from '@/components/ui/transaction-status';
-import {
+import { api, getErrorMessage } from '@/lib/api-client';
+import { mapCategory, mapStatus, calculatePrice } from '@/lib/blockchain-utils';
+import { generateCommit, storeCommitSecret } from '@/lib/commit-reveal';
+import { usePredictionContract } from '@/lib/hooks/use-prediction-contract';
+import { logger } from '@/lib/logger';
+import type {
   Prediction,
   CreatePredictionData,
   PredictionCategory,
   PredictionStatus,
 } from '@/types/prediction';
-import {
-  Plus,
-  TrendingUp,
-  BarChart3,
-  Loader2,
-  RefreshCw,
-  AlertCircle,
-  CheckCircle,
-  Wallet,
-} from 'lucide-react';
-import { useI18n } from '@/components/providers/i18n-provider';
-import { api, getErrorMessage } from '@/lib/api-client';
-import { usePredictionContract } from '@/lib/hooks/use-prediction-contract';
-import { generateCommit, storeCommitSecret } from '@/lib/commit-reveal';
-import { mapCategory, mapStatus, calculatePrice } from '@/lib/blockchain-utils';
-import { logger } from '@/lib/logger';
-import { ethers } from 'ethers';
 
 export default function HomePage() {
   const { t, isInitialized } = useI18n();
@@ -75,7 +72,7 @@ export default function HomePage() {
     useState<string>('');
 
   // User bets tracking
-  const [userBets, setUserBets] = useState<{
+  const [userBets, _setUserBets] = useState<{
     [predictionId: string]: { outcome: 'yes' | 'no'; shares: number };
   }>({});
 
@@ -103,49 +100,46 @@ export default function HomePage() {
       }
 
       // Map backend data to frontend Prediction format
-      const mappedPredictions: Prediction[] = response.data.map(
-        (market: any) => ({
-          id: market.marketId.toString(),
-          title: market.title,
-          description: market.description,
-          summary: market.summary || market.description,
-          category: mapCategory(market.category) as PredictionCategory,
-          status: mapStatus(market.status) as PredictionStatus,
-          createdAt: new Date(market.createdAt).getTime(),
-          expiresAt: new Date(market.expiresAt).getTime(),
-          creator: market.creator,
-          totalPool: parseFloat(ethers.formatEther(market.totalPool || '0')),
-          yesPool: parseFloat(ethers.formatEther(market.yesPool || '0')),
-          noPool: parseFloat(ethers.formatEther(market.noPool || '0')),
-          yesPrice: calculatePrice(
-            market.yesPool || '0',
-            market.totalPool || '1'
-          ),
-          noPrice: calculatePrice(
-            market.noPool || '0',
-            market.totalPool || '1'
-          ),
-          totalShares:
-            parseFloat(ethers.formatEther(market.yesShares || '0')) +
-            parseFloat(ethers.formatEther(market.noShares || '0')),
-          yesShares: parseFloat(ethers.formatEther(market.yesShares || '0')),
-          noShares: parseFloat(ethers.formatEther(market.noShares || '0')),
-          participants: market.participants || 0,
-          isHot:
-            market.participants > 10 ||
-            parseFloat(ethers.formatEther(market.totalPool || '0')) > 1,
-          outcome:
-            market.outcome === true
-              ? 'yes'
-              : market.outcome === false
-                ? 'no'
-                : undefined,
-          resolutionReasoning: market.resolutionReasoning,
-        })
-      );
+      const mappedPredictions: Prediction[] = response.data.map(market => ({
+        id: market.marketId.toString(),
+        title: market.title,
+        description: market.description,
+        summary: market.summary || market.description,
+        category: mapCategory(market.category) as PredictionCategory,
+        status: mapStatus(market.status) as PredictionStatus,
+        createdAt: new Date(market.createdAt).getTime(),
+        expiresAt: new Date(market.expiresAt).getTime(),
+        creator: market.creator,
+        totalPool: parseFloat(ethers.formatEther(market.totalPool || '0')),
+        yesPool: parseFloat(ethers.formatEther(market.yesPool || '0')),
+        noPool: parseFloat(ethers.formatEther(market.noPool || '0')),
+        yesPrice: calculatePrice(
+          market.yesPool || '0',
+          market.totalPool || '1'
+        ),
+        noPrice: calculatePrice(market.noPool || '0', market.totalPool || '1'),
+        totalShares:
+          parseFloat(ethers.formatEther(market.yesShares || '0')) +
+          parseFloat(ethers.formatEther(market.noShares || '0')),
+        yesShares: parseFloat(ethers.formatEther(market.yesShares || '0')),
+        noShares: parseFloat(ethers.formatEther(market.noShares || '0')),
+        participants: market.participants || 0,
+        isHot:
+          market.participants > 10 ||
+          parseFloat(ethers.formatEther(market.totalPool || '0')) > 1,
+        resolution:
+          market.outcome !== undefined && market.resolvedAt
+            ? {
+                outcome: market.outcome ? 'yes' : ('no' as const),
+                resolvedAt: new Date(market.resolvedAt).getTime(),
+                reasoning: market.resolutionReasoning || '',
+                evidence: [],
+              }
+            : undefined,
+      }));
 
       setPredictions(mappedPredictions);
-    } catch (err: any) {
+    } catch (err: unknown) {
       logger.error('Failed to fetch markets:', err);
       setError(getErrorMessage(err));
     } finally {
@@ -252,7 +246,7 @@ export default function HomePage() {
       await fetchMarkets();
 
       logger.user(t('success.bet_placed'));
-    } catch (err: any) {
+    } catch (err: unknown) {
       logger.error('Bet failed:', err);
       throw new Error(getErrorMessage(err));
     }
@@ -261,7 +255,7 @@ export default function HomePage() {
   /**
    * Handle create prediction - Currently disabled, redirect to Crypto DarkPool
    */
-  const handleCreatePrediction = async (data: CreatePredictionData) => {
+  const handleCreatePrediction = async (_data: CreatePredictionData) => {
     if (!authenticated || !user?.wallet?.address) {
       logger.user(t('errors.wallet_required'));
       return;
@@ -396,7 +390,7 @@ export default function HomePage() {
 
       setShowCryptoModal(false);
       logger.user(t('success.crypto_prediction_created'));
-    } catch (err: any) {
+    } catch (err: unknown) {
       logger.error('Create crypto prediction failed:', err);
       throw err;
     }
@@ -539,7 +533,7 @@ export default function HomePage() {
       await fetchMarkets();
 
       setShowEventModal(false);
-    } catch (err: any) {
+    } catch (err: unknown) {
       logger.error('Create event prediction failed:', err);
       throw err;
     }
@@ -548,7 +542,7 @@ export default function HomePage() {
   /**
    * Calculate stats
    */
-  const stats = {
+  const _stats = {
     totalPredictions: predictions.length,
     activePredictions: predictions.filter(p => p.status === 'active').length,
     totalVolume: predictions.reduce((sum, p) => sum + p.totalPool, 0),
@@ -741,7 +735,7 @@ export default function HomePage() {
             </Card>
           ) : (
             <div className="grid auto-rows-fr grid-cols-1 gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {filteredPredictions.map((prediction, index) => (
+              {filteredPredictions.map(prediction => (
                 <PredictionCard
                   key={prediction.id}
                   prediction={prediction}
@@ -775,7 +769,7 @@ export default function HomePage() {
                 .filter(
                   p => p.status === 'resolved' || p.status === 'cancelled'
                 )
-                .map((prediction, index) => (
+                .map(prediction => (
                   <PredictionCard
                     key={prediction.id}
                     prediction={prediction}

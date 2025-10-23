@@ -1,11 +1,12 @@
-import { NextRequest, NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
+import { NextResponse } from 'next/server';
 
 const RENDER_BACKEND_URL =
   process.env.NODE_ENV === 'production'
     ? process.env.BACKEND_URL || 'https://darkbet.onrender.com'
     : process.env.BACKEND_URL || 'http://localhost:3001';
 
-export async function GET(request: NextRequest) {
+export async function GET(_request: NextRequest) {
   try {
     const url = `${RENDER_BACKEND_URL}/health`;
 
@@ -22,7 +23,7 @@ export async function GET(request: NextRequest) {
 
     const data = await response.json();
     return NextResponse.json(data);
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Error proxying to backend:', error);
 
     return NextResponse.json(

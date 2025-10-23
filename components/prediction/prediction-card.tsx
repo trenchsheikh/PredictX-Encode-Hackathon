@@ -1,20 +1,22 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Card, CardContent } from '@/components/ui/card';
+
+import { Clock, Users, ArrowUp, ArrowDown, Flame } from 'lucide-react';
+
+import { useI18n } from '@/components/providers/i18n-provider';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { Prediction } from '@/types/prediction';
 import { formatBNB, formatTimeRemaining } from '@/lib/utils';
-import { Clock, Users, ArrowUp, ArrowDown, Flame } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { useI18n } from '@/components/providers/i18n-provider';
+import type { Prediction } from '@/types/prediction';
 
 interface PredictionCardProps {
   prediction: Prediction;

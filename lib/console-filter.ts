@@ -18,20 +18,20 @@ if (typeof window !== 'undefined') {
   ];
 
   // Check if message should be filtered
-  const shouldFilter = (args: any[]): boolean => {
+  const shouldFilter = (args: unknown[]): boolean => {
     const message = args.join(' ');
     return filterPatterns.some(pattern => pattern.test(message));
   };
 
   // Override console.error
-  console.error = (...args: any[]) => {
+  console.error = (...args: unknown[]) => {
     if (!shouldFilter(args)) {
       originalError.apply(console, args);
     }
   };
 
   // Override console.warn
-  console.warn = (...args: any[]) => {
+  console.warn = (...args: unknown[]) => {
     if (!shouldFilter(args)) {
       originalWarn.apply(console, args);
     }

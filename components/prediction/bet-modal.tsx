@@ -1,6 +1,11 @@
 'use client';
 
 import { useState } from 'react';
+
+import { TrendingUp, TrendingDown } from 'lucide-react';
+
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -9,13 +14,10 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
-import { TrendingUp, TrendingDown, Info } from 'lucide-react';
-import { formatBNB, calculatePayout } from '@/lib/utils';
-import { Prediction } from '@/types/prediction';
 import { InlineError } from '@/components/ui/error-display';
+import { Input } from '@/components/ui/input';
+import { formatBNB, calculatePayout } from '@/lib/utils';
+import type { Prediction } from '@/types/prediction';
 
 interface BetModalProps {
   open: boolean;
@@ -34,7 +36,7 @@ export function BetModal({
 }: BetModalProps) {
   const [amount, setAmount] = useState('');
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<any>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const numAmount = parseFloat(amount) || 0;
   const isYes = outcome === 'yes';
@@ -54,19 +56,19 @@ export function BetModal({
 
   const validateAmount = (): boolean => {
     if (!amount || numAmount <= 0) {
-      setError({ message: 'Please enter a valid amount' });
+      setError('Please enter a valid amount');
       return false;
     }
     if (numAmount < minBet) {
-      setError({ message: `Minimum bet is ${minBet} BNB` });
+      setError(`Minimum bet is ${minBet} BNB`);
       return false;
     }
     if (numAmount > maxBet) {
-      setError({ message: `Maximum bet is ${maxBet} BNB` });
+      setError(`Maximum bet is ${maxBet} BNB`);
       return false;
     }
     if (numAmount > userBalance) {
-      setError({ message: 'Insufficient balance' });
+      setError('Insufficient balance');
       return false;
     }
     setError(null);
@@ -83,9 +85,9 @@ export function BetModal({
       await onConfirm(numAmount);
       setAmount('');
       onOpenChange(false);
-    } catch (err: any) {
+    } catch (err: unknown) {
       // Store the actual error object so we can display user-friendly message
-      setError(err);
+      setError(err instanceof Error ? err.message : String(err));
     } finally {
       setLoading(false);
     }

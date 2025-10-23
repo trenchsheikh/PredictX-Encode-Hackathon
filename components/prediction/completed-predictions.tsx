@@ -1,10 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { formatBNB } from '@/lib/utils';
+
 import {
   CheckCircle,
   XCircle,
@@ -16,7 +13,12 @@ import {
   Users,
   Calendar,
 } from 'lucide-react';
-import { Prediction } from '@/types/prediction';
+
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { formatBNB } from '@/lib/utils';
+import type { Prediction } from '@/types/prediction';
 
 interface CompletedPredictionProps {
   prediction: Prediction;
@@ -51,7 +53,7 @@ export function CompletedPrediction({
     useState<TransactionHistory | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const fetchTransactionHistory = async () => {
+  const _fetchTransactionHistory = async () => {
     setLoading(true);
     try {
       const response = await fetch(`/api/transactions/market/${prediction.id}`);

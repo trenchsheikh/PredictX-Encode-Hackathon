@@ -1,6 +1,7 @@
 'use client';
 
 import { createContext, useContext, useEffect, useState } from 'react';
+
 import { useTranslation } from 'react-i18next';
 import '@/lib/i18n';
 
@@ -8,7 +9,7 @@ type Locale = 'zh' | 'en';
 
 interface I18nContextType {
   locale: Locale;
-  t: (key: string, options?: any) => string;
+  t: (key: string, options?: Record<string, unknown>) => string;
   setLocale: (locale: Locale) => void;
   isInitialized: boolean;
 }

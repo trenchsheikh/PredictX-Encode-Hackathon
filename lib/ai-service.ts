@@ -40,7 +40,7 @@ class AIService {
     }
   }
 
-  private buildPrompt(description: string, category: string): string {
+  private buildPrompt(description: string, _category: string): string {
     const currentYear = new Date().getFullYear();
     const nextYear = currentYear + 1;
 
@@ -99,9 +99,11 @@ JSON only:
 
       if (modelsResponse.ok) {
         const modelsData = await modelsResponse.json();
+        // eslint-disable-next-line no-console
         console.log(
           'Available Gemini models:',
-          modelsData.models?.map((m: any) => m.name) || 'None found'
+          modelsData.models?.map((m: { name: string }) => m.name) ||
+            'None found'
         );
       }
     } catch (error) {
@@ -121,6 +123,7 @@ JSON only:
 
     for (const modelName of modelsToTry) {
       try {
+        // eslint-disable-next-line no-console
         console.log(`Trying model: ${modelName}`);
         const response = await fetch(
           `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`,
@@ -151,7 +154,9 @@ JSON only:
           let data;
           try {
             data = await response.json();
+            // eslint-disable-next-line no-console
             console.log(`✅ Successfully using model: ${modelName}`);
+            // eslint-disable-next-line no-console
             console.log('Response data:', data);
           } catch (jsonError) {
             console.error('Failed to parse JSON response:', jsonError);
@@ -159,6 +164,7 @@ JSON only:
           }
 
           // Handle different response structures
+          // eslint-disable-next-line no-console
           console.log(
             'Full response structure:',
             JSON.stringify(data, null, 2)
@@ -179,6 +185,7 @@ JSON only:
                 candidate.content.parts[0].text
               ) {
                 const truncatedText = candidate.content.parts[0].text;
+                // eslint-disable-next-line no-console
                 console.log('Using truncated content: content.parts[0].text');
                 // Check if truncated content contains valid JSON
                 if (
@@ -187,6 +194,7 @@ JSON only:
                 ) {
                   return truncatedText;
                 } else {
+                  // eslint-disable-next-line no-console
                   console.log(
                     'Truncated content is not valid JSON, using fallback'
                   );
@@ -194,6 +202,7 @@ JSON only:
                 }
               }
               // If no content available, create a fallback response
+              // eslint-disable-next-line no-console
               console.log('Creating fallback response for truncated content');
               return this.createFallbackResponse('crypto prediction');
             }
@@ -205,18 +214,21 @@ JSON only:
               candidate.content.parts[0] &&
               candidate.content.parts[0].text
             ) {
+              // eslint-disable-next-line no-console
               console.log('Using structure 1: content.parts[0].text');
               return candidate.content.parts[0].text;
             }
 
             // Structure 2: direct text property
             if (candidate.text) {
+              // eslint-disable-next-line no-console
               console.log('Using structure 2: candidate.text');
               return candidate.text;
             }
 
             // Structure 3: content.text
             if (candidate.content && candidate.content.text) {
+              // eslint-disable-next-line no-console
               console.log('Using structure 3: content.text');
               return candidate.content.text;
             }
@@ -227,10 +239,12 @@ JSON only:
               candidate.parts[0] &&
               candidate.parts[0].text
             ) {
+              // eslint-disable-next-line no-console
               console.log('Using structure 4: parts[0].text');
               return candidate.parts[0].text;
             }
 
+            // eslint-disable-next-line no-console
             console.log(
               'Candidate structure:',
               JSON.stringify(candidate, null, 2)
@@ -239,16 +253,19 @@ JSON only:
 
           // Fallback structures
           if (data.text) {
+            // eslint-disable-next-line no-console
             console.log('Using fallback: data.text');
             return data.text;
           }
 
           if (data.content) {
+            // eslint-disable-next-line no-console
             console.log('Using fallback: data.content');
             return data.content;
           }
 
           if (data.response) {
+            // eslint-disable-next-line no-console
             console.log('Using fallback: data.response');
             return data.response;
           }
@@ -504,7 +521,11 @@ JSON only:
     }
   }
 
-  private validatePrediction(parsed: any): {
+  private validatePrediction(parsed: {
+    title?: string;
+    description?: string;
+    resolutionInstructions?: string;
+  }): {
     isValid: boolean;
     errorMessage: string;
   } {

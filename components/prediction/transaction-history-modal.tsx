@@ -1,16 +1,17 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+
+import { Clock, ExternalLink } from 'lucide-react';
+
+import { Card, CardContent } from '@/components/ui/card';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent } from '@/components/ui/card';
 import { formatBNB } from '@/lib/utils';
-import { Clock, ExternalLink } from 'lucide-react';
 
 interface TransactionHistoryModalProps {
   open: boolean;
@@ -56,6 +57,7 @@ export function TransactionHistoryModal({
     if (open && predictionId) {
       fetchTransactionHistory();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open, predictionId]);
 
   const fetchTransactionHistory = async () => {
@@ -81,12 +83,12 @@ export function TransactionHistoryModal({
     }
   };
 
-  const getTransactionIcon = (type: string) => {
+  const _getTransactionIcon = (_type: string) => {
     return null; // Remove all transaction icons
   };
 
-  const getTransactionColor = (type: string) => {
-    switch (type) {
+  const _getTransactionColor = (_type: string) => {
+    switch (_type) {
       case 'create':
         return 'bg-white/20 text-white border-white/30';
       case 'commit':
@@ -102,7 +104,7 @@ export function TransactionHistoryModal({
     }
   };
 
-  const getStatusIcon = (status: string) => {
+  const _getStatusIcon = (_status: string) => {
     return null; // Remove all status icons
   };
 
@@ -219,7 +221,7 @@ export function TransactionHistoryModal({
                     <CardContent className="p-3 sm:p-4">
                       <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                         <div className="flex items-center gap-2 sm:gap-3">
-                          {getTransactionIcon(tx.type)}
+                          {_getTransactionIcon(tx.type)}
                           <div>
                             <div className="flex items-center gap-2">
                               <span className="text-sm font-medium text-foreground">
