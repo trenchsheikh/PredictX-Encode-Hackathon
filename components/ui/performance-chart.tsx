@@ -1,6 +1,8 @@
 'use client';
 
 import React from 'react';
+
+import { TrendingUp, BarChart3 } from 'lucide-react';
 import {
   LineChart,
   Line,
@@ -12,7 +14,6 @@ import {
   AreaChart,
   Area,
 } from 'recharts';
-import { TrendingUp, BarChart3 } from 'lucide-react';
 
 interface PerformanceChartProps {
   data: Array<{
@@ -102,7 +103,7 @@ export function PerformanceChart({
                   borderRadius: '8px',
                   color: '#FFFFFF',
                 }}
-                formatter={(value: any, name: string) => [
+                formatter={(value: number | string, name: string) => [
                   `${value} ${name === 'winnings' ? 'BNB' : 'bets'}`,
                   name === 'winnings' ? 'Winnings' : 'Bets',
                 ]}
@@ -143,7 +144,7 @@ export function PerformanceChart({
                   borderRadius: '8px',
                   color: '#FFFFFF',
                 }}
-                formatter={(value: any, name: string) => [
+                formatter={(value: number | string, name: string) => [
                   `${value} ${name === 'winnings' ? 'BNB' : 'bets'}`,
                   name === 'winnings' ? 'Winnings' : 'Bets',
                 ]}

@@ -1,14 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
+
 import {
   Loader2,
   CheckCircle2,
@@ -17,6 +10,15 @@ import {
   Copy,
   AlertTriangle,
 } from 'lucide-react';
+
+import { Button } from '@/components/ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import { getBSCScanTxUrl, formatTxHash } from '@/lib/blockchain-utils';
 
 export type TransactionStatus = 'idle' | 'pending' | 'success' | 'error';

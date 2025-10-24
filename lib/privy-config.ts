@@ -1,5 +1,5 @@
-import { PrivyClientConfig } from '@privy-io/react-auth';
-import { bsc, bscTestnet } from 'viem/chains';
+import type { PrivyClientConfig } from '@privy-io/react-auth';
+import { bsc } from 'viem/chains';
 
 // Export separate APP ID and client config for the real Privy Provider
 export const PRIVY_APP_ID = process.env.NEXT_PUBLIC_PRIVY_APP_ID || '';
@@ -15,6 +15,7 @@ const supportedChains = [bsc]; // Only BSC Mainnet
 
 // Log configuration for debugging (only in development)
 if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
+  // eslint-disable-next-line no-console
   console.log('🔗 Privy Configuration (BSC Mainnet Only):', {
     defaultChain: defaultChain.name,
     supportedChains: supportedChains.map(chain => chain.name),

@@ -1,8 +1,5 @@
 'use client';
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import {
   Bot,
   Target,
@@ -25,10 +22,13 @@ import {
   Sun,
   Coins,
   Laptop,
-  CircleDot,
   XCircle,
 } from 'lucide-react';
+
 import { useI18n } from '@/components/providers/i18n-provider';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 export default function HowItWorksPage() {
   const { t } = useI18n();
@@ -378,7 +378,7 @@ export default function HowItWorksPage() {
           </CardContent>
         </Card>
         <div className="space-y-16">
-          {steps.map((step, index) => (
+          {steps.map(step => (
             <div key={step.number} className="relative">
               <div className="flex flex-col items-start gap-4 sm:flex-row sm:gap-8">
                 <div className="flex-shrink-0">
@@ -461,7 +461,10 @@ export default function HowItWorksPage() {
                           >
                             <span className="text-lg">
                               {(() => {
-                                const Icon = category.icon as any;
+                                const Icon =
+                                  category.icon as React.ComponentType<
+                                    React.SVGProps<SVGSVGElement>
+                                  >;
                                 return <Icon className="h-4 w-4" aria-hidden />;
                               })()}
                             </span>

@@ -1,7 +1,8 @@
 'use client';
 
 import React from 'react';
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
+
 import { cn } from '@/lib/utils';
 
 interface AnimatedCardProps {
@@ -15,8 +16,8 @@ interface AnimatedCardProps {
 export function AnimatedCard({
   children,
   className,
-  hover = true,
-  delay = 0,
+  hover: _hover = true,
+  delay: _delay = 0,
   onClick,
 }: AnimatedCardProps) {
   return (

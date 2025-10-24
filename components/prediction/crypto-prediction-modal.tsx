@@ -1,13 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
+
+import { DollarSign, AlertCircle, Bot, Loader2 } from 'lucide-react';
+
 import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import {
@@ -17,23 +15,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { CryptoSelector, CryptoData } from './crypto-selector';
-import {
-  TrendingUp,
-  TrendingDown,
-  Calendar,
-  DollarSign,
-  AlertCircle,
-  Bot,
-  Loader2,
-} from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { formatDateTimeLocal } from '@/lib/blockchain-utils';
 import {
   getAIService,
   getDefaultAIConfig,
   initializeAI,
 } from '@/lib/ai-service';
+import { formatDateTimeLocal } from '@/lib/blockchain-utils';
+import { cn } from '@/lib/utils';
+
+import type { CryptoData } from './crypto-selector';
+import { CryptoSelector } from './crypto-selector';
 
 interface CryptoPredictionModalProps {
   open: boolean;
@@ -233,8 +224,11 @@ export function CryptoPredictionModal({
                 <Select
                   value={predictionType}
                   onValueChange={v => {
+                    // eslint-disable-next-line no-console
                     console.log('Prediction type changed to:', v);
-                    setPredictionType(v as any);
+                    setPredictionType(
+                      v as 'price_target' | 'market_cap' | 'custom'
+                    );
                   }}
                 >
                   <SelectTrigger
@@ -306,8 +300,9 @@ export function CryptoPredictionModal({
                     <Select
                       value={operator}
                       onValueChange={v => {
+                        // eslint-disable-next-line no-console
                         console.log('Operator changed to:', v);
-                        setOperator(v as any);
+                        setOperator(v as 'above' | 'below');
                       }}
                     >
                       <SelectTrigger

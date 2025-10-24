@@ -1,16 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
+
+import { ethers } from 'ethers';
 import {
   AlertCircle,
   Eye,
@@ -19,10 +11,21 @@ import {
   Copy,
   ExternalLink,
 } from 'lucide-react';
+
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
+import type { CommitData } from '@/lib/commit-reveal';
+import { getRevealDeadline, canReveal } from '@/lib/commit-reveal';
 import { formatBNB, formatTimeRemaining } from '@/lib/utils';
-import { Prediction } from '@/types/prediction';
-import { CommitData, getRevealDeadline, canReveal } from '@/lib/commit-reveal';
-import { ethers } from 'ethers';
+import type { Prediction } from '@/types/prediction';
 
 interface RevealModalProps {
   open: boolean;
@@ -60,8 +63,8 @@ export function RevealModal({
     try {
       await onConfirm();
       onOpenChange(false);
-    } catch (err: any) {
-      setError(err.message || 'Failed to reveal bet');
+    } catch (err) {
+      setError((err as Error).message || 'Failed to reveal bet');
     } finally {
       setLoading(false);
     }

@@ -1,6 +1,7 @@
 'use client';
 
-import { AlertCircle, RefreshCw, Wallet, XCircle } from 'lucide-react';
+import { AlertCircle, RefreshCw, XCircle } from 'lucide-react';
+
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import {
@@ -10,7 +11,7 @@ import {
 } from '@/lib/user-friendly-errors';
 
 interface ErrorDisplayProps {
-  error: any;
+  error: unknown;
   onRetry?: () => void;
   onDismiss?: () => void;
   className?: string;
@@ -98,7 +99,7 @@ export function InlineError({
   error,
   className,
 }: {
-  error: any;
+  error: unknown;
   className?: string;
 }) {
   if (!error) return null;
@@ -138,7 +139,7 @@ export function ErrorToast({
   error,
   onClose,
 }: {
-  error: any;
+  error: unknown;
   onClose?: () => void;
 }) {
   if (!error) return null;

@@ -86,7 +86,9 @@ export function usePrivy(): PrivyAuthState {
 
   const sendCode = async (email: string) => {
     // Simulate sending OTP
+    // eslint-disable-next-line no-console
     console.log(`Sending OTP to ${email}`);
+    // eslint-disable-next-line no-console
     console.info(`OTP sent to ${email} (This is a mock implementation)`);
   };
 
@@ -99,6 +101,7 @@ export function usePrivy(): PrivyAuthState {
         email: { address: 'user@example.com' },
       });
     } else {
+      // eslint-disable-next-line no-console
       console.info('Invalid code. Try 123456');
     }
   };
@@ -119,14 +122,12 @@ export function usePrivy(): PrivyAuthState {
 // Mock PrivyProvider component
 export function PrivyProvider({
   children,
-  appId,
-  config,
 }: {
-  children: any;
-  appId: string;
-  config: any;
+  children: React.ReactNode;
+  appId?: string;
+  config?: unknown;
 }) {
-  return children as any;
+  return children;
 }
 
 // Mock useLoginWithEmail hook
@@ -137,9 +138,12 @@ export function useLoginWithEmail() {
 
 // Mock useSendTransaction hook
 export function useSendTransaction() {
-  const sendTransaction = async (tx: any) => {
+  const sendTransaction = async (tx: unknown) => {
+    // eslint-disable-next-line no-console
     console.log('Mock transaction:', tx);
+    // eslint-disable-next-line no-console
     console.info(`Mock transaction sent: ${JSON.stringify(tx, null, 2)}`);
+    return { hash: '0xmockhash' };
   };
   return { sendTransaction };
 }

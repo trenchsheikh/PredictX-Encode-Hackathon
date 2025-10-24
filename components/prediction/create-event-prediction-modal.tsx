@@ -1,7 +1,12 @@
 'use client';
 
 import { useState } from 'react';
+
+import { Calendar, TrendingUp, X } from 'lucide-react';
+
 import { useI18n } from '@/components/providers/i18n-provider';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -10,9 +15,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
+import { InlineError } from '@/components/ui/error-display';
 import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
 import {
   Select,
   SelectContent,
@@ -20,9 +24,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Badge } from '@/components/ui/badge';
-import { Calendar, TrendingUp, X } from 'lucide-react';
-import { InlineError } from '@/components/ui/error-display';
+import { Textarea } from '@/components/ui/textarea';
 
 interface CreateEventPredictionModalProps {
   open: boolean;
@@ -42,7 +44,7 @@ export interface EventPredictionData {
   outcome: 'yes' | 'no';
 }
 
-const categories = [
+const _categories = [
   { value: '2', label: 'Politics', icon: '🏛️' },
   { value: '6', label: 'Technology', icon: '💻' },
   { value: '5', label: 'Economy', icon: '💰' },
@@ -68,7 +70,7 @@ export function CreateEventPredictionModal({
   const [amount, setAmount] = useState('');
   const [outcome, setOutcome] = useState<'yes' | 'no'>('yes');
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<any>(null);
+  const [error, setError] = useState<{ message: string } | null>(null);
 
   const minBet = 0.001;
   const maxBet = 100;
@@ -154,8 +156,8 @@ export function CreateEventPredictionModal({
       setAmount('');
       setOutcome('yes');
       onOpenChange(false);
-    } catch (err: any) {
-      setError(err);
+    } catch (err) {
+      setError(err as { message: string });
     } finally {
       setLoading(false);
     }

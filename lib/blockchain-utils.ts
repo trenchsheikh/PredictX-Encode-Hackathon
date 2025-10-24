@@ -66,7 +66,7 @@ export function calculatePrice(pool: string, totalPool: string): number {
  */
 export async function loadContractABI(
   contractName: 'PredictionMarket' | 'Vault'
-): Promise<any[]> {
+): Promise<unknown[]> {
   try {
     // Determine which network to load from based on environment
     const network =
@@ -93,6 +93,7 @@ export function getContractAddresses() {
   const vault = process.env.NEXT_PUBLIC_VAULT_CONTRACT_ADDRESS;
 
   if (predictionMarket && vault) {
+    // eslint-disable-next-line no-console
     console.log('Using environment variables for contract addresses');
     // Validate addresses are proper Ethereum addresses
     if (isValidAddress(predictionMarket) && isValidAddress(vault)) {
@@ -201,9 +202,9 @@ export function getBSCScanAddressUrl(address: string): string {
 /**
  * Check if wallet is on correct network
  */
-export async function checkNetwork(
-  provider?: any
-): Promise<{ isCorrect: boolean; chainId?: number }> {
+export async function checkNetwork(provider?: {
+  getNetwork: () => Promise<{ chainId: bigint | number }>;
+}): Promise<{ isCorrect: boolean; chainId?: number }> {
   try {
     let network;
 
@@ -218,6 +219,7 @@ export async function checkNetwork(
     const expectedChainId = parseInt(process.env.NEXT_PUBLIC_CHAIN_ID || '97');
     const isCorrect = Number(network.chainId) === expectedChainId;
 
+    // eslint-disable-next-line no-console
     console.log('Network check:', {
       currentChainId: network.chainId,
       expectedChainId,
@@ -234,13 +236,20 @@ export async function checkNetwork(
 /**
  * Switch to BSC Testnet
  */
-export async function switchToBSCTestnet(provider: any): Promise<boolean> {
+export async function switchToBSCTestnet(provider: {
+  send: (method: string, params: unknown[]) => Promise<unknown>;
+}): Promise<boolean> {
   try {
     await provider.send('wallet_switchEthereumChain', [{ chainId: '0x61' }]); // 97 in hex
     return true;
-  } catch (error: any) {
+  } catch (error: unknown) {
     // Chain not added to MetaMask
-    if (error.code === 4902) {
+    if (
+      typeof error === 'object' &&
+      error !== null &&
+      'code' in error &&
+      error.code === 4902
+    ) {
       try {
         await provider.send('wallet_addEthereumChain', [
           {
@@ -269,13 +278,20 @@ export async function switchToBSCTestnet(provider: any): Promise<boolean> {
 /**
  * Switch to BSC Mainnet
  */
-export async function switchToBSCMainnet(provider: any): Promise<boolean> {
+export async function switchToBSCMainnet(provider: {
+  send: (method: string, params: unknown[]) => Promise<unknown>;
+}): Promise<boolean> {
   try {
     await provider.send('wallet_switchEthereumChain', [{ chainId: '0x38' }]); // 56 in hex
     return true;
-  } catch (error: any) {
+  } catch (error: unknown) {
     // Chain not added to MetaMask
-    if (error.code === 4902) {
+    if (
+      typeof error === 'object' &&
+      error !== null &&
+      'code' in error &&
+      error.code === 4902
+    ) {
       try {
         await provider.send('wallet_addEthereumChain', [
           {
@@ -307,7 +323,7 @@ export async function switchToBSCMainnet(provider: any): Promise<boolean> {
 export async function estimateGas(
   contract: ethers.Contract,
   method: string,
-  args: any[]
+  args: unknown[]
 ): Promise<bigint> {
   try {
     // Validate contract address before estimation
@@ -346,7 +362,7 @@ export async function waitForTransaction(
 /**
  * Parse contract error message (now uses user-friendly error system)
  */
-export function parseContractError(error: any): string {
+export function parseContractError(error: unknown): string {
   // Import the user-friendly error handler
   const { getUserFriendlyErrorMessage } = require('./user-friendly-errors');
   return getUserFriendlyErrorMessage(error);
@@ -362,7 +378,7 @@ export function calculatePotentialPayout(
   totalPool: string
 ): string {
   try {
-    const betAmountBN = BigInt(betAmount);
+    const _betAmountBN = BigInt(betAmount);
     const userSharesBN = BigInt(userShares);
     const totalWinningSharesBN = BigInt(totalWinningShares);
     const totalPoolBN = BigInt(totalPool);

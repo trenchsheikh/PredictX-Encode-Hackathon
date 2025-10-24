@@ -1,10 +1,18 @@
 import mongoose from 'mongoose';
 
+interface CachedConnection {
+  conn: typeof mongoose | null;
+  promise: Promise<typeof mongoose> | null;
+}
+
 // Global variable to cache the connection
-let cached = (global as any).mongoose;
+let cached = (global as { mongoose?: CachedConnection }).mongoose;
 
 if (!cached) {
-  cached = (global as any).mongoose = { conn: null, promise: null };
+  cached = (global as { mongoose?: CachedConnection }).mongoose = {
+    conn: null,
+    promise: null,
+  };
 }
 
 /**
@@ -12,6 +20,10 @@ if (!cached) {
  * This prevents multiple connections in serverless environments
  */
 export async function connectDatabase() {
+  if (!cached) {
+    throw new Error('Cached connection not initialized');
+  }
+
   if (cached.conn) {
     return cached.conn;
   }
@@ -25,6 +37,7 @@ export async function connectDatabase() {
       process.env.MONGODB_URI || 'mongodb://localhost:27017/darkbet';
 
     cached.promise = mongoose.connect(mongoUri, opts).then(mongoose => {
+      // eslint-disable-next-line no-console
       console.log('✅ MongoDB connected successfully');
       return mongoose;
     });
@@ -44,7 +57,7 @@ export async function connectDatabase() {
  * Disconnect from MongoDB (useful for testing)
  */
 export async function disconnectDatabase() {
-  if (cached.conn) {
+  if (cached && cached.conn) {
     await cached.conn.disconnect();
     cached.conn = null;
   }

@@ -2,7 +2,9 @@
 
 import React from 'react';
 import { useState } from 'react';
+
 import { Check, ChevronDown } from 'lucide-react';
+
 import { cn } from '@/lib/utils';
 
 export interface CryptoOption {
@@ -68,7 +70,7 @@ export function CryptoSelector({
         <div className="absolute left-0 right-0 top-full z-50 mt-2">
           <div className="overflow-hidden rounded-xl border border-gray-700/50 bg-gray-900/95 shadow-2xl backdrop-blur-sm">
             <div className="max-h-64 overflow-y-auto">
-              {options.map((option, index) => (
+              {options.map((option, _index) => (
                 <button
                   key={option.id}
                   onClick={() => {
