@@ -1,4 +1,4 @@
-{
+﻿{
   "nav_home": "主页",
   "nav_my_bets": "我的投注",
   "nav_how": "使用说明",
@@ -237,7 +237,7 @@
     "dynamic_pricing_description": "DarkBet使用固定乘积市场做市商（FPMM）进行公平、动态定价",
     "how_prices_work": "价格如何运作",
     "price_mechanism_1": "价格由奖池余额比率确定",
-    "price_mechanism_2": "是价格 + 否价格 = 始终0.01 BNB",
+    "price_mechanism_2": "是价格 + 否价格 = 始终0.01 SOL",
     "price_mechanism_3": "更多投注偏向一方 = 该结果价格更高",
     "price_mechanism_4": "每次投注都会轻微改变市场",
     "betting_options": "投注选项",
@@ -245,7 +245,7 @@
     "betting_custom": "自定义：输入任意BNB金额，获得计算的份额",
     "betting_realtime": "实时报价，30秒有效期",
     "betting_formula": "份额 = 支付金额 ÷ 当前价格",
-    "pricing_example": "如果是价格以0.006 BNB交易，您投注0.01 BNB，您将获得约1.67份额。如果是获胜，每个份额支付0.01 BNB（总计：0.0167 BNB收益）。",
+    "pricing_example": "如果是价格以0.006 SOL交易，您投注0.01 SOL，您将获得约1.67份额。如果是获胜，每个份额支付0.01 SOL（总计：0.0167 SOL收益）。",
     "ai_powered_resolution": "AI驱动解析",
     "ai_resolution_description": "当投注到期时，我们的多层验证系统自动确定结果",
     "layer1_title": "第1层：确定性检查",
@@ -267,7 +267,7 @@
     "security_vault": "安全金库钱包持有所有资金",
     "security_verification": "链上交易验证",
     "security_cooldown": "30秒领取冷却期防止重复",
-    "security_bscscan": "领取后可在BSCScan上查看交易",
+    "security_Solanascan": "领取后可在SolanaScan上查看交易",
     "platform_fee_structure": "平台费用结构",
     "fee_description": "1.5%平台费用适用于奖金领取和投注取消",
     "gross_winnings": "总收益：",
@@ -292,7 +292,7 @@
     "security_transparency": "安全与透明度",
     "blockchain_security": "区块链安全",
     "blockchain_1": "BNB智能链上的所有交易",
-    "blockchain_2": "可在BSCScan上验证",
+    "blockchain_2": "可在SolanaScan上验证",
     "blockchain_3": "通过Privy支持多钱包",
     "blockchain_4": "自动网络切换",
     "smart_protections": "智能保护",
@@ -377,13 +377,13 @@
   "docs": {
     "overview": {
       "title": "DarkBet 文档",
-      "description": "DarkBet 是基于 BNB 链构建的链上预测市场，旨在允许用户使用区块链技术预测现实世界事件、市场趋势和社区驱动结果。每个预测、交易和解析都在链上执行，确保可验证的透明度和公平性。",
+      "description": "DarkBet 是基于 SOL 链构建的链上预测市场，旨在允许用户使用区块链技术预测现实世界事件、市场趋势和社区驱动结果。每个预测、交易和解析都在链上执行，确保可验证的透明度和公平性。",
       "subdescription": "无论是体育结果、政治选举还是加密货币价格变动，DarkBet 将公众情绪和数据分析转化为可操作的、可交易的预测，创建知识和远见的去中心化市场，采用革命性的暗池投注系统。",
       "features": {
         "title": "主要功能",
         "privacy": "暗池隐私 - 投注在解析前保持隐藏",
         "ai": "AI 驱动解析 - 自动化结果确定",
-        "blockchain": "完全链上 - 基于 BNB 智能链构建",
+        "blockchain": "完全链上 - 基于 SOL 智能链构建",
         "amm": "动态 AMM 定价 - 公平的市场定价"
       },
       "getting_started": {
@@ -415,7 +415,7 @@
     "vision": {
       "title": "DarkBet 愿景",
       "description": "DarkBet 设想一个预测市场成为去中心化经济不可或缺部分的未来。透明、无国界的生态系统，知识和远见具有真正的价值。",
-      "subdescription": "作为基于 BNB 链构建的第一个暗池预测市场，DarkBet 旨在重新定义人们与信息的互动方式，使世界各地的用户能够交易见解、预测结果并参与塑造全球叙事的事件，所有这些都通过区块链透明度和可验证智能合约的力量实现。",
+      "subdescription": "作为基于 SOL 链构建的第一个暗池预测市场，DarkBet 旨在重新定义人们与信息的互动方式，使世界各地的用户能够交易见解、预测结果并参与塑造全球叙事的事件，所有这些都通过区块链透明度和可验证智能合约的力量实现。",
       "conclusion": "我们渴望创建一个融合可访问性、创新和信任的平台，每个预测不仅是一个赌注，更是集体智慧的反映。DarkBet 寻求赋予个人做出数据驱动决策的能力，通过共同对未来的信念连接社区，并围绕真理、问责制和去中心化参与培育新经济。",
       "mission": {
         "title": "我们的使命",
@@ -468,8 +468,8 @@
     "why_choose_darkbet": {
       "title": "为什么选择 DarkBet",
       "description": "在信任和数据就是一切的世界中，DarkBet 将两者在链上结合在一起。该平台允许用户通过我们革命性的暗池系统将他们的观点转化为可测量的预测，具有完全的透明度和隐私。",
-      "built_on_bnb": "基于 BNB 链构建",
-      "built_on_bnb_desc": "利用 BNB 链的可扩展性和低交易费用，DarkBet 确保全球用户快速、成本高效且安全的市场参与。",
+      "built_on_bnb": "基于 SOL 链构建",
+      "built_on_bnb_desc": "利用 SOL 链的可扩展性和低交易费用，DarkBet 确保全球用户快速、成本高效且安全的市场参与。",
       "dark_pool_privacy": "暗池隐私",
       "dark_pool_privacy_desc": "您的投注策略在市场解析前保持完全隐藏，防止操纵并确保所有参与者的公平竞争。",
       "transparent": "透明且可验证",
@@ -482,7 +482,7 @@
       "ai_powered_desc": "先进的 AI 使用来自 25+ API 的真实世界数据自动解析预测市场，确保快速准确的结果。",
       "conclusion": {
         "title": "DarkBet 优势",
-        "description": "DarkBet 为您提供自信参与的工具，知道每个预测都是公平、安全且在 BNB 链上经过验证的。我们的暗池系统确保您的策略保持私密，同时保持结果和支付的完全透明度。"
+        "description": "DarkBet 为您提供自信参与的工具，知道每个预测都是公平、安全且在 SOL 链上经过验证的。我们的暗池系统确保您的策略保持私密，同时保持结果和支付的完全透明度。"
       },
       "security": {
         "title": "安全与隐私",
@@ -526,8 +526,8 @@
       },
       "important": {
         "title": "重要提示",
-        "note1": "确保您的钱包已连接到 BNB 智能链网络。",
-        "note2": "在您的钱包中保留一些 BNB 用于交易费用。",
+        "note1": "确保您的钱包已连接到 SOL 智能链网络。",
+        "note2": "在您的钱包中保留一些 SOL 用于交易费用。",
         "note3": "永远不要与任何人分享您的私钥或助记词。",
         "note4": "DarkBet 永远不会要求您的私钥或助记词。"
       },
@@ -535,11 +535,11 @@
         "title": "故障排除",
         "network": {
           "title": "网络错误",
-          "description": "如果您看到网络错误，请确保您的钱包已连接到 BNB 智能链（BSC）。您可以使用链 ID：56 将 BSC 添加到您的钱包。"
+          "description": "如果您看到网络错误，请确保您的钱包已连接到 SOL 智能链（Solana）。您可以使用链 ID：56 将 Solana 添加到您的钱包。"
         },
         "transaction": {
           "title": "交易失败",
-          "description": "确保您有足够的 BNB 支付 gas 费用。如果交易失败，请尝试增加 gas 限制。"
+          "description": "确保您有足够的 SOL 支付 gas 费用。如果交易失败，请尝试增加 gas 限制。"
         },
         "connection": {
           "title": "连接问题",
@@ -564,8 +564,8 @@
       "description": "DarkBet 平台的安全措施和透明度功能。",
       "blockchain": {
         "title": "区块链安全",
-        "all_transactions": "BNB 智能链上的所有交易",
-        "verifiable": "可在 BSCScan 上验证",
+        "all_transactions": " SOL智能链上的所有交易",
+        "verifiable": "可在 SolanaScan 上验证",
         "multi_wallet": "通过 Privy 的多钱包支持",
         "network_switching": "自动网络切换"
       },
@@ -591,7 +591,7 @@
         "title": "透明度功能",
         "on_chain": {
           "title": "链上验证",
-          "description": "所有交易和结果都记录在 BNB 智能链上，可在 BSCScan 上验证。"
+          "description": "所有交易和结果都记录在 SOL 智能链上，可在 SolanaScan 上验证。"
         },
         "open_source": {
           "title": "开源组件",
@@ -613,8 +613,8 @@
       "milestones": {
         "title": "里程碑",
         "launch": {
-          "title": "DarkBet 在 BNB 链上正式启动",
-          "description": "在 BNB 链上启动核心 DarkBet 平台，具备暗池投注功能。"
+          "title": "DarkBet 在 SOL 链上正式启动",
+          "description": "在 SOL 链上启动核心 DarkBet 平台，具备暗池投注功能。"
         },
         "contracts": {
           "title": "智能合约部署",
@@ -845,14 +845,14 @@
         "winners_split": "获胜者按比例分配总池",
         "formula": "奖金 = (您的份额 ÷ 总获胜份额) × 总池",
         "platform_fee": "自动扣除 1.5% 平台费用",
-        "receive": "您收到 98.5% 的 BNB 总奖金"
+        "receive": "您收到 98.5% 的 SOL 总奖金"
       },
       "security": {
         "title": "安全功能",
         "vault_wallet": "安全金库钱包持有所有资金",
         "verification": "链上交易验证",
         "cooldown": "30 秒领取冷却期防止重复",
-        "bscscan": "领取后在 BSCScan 上查看交易"
+        "Solanascan": "领取后在 SolanaScan 上查看交易"
       },
       "process": {
         "title": "如何领取您的奖金",
@@ -870,7 +870,7 @@
         },
         "step4": {
           "title": "确认交易",
-          "description": "在您的钱包中确认交易以接收 BNB 奖金。"
+          "description": "在您的钱包中确认交易以接收 SOL 奖金。"
         }
       },
       "notes": {
@@ -878,17 +878,17 @@
         "gas_fees": "您需要为领取交易支付 gas 费用",
         "cooldown_period": "领取之间有 30 秒冷却期以防止重复交易",
         "platform_fee": "所有奖金自动扣除 1.5% 平台费用",
-        "transaction_history": "所有交易都记录在链上，可在 BSCScan 上查看"
+        "transaction_history": "所有交易都记录在链上，可在 SolanaScan 上查看"
       },
       "example": {
         "title": "计算示例",
         "scenario": "如果您用 10 份额投注\"是\"并且\"是\"获胜：",
-        "total_pool": "总池：1,000 BNB",
+        "total_pool": "总池：1,000 SOL",
         "your_shares": "您的份额：10",
         "total_winning": "总获胜份额：500",
-        "gross_winnings": "总奖金：(10 ÷ 500) × 1,000 = 20 BNB",
-        "platform_fee": "平台费用 (1.5%)：0.3 BNB",
-        "net_winnings": "净奖金：19.7 BNB"
+        "gross_winnings": "总奖金：(10 ÷ 500) × 1,000 = 20 SOL",
+        "platform_fee": "平台费用 (1.5%)：0.3 SOL",
+        "net_winnings": "净奖金：19.7 SOL"
       }
     },
     "ai_resolution": {
@@ -977,7 +977,7 @@
         "title": "价格如何运作",
         "description": "DarkBet 使用固定乘积做市商（FPMM）进行公平、动态定价。",
         "ratios": "价格由池余额比率决定",
-        "sum": "是价格 + 否价格 = 始终 0.01 BNB",
+        "sum": "是价格 + 否价格 = 始终 0.01 SOL",
         "market_shift": "一侧更多投注 = 该结果的更高价格",
         "slight_shift": "每次投注都会轻微移动市场"
       },
@@ -989,7 +989,7 @@
         },
         "custom": {
           "title": "自定义：基于金额",
-          "description": "输入任何 BNB 金额，根据当前市场价格获得计算的份额。"
+          "description": "输入任何 SOL 金额，根据当前市场价格获得计算的份额。"
         },
         "real_time": "30 秒有效期的实时报价",
         "shares_formula": "份额 = 支付金额 ÷ 当前价格"
@@ -997,11 +997,11 @@
       "example": {
         "title": "计算示例",
         "scenario": "示例场景",
-        "description": "如果是以 0.006 BNB 交易，您投注 0.01 BNB：",
-        "yes_price": "是价格：0.006 BNB",
-        "bet_amount": "您的投注：0.01 BNB",
+        "description": "如果是以 0.006 SOL 交易，您投注 0.01 SOL：",
+        "yes_price": "是价格：0.006 SOL",
+        "bet_amount": "您的投注：0.01 SOL",
         "shares_received": "收到份额：0.01 ÷ 0.006 = ~1.67 份额",
-        "if_wins": "如果是获胜：1.67 × 0.01 = 0.0167 BNB 支付"
+        "if_wins": "如果是获胜：1.67 × 0.01 = 0.0167 SOL 支付"
       },
       "amm_mechanics": {
         "title": "AMM 机制",
@@ -1034,7 +1034,7 @@
         },
         "balanced": {
           "title": "平衡市场",
-          "description": "双方平等投注导致平衡定价，每个约 0.005 BNB。"
+          "description": "双方平等投注导致平衡定价，每个约 0.005 SOL。"
         }
       },
       "advantages": {
@@ -1127,7 +1127,7 @@
   "final_words": {
     "title": "结语",
     "intro": "DarkBet 位于创新、透明度和社区驱动金融的交汇点。",
-    "mission": "作为基于 BNB 链构建的第一个暗池预测市场，我们的使命超越了简单的预测，我们旨在重塑人们在去中心化世界中与信息、市场和彼此互动的方式。",
+    "mission": "作为基于 SOL 链构建的第一个暗池预测市场，我们的使命超越了简单的预测，我们旨在重塑人们在去中心化世界中与信息、市场和彼此互动的方式。",
     "transformation": "通过赋予用户创建和参与透明、可验证预测市场的能力，DarkBet 将洞察转化为机会。每个预测、每笔交易和每个结果都为更智能、更公平和更连接的生态系统做出贡献。",
     "journey": "DarkBet 的旅程才刚刚开始。通过持续发展、战略合作伙伴关系和不断增长的社区，我们致力于构建一个代表预测未来的平台——在这里，远见成为价值，每个声音都塑造市场。",
     "cta": "认为你知道？来下注吧！",

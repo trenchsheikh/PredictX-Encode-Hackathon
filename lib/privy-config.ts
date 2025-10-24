@@ -1,7 +1,4 @@
-import type { PrivyClientConfig } from '@privy-io/react-auth';
-import { bsc } from 'viem/chains';
-
-// Export separate APP ID and client config for the real Privy Provider
+// Privy configuration for Solana
 export const PRIVY_APP_ID = process.env.NEXT_PUBLIC_PRIVY_APP_ID || '';
 
 // Validate Privy App ID
@@ -9,31 +6,26 @@ export const isValidPrivyAppId = (appId: string): boolean => {
   return Boolean(appId && appId.length > 0 && appId !== 'undefined');
 };
 
-// Only support BSC Mainnet
-const defaultChain = bsc;
-const supportedChains = [bsc]; // Only BSC Mainnet
+// Get Solana cluster configuration
+export const getSolanaCluster = (): 'mainnet-beta' | 'devnet' | 'testnet' => {
+  const network = process.env.NEXT_PUBLIC_SOLANA_NETWORK || 'devnet';
+  return network as 'mainnet-beta' | 'devnet' | 'testnet';
+};
+
+// Get Solana RPC URL
+export const getSolanaRpcUrl = (): string => {
+  return process.env.NEXT_PUBLIC_SOLANA_RPC_URL || 'https://api.devnet.solana.com';
+};
 
 // Log configuration for debugging (only in development)
 if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
   // eslint-disable-next-line no-console
-  console.log('🔗 Privy Configuration (BSC Mainnet Only):', {
-    defaultChain: defaultChain.name,
-    supportedChains: supportedChains.map(chain => chain.name),
-    chainIdNumber: defaultChain.id,
+  console.log('🔗 Privy Configuration (Solana):', {
+    cluster: getSolanaCluster(),
+    rpcUrl: getSolanaRpcUrl(),
+    appId: PRIVY_APP_ID ? '✓ Set' : '✗ Missing',
   });
 }
 
-export const privyClientConfig: PrivyClientConfig = {
-  appearance: {
-    theme: 'dark',
-    accentColor: '#F0B90B',
-  },
-  loginMethods: ['wallet', 'email', 'sms', 'google', 'twitter', 'discord'],
-  embeddedWallets: {
-    ethereum: {
-      createOnLogin: 'users-without-wallets',
-    },
-  },
-  supportedChains,
-  defaultChain,
-};
+// Privy will be configured directly in the PrivyProvider component
+// to use Solana chain with Phantom, Solflare, and other Solana wallets

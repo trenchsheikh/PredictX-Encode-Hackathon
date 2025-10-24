@@ -10,14 +10,14 @@
   "connected": "Connected",
   "hero_title": "Darkbet",
   "hero_subtitle": "Darkpool Betting Platform",
-  "hero_description": "Trade outcomes privately. No frontruns. No copycats. Only pure conviction. Built on BNB Smart Chain.",
+  "hero_description": "Trade outcomes privately. No frontruns. No copycats. Only pure conviction. Built on Solana.",
   "hero_headline_lead": "Don't Just Bet,",
   "hero_bet_word": "Bet",
   "badge_live": "Live",
   "badge_introducing": "Introducing",
   "darkpool_betting": "Darkpool Markets",
   "what_is_darkpool": "What is DarkPool Betting?",
-  "darkpool_explanation": "Darkpool Markets let you place bets privately inside hidden liquidity pools.\nEvery trade stays invisible, but outcomes settle transparently on BNB Smart Chain.\nYou see the truth only when it matters, when the market closes",
+  "darkpool_explanation": "Darkpool Markets let you place bets privately inside hidden liquidity pools.\nEvery trade stays invisible, but outcomes settle transparently on Solana.\nYou see the truth only when it matters, when the market closes",
   "features": {
     "privacy": "Private",
     "fully_onchain": "On-Chain",
@@ -83,7 +83,7 @@
     "place_initial_bet": "Place Your Initial Bet (Required)",
     "prevent_spam": "To prevent spam, creators must participate in their own prediction",
     "your_prediction": "Your Prediction",
-    "bnb_amount": "BNB Amount",
+    "bnb_amount": "SOL Amount",
     "click_create_will_prompt": "Clicking \"Create Bet\" will prompt your wallet to send {amount} to the vault",
     "cancel": "Cancel",
     "creating": "Creating...",
@@ -237,15 +237,15 @@
     "dynamic_pricing_description": "Darkbet uses a Fixed Product Market Maker (FPMM) for fair, dynamic pricing",
     "how_prices_work": "How Prices Work",
     "price_mechanism_1": "Prices determined by pool balance ratios",
-    "price_mechanism_2": "YES price + NO price = 0.01 BNB always",
+    "price_mechanism_2": "YES price + NO price = 0.01 SOL always",
     "price_mechanism_3": "More bets on one side = higher price for that outcome",
     "price_mechanism_4": "Each bet shifts the market slightly",
     "betting_options": "Betting Options",
     "betting_default": "Default: Buy 1 share at current market price",
-    "betting_custom": "Custom: Enter any BNB amount, get calculated shares",
+    "betting_custom": "Custom: Enter any SOL amount, get calculated shares",
     "betting_realtime": "Real-time quotes with 30-second validity",
     "betting_formula": "Shares = Amount Paid ÷ Current Price",
-    "pricing_example": "If YES is trading at 0.006 BNB and you bet 0.01 BNB, you'll receive ~1.67 shares. If YES wins, each share pays 0.01 BNB (total: 0.0167 BNB payout).",
+    "pricing_example": "If YES is trading at 0.006 SOL and you bet 0.01 SOL, you'll receive ~1.67 shares. If YES wins, each share pays 0.01 SOL (total: 0.0167 SOL payout).",
     "ai_powered_resolution": "AI-Powered Resolution",
     "ai_resolution_description": "When bets expire, our multi-layer verification system automatically determines the outcome",
     "layer1_title": "Layer 1: Deterministic Checks",
@@ -262,12 +262,12 @@
     "payout_mechanism_1": "Winners split the total pool proportionally",
     "payout_mechanism_2": "Payout = (Your Shares ÷ Total Winning Shares) × Total Pool",
     "payout_mechanism_3": "1.5% platform fee automatically deducted",
-    "payout_mechanism_4": "You receive 98.5% of gross winnings in BNB",
+    "payout_mechanism_4": "You receive 98.5% of gross winnings in SOL",
     "security_features": "Security Features",
     "security_vault": "Secure vault wallet holds all funds",
     "security_verification": "On-chain transaction verification",
     "security_cooldown": "30-second claim cooldown prevents duplicates",
-    "security_bscscan": "View transaction on BSCScan after claiming",
+    "security_Solanascan": "View transaction on SolanaScan after claiming",
     "platform_fee_structure": "Platform Fee Structure",
     "fee_description": "1.5% platform fee applies to both prize claims AND bet cancellations",
     "gross_winnings": "Gross Winnings:",
@@ -291,8 +291,8 @@
     "automated_4": "Winners claim prizes manually (1.5% fee applies)",
     "security_transparency": "Security & Transparency",
     "blockchain_security": "Blockchain Security",
-    "blockchain_1": "All transactions on BNB Smart Chain",
-    "blockchain_2": "Verifiable on BSCScan",
+    "blockchain_1": "All transactions on Solana",
+    "blockchain_2": "Verifiable on SolanaScan",
     "blockchain_3": "Multi-wallet support via Privy",
     "blockchain_4": "Automatic network switching",
     "smart_protections": "Smart Protections",
@@ -377,13 +377,13 @@
   "docs": {
     "overview": {
       "title": "DarkBet Documentation",
-      "description": "DarkBet is an on-chain prediction market built on BNB Chain, designed to allow users to forecast real-world events, market trends, and community-driven outcomes using blockchain technology. Every prediction, transaction, and resolution is executed on-chain, ensuring verifiable transparency and fairness.",
+      "description": "DarkBet is an on-chain prediction market built on Solana, designed to allow users to forecast real-world events, market trends, and community-driven outcomes using blockchain technology. Every prediction, transaction, and resolution is executed on-chain, ensuring verifiable transparency and fairness.",
       "subdescription": "Currently focused on crypto price movements for v1, DarkBet turns market sentiment and data analysis into actionable, tradeable predictions, creating a decentralized marketplace for crypto knowledge and foresight with the revolutionary Dark Pool betting system.",
       "features": {
         "title": "Key Features",
         "privacy": "Dark Pool Privacy - Bets remain hidden until resolution",
         "ai": "AI-Powered Resolution - Automated outcome determination",
-        "blockchain": "Fully On-Chain - Built on BNB Smart Chain",
+        "blockchain": "Fully On-Chain - Built on Solana",
         "amm": "Dynamic AMM Pricing - Fair market-based pricing"
       },
       "getting_started": {
@@ -415,7 +415,7 @@
     "vision": {
       "title": "DarkBet Vision",
       "description": "DarkBet imagines a tomorrow where confidential forecasting platforms transform our engagement with cryptocurrency markets. An ecosystem prioritizing secrecy where DarkPool innovation creates honest, interference-resistant digital asset predictions possessing genuine worth.",
-      "subdescription": "Being the inaugural DarkPool forecasting system constructed on BNB Chain, DarkBet transforms digital currency market prediction by maintaining all forecasts entirely confidential until settlement. Participants can exchange cryptocurrency knowledge, forecast price changes, and engage in market occurrences that influence the destiny of digital currencies, all via blockchain openness and verifiable smart contracts.",
+      "subdescription": "Being the inaugural DarkPool forecasting system constructed on Solana, DarkBet transforms digital currency market prediction by maintaining all forecasts entirely confidential until settlement. Participants can exchange cryptocurrency knowledge, forecast price changes, and engage in market occurrences that influence the destiny of digital currencies, all via blockchain openness and verifiable smart contracts.",
       "conclusion": "We dream of building a system that combines confidentiality, creativity, and confidence, where each cryptocurrency forecast is not merely a bet, but an expression of shared market wisdom. DarkBet aims to enable people to make evidence-based digital asset choices, unite groups through common convictions about virtual currency prospects, and cultivate a fresh economy founded on honesty, responsibility, and distributed involvement in the cryptocurrency realm.",
       "mission": {
         "title": "Our Mission",
@@ -468,8 +468,8 @@
     "why_choose_darkbet": {
       "title": "Why Choose DarkBet",
       "description": "In a universe where confidence and information are paramount, DarkBet unites both on the blockchain. The system enables participants to transform their viewpoints into quantifiable forecasts with complete openness and confidentiality via our groundbreaking Dark Pool mechanism.",
-      "built_on_bnb": "Constructed on BNB Chain",
-      "built_on_bnb_desc": "Utilizing the expandability and minimal transaction costs of BNB Chain, DarkBet guarantees rapid, economical, and protected market engagement for participants globally.",
+      "built_on_bnb": "Constructed on Solana",
+      "built_on_bnb_desc": "Utilizing the expandability and minimal transaction costs of Solana, DarkBet guarantees rapid, economical, and protected market engagement for participants globally.",
       "dark_pool_privacy": "Dark Pool Confidentiality",
       "dark_pool_privacy_desc": "Your wagering approach stays entirely concealed until market settlement, stopping interference and guaranteeing equitable competition for all members.",
       "transparent": "Open and Verifiable",
@@ -482,7 +482,7 @@
       "ai_powered_desc": "Sophisticated AI automatically settles forecasting markets utilizing real-world information from 25+ APIs, guaranteeing rapid and precise results.",
       "conclusion": {
         "title": "The DarkBet Benefit",
-        "description": "DarkBet provides you with the resources to engage confidently, understanding every forecast is equitable, protected, and confirmed on BNB Chain. Our Dark Pool mechanism ensures your tactics stay confidential while preserving complete openness in results and payments."
+        "description": "DarkBet provides you with the resources to engage confidently, understanding every forecast is equitable, protected, and confirmed on Solana. Our Dark Pool mechanism ensures your tactics stay confidential while preserving complete openness in results and payments."
       },
       "security": {
         "title": "Protection & Confidentiality",
@@ -526,8 +526,8 @@
       },
       "important": {
         "title": "Critical Notes",
-        "note1": "Ensure you're linked to the BNB Smart Chain network in your wallet.",
-        "note2": "Maintain some BNB in your wallet for transaction fees.",
+        "note1": "Ensure you're linked to the Solana network in your wallet.",
+        "note2": "Maintain some SOL in your wallet for transaction fees.",
         "note3": "Never disclose your private keys or seed phrases to anyone.",
         "note4": "DarkBet will never request your private keys or seed phrases."
       },
@@ -535,11 +535,11 @@
         "title": "Problem Resolution",
         "network": {
           "title": "Incorrect Network",
-          "description": "If you encounter a network error, ensure your wallet is linked to BNB Smart Chain (BSC). You can add BSC to your wallet using Chain ID: 56."
+          "description": "If you encounter a network error, ensure your wallet is linked to Solana (Solana). You can add Solana to your wallet using Chain ID: 56."
         },
         "transaction": {
           "title": "Transaction Failed",
-          "description": "Ensure you have sufficient BNB for gas fees. Try increasing the gas limit if transactions are failing."
+          "description": "Ensure you have sufficient SOL for gas fees. Try increasing the gas limit if transactions are failing."
         },
         "connection": {
           "title": "Linking Issues",
@@ -564,8 +564,8 @@
       "description": "Security measures and transparency features of the DarkBet platform.",
       "blockchain": {
         "title": "Blockchain Security",
-        "all_transactions": "All transactions on BNB Smart Chain",
-        "verifiable": "Verifiable on BSCScan",
+        "all_transactions": "All transactions on Solana",
+        "verifiable": "Verifiable on SolanaScan",
         "multi_wallet": "Multi-wallet support via Privy",
         "network_switching": "Automatic network switching"
       },
@@ -591,7 +591,7 @@
         "title": "Transparency Features",
         "on_chain": {
           "title": "On-Chain Verification",
-          "description": "All transactions and outcomes are recorded on BNB Smart Chain and can be verified on BSCScan."
+          "description": "All transactions and outcomes are recorded on Solana and can be verified on SolanaScan."
         },
         "open_source": {
           "title": "Open Source Components",
@@ -613,8 +613,8 @@
       "milestones": {
         "title": "Milestones",
         "launch": {
-          "title": "Official Launch of DarkBet on BNB Chain",
-          "description": "Launch the core DarkBet platform with Dark Pool betting capabilities on BNB Chain."
+          "title": "Official Launch of DarkBet on Solana",
+          "description": "Launch the core DarkBet platform with Dark Pool betting capabilities on Solana."
         },
         "contracts": {
           "title": "Smart Contract Deployment",
@@ -845,14 +845,14 @@
         "winners_split": "Winners split the total pool proportionally",
         "formula": "Payout = (Your Shares ÷ Total Winning Shares) × Total Pool",
         "platform_fee": "1.5% platform fee automatically deducted",
-        "receive": "You receive 98.5% of gross winnings in BNB"
+        "receive": "You receive 98.5% of gross winnings in SOL"
       },
       "security": {
         "title": "Security Features",
         "vault_wallet": "Secure vault wallet holds all funds",
         "verification": "On-chain transaction verification",
         "cooldown": "30-second claim cooldown prevents duplicates",
-        "bscscan": "View transaction on BSCScan after claiming"
+        "Solanascan": "View transaction on SolanaScan after claiming"
       },
       "process": {
         "title": "How to Claim Your Winnings",
@@ -870,7 +870,7 @@
         },
         "step4": {
           "title": "Confirm Transaction",
-          "description": "Confirm the transaction in your wallet to receive your winnings in BNB."
+          "description": "Confirm the transaction in your wallet to receive your winnings in SOL."
         }
       },
       "notes": {
@@ -878,17 +878,17 @@
         "gas_fees": "You will need to pay gas fees for the claim transaction",
         "cooldown_period": "There is a 30-second cooldown between claims to prevent duplicate transactions",
         "platform_fee": "A 1.5% platform fee is automatically deducted from all winnings",
-        "transaction_history": "All transactions are recorded on-chain and can be viewed on BSCScan"
+        "transaction_history": "All transactions are recorded on-chain and can be viewed on SolanaScan"
       },
       "example": {
         "title": "Example Calculation",
         "scenario": "If you bet on \"YES\" with 10 shares and \"YES\" wins:",
-        "total_pool": "Total Pool: 1,000 BNB",
+        "total_pool": "Total Pool: 1,000 SOL",
         "your_shares": "Your Shares: 10",
         "total_winning": "Total Winning Shares: 500",
-        "gross_winnings": "Gross Winnings: (10 ÷ 500) × 1,000 = 20 BNB",
-        "platform_fee": "Platform Fee (1.5%): 0.3 BNB",
-        "net_winnings": "Net Winnings: 19.7 BNB"
+        "gross_winnings": "Gross Winnings: (10 ÷ 500) × 1,000 = 20 SOL",
+        "platform_fee": "Platform Fee (1.5%): 0.3 SOL",
+        "net_winnings": "Net Winnings: 19.7 SOL"
       }
     },
     "ai_resolution": {
@@ -977,7 +977,7 @@
         "title": "How Prices Work",
         "description": "DarkBet uses a Fixed Product Market Maker (FPMM) for fair, dynamic pricing.",
         "ratios": "Prices determined by pool balance ratios",
-        "sum": "YES price + NO price = 0.01 BNB always",
+        "sum": "YES price + NO price = 0.01 SOL always",
         "market_shift": "More bets on one side = higher price for that outcome",
         "slight_shift": "Each bet shifts the market slightly"
       },
@@ -989,7 +989,7 @@
         },
         "custom": {
           "title": "Custom: Amount-Based",
-          "description": "Enter any BNB amount, get calculated shares based on current market price."
+          "description": "Enter any SOL amount, get calculated shares based on current market price."
         },
         "real_time": "Real-time quotes with 30-second validity",
         "shares_formula": "Shares = Amount Paid ÷ Current Price"
@@ -997,11 +997,11 @@
       "example": {
         "title": "Example Calculation",
         "scenario": "Example Scenario",
-        "description": "If YES is trading at 0.006 BNB and you bet 0.01 BNB:",
-        "yes_price": "YES Price: 0.006 BNB",
-        "bet_amount": "Your Bet: 0.01 BNB",
+        "description": "If YES is trading at 0.006 SOL and you bet 0.01 SOL:",
+        "yes_price": "YES Price: 0.006 SOL",
+        "bet_amount": "Your Bet: 0.01 SOL",
         "shares_received": "Shares Received: 0.01 ÷ 0.006 = ~1.67 shares",
-        "if_wins": "If YES wins: 1.67 × 0.01 = 0.0167 BNB payout"
+        "if_wins": "If YES wins: 1.67 × 0.01 = 0.0167 SOL payout"
       },
       "amm_mechanics": {
         "title": "AMM Mechanics",
@@ -1034,7 +1034,7 @@
         },
         "balanced": {
           "title": "Balanced Market",
-          "description": "Equal betting on both sides results in balanced pricing around 0.005 BNB each."
+          "description": "Equal betting on both sides results in balanced pricing around 0.005 SOL each."
         }
       },
       "advantages": {
@@ -1127,7 +1127,7 @@
   "final_words": {
     "title": "Final Words",
     "intro": "DarkBet stands at the intersection of innovation, transparency, and community-driven finance.",
-    "mission": "As the first dark pool prediction market built on BNB Chain, our mission goes beyond simple forecasting, we aim to reshape how people interact with information, markets, and each other in the decentralized world.",
+    "mission": "As the first dark pool prediction market built on Solana, our mission goes beyond simple forecasting, we aim to reshape how people interact with information, markets, and each other in the decentralized world.",
     "transformation": "By empowering users to create and participate in transparent, verifiable prediction markets, DarkBet transforms insight into opportunity. Every prediction, every trade, and every outcome contributes to a smarter, fairer, and more connected ecosystem.",
     "journey": "The journey of DarkBet is only beginning. With continuous development, strategic partnerships, and a growing community, we are committed to building a platform that represents the future of prediction — where foresight becomes value, and every voice shapes the market.",
     "cta": "Think You Know? Bet It!",

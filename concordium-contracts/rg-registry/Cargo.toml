@@ -1,0 +1,23 @@
+[package]
+name = "darkbet-rg-registry"
+version = "0.1.0"
+authors = ["Darkbet Team"]
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+concordium-std = "10.0"
+concordium-cis2 = "6.1"
+
+[features]
+default = ["std", "concordium-std/wasm-test"]
+std = ["concordium-std/std"]
+build-schema = ["concordium-std/build-schema"]
+
+[profile.release]
+codegen-units = 1
+opt-level = "s"
+lto = true
+

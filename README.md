@@ -1,126 +1,115 @@
-# DarkBet - DarkPool Betting Platform!
+# DarkBet - Decentralized Prediction Market
 
-A decentralized prediction market platform built on BNB Smart Chain with AI-driven results and fully on-chain execution. DarkBet combines the privacy and efficiency of dark pools with prediction markets, ensuring fair outcomes while preventing market manipulation.
+A next-generation decentralized prediction market platform built on **Solana** with privacy-preserving compliance. DarkBet combines commit-reveal betting schemes with real-time oracle data and responsible gambling features.
 
 ## 🌟 Features
 
-- **DarkPool Betting**: Bets remain hidden until resolution, preventing manipulation.
-- **AI-Driven Results**: Automated market resolution using external data sources
-- **Fully On-Chain**: All transactions and logic executed on BNB Smart Chain
-- **Real-Time Markets**: Live prediction markets with instant updates
-- **User-Friendly Interface**: Modern, responsive design with smooth animations
-- **Leaderboard System**: Track top performers and statistics
-- **Crypto Predictions**: Specialized markets for cryptocurrency price predictions
+- **Commit-Reveal Betting**: Bets remain hidden until resolution, preventing front-running and manipulation
+- **Lightning Fast**: Built on Solana - 65,000 TPS with sub-second finality
+- **Ultra-Low Fees**: ~$0.00025 per transaction (99% cheaper than alternatives)
+- **Real-Time Oracles**: Pyth Network integration for verifiable price feeds
+- **Privacy-First Compliance**: Concordium identity layer with zero-knowledge proofs
+- **Seamless Authentication**: Privy integration with Phantom wallet support
+- **Modern UI**: Responsive design with smooth animations and real-time updates
 
 ## 🏗️ Architecture
 
-### Frontend (Next.js + Vercel)
+### Blockchain Layer (Solana)
+
+- **Framework**: Anchor 0.29.0 (Rust)
+- **Programs**:
+  - `PredictionMarket` - Core betting logic with commit-reveal
+  - `VaultManager` - SOL custody and treasury
+  - `UserRegistry` - Identity linkage
+  - `CommitReveal` - Anti-front-running mechanism
+- **Network**: Solana mainnet-beta
+- **Currency**: SOL
+
+### Oracle Layer (Pyth Network)
+
+- **Provider**: Pyth Network
+- **Feeds**: BTC/USD, ETH/USD, SOL/USD (400ms updates)
+- **Integration**: On-chain verification + WebSocket for UI
+
+### Authentication (Privy)
+
+- **Provider**: Privy
+- **Wallets**: Phantom (primary), Solflare, Ledger
+- **Features**: Email/social login, embedded wallets, session management
+
+### Compliance (Concordium)
+
+- **Provider**: Concordium blockchain
+- **Features**: Web3 ID, zero-knowledge proofs, responsible gambling limits
+- **Privacy**: Anonymous commitments, selective disclosure
+
+### Frontend (Next.js)
 
 - **Framework**: Next.js 14 with TypeScript
-- **UI Library**: shadcn/ui components
-- **Animations**: Framer Motion
+- **UI Library**: shadcn/ui components + TailwindCSS
+- **Wallet**: @solana/wallet-adapter-react
 - **Charts**: Recharts for data visualization
-- **Wallet Integration**: Privy for wallet connection
-- **Styling**: TailwindCSS with custom dark theme
-
-### Backend (Node.js + Render)
-
-- **Framework**: Express.js with TypeScript
-- **Database**: MongoDB with Mongoose
-- **Blockchain**: Ethers.js for BNB Smart Chain interaction
-- **Oracle Service**: CoinGecko API for price data
-- **Deployment**: Render.com
-
-### Smart Contracts
-
-- **Network**: BNB Smart Chain Testnet
-- **Language**: Solidity
-- **Features**: Commit-reveal scheme, market resolution, payout distribution
+- **Animations**: Framer Motion
 
 ## 🚀 Quick Start
 
 ### Prerequisites
 
-- Node.js 18+ and npm
-- MongoDB database (MongoDB Atlas recommended)
-- BNB Smart Chain Testnet RPC URL
-- Privy App ID for wallet integration
+- **Rust** 1.70+ ([Install](https://rustup.rs))
+- **Solana CLI** 1.17+ ([Install](https://docs.solana.com/cli/install-solana-cli-tools))
+- **Anchor CLI** 0.29+ ([Install](https://book.anchor-lang.com/getting_started/installation.html))
+- **Node.js** 18+ and npm
 
 ### 1. Clone the Repository
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/trenchsheikh/PredictX-Encode-Hackathon
 cd darkbet
 ```
 
-### 2. Backend Setup
+### 2. Solana Programs Setup
 
 ```bash
-cd backend
+cd solana-programs
+
+# Install dependencies
 npm install
+
+# Build programs
+anchor build
+
+# Deploy to devnet
+anchor deploy --provider.cluster devnet
+
+# Run tests
+anchor test
 ```
 
-Create a `.env` file in the `backend` directory:
-
-```env
-# Database
-MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/darkbet
-
-# Blockchain
-BSC_TESTNET_RPC_URL=https://data-seed-prefork-1-s1.binance.org:8545
-ADMIN_PRIVATE_KEY=your_admin_private_key_here
-
-# Contract Addresses (deploy contracts first)
-PREDICTION_CONTRACT_ADDRESS=0x...
-VAULT_CONTRACT_ADDRESS=0x...
-
-# Server
-PORT=3001
-NODE_ENV=production
-```
-
-### 3. Deploy Smart Contracts
-
-```bash
-cd contracts
-npm install
-npx hardhat compile
-npx hardhat run scripts/deploy.js --network bscTestnet
-```
-
-Update the contract addresses in your backend `.env` file.
-
-### 4. Start Backend
-
-```bash
-cd backend
-npm run dev
-```
-
-The backend will be available at `http://localhost:3001`
-
-### 5. Frontend Setup
+### 3. Frontend Setup
 
 ```bash
 cd .. # Back to root directory
 npm install
 ```
 
-Create a `.env.local` file in the root directory:
+Create a `.env.local` file:
 
 ```env
 # Privy Configuration
 NEXT_PUBLIC_PRIVY_APP_ID=your_privy_app_id
 
-# Backend URL (for development)
-NEXT_PUBLIC_BACKEND_URL=http://localhost:3001
+# Solana Configuration
+NEXT_PUBLIC_SOLANA_NETWORK=devnet
+NEXT_PUBLIC_SOLANA_RPC_URL=https://api.devnet.solana.com
+NEXT_PUBLIC_PROGRAM_ID=<your_program_id_from_deployment>
 
-# Contract Addresses (same as backend)
-NEXT_PUBLIC_PREDICTION_CONTRACT_ADDRESS=0x...
-NEXT_PUBLIC_VAULT_CONTRACT_ADDRESS=0x...
+# Pyth Network
+NEXT_PUBLIC_PYTH_BTC_FEED=GVXRSBjFk6e6J3NbVPXohDJetcTjaeeuykUpbQF8UoMU
+NEXT_PUBLIC_PYTH_ETH_FEED=JBu1AL4obBcCMqKBBxhpWCNUt136ijcuMZLFvTP7iWdB
+NEXT_PUBLIC_PYTH_SOL_FEED=H6ARHf6YXhGYeQfUzQNGk6rDNnLBQKrenN712K4AQJEG
 ```
 
-### 6. Start Frontend
+### 4. Start Frontend
 
 ```bash
 npm run dev
@@ -128,125 +117,41 @@ npm run dev
 
 The frontend will be available at `http://localhost:3000`
 
-## 🌐 Deployment
-
-### Backend Deployment (Render)
-
-1. Connect your GitHub repository to Render
-2. Create a new Web Service
-3. Set the following environment variables in Render:
-   - `MONGODB_URI`
-   - `BSC_TESTNET_RPC_URL`
-   - `ADMIN_PRIVATE_KEY`
-   - `PREDICTION_CONTRACT_ADDRESS`
-   - `VAULT_CONTRACT_ADDRESS`
-   - `NODE_ENV=production`
-
-4. Deploy and note the Render URL (e.g., `https://darkbet.onrender.com`)
-
-### Frontend Deployment (Vercel)
-
-1. Connect your GitHub repository to Vercel
-2. Set the following environment variables in Vercel:
-   - `NEXT_PUBLIC_PRIVY_APP_ID`
-   - `NEXT_PUBLIC_PREDICTION_CONTRACT_ADDRESS`
-   - `NEXT_PUBLIC_VAULT_CONTRACT_ADDRESS`
-   - `NEXT_PUBLIC_BACKEND_URL=https://your-render-app.onrender.com`
-
-3. Deploy
-
 ## 📁 Project Structure
 
 ```
 darkbet/
-├── app/                    # Next.js app directory
-│   ├── api/               # Vercel API routes (proxy to backend)
-│   ├── my-bets/           # User bets page
-│   ├── leaderboard/       # Leaderboard page
-│   └── how-it-works/      # How it works page
-├── components/            # React components
-│   ├── ui/               # Reusable UI components
-│   ├── prediction/       # Prediction-related components
-│   └── layout/           # Layout components
-├── lib/                  # Utility libraries
-│   ├── api-client.ts     # API client for backend communication
-│   ├── blockchain-utils.ts # Blockchain utilities
-│   └── hooks/            # Custom React hooks
-├── backend/              # Backend server
-│   ├── src/
-│   │   ├── models/       # MongoDB models
-│   │   ├── routes/       # API routes
-│   │   ├── services/     # Business logic
-│   │   └── server.ts     # Express server
-│   └── package.json
-├── contracts/            # Smart contracts
-│   ├── contracts/        # Solidity contracts
-│   ├── scripts/          # Deployment scripts
-│   └── hardhat.config.ts
-└── types/               # TypeScript type definitions
+├── solana-programs/           # Solana smart contracts (Rust/Anchor)
+│   ├── programs/
+│   │   └── darkbet-prediction-market/
+│   │       └── src/lib.rs     # Main program logic
+│   ├── tests/                 # TypeScript tests
+│   └── Anchor.toml            # Anchor configuration
+├── app/                       # Next.js app directory
+│   ├── api/                  # API routes
+│   ├── my-bets/              # User bets page
+│   └── leaderboard/          # Leaderboard page
+├── components/               # React components
+│   ├── ui/                  # Reusable UI components
+│   ├── prediction/          # Prediction-related components
+│   └── layout/              # Layout components
+├── lib/                     # Utility libraries
+│   ├── hooks/               # Custom React hooks
+│   └── blockchain-utils.ts  # Blockchain utilities
+├── docs/                    # Documentation
+│   ├── SOLANA_REFACTOR_DESIGN.md      # Complete architecture
+│   ├── IMPLEMENTATION_CHECKLIST.md    # 200+ tasks
+│   └── QUICK_START_SOLANA.md          # Quick setup guide
+└── types/                   # TypeScript type definitions
 ```
-
-## 🔧 Configuration
-
-### Environment Variables
-
-#### Backend (.env)
-
-- `MONGODB_URI`: MongoDB connection string
-- `BSC_TESTNET_RPC_URL`: BNB Smart Chain RPC endpoint
-- `ADMIN_PRIVATE_KEY`: Private key for market resolution
-- `PREDICTION_CONTRACT_ADDRESS`: Deployed prediction contract address
-- `VAULT_CONTRACT_ADDRESS`: Deployed vault contract address
-
-#### Frontend (.env.local)
-
-- `NEXT_PUBLIC_PRIVY_APP_ID`: Privy application ID
-- `NEXT_PUBLIC_BACKEND_URL`: Backend URL (development only)
-- `NEXT_PUBLIC_PREDICTION_CONTRACT_ADDRESS`: Prediction contract address
-- `NEXT_PUBLIC_VAULT_CONTRACT_ADDRESS`: Vault contract address
-
-### Smart Contract Configuration
-
-1. Deploy contracts to BNB Smart Chain Testnet
-2. Update contract addresses in both frontend and backend
-3. Ensure admin private key has sufficient BNB for gas fees
-
-## 🎯 Usage
-
-### Creating a Prediction Market
-
-1. Connect your wallet using Privy
-2. Click "Start DarkPool Betting" on the homepage
-3. Fill in market details:
-   - Title and description
-   - Category (General, Crypto, Sports, etc.)
-   - Resolution date
-   - Initial BNB amount
-4. Submit the transaction
-
-### Placing Bets
-
-1. Browse active markets on the homepage
-2. Click on a market to view details
-3. Choose YES or NO prediction
-4. Enter bet amount
-5. Confirm transaction
-
-### Claiming Winnings
-
-1. Go to "My Bets" page
-2. View your bet history
-3. Click "Claim Winnings" for resolved markets
-4. Confirm transaction
 
 ## 🛠️ Development
 
 ### Running in Development Mode
 
 ```bash
-# Terminal 1 - Backend
-cd backend
-npm run dev
+# Terminal 1 - Solana local validator (optional)
+solana-test-validator
 
 # Terminal 2 - Frontend
 npm run dev
@@ -254,12 +159,12 @@ npm run dev
 
 ### Available Scripts
 
-#### Backend
+#### Solana Programs
 
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm start` - Start production server
-- `npm run fix-null-outcomes` - Fix markets with null outcomes
+- `anchor build` - Compile programs
+- `anchor test` - Run tests
+- `anchor deploy --provider.cluster devnet` - Deploy to devnet
+- `anchor deploy --provider.cluster mainnet` - Deploy to mainnet
 
 #### Frontend
 
@@ -268,24 +173,33 @@ npm run dev
 - `npm start` - Start production server
 - `npm run lint` - Run ESLint
 
-#### Smart Contracts
+## 🔧 Configuration
 
-- `npx hardhat compile` - Compile contracts
-- `npx hardhat test` - Run tests
-- `npx hardhat run scripts/deploy.js --network bscTestnet` - Deploy contracts
+### Environment Variables
 
-## 🔍 Troubleshooting
+#### Frontend (.env.local)
 
-### Common Issues
+- `NEXT_PUBLIC_PRIVY_APP_ID` - Privy application ID
+- `NEXT_PUBLIC_SOLANA_NETWORK` - Solana cluster (devnet/mainnet-beta)
+- `NEXT_PUBLIC_SOLANA_RPC_URL` - Solana RPC endpoint
+- `NEXT_PUBLIC_PROGRAM_ID` - Deployed prediction market program ID
 
-1. **CORS Errors**: Ensure backend CORS is configured for your frontend domain
-2. **Contract Not Found**: Verify contract addresses are correct in environment variables
-3. **Database Connection**: Check MongoDB URI and network connectivity
-4. **Wallet Connection**: Ensure Privy App ID is correctly configured
+### Solana Configuration
 
-### Debug Mode
+1. Configure Solana CLI for devnet:
+   ```bash
+   solana config set --url https://api.devnet.solana.com
+   ```
 
-Enable debug logging by setting `NODE_ENV=development` in your backend environment.
+2. Generate keypair (if needed):
+   ```bash
+   solana-keygen new
+   ```
+
+3. Airdrop devnet SOL:
+   ```bash
+   solana airdrop 2
+   ```
 
 ## 📊 API Endpoints
 
@@ -294,7 +208,6 @@ Enable debug logging by setting `NODE_ENV=development` in your backend environme
 - `GET /api/markets` - List all markets
 - `POST /api/markets` - Create new market
 - `GET /api/markets/:id` - Get market details
-- `POST /api/markets/trigger-resolution` - Trigger market resolution
 
 ### Users
 
@@ -303,7 +216,69 @@ Enable debug logging by setting `NODE_ENV=development` in your backend environme
 
 ### Oracle
 
-- `GET /api/oracle/prices` - Get cryptocurrency prices
+- `GET /api/oracle/prices` - Get cryptocurrency prices from Pyth
+
+## 🎯 Usage
+
+### Creating a Prediction Market
+
+1. Connect your Phantom wallet
+2. Navigate to "Create Market"
+3. Fill in market details:
+   - Asset (BTC, ETH, SOL)
+   - Threshold price
+   - Resolution time
+   - Initial stake
+4. Sign transaction with Phantom
+
+### Placing Bets
+
+1. Browse active markets
+2. Click on a market to view details
+3. Choose LONG (above threshold) or SHORT (below threshold)
+4. Enter bet amount in SOL
+5. Commit your bet (direction hidden)
+6. After market locks, reveal your bet
+7. Claim winnings after market resolves
+
+## 📚 Documentation
+
+### Getting Started
+
+- **[Quick Start Guide](./docs/QUICK_START_SOLANA.md)** - Set up in 30 minutes
+- **[Quick Reference](./docs/QUICK_REFERENCE.md)** - Commands and tips
+
+### Technical Documentation
+
+- **[Technical Design](./docs/SOLANA_REFACTOR_DESIGN.md)** - Complete architecture (50+ pages)
+- **[Migration Summary](./docs/SOLANA_MIGRATION_SUMMARY.md)** - Executive overview
+- **[Implementation Checklist](./docs/IMPLEMENTATION_CHECKLIST.md)** - 200+ actionable tasks
+- **[Documentation Index](./docs/SOLANA_REFACTOR_README.md)** - All documentation
+
+### Program Documentation
+
+- **[Solana Programs README](./solana-programs/README.md)** - Smart contract documentation
+
+## 🔍 Troubleshooting
+
+### Common Issues
+
+1. **Program Not Found**: Verify program ID is correct in environment variables
+2. **Wallet Connection**: Ensure Phantom wallet is installed and connected to correct network
+3. **Transaction Failures**: Check Solana account has sufficient SOL for rent + fees
+4. **RPC Errors**: Try switching to a different RPC endpoint
+
+### Debug Mode
+
+View program logs in real-time:
+```bash
+solana logs
+```
+
+Check account details:
+```bash
+solana account <address>
+```
 
 ## 🤝 Contributing
 
@@ -321,19 +296,62 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 For support and questions:
 
-- Create an issue in the GitHub repository
-- Check the troubleshooting section above
-- Review the API documentation
+- GitHub Issues: [Open an issue](https://github.com/trenchsheikh/PredictX-Encode-Hackathon/issues)
+- Documentation: Check the `docs/` directory
+- Solana Discord: [https://discord.gg/solana](https://discord.gg/solana)
+- Anchor Discord: [https://discord.gg/anchorlang](https://discord.gg/anchorlang)
 
 ## 🔮 Roadmap
 
-- [ ] Mainnet deployment
-- [ ] Additional prediction categories
-- [ ] Mobile app
-- [ ] Advanced analytics
-- [ ] Social features
-- [ ] Governance token
+### Phase 1: Foundation (Weeks 1-4) - In Progress
+
+- [x] Complete technical design and architecture
+- [x] Implement core Solana smart contracts (Anchor/Rust)
+- [ ] Integrate Pyth Network price oracles
+- [ ] Deploy Privy authentication for Phantom wallet
+- [ ] Security testing on devnet
+- [ ] Deploy to mainnet
+
+### Phase 2: Compliance Layer (Weeks 5-8)
+
+- [ ] Build Concordium responsible gambling contract
+- [ ] Implement Web3 ID verification
+- [ ] Backend relayer API
+- [ ] Privacy-preserving limits enforcement
+
+### Phase 3: Feature Enhancement (Weeks 9-12)
+
+- [ ] Additional prediction categories (sports, politics, etc.)
+- [ ] Advanced analytics dashboard
+- [ ] Social features (user profiles, achievements)
+- [ ] Mobile-responsive improvements
+
+### Phase 4: Decentralization (Weeks 13-16)
+
+- [ ] Governance token launch
+- [ ] DAO governance implementation
+- [ ] Community-driven market creation
+- [ ] Liquidity mining programs
+
+## 🌟 Why Solana?
+
+**Performance**
+- 65,000 transactions per second
+- Sub-second finality
+- Block time: ~400ms
+
+**Cost Efficiency**
+- Transaction fee: ~$0.00025
+- 99% cheaper than alternatives
+- No gas price volatility
+
+**Developer Experience**
+- Rust-based (secure, performant)
+- Anchor framework (simplified development)
+- Rich ecosystem and tooling
 
 ---
 
 **Built with ❤️ for the decentralized future of prediction markets**
+
+**Powered by:** Solana • Pyth Network • Privy • Concordium

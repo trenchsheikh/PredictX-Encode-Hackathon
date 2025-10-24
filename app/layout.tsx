@@ -20,27 +20,29 @@ const beVietnamPro = Be_Vietnam_Pro({
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://darkbet.fun'),
-  title: 'DarkBet - DarkPool Betting Platform',
+  title: 'DarkBet - Decentralized Prediction Market on Solana',
   description:
-    'DarkPool Betting - The future of prediction markets. Built on BNB Smart Chain with AI-driven results and fully on-chain execution.',
+    'Next-generation prediction markets on Solana. Lightning-fast, ultra-low fees, commit-reveal betting, and real-time Pyth Network oracles.',
   keywords: [
-    'darkpool betting',
+    'solana',
     'prediction markets',
-    'BNB Chain',
+    'darkpool betting',
     'blockchain',
     'betting',
     'crypto',
     'DeFi',
-    'dark pool',
+    'solana dapp',
+    'phantom wallet',
+    'pyth network',
   ],
   authors: [{ name: 'DarkBet Team' }],
   icons: {
     icon: '/binanceeye.jpg',
   },
   openGraph: {
-    title: 'DarkBet - DarkPool Betting Platform',
+    title: 'DarkBet - Prediction Market on Solana',
     description:
-      'DarkPool Betting - The future of prediction markets. Built on BNB Smart Chain with AI-driven results and fully on-chain execution.',
+      'Next-generation prediction markets built on Solana. Lightning-fast transactions, ultra-low fees, and privacy-preserving commit-reveal betting.',
     type: 'website',
     locale: 'en_US',
     images: [
@@ -54,9 +56,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'DarkBet - DarkPool Betting Platform',
+    title: 'DarkBet - Prediction Market on Solana',
     description:
-      'DarkPool Betting - The future of prediction markets. Built on BNB Smart Chain with AI-driven results and fully on-chain execution.',
+      'Next-generation prediction markets on Solana with lightning-fast transactions and ultra-low fees.',
     images: ['/darkbet.jpg'],
   },
 };
@@ -82,7 +84,7 @@ export default function RootLayout({
                 showTopInfo={false}
                 showBackgroundBrandText={true}
                 showCopyright={false}
-                brandLinkHref="https://x.com/DarkbetBNB"
+                brandLinkHref="https://x.com/DarkbetSOL"
                 brandIcon={
                   <Image
                     src="/binanceeye.jpg"

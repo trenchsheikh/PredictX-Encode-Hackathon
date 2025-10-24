@@ -6,7 +6,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-import { usePrivy } from '@privy-io/react-auth';
+import { usePrivy, useWallets } from '@privy-io/react-auth';
 import { Menu, X, Wallet, Home, HelpCircle } from 'lucide-react';
 
 import { useI18n } from '@/components/providers/i18n-provider';
@@ -16,14 +16,22 @@ const getNavigation = (_locale: string) => [
   { key: 'nav_home', href: '/', icon: Home, isHome: true },
   { key: 'nav_my_bets', href: '/my-bets', icon: Wallet },
   { key: 'nav_how', href: '/how-it-works', icon: HelpCircle },
-  // { key: 'nav_leaderboard', href: '/leaderboard', icon: Zap },
 ];
 
 export function AnimatedHeader() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const { locale, setLocale, t } = useI18n();
-  const { ready, authenticated, user, login, logout } = usePrivy();
+  
+  // Privy hooks
+  const { ready, authenticated, login, logout } = usePrivy();
+  const { wallets } = useWallets();
+  
+  // Get Solana wallet (Phantom, Solflare, etc.)
+  const solanaWallet = wallets.find((wallet) => wallet.walletClientType === 'phantom' || 
+                                                  wallet.walletClientType === 'solflare' ||
+                                                  wallet.chainType === 'solana');
+  
   const navItems = getNavigation(locale).filter(
     item => item.key !== 'nav_my_bets' || authenticated
   );
@@ -41,10 +49,13 @@ export function AnimatedHeader() {
     localStorage.setItem('darkbet-locale', newLocale);
   };
 
+  // Format Solana address for display
+  const formatAddress = (address: string) => {
+    return `${address.slice(0, 4)}...${address.slice(-4)}`;
+  };
+
   return (
     <header className="sticky top-0 z-50">
-      {/* Floating glassy navbar container (applied on nav) */}
-
       <nav className="relative z-10 mx-2 mb-2 mt-2 flex items-center justify-between border border-border bg-card/50 p-2 supports-[backdrop-filter]:backdrop-blur-md lg:mx-auto lg:max-w-screen-xl lg:px-4">
         {/* Logo */}
         <div className="flex flex-shrink-0">
@@ -55,7 +66,7 @@ export function AnimatedHeader() {
           >
             <Image
               src="/binanceeye.jpg"
-              alt="Logo"
+              alt="Darkbet Logo"
               width={44}
               height={44}
               className="object-cover"
@@ -74,7 +85,7 @@ export function AnimatedHeader() {
           </button>
         </div>
 
-        {/* Right side: desktop navigation + actions, right-aligned with even spacing */}
+        {/* Desktop Navigation */}
         <div className="hidden lg:flex lg:flex-1 lg:flex-nowrap lg:items-center lg:justify-end lg:gap-x-1">
           {navItems.map(item => {
             const Icon = item.icon;
@@ -111,7 +122,7 @@ export function AnimatedHeader() {
             );
           })}
 
-          {/* Divider spacing between nav and actions keeps even gap due to container gap-x-6 */}
+          {/* Language toggle */}
           <div>
             <AnimatedButton
               variant="ghost"
@@ -125,6 +136,7 @@ export function AnimatedHeader() {
             </AnimatedButton>
           </div>
 
+          {/* Wallet Connection */}
           <div>
             {!ready ? (
               <AnimatedButton
@@ -133,12 +145,12 @@ export function AnimatedHeader() {
               >
                 {mounted ? t('connecting') : 'Connecting...'}
               </AnimatedButton>
-            ) : authenticated ? (
+            ) : authenticated && solanaWallet ? (
               <div className="flex items-center gap-2">
                 <div className="flex items-center border border-white/30 bg-white/20 px-2 py-1 text-white backdrop-blur-sm">
                   <span className="font-caption text-sm">
-                    {user?.wallet?.address
-                      ? `${user.wallet.address.slice(0, 6)}...${user.wallet.address.slice(-4)}`
+                    {solanaWallet.address
+                      ? formatAddress(solanaWallet.address)
                       : mounted
                         ? t('connected')
                         : 'Connected'}
@@ -146,7 +158,7 @@ export function AnimatedHeader() {
                 </div>
                 <button
                   onClick={logout}
-                  className="border border-white/20 bg-white/10 px-3 py-1 font-semibold text-white"
+                  className="border border-white/20 bg-white/10 px-3 py-1 font-semibold text-white hover:bg-white/20"
                 >
                   {mounted ? t('disconnect') : 'Disconnect'}
                 </button>
@@ -154,7 +166,7 @@ export function AnimatedHeader() {
             ) : (
               <AnimatedButton
                 onClick={login}
-                className="border border-white/40 bg-white px-4 py-1 font-semibold tracking-wide text-black backdrop-blur-sm"
+                className="border border-white/40 bg-white px-4 py-1 font-semibold tracking-wide text-black backdrop-blur-sm hover:bg-white/90"
               >
                 {mounted ? t('connect_wallet') : 'Connect Wallet'}
               </AnimatedButton>
@@ -229,6 +241,7 @@ export function AnimatedHeader() {
                   </span>
                 </AnimatedButton>
 
+                {/* Mobile Wallet Connection */}
                 {!ready ? (
                   <AnimatedButton
                     disabled
@@ -236,13 +249,13 @@ export function AnimatedHeader() {
                   >
                     {mounted ? t('connecting') : 'Connecting...'}
                   </AnimatedButton>
-                ) : authenticated ? (
+                ) : authenticated && solanaWallet ? (
                   <div className="space-y-3">
                     <div className="flex items-center justify-between gap-3">
                       <div className="flex flex-1 items-center justify-start border border-white/30 bg-white/20 px-2 py-1 text-white backdrop-blur-sm">
                         <span className="font-caption text-sm">
-                          {user?.wallet?.address
-                            ? `${user.wallet.address.slice(0, 6)}...${user.wallet.address.slice(-4)}`
+                          {solanaWallet.address
+                            ? formatAddress(solanaWallet.address)
                             : mounted
                               ? t('connected')
                               : 'Connected'}
@@ -251,7 +264,7 @@ export function AnimatedHeader() {
                     </div>
                     <button
                       onClick={logout}
-                      className="w-full border border-white/20 bg-white/10 px-3 py-1 font-semibold text-white"
+                      className="w-full border border-white/20 bg-white/10 px-3 py-1 font-semibold text-white hover:bg-white/20"
                     >
                       {mounted ? t('disconnect') : 'Disconnect'}
                     </button>
@@ -259,7 +272,7 @@ export function AnimatedHeader() {
                 ) : (
                   <AnimatedButton
                     onClick={login}
-                    className="w-full border border-white/40 bg-white px-4 py-1 font-semibold tracking-wide text-black backdrop-blur-sm"
+                    className="w-full border border-white/40 bg-white px-4 py-1 font-semibold tracking-wide text-black backdrop-blur-sm hover:bg-white/90"
                   >
                     {mounted ? t('connect_wallet') : 'Connect Wallet'}
                   </AnimatedButton>

@@ -1,10 +1,10 @@
 'use client';
 
 import { PrivyProvider } from '@privy-io/react-auth';
+import { solana } from '@privy-io/react-auth/solana';
 
 import {
   PRIVY_APP_ID,
-  privyClientConfig,
   isValidPrivyAppId,
 } from '@/lib/privy-config';
 
@@ -23,7 +23,25 @@ export function PrivyProviderWrapper({
   }
 
   return (
-    <PrivyProvider appId={PRIVY_APP_ID} config={privyClientConfig}>
+    <PrivyProvider
+      appId={PRIVY_APP_ID}
+      config={{
+        appearance: {
+          theme: 'dark',
+          accentColor: '#14F195', // Solana green
+          logo: '/binanceeye.jpg',
+        },
+        loginMethods: ['email', 'google', 'twitter', 'discord', 'wallet'],
+        embeddedWallets: {
+          createOnLogin: 'users-without-wallets',
+        },
+        // Configure for Solana only
+        supportedChains: [solana],
+        defaultChain: solana,
+        // Wallet configuration - only Solana wallets
+        walletConnectCloudProjectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID,
+      }}
+    >
       <I18nProvider>{children}</I18nProvider>
     </PrivyProvider>
   );

@@ -1,4 +1,9 @@
-import { ethers } from 'ethers';
+import { PublicKey, Connection, LAMPORTS_PER_SOL } from '@solana/web3.js';
+import { BN } from '@coral-xyz/anchor';
+
+/**
+ * Solana blockchain utilities for Darkbet
+ */
 
 /**
  * Mapping functions between frontend and smart contract data formats
@@ -27,15 +32,15 @@ export function mapCategory(num: number): string {
     'weather',
     'finance',
     'technology',
-    'crypto',
+    'custom',
   ];
   return mapping[num] || 'crypto';
 }
 
 export function mapStatusToNumber(status: string): number {
   const mapping: { [key: string]: number } = {
-    active: 0,
-    resolving: 1,
+    open: 0,
+    locked: 1,
     resolved: 2,
     cancelled: 3,
   };
@@ -43,86 +48,77 @@ export function mapStatusToNumber(status: string): number {
 }
 
 export function mapStatus(num: number): string {
-  const mapping = ['active', 'resolving', 'resolved', 'cancelled'];
-  return mapping[num] || 'active';
+  const mapping = ['open', 'locked', 'resolved', 'cancelled'];
+  return mapping[num] || 'open';
 }
 
 /**
- * Calculate price from pool ratio (FPMM pricing)
+ * Calculate price from pool ratio
  */
-export function calculatePrice(pool: string, totalPool: string): number {
-  const poolBN = BigInt(pool);
-  const totalPoolBN = BigInt(totalPool);
+export function calculatePrice(longPool: string, shortPool: string): number {
+  const longBN = BigInt(longPool);
+  const shortBN = BigInt(shortPool);
+  const total = longBN + shortBN;
 
-  if (totalPoolBN === 0n) return 0.5;
+  if (total === 0n) return 0.5;
 
-  // Price = pool / total in BNB, then normalize to 0.01 scale
-  const priceRatio = Number(poolBN) / Number(totalPoolBN);
-  return priceRatio * 0.01; // Match frontend mock data scale
+  // Price = longPool / (longPool + shortPool)
+  const priceRatio = Number(longBN) / Number(total);
+  return priceRatio;
 }
 
 /**
- * Load contract ABI from deployments folder
+ * Get Solana program addresses from environment
  */
-export async function loadContractABI(
-  contractName: 'PredictionMarket' | 'Vault'
-): Promise<unknown[]> {
-  try {
-    // Determine which network to load from based on environment
-    const network =
-      process.env.NEXT_PUBLIC_CHAIN_ID === '56' ? 'bscMainnet' : 'bscTestnet';
-    const response = await fetch(
-      `/deployments/${network}/${contractName}.json`
-    );
-    if (!response.ok) {
-      throw new Error(`Failed to load ${contractName} ABI`);
-    }
-    return await response.json();
-  } catch (error) {
-    console.error(`Error loading ${contractName} ABI:`, error);
-    throw error;
-  }
-}
+export function getProgramAddresses() {
+  const predictionMarket = process.env.NEXT_PUBLIC_PROGRAM_ID;
 
-/**
- * Get contract addresses from deployment files or environment
- */
-export function getContractAddresses() {
-  // Try environment variables first
-  const predictionMarket = process.env.NEXT_PUBLIC_PREDICTION_CONTRACT_ADDRESS;
-  const vault = process.env.NEXT_PUBLIC_VAULT_CONTRACT_ADDRESS;
-
-  if (predictionMarket && vault) {
-    // eslint-disable-next-line no-console
-    console.log('Using environment variables for contract addresses');
-    // Validate addresses are proper Ethereum addresses
-    if (isValidAddress(predictionMarket) && isValidAddress(vault)) {
+  if (predictionMarket) {
+    console.log('Using environment variable for program ID');
+    if (isValidSolanaAddress(predictionMarket)) {
       return {
         predictionMarket,
-        vault,
       };
     } else {
-      console.warn(
-        'Invalid contract addresses in environment variables, using fallback'
-      );
+      console.warn('Invalid program ID in environment variables');
     }
   }
 
-  // Fallback to hardcoded addresses from deployment
-  console.warn(
-    'Environment variables not set, using hardcoded contract addresses'
-  );
+  // Fallback to placeholder (will be updated after deployment)
+  console.warn('Environment variables not set, using placeholder');
   return {
-    predictionMarket: '0x4DA603511D8aeA98B8d9534c19F59eB43c246DaF',
-    vault: '0x5499c4b5480900744350A9f891Bb2e2746d5BDbD',
+    predictionMarket: '11111111111111111111111111111111',
   };
 }
 
 /**
- * Validate if an address is a proper Ethereum address
+ * Validate if a string is a valid Solana public key
  */
-function isValidAddress(address: string): boolean {
-  return /^0x[a-fA-F0-9]{40}$/.test(address);
+export function isValidSolanaAddress(address: string): boolean {
+  try {
+    new PublicKey(address);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Get Solana RPC endpoint from environment
+ */
+export function getSolanaRpcEndpoint(): string {
+  return (
+    process.env.NEXT_PUBLIC_SOLANA_RPC_URL ||
+    'https://api.devnet.solana.com'
+  );
+}
+
+/**
+ * Get Solana cluster/network
+ */
+export function getSolanaCluster(): 'devnet' | 'mainnet-beta' | 'testnet' {
+  const network = process.env.NEXT_PUBLIC_SOLANA_NETWORK || 'devnet';
+  return network as 'devnet' | 'mainnet-beta' | 'testnet';
 }
 
 /**
@@ -130,7 +126,6 @@ function isValidAddress(address: string): boolean {
  */
 export function formatDateTimeLocal(timestamp: number): string {
   const date = new Date(timestamp);
-  // Get local time in YYYY-MM-DDTHH:MM format
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, '0');
   const day = String(date.getDate()).padStart(2, '0');
@@ -140,258 +135,300 @@ export function formatDateTimeLocal(timestamp: number): string {
 }
 
 /**
- * Parse datetime-local input to timestamp
+ * Parse datetime-local input to Unix timestamp (seconds)
  */
 export function parseDateTimeLocal(dateTimeLocal: string): number {
-  return new Date(dateTimeLocal).getTime();
+  return Math.floor(new Date(dateTimeLocal).getTime() / 1000);
 }
 
 /**
- * Validate BNB amount
+ * Validate SOL amount
  */
-export function validateBNBAmount(amount: number): {
+export function validateSOLAmount(amount: number): {
   valid: boolean;
   error?: string;
 } {
-  const MIN_BET = 0.001;
-  const MAX_BET = 100;
+  const MIN_BET = 0.01; // 0.01 SOL
+  const MAX_BET = 100; // 100 SOL
 
   if (isNaN(amount) || amount <= 0) {
     return { valid: false, error: 'Amount must be greater than 0' };
   }
 
   if (amount < MIN_BET) {
-    return { valid: false, error: `Minimum bet is ${MIN_BET} BNB` };
+    return { valid: false, error: `Minimum bet is ${MIN_BET} SOL` };
   }
 
   if (amount > MAX_BET) {
-    return { valid: false, error: `Maximum bet is ${MAX_BET} BNB` };
+    return { valid: false, error: `Maximum bet is ${MAX_BET} SOL` };
   }
 
   return { valid: true };
 }
 
 /**
- * Format transaction hash for display
+ * Convert SOL to lamports
  */
-export function formatTxHash(hash: string): string {
-  if (!hash) return '';
-  return `${hash.slice(0, 10)}...${hash.slice(-8)}`;
+export function solToLamports(sol: number): BN {
+  return new BN(sol * LAMPORTS_PER_SOL);
 }
 
 /**
- * Get BSCScan URL for transaction
+ * Convert lamports to SOL
  */
-export function getBSCScanTxUrl(txHash: string): string {
-  const chainId = process.env.NEXT_PUBLIC_CHAIN_ID || '97';
-  const baseUrl =
-    chainId === '97' ? 'https://testnet.bscscan.com' : 'https://bscscan.com';
-  return `${baseUrl}/tx/${txHash}`;
+export function lamportsToSol(lamports: BN | number | bigint): number {
+  const lamportsNum = typeof lamports === 'number' ? lamports : Number(lamports);
+  return lamportsNum / LAMPORTS_PER_SOL;
 }
 
 /**
- * Get BSCScan URL for address
+ * Format SOL amount for display
  */
-export function getBSCScanAddressUrl(address: string): string {
-  const chainId = process.env.NEXT_PUBLIC_CHAIN_ID || '97';
-  const baseUrl =
-    chainId === '97' ? 'https://testnet.bscscan.com' : 'https://bscscan.com';
-  return `${baseUrl}/address/${address}`;
+export function formatSOL(lamports: BN | number | bigint, decimals: number = 4): string {
+  const sol = lamportsToSol(lamports);
+  return sol.toFixed(decimals);
 }
 
 /**
- * Check if wallet is on correct network
+ * Format transaction signature for display
  */
-export async function checkNetwork(provider?: {
-  getNetwork: () => Promise<{ chainId: bigint | number }>;
-}): Promise<{ isCorrect: boolean; chainId?: number }> {
+export function formatSignature(signature: string): string {
+  if (!signature) return '';
+  return `${signature.slice(0, 10)}...${signature.slice(-8)}`;
+}
+
+/**
+ * Get Solana Explorer URL for transaction
+ */
+export function getSolanaExplorerTxUrl(signature: string): string {
+  const cluster = getSolanaCluster();
+  const baseUrl = 'https://explorer.solana.com';
+  const clusterParam = cluster === 'mainnet-beta' ? '' : `?cluster=${cluster}`;
+  return `${baseUrl}/tx/${signature}${clusterParam}`;
+}
+
+/**
+ * Get Solana Explorer URL for address/account
+ */
+export function getSolanaExplorerAddressUrl(address: string): string {
+  const cluster = getSolanaCluster();
+  const baseUrl = 'https://explorer.solana.com';
+  const clusterParam = cluster === 'mainnet-beta' ? '' : `?cluster=${cluster}`;
+  return `${baseUrl}/address/${address}${clusterParam}`;
+}
+
+/**
+ * Get Solana Explorer URL for program/contract
+ */
+export function getSolanaExplorerProgramUrl(programId: string): string {
+  return getSolanaExplorerAddressUrl(programId);
+}
+
+/**
+ * Check if wallet is connected to correct network
+ */
+export async function checkSolanaNetwork(
+  connection: Connection
+): Promise<{ isCorrect: boolean; cluster?: string }> {
   try {
-    let network;
-
-    if (provider) {
-      // Use provided provider
-      network = await provider.getNetwork();
+    const expectedCluster = getSolanaCluster();
+    const endpoint = connection.rpcEndpoint;
+    
+    // Simple check based on RPC endpoint
+    let currentCluster: string;
+    if (endpoint.includes('devnet')) {
+      currentCluster = 'devnet';
+    } else if (endpoint.includes('testnet')) {
+      currentCluster = 'testnet';
+    } else if (endpoint.includes('mainnet')) {
+      currentCluster = 'mainnet-beta';
     } else {
-      // No fallback to window.ethereum - provider should be passed in
-      return { isCorrect: false, chainId: undefined };
+      currentCluster = 'unknown';
     }
 
-    const expectedChainId = parseInt(process.env.NEXT_PUBLIC_CHAIN_ID || '97');
-    const isCorrect = Number(network.chainId) === expectedChainId;
+    const isCorrect = currentCluster === expectedCluster;
 
-    // eslint-disable-next-line no-console
     console.log('Network check:', {
-      currentChainId: network.chainId,
-      expectedChainId,
+      currentCluster,
+      expectedCluster,
       isCorrect,
+      endpoint,
     });
 
-    return { isCorrect, chainId: Number(network.chainId) };
+    return { isCorrect, cluster: currentCluster };
   } catch (error) {
     console.error('Error checking network:', error);
-    return { isCorrect: false, chainId: undefined };
+    return { isCorrect: false, cluster: undefined };
   }
 }
 
 /**
- * Switch to BSC Testnet
+ * Get account balance in SOL
  */
-export async function switchToBSCTestnet(provider: {
-  send: (method: string, params: unknown[]) => Promise<unknown>;
-}): Promise<boolean> {
+export async function getAccountBalance(
+  connection: Connection,
+  publicKey: PublicKey
+): Promise<number> {
   try {
-    await provider.send('wallet_switchEthereumChain', [{ chainId: '0x61' }]); // 97 in hex
-    return true;
-  } catch (error: unknown) {
-    // Chain not added to MetaMask
-    if (
-      typeof error === 'object' &&
-      error !== null &&
-      'code' in error &&
-      error.code === 4902
-    ) {
-      try {
-        await provider.send('wallet_addEthereumChain', [
-          {
-            chainId: '0x61',
-            chainName: 'BSC Testnet',
-            nativeCurrency: {
-              name: 'BNB',
-              symbol: 'BNB',
-              decimals: 18,
-            },
-            rpcUrls: ['https://data-seed-prebsc-1-s1.binance.org:8545/'],
-            blockExplorerUrls: ['https://testnet.bscscan.com/'],
-          },
-        ]);
-        return true;
-      } catch (addError) {
-        console.error('Error adding BSC Testnet:', addError);
-        return false;
-      }
-    }
-    console.error('Error switching network:', error);
-    return false;
-  }
-}
-
-/**
- * Switch to BSC Mainnet
- */
-export async function switchToBSCMainnet(provider: {
-  send: (method: string, params: unknown[]) => Promise<unknown>;
-}): Promise<boolean> {
-  try {
-    await provider.send('wallet_switchEthereumChain', [{ chainId: '0x38' }]); // 56 in hex
-    return true;
-  } catch (error: unknown) {
-    // Chain not added to MetaMask
-    if (
-      typeof error === 'object' &&
-      error !== null &&
-      'code' in error &&
-      error.code === 4902
-    ) {
-      try {
-        await provider.send('wallet_addEthereumChain', [
-          {
-            chainId: '0x38',
-            chainName: 'BSC Mainnet',
-            nativeCurrency: {
-              name: 'BNB',
-              symbol: 'BNB',
-              decimals: 18,
-            },
-            rpcUrls: ['https://bsc-dataseed.binance.org/'],
-            blockExplorerUrls: ['https://bscscan.com/'],
-          },
-        ]);
-        return true;
-      } catch (addError) {
-        console.error('Error adding BSC Mainnet:', addError);
-        return false;
-      }
-    }
-    console.error('Error switching network:', error);
-    return false;
-  }
-}
-
-/**
- * Estimate gas for transaction
- */
-export async function estimateGas(
-  contract: ethers.Contract,
-  method: string,
-  args: unknown[]
-): Promise<bigint> {
-  try {
-    // Validate contract address before estimation
-    if (!contract.target || typeof contract.target !== 'string') {
-      throw new Error('Invalid contract address');
-    }
-
-    // Check if address is valid format
-    if (!/^0x[a-fA-F0-9]{40}$/.test(contract.target)) {
-      throw new Error('Contract address is not a valid Ethereum address');
-    }
-
-    const gasEstimate = await contract[method].estimateGas(...args);
-    // Add 20% buffer
-    return (gasEstimate * 120n) / 100n;
+    const balance = await connection.getBalance(publicKey);
+    return lamportsToSol(balance);
   } catch (error) {
-    console.error('Gas estimation failed:', error);
-    // Return conservative gas limit for BSC Mainnet
-    return process.env.NEXT_PUBLIC_CHAIN_ID === '56' ? 200000n : 1000000n;
+    console.error('Error getting account balance:', error);
+    return 0;
   }
 }
 
 /**
- * Wait for transaction with timeout
+ * Parse Solana error message
  */
-export async function waitForTransaction(
-  tx: ethers.ContractTransactionResponse,
-  timeoutMs: number = 120000 // 2 minutes
-): Promise<ethers.ContractTransactionReceipt | null> {
-  return Promise.race([
-    tx.wait(),
-    new Promise<null>(resolve => setTimeout(() => resolve(null), timeoutMs)),
-  ]);
-}
-
-/**
- * Parse contract error message (now uses user-friendly error system)
- */
-export function parseContractError(error: unknown): string {
-  // Import the user-friendly error handler
-  const { getUserFriendlyErrorMessage } = require('./user-friendly-errors');
-  return getUserFriendlyErrorMessage(error);
+export function parseSolanaError(error: unknown): string {
+  if (!error) return 'Unknown error occurred';
+  
+  if (typeof error === 'string') return error;
+  
+  if (typeof error === 'object' && error !== null) {
+    // Check for common Solana error patterns
+    const err = error as any;
+    
+    if (err.message) {
+      // Check for specific error codes
+      if (err.message.includes('0x1')) {
+        return 'Insufficient funds for transaction';
+      }
+      if (err.message.includes('0x0')) {
+        return 'Custom program error';
+      }
+      if (err.message.includes('User rejected')) {
+        return 'Transaction cancelled by user';
+      }
+      return err.message;
+    }
+    
+    if (err.error && typeof err.error === 'string') {
+      return err.error;
+    }
+    
+    if (err.name === 'WalletSignTransactionError') {
+      return 'Failed to sign transaction. Please try again.';
+    }
+    
+    if (err.name === 'WalletNotConnectedError') {
+      return 'Wallet not connected. Please connect your wallet.';
+    }
+  }
+  
+  return 'Transaction failed. Please try again.';
 }
 
 /**
  * Calculate potential payout for a bet
  */
 export function calculatePotentialPayout(
-  betAmount: string,
-  userShares: string,
-  totalWinningShares: string,
-  totalPool: string
+  betAmount: BN,
+  userShares: BN,
+  totalWinningShares: BN,
+  totalLosingShares: BN,
+  platformFeeBps: number = 200 // 2% fee in basis points
 ): string {
   try {
-    const _betAmountBN = BigInt(betAmount);
-    const userSharesBN = BigInt(userShares);
-    const totalWinningSharesBN = BigInt(totalWinningShares);
-    const totalPoolBN = BigInt(totalPool);
+    if (totalWinningShares.isZero()) return '0';
 
-    if (totalWinningSharesBN === 0n) return '0';
+    // Payout = (userShares / totalWinningShares) * totalLosingShares * (1 - fee)
+    const grossPayout = userShares.mul(totalLosingShares).div(totalWinningShares);
+    
+    // Apply platform fee
+    const feeMultiplier = 10000 - platformFeeBps; // e.g., 10000 - 200 = 9800 (98%)
+    const netPayout = grossPayout.mul(new BN(feeMultiplier)).div(new BN(10000));
 
-    // Payout = (userShares / totalWinningShares) * totalPool * 0.985 (1.5% fee)
-    const grossPayout = (userSharesBN * totalPoolBN) / totalWinningSharesBN;
-    const netPayout = (grossPayout * 985n) / 1000n; // 1.5% platform fee
-
-    return ethers.formatEther(netPayout);
+    return formatSOL(netPayout, 4);
   } catch (error) {
     console.error('Error calculating payout:', error);
     return '0';
   }
+}
+
+/**
+ * Calculate profit/loss percentage
+ */
+export function calculateProfitLossPercent(
+  betAmount: BN,
+  payout: BN
+): number {
+  if (betAmount.isZero()) return 0;
+  
+  const profit = payout.sub(betAmount);
+  const percentBN = profit.mul(new BN(10000)).div(betAmount); // 100.00% precision
+  return Number(percentBN) / 100;
+}
+
+/**
+ * Generate PDA (Program Derived Address) seeds
+ */
+export function getMarketPDA(
+  programId: PublicKey,
+  marketId: BN
+): [PublicKey, number] {
+  return PublicKey.findProgramAddressSync(
+    [Buffer.from('market'), marketId.toArrayLike(Buffer, 'le', 8)],
+    programId
+  );
+}
+
+export function getUserPositionPDA(
+  programId: PublicKey,
+  userPubkey: PublicKey,
+  marketPubkey: PublicKey
+): [PublicKey, number] {
+  return PublicKey.findProgramAddressSync(
+    [
+      Buffer.from('position'),
+      userPubkey.toBuffer(),
+      marketPubkey.toBuffer(),
+    ],
+    programId
+  );
+}
+
+export function getVaultPDA(programId: PublicKey): [PublicKey, number] {
+  return PublicKey.findProgramAddressSync(
+    [Buffer.from('vault')],
+    programId
+  );
+}
+
+export function getUserProfilePDA(
+  programId: PublicKey,
+  userPubkey: PublicKey
+): [PublicKey, number] {
+  return PublicKey.findProgramAddressSync(
+    [Buffer.from('profile'), userPubkey.toBuffer()],
+    programId
+  );
+}
+
+/**
+ * Hash commitment for commit-reveal scheme
+ */
+export async function hashCommitment(
+  direction: 'LONG' | 'SHORT',
+  nonce: string,
+  timestamp: number
+): Promise<Uint8Array> {
+  // Use crypto.subtle for hashing in browser
+  const directionByte = direction === 'LONG' ? 1 : 2;
+  const data = new Uint8Array([
+    directionByte,
+    ...new TextEncoder().encode(nonce),
+    ...new Uint8Array(new BigInt64Array([BigInt(timestamp)]).buffer),
+  ]);
+  
+  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+  return new Uint8Array(hashBuffer);
+}
+
+/**
+ * Generate random nonce for commit-reveal
+ */
+export function generateNonce(): string {
+  return crypto.randomUUID();
 }

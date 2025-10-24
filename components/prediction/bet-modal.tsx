@@ -1,8 +1,9 @@
 'use client';
 
 import { useState } from 'react';
+import { usePrivy } from '@privy-io/react-auth';
 
-import { TrendingUp, TrendingDown } from 'lucide-react';
+import { TrendingUp, TrendingDown, Shield, AlertCircle } from 'lucide-react';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -16,8 +17,12 @@ import {
 } from '@/components/ui/dialog';
 import { InlineError } from '@/components/ui/error-display';
 import { Input } from '@/components/ui/input';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 import { formatBNB, calculatePayout } from '@/lib/utils';
 import type { Prediction } from '@/types/prediction';
+import { useRGCheck } from '@/hooks/use-rg-check';
+import { generateIdCommitment } from '@/lib/concordium-service';
+import { ConcordiumVerifyModal } from '@/components/rg/concordium-verify-modal';
 
 interface BetModalProps {
   open: boolean;
@@ -34,9 +39,28 @@ export function BetModal({
   outcome,
   onConfirm,
 }: BetModalProps) {
+  const { user } = usePrivy();
   const [amount, setAmount] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [showVerifyModal, setShowVerifyModal] = useState(false);
+  const [idCommitment, setIdCommitment] = useState<string | null>(null);
+
+  // Get Solana wallet address
+  const solanaAccount = user?.linkedAccounts.find(
+    (account) => account.type === 'wallet' && account.chain === 'solana'
+  );
+
+  // Generate identity commitment if user is connected
+  const userIdCommitment = user && solanaAccount?.address
+    ? generateIdCommitment(user.id, solanaAccount.address)
+    : null;
+
+  // Initialize RG check hook
+  const { checkBet, recordBet, checking } = useRGCheck({
+    idCommitment: idCommitment || userIdCommitment || undefined,
+    userAddress: solanaAccount?.address,
+  });
 
   const numAmount = parseFloat(amount) || 0;
   const isYes = outcome === 'yes';
@@ -82,7 +106,26 @@ export function BetModal({
     setError(null);
 
     try {
+      // Step 1: Check RG limits
+      const rgCheck = await checkBet(numAmount);
+
+      if (!rgCheck.allowed) {
+        setError(rgCheck.reason || 'Bet not allowed');
+        
+        // If identity verification is required, show verification modal
+        if (rgCheck.reason?.includes('Identity verification')) {
+          setShowVerifyModal(true);
+        }
+        
+        return;
+      }
+
+      // Step 2: If RG check passed, proceed with bet
       await onConfirm(numAmount);
+
+      // Step 3: Record bet in RG system
+      await recordBet(numAmount);
+
       setAmount('');
       onOpenChange(false);
     } catch (err: unknown) {
@@ -93,12 +136,19 @@ export function BetModal({
     }
   };
 
+  const handleVerified = (newIdCommitment: string) => {
+    setIdCommitment(newIdCommitment);
+    setShowVerifyModal(false);
+    setError(null);
+  };
+
   const handleQuickAmount = (value: number) => {
     setAmount(value.toString());
     setError(null);
   };
 
   return (
+    <>
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="border border-border bg-card shadow-2xl backdrop-blur-md sm:max-w-[500px]">
         <DialogHeader>
@@ -263,5 +313,12 @@ export function BetModal({
         </DialogFooter>
       </DialogContent>
     </Dialog>
+    
+    <ConcordiumVerifyModal
+      open={showVerifyModal}
+      onOpenChange={setShowVerifyModal}
+      onVerified={handleVerified}
+    />
+  </>
   );
 }
