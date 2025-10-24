@@ -33,7 +33,7 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: 'DarkBet Team' }],
   icons: {
-    icon: '/favicon.ico',
+    icon: '/binanceeye.jpg',
   },
   openGraph: {
     title: 'DarkBet - DarkPool Betting Platform',
