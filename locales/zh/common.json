@@ -1,0 +1,1163 @@
+{
+  "nav_home": "主页",
+  "nav_my_bets": "我的投注",
+  "nav_how": "使用说明",
+  "nav_docs": "文档",
+  "nav_leaderboard": "排行榜",
+  "connect_wallet": "连接钱包",
+  "disconnect": "断开连接",
+  "connecting": "连接中...",
+  "connected": "已连接",
+  "hero_title": "DarkBet",
+  "hero_subtitle": "暗池投注平台",
+  "hero_description": "私下交易结果。无抢先交易。无跟风。只有纯粹信念。基于BNB智能链构建。",
+  "hero_headline_lead": "不要只下注，",
+  "hero_bet_word": "下注",
+  "badge_live": "Live",
+  "badge_introducing": "推出",
+  "darkpool_betting": "暗池市场",
+  "what_is_darkpool": "什么是暗池投注？",
+  "darkpool_explanation": "暗池市场让您在隐藏的流动性池中私下投注。\n每笔交易保持不可见，但结果在BNB智能链上透明结算。\n您只有在关键时刻才能看到真相，当市场关闭时",
+  "features": {
+    "privacy": "私密",
+    "fully_onchain": "链上",
+    "ai_driven": "预测",
+    "realtime_markets": "实时市场"
+  },
+  "cta": {
+    "start_darkpool_betting": "创建 +",
+    "crypto_darkpool": "加密",
+    "news_events": "新闻",
+    "events": "事件"
+  },
+  "stats": {
+    "total_volume": "总交易量",
+    "active_markets": "活跃市场",
+    "participants": "参与者"
+  },
+  "markets": {
+    "all_markets": "所有市场",
+    "markets_count": "个市场",
+    "no_predictions_found": "未找到预测",
+    "try_adjusting_filters": "尝试调整筛选条件或创建第一个预测！",
+    "create_first_prediction": "创建第一个预测",
+    "completed_predictions": "已完成"
+  },
+  "prediction_card": {
+    "pool": "奖池",
+    "yes": "是",
+    "no": "否",
+    "your_bet": "您的投注",
+    "shares": "份额",
+    "view_detailed_analysis": "查看详细分析",
+    "hide_analysis": "隐藏分析",
+    "unbiased_market_analysis": "无偏见市场分析",
+    "resolved": "已解析",
+    "expired": "已过期",
+    "hot": "热门",
+    "view_history": "查看历史",
+    "expires_in": "到期时间"
+  },
+  "create_prediction": {
+    "title": "创建预测市场",
+    "description": "创建具有自动或手动解析的预测市场",
+    "wallet_required": "需要钱包",
+    "connect_wallet_to_create": "连接您的钱包以创建预测",
+    "bet_type": "投注类型",
+    "custom_bet": "自定义投注",
+    "manual_resolution": "手动解析",
+    "auto_verified_outcome": "自动验证结果",
+    "price_oracle": "价格预言机",
+    "bet_description": "投注描述",
+    "describe_prediction": "描述您的预测。AI将自动生成投注标题。",
+    "category": "类别",
+    "select_category": "选择类别",
+    "ai_resolution_instructions": "AI解析说明",
+    "analyze": "分析",
+    "analyzing": "分析中...",
+    "ai_generated": "AI生成",
+    "title_label": "标题",
+    "resolution_instructions": "解析说明",
+    "options": "选项",
+    "add_option": "添加选项",
+    "place_initial_bet": "下您的初始投注（必需）",
+    "prevent_spam": "为防止垃圾信息，创建者必须参与自己的预测",
+    "your_prediction": "您的预测",
+    "bnb_amount": "BNB数量",
+    "click_create_will_prompt": "点击\"创建投注\"将提示您的钱包发送{amount}到金库",
+    "cancel": "取消",
+    "creating": "创建中...",
+    "create_bet": "创建投注",
+    "bet_expiration_date": "投注到期日期",
+    "set_expiration_help": "设置此预测市场何时关闭和解析（最少15分钟）",
+    "generate_analysis_checkbox": "生成详细分析（卡片的无偏见摘要）"
+  },
+  "categories": {
+    "sports": "体育",
+    "crypto": "加密货币",
+    "politics": "政治",
+    "entertainment": "娱乐",
+    "weather": "天气",
+    "finance": "金融",
+    "technology": "技术",
+    "custom": "自定义"
+  },
+  "bet_modal": {
+    "place_bet": "下注",
+    "bet_amount": "投注金额",
+    "minimum_bet": "最小投注",
+    "maximum_bet": "最大投注",
+    "confirm_bet": "确认投注",
+    "betting_on": "投注于",
+    "outcome": "结果",
+    "price": "价格",
+    "potential_payout": "潜在收益",
+    "transaction_fee": "交易费用",
+    "total_cost": "总成本"
+  },
+  "crypto_prediction": {
+    "title": "加密货币预测",
+    "select_crypto": "选择加密货币",
+    "choose_crypto_placeholder": "选择要预测的加密货币",
+    "loading_cryptocurrencies": "加载加密货币中...",
+    "price_target": "价格目标",
+    "current_price": "当前价格",
+    "deadline": "截止时间",
+    "create_crypto_prediction": "创建加密货币预测"
+  },
+  "event_prediction": {
+    "title": "创建事件预测",
+    "description": "预测政治、科技、体育等领域的真实世界事件。我们监控全球新闻来源，并在事件确认时自动解析。",
+    "event_title": "事件标题",
+    "event_title_placeholder": "例如：SpaceX 能否在 2025 年成功将星舰发射到轨道？",
+    "description_label": "描述",
+    "description_placeholder": "提供有关事件的详细信息以及什么构成 YES 或 NO 结果...",
+    "category": "类别",
+    "expiration_date": "到期日期",
+    "news_keywords": "新闻关键词",
+    "news_keywords_help": "（用于监控新闻来源）",
+    "keyword_placeholder": "输入关键词（例如：SpaceX、星舰、发射）",
+    "add_keyword": "添加",
+    "keywords_count": "个关键词已添加",
+    "bet_amount": "投注金额（BNB）",
+    "your_prediction": "您的预测",
+    "select_prediction": "选择预测",
+    "yes": "是",
+    "no": "否",
+    "how_it_works": "工作原理：",
+    "how_it_works_desc": "您的事件将使用可信可靠的 API 进行监控。当知名新闻来源以高置信度确认事件结果时，市场将自动解析并分配奖金。",
+    "cancel": "取消",
+    "creating": "创建中...",
+    "create_event_prediction": "创建事件预测",
+    "categories": {
+      "politics": "政治",
+      "technology": "科技",
+      "economy": "经济",
+      "sports": "体育",
+      "entertainment": "娱乐",
+      "world_news": "世界新闻",
+      "science": "科学",
+      "health": "健康"
+    }
+  },
+  "filters": {
+    "all_categories": "所有类别",
+    "all_status": "所有状态",
+    "hot_only": "仅热门",
+    "time_range": "时间范围",
+    "last_24h": "最近24小时",
+    "last_7d": "最近7天",
+    "last_30d": "最近30天",
+    "clear_filters": "清除筛选",
+    "new": "最新",
+    "trending": "热门",
+    "all": "全部"
+  },
+  "my_bets": {
+    "title": "我的投注",
+    "subtitle": "跟踪您的预测市场投资和收益",
+    "total_invested": "总投资",
+    "total_payout": "总收益",
+    "active_bets": "活跃投注",
+    "resolved_bets": "已解析投注",
+    "all_bets": "所有投注",
+    "no_bets_found": "未找到投注",
+    "no_active_bets": "您没有任何活跃投注。",
+    "no_resolved_bets": "您没有任何已解析投注。",
+    "no_bets_yet": "您还没有进行任何投注。开始探索预测市场吧！",
+    "explore_markets": "探索市场",
+    "expires_in": "到期时间",
+    "resolved_on": "解析于",
+    "shares": "份额",
+    "amount": "金额",
+    "price": "价格",
+    "resolution": "解析",
+    "claim": "领取",
+    "claimed": "已领取",
+    "won": "获胜",
+    "lost": "失败",
+    "active": "活跃"
+  },
+  "how_it_works": {
+    "title": "DarkBet如何运作",
+    "subheader": "DarkBet将每个预测市场转变为私密的链上暗池，投注在解析前保持隐藏",
+    "platform_overview": "平台概览",
+    "platform_description": "为私密预测、智能预言机和无信任市场解析提供动力的基础设施",
+    "darkpool_markets": "暗池市场",
+    "darkpool_description": "私密流动性池，所有头寸保持隐藏，消除抢先交易和操纵",
+    "ai_powered_oracles": "AI驱动预言机",
+    "ai_oracles_description": "使用AI聚合真实世界数据，准确自主地验证结果",
+    "on_chain_settlements": "链上结算",
+    "on_chain_settlements_description": "市场在链上透明解析，基于验证结果的无信任支付",
+    "real_time_description": "实时活动动态和即时更新，当投注被创建、加入或解析时",
+    "how_darkbet_works": "DarkBet如何运作",
+    "dark_pools_title": "暗池市场",
+    "dark_pools_description": "私密流动性池，所有头寸在解析前保持隐藏，消除抢先交易和操纵。",
+    "zk-encrypted_privacy": "zk加密隐私",
+    "zk-encrypted_privacy_description": "所有投注使用零知识加密保护，保持金额和身份私密，同时仍在链上证明正确性",
+    "signal_integrity": "信号完整性",
+    "signal_integrity_description": "隐藏流动性保护真实市场信号，防止抢先交易、情绪偏见和策略模仿",
+    "trutless_resolution": "无信任解析",
+    "trutless_resolution_description": "一旦预言机验证结果，智能合约自动结算市场，提供可验证的链上证明",
+    "dark_pools_comparison_title": "暗池 vs 传统市场",
+    "traditional_markets_title": "传统市场",
+    "traditional_markets_points": "公开投注和流动性|容易受到操纵|跟单交易和鲸鱼影响|手动或有偏见的解析",
+    "darkbet_dark_pools_title": "DarkBet暗池",
+    "darkbet_dark_pools_points": "zk加密私密头寸|保护市场完整性|自动化、可验证结算|公平、无偏见结果",
+    "creating_predictions": "创建预测",
+    "creating_predictions_description": "简单描述您想要投注的内容 - AI将处理其余部分",
+    "step1_title": "描述您的预测",
+    "step1_description": "只需描述，AI会处理其余部分",
+    "step2_title": "AI生成智能标题",
+    "step2_description": "DarkBet的AI分析您的描述并生成简洁、可搜索的市场标题，针对清晰度、准确性和可发现性进行优化",
+    "step3_title": "自动截止时间和类别",
+    "step3_description": "AI自动设置智能截止时间并分配最相关的类别，确保您的市场结构化并准备立即启动",
+    "supported_categories": "支持的类别",
+    "dynamic_market_pricing": "动态市场定价（AMM）",
+    "dynamic_pricing_description": "DarkBet使用固定乘积市场做市商（FPMM）进行公平、动态定价",
+    "how_prices_work": "价格如何运作",
+    "price_mechanism_1": "价格由奖池余额比率确定",
+    "price_mechanism_2": "是价格 + 否价格 = 始终0.01 BNB",
+    "price_mechanism_3": "更多投注偏向一方 = 该结果价格更高",
+    "price_mechanism_4": "每次投注都会轻微改变市场",
+    "betting_options": "投注选项",
+    "betting_default": "默认：以当前市场价格购买1份额",
+    "betting_custom": "自定义：输入任意BNB金额，获得计算的份额",
+    "betting_realtime": "实时报价，30秒有效期",
+    "betting_formula": "份额 = 支付金额 ÷ 当前价格",
+    "pricing_example": "如果是价格以0.006 BNB交易，您投注0.01 BNB，您将获得约1.67份额。如果是获胜，每个份额支付0.01 BNB（总计：0.0167 BNB收益）。",
+    "ai_powered_resolution": "AI驱动解析",
+    "ai_resolution_description": "当投注到期时，我们的多层验证系统自动确定结果",
+    "layer1_title": "第1层：确定性检查",
+    "layer1_description": "价格预言机和链上数据为加密货币/代币投注提供即时、可验证的结果",
+    "layer2_title": "第2层：证据收集",
+    "layer2_description": "特定类别的API获取真实数据：天气投注的天气数据，体育投注的体育比分，政治事件的新闻",
+    "layer3_title": "第3层：AI分析",
+    "layer3_description": "先进AI分析收集的证据并进行最终确定和推理",
+    "verification_sources": "验证来源（已屏蔽）",
+    "verification_description": "我们使用行业领先的API进行验证（来源已屏蔽以确保安全）：",
+    "claiming_winnings": "领取奖金",
+    "claiming_description": "获胜者按比例分配总奖池，自动扣除费用",
+    "how_payouts_work": "收益如何运作",
+    "payout_mechanism_1": "获胜者按比例分配总奖池",
+    "payout_mechanism_2": "收益 = （您的份额 ÷ 总获胜份额）× 总奖池",
+    "payout_mechanism_3": "自动扣除1.5%平台费用",
+    "payout_mechanism_4": "您收到98.5%的BNB总收益",
+    "security_features": "安全功能",
+    "security_vault": "安全金库钱包持有所有资金",
+    "security_verification": "链上交易验证",
+    "security_cooldown": "30秒领取冷却期防止重复",
+    "security_bscscan": "领取后可在BSCScan上查看交易",
+    "platform_fee_structure": "平台费用结构",
+    "fee_description": "1.5%平台费用适用于奖金领取和投注取消",
+    "gross_winnings": "总收益：",
+    "platform_fee": "平台费用（1.5%）：",
+    "net_payout": "净收益：",
+    "creator_participation": "创建者参与和取消",
+    "creator_description": "为确保预测质量并防止垃圾信息，创建者必须积极参与",
+    "mandatory_creator_stake": "强制性创建者股份",
+    "mandatory_stake_description": "创建者在创建市场时必须对自己的预测进行投注。这防止了垃圾信息并确保创建者对自己的预测有信心。",
+    "bet_cancellation_policy": "投注取消政策",
+    "cancellation_description": "如果您是投注中的唯一参与者，您可以取消它并获得退款：",
+    "cancellation_1": "仅在创建者是唯一参与者时可用",
+    "cancellation_2": "取消时适用1.5%平台费用",
+    "cancellation_3": "即时退款发送到您的钱包",
+    "cancellation_4": "一旦其他用户加入，取消按钮消失",
+    "fully_automated_resolution": "完全自动化解析",
+    "automated_description": "所有投注自动解析 - 无需手动干预",
+    "automated_1": "AI分析来自25+验证API的证据",
+    "automated_2": "价格预言机提供即时加密货币/代币结果",
+    "automated_3": "多层验证确保准确性",
+    "automated_4": "获胜者手动领取奖品（适用1.5%费用）",
+    "security_transparency": "安全与透明度",
+    "blockchain_security": "区块链安全",
+    "blockchain_1": "BNB智能链上的所有交易",
+    "blockchain_2": "可在BSCScan上验证",
+    "blockchain_3": "通过Privy支持多钱包",
+    "blockchain_4": "自动网络切换",
+    "smart_protections": "智能保护",
+    "smart_1": "服务器端价格计算",
+    "smart_2": "零客户端信任模型",
+    "smart_3": "领取速率限制",
+    "smart_4": "数据库回滚支持",
+    "api_keys_masked": "所有API密钥和敏感数据已屏蔽",
+    "api_keys_description": "我们从不暴露内部凭据、金库钱包地址或验证源端点，以保护平台完整性。",
+    "ready_to_start": "准备开始预测？",
+    "ready_description": "连接您的钱包，今天创建您的第一个预测市场",
+    "explore_markets": "探索市场"
+  },
+  "leaderboard": {
+    "title": "排行榜",
+    "subtitle": "DarkBet预测市场顶级表现者",
+    "total_players": "总玩家",
+    "total_winnings": "总奖金",
+    "avg_win_rate": "平均胜率",
+    "timeframe": "时间范围",
+    "all_time": "全部时间",
+    "days_7": "7天",
+    "days_30": "30天",
+    "days_90": "90天",
+    "category": "类别",
+    "all_categories": "所有类别",
+    "sort_by": "排序方式",
+    "total_winnings_sort": "总奖金",
+    "win_rate_sort": "胜率",
+    "total_volume_sort": "总交易量",
+    "total_bets_sort": "总投注",
+    "winnings": "奖金",
+    "win_rate": "胜率",
+    "bets": "投注",
+    "volume": "交易量",
+    "view": "查看",
+    "more_features_coming": "更多功能即将推出",
+    "working_on_features": "我们正在添加更详细的分析、历史数据、高级筛选选项。",
+    "historical_charts": "历史图表",
+    "advanced_filters": "高级筛选",
+    "portfolio_tracking": "投资组合跟踪",
+    "achievement_system": "成就系统"
+  },
+  "transaction_history": {
+    "title": "交易历史",
+    "no_transactions": "暂无交易记录",
+    "transaction_id": "交易ID",
+    "type": "类型",
+    "amount": "金额",
+    "status": "状态",
+    "timestamp": "时间戳",
+    "pending": "待处理",
+    "confirmed": "已确认",
+    "failed": "失败"
+  },
+  "wallet_prompt": {
+    "title": "连接您的钱包",
+    "description": "您需要连接钱包才能创建或参与预测",
+    "message": "要参与 DarkBet 预测，您需要连接 Web3 钱包。我们支持 MetaMask、WalletConnect 等。"
+  },
+  "create": "创建",
+  "cancel": "取消",
+  "errors": {
+    "wallet_required": "请连接您的钱包以进行投注",
+    "transaction_failed": "交易失败",
+    "insufficient_funds": "资金不足",
+    "network_error": "网络错误",
+    "unknown_error": "未知错误",
+    "retry": "重试"
+  },
+  "success": {
+    "bet_placed": "投注成功！请记住在市场到期后揭示。",
+    "prediction_created": "预测创建成功！",
+    "crypto_prediction_created": "加密货币预测创建成功！"
+  },
+  "footer": {
+    "all_rights_reserved": "版权所有。"
+  },
+  "common": {
+    "example": "示例"
+  },
+  "docs": {
+    "overview": {
+      "title": "DarkBet 文档",
+      "description": "DarkBet 是基于 BNB 链构建的链上预测市场，旨在允许用户使用区块链技术预测现实世界事件、市场趋势和社区驱动结果。每个预测、交易和解析都在链上执行，确保可验证的透明度和公平性。",
+      "subdescription": "无论是体育结果、政治选举还是加密货币价格变动，DarkBet 将公众情绪和数据分析转化为可操作的、可交易的预测，创建知识和远见的去中心化市场，采用革命性的暗池投注系统。",
+      "features": {
+        "title": "主要功能",
+        "privacy": "暗池隐私 - 投注在解析前保持隐藏",
+        "ai": "AI 驱动解析 - 自动化结果确定",
+        "blockchain": "完全链上 - 基于 BNB 智能链构建",
+        "amm": "动态 AMM 定价 - 公平的市场定价"
+      },
+      "getting_started": {
+        "title": "开始使用",
+        "step1": "连接您的钱包",
+        "step1_desc": "使用 MetaMask、WalletConnect 或其他支持的钱包连接",
+        "step2": "创建或加入预测",
+        "step2_desc": "描述您的预测或浏览现有市场",
+        "step3": "领取您的奖金",
+        "step3_desc": "自动化解析和手动领取流程"
+      },
+      "dark_pool": {
+        "title": "什么是暗池投注？",
+        "description": "暗池投注将传统暗池的隐私和效率与预测市场相结合。您的投注在市场解析前保持完全隐藏，防止市场操纵并确保所有参与者都有公平的竞争环境。",
+        "benefits": {
+          "privacy": "隐私保护",
+          "privacy_desc": "您的投注策略对其他参与者保持完全隐藏",
+          "fairness": "公平竞争",
+          "fairness_desc": "没有先发优势或跟随交易"
+        }
+      },
+      "ready": {
+        "title": "准备开始？",
+        "description": "探索我们的文档以了解更多关于 DarkBet 的信息，开始您的预测市场之旅。",
+        "connect_wallet": "连接钱包",
+        "create_prediction": "创建预测"
+      }
+    },
+    "vision": {
+      "title": "DarkBet 愿景",
+      "description": "DarkBet 设想一个预测市场成为去中心化经济不可或缺部分的未来。透明、无国界的生态系统，知识和远见具有真正的价值。",
+      "subdescription": "作为基于 BNB 链构建的第一个暗池预测市场，DarkBet 旨在重新定义人们与信息的互动方式，使世界各地的用户能够交易见解、预测结果并参与塑造全球叙事的事件，所有这些都通过区块链透明度和可验证智能合约的力量实现。",
+      "conclusion": "我们渴望创建一个融合可访问性、创新和信任的平台，每个预测不仅是一个赌注，更是集体智慧的反映。DarkBet 寻求赋予个人做出数据驱动决策的能力，通过共同对未来的信念连接社区，并围绕真理、问责制和去中心化参与培育新经济。",
+      "mission": {
+        "title": "我们的使命",
+        "description": "通过引入第一个真正私密、公平和去中心化的投注平台来革命化预测市场。我们相信预测市场应该对每个人都可访问，同时保持完全的隐私并防止操纵。"
+      },
+      "values": {
+        "title": "核心价值观",
+        "privacy": {
+          "title": "隐私优先",
+          "description": "您的投注策略在市场解析前保持完全隐藏。"
+        },
+        "fairness": {
+          "title": "公平竞争",
+          "description": "没有先发优势，没有跟单交易，没有操纵。"
+        },
+        "transparency": {
+          "title": "透明度",
+          "description": "所有交易都在链上且可验证。"
+        },
+        "innovation": {
+          "title": "创新",
+          "description": "AI 驱动解析和动态 AMM 定价。"
+        }
+      },
+      "future": {
+        "title": "我们正在建设的未来",
+        "step1": {
+          "title": "全球预测市场",
+          "description": "访问全球事件的预测市场，从体育到政治到天气。"
+        },
+        "step2": {
+          "title": "AI 驱动洞察",
+          "description": "先进的 AI 分析提供无偏见的市场洞察和自动解析。"
+        },
+        "step3": {
+          "title": "去中心化治理",
+          "description": "社区驱动的平台功能和市场类别决策。"
+        },
+        "step4": {
+          "title": "跨链集成",
+          "description": "多链支持，提供更广泛的访问性和降低交易成本。"
+        }
+      },
+      "join": {
+        "title": "加入我们的愿景",
+        "description": "成为预测市场未来的一部分。连接您的钱包，开始参与暗池革命。",
+        "cta": "开始使用"
+      }
+    },
+    "why_choose_darkbet": {
+      "title": "为什么选择 DarkBet",
+      "description": "在信任和数据就是一切的世界中，DarkBet 将两者在链上结合在一起。该平台允许用户通过我们革命性的暗池系统将他们的观点转化为可测量的预测，具有完全的透明度和隐私。",
+      "built_on_bnb": "基于 BNB 链构建",
+      "built_on_bnb_desc": "利用 BNB 链的可扩展性和低交易费用，DarkBet 确保全球用户快速、成本高效且安全的市场参与。",
+      "dark_pool_privacy": "暗池隐私",
+      "dark_pool_privacy_desc": "您的投注策略在市场解析前保持完全隐藏，防止操纵并确保所有参与者的公平竞争。",
+      "transparent": "透明且可验证",
+      "transparent_desc": "所有预测、结果和支付都记录在链上，确保每次交互的信任和清晰度，同时保持投注隐私。",
+      "community_driven": "社区驱动市场",
+      "community_driven_desc": "DarkBet 使用户能够创建和加入反映全球事件、趋势和链上数据的预测市场，具有完全的隐私保护。",
+      "rewarding_accuracy": "奖励准确性",
+      "rewarding_accuracy_desc": "正确预测的用户直接从市场池中获得奖励，在公平环境中促进基于数据的知情决策。",
+      "ai_powered": "AI 驱动解析",
+      "ai_powered_desc": "先进的 AI 使用来自 25+ API 的真实世界数据自动解析预测市场，确保快速准确的结果。",
+      "conclusion": {
+        "title": "DarkBet 优势",
+        "description": "DarkBet 为您提供自信参与的工具，知道每个预测都是公平、安全且在 BNB 链上经过验证的。我们的暗池系统确保您的策略保持私密，同时保持结果和支付的完全透明度。"
+      },
+      "security": {
+        "title": "安全与隐私",
+        "description": "DarkBet 集成 Privy，一个值得信赖的第三方身份验证提供商，以确保所有用户的安全和隐私。Privy 支持安全的钱包连接、加密会话管理和身份验证，帮助保护社区免受欺诈活动，同时保持无缝的链上体验。",
+        "encrypted": "加密会话管理和安全的钱包连接",
+        "identity": "身份验证和欺诈保护",
+        "privacy": "使用暗池技术的完全投注隐私"
+      },
+      "ready": {
+        "title": "准备开始？",
+        "description": "立即加入 DarkBet，体验具有完全隐私和透明度的预测市场未来。",
+        "connect_wallet": "连接钱包",
+        "create_prediction": "创建预测"
+      }
+    },
+    "connect_wallet": {
+      "title": "连接钱包",
+      "description": "在开始预测之前，您需要设置您的账户。以下是如何安全地注册并将您的钱包连接到 DarkBet。",
+      "supported_wallets": {
+        "title": "支持的钱包",
+        "description": "DarkBet 通过 Privy 集成支持各种流行的加密货币钱包。"
+      },
+      "steps": {
+        "title": "如何连接",
+        "step1": {
+          "title": "点击连接钱包",
+          "description": "点击 DarkBet 平台顶部导航栏中的\"连接钱包\"按钮。"
+        },
+        "step2": {
+          "title": "选择您的钱包",
+          "description": "从支持的钱包列表中选择您喜欢的钱包。如果您使用 MetaMask，它将自动连接。对于移动钱包，请使用 WalletConnect 扫描二维码。"
+        },
+        "step3": {
+          "title": "批准连接",
+          "description": "在您的钱包中批准连接请求。这允许 DarkBet 与您的钱包交互以进行交易和余额检查。"
+        },
+        "step4": {
+          "title": "开始投注",
+          "description": "连接后，您就可以开始创建预测、下注并参与 DarkBet 市场了！"
+        }
+      },
+      "important": {
+        "title": "重要提示",
+        "note1": "确保您的钱包已连接到 BNB 智能链网络。",
+        "note2": "在您的钱包中保留一些 BNB 用于交易费用。",
+        "note3": "永远不要与任何人分享您的私钥或助记词。",
+        "note4": "DarkBet 永远不会要求您的私钥或助记词。"
+      },
+      "troubleshooting": {
+        "title": "故障排除",
+        "network": {
+          "title": "网络错误",
+          "description": "如果您看到网络错误，请确保您的钱包已连接到 BNB 智能链（BSC）。您可以使用链 ID：56 将 BSC 添加到您的钱包。"
+        },
+        "transaction": {
+          "title": "交易失败",
+          "description": "确保您有足够的 BNB 支付 gas 费用。如果交易失败，请尝试增加 gas 限制。"
+        },
+        "connection": {
+          "title": "连接问题",
+          "description": "尝试刷新页面并重新连接您的钱包。如果问题持续存在，请清除浏览器缓存。"
+        }
+      },
+      "security": {
+        "title": "安全与隐私",
+        "description": "DarkBet 集成 Privy，一个值得信赖的第三方身份验证提供商，以确保所有用户的安全和隐私。Privy 支持安全的钱包连接、加密会话管理和身份验证，帮助保护社区免受欺诈活动，同时保持无缝的链上体验。",
+        "encrypted": {
+          "title": "加密会话",
+          "description": "所有钱包连接都是加密且安全的，保护您的私钥和会话数据。"
+        },
+        "verification": {
+          "title": "身份验证",
+          "description": "先进的验证系统帮助防止欺诈活动并确保社区安全。"
+        }
+      }
+    },
+    "security": {
+      "title": "安全与透明度",
+      "description": "DarkBet 平台的安全措施和透明度功能。",
+      "blockchain": {
+        "title": "区块链安全",
+        "all_transactions": "BNB 智能链上的所有交易",
+        "verifiable": "可在 BSCScan 上验证",
+        "multi_wallet": "通过 Privy 的多钱包支持",
+        "network_switching": "自动网络切换"
+      },
+      "smart_protections": {
+        "title": "智能保护",
+        "server_calculations": "服务器端价格计算",
+        "zero_trust": "零客户端信任模型",
+        "rate_limiting": "声明速率限制",
+        "rollback": "数据库回滚支持"
+      },
+      "dark_pool": {
+        "title": "暗池隐私",
+        "hidden_bets": "您的投注策略在市场解析前保持完全隐藏",
+        "no_manipulation": "防止市场操纵和跟单交易",
+        "fair_competition": "确保所有参与者的公平竞争",
+        "encrypted_data": "所有投注数据都经过加密和安全存储"
+      },
+      "note": {
+        "title": "安全说明",
+        "description": "所有 API 密钥和敏感数据都被屏蔽 - 我们从不暴露内部凭据、金库钱包地址或验证源端点，以保护平台完整性。"
+      },
+      "transparency": {
+        "title": "透明度功能",
+        "on_chain": {
+          "title": "链上验证",
+          "description": "所有交易和结果都记录在 BNB 智能链上，可在 BSCScan 上验证。"
+        },
+        "open_source": {
+          "title": "开源组件",
+          "description": "平台的关键组件是开源的，允许社区验证和审计。"
+        },
+        "audit_reports": {
+          "title": "定期审计",
+          "description": "智能合约定期接受第三方公司的安全审计。"
+        },
+        "community": {
+          "title": "社区监督",
+          "description": "社区成员可以报告安全问题并参与平台治理。"
+        }
+      }
+    },
+    "phase_1": {
+      "title": "第一阶段：基础启动",
+      "description": "建立核心平台和生态系统基础。",
+      "milestones": {
+        "title": "里程碑",
+        "launch": {
+          "title": "DarkBet 在 BNB 链上正式启动",
+          "description": "在 BNB 链上启动核心 DarkBet 平台，具备暗池投注功能。"
+        },
+        "contracts": {
+          "title": "智能合约部署",
+          "description": "部署链上预测市场的智能合约，具备暗池隐私功能。"
+        },
+        "privacy": {
+          "title": "集成 Privy 安全认证",
+          "description": "集成 Privy 进行安全的钱包连接和身份验证，具备隐私保护。"
+        },
+        "prediction_types": {
+          "title": "启动自定义投注和价格预言机预测类型",
+          "description": "启用自定义预测创建和自动化价格预言机集成，支持各种市场类型。"
+        },
+        "liquidity": {
+          "title": "初始流动性设置和 DEX 上市",
+          "description": "设置初始流动性池，准备 DarkBet 代币的 DEX 上市。"
+        },
+        "community": {
+          "title": "社区入门和早期奖励活动",
+          "description": "启动社区入门计划和早期采用者奖励活动，建立初始用户群。"
+        }
+      },
+      "focus": {
+        "title": "第一阶段重点",
+        "description": "这个基础阶段将 DarkBet 确立为第一个暗池预测市场平台，专注于核心功能、安全性和初始社区建设。重点是创建一个强大的、注重隐私的投注体验，为未来的增长奠定基础。"
+      }
+    },
+    "phase_2": {
+      "title": "第二阶段：扩展与增长",
+      "description": "加强社区参与并引入高级功能。",
+      "milestones": {
+        "title": "里程碑",
+        "buyback": {
+          "title": "实施回购和销毁计划",
+          "description": "启动代币回购和销毁机制，支持长期代币稳定性和价值增长。"
+        },
+        "leaderboard": {
+          "title": "启动排行榜系统和推荐奖励",
+          "description": "引入竞争性排行榜和推荐奖励系统，激励社区参与。"
+        },
+        "mobile": {
+          "title": "推出移动友好界面",
+          "description": "启动移动优化界面和性能改进，提供更好的用户体验。"
+        },
+        "oracles": {
+          "title": "集成额外预言机",
+          "description": "扩展体育、股票和真实世界数据源的预言机集成。"
+        },
+        "marketing": {
+          "title": "战略营销合作伙伴关系",
+          "description": "建立战略营销合作伙伴关系和社区协作，促进平台增长。"
+        },
+        "token_integration": {
+          "title": "直接投注的代币集成",
+          "description": "开发 DarkBet 代币在平台内直接投注的集成。"
+        }
+      },
+      "focus": {
+        "title": "第二阶段重点",
+        "description": "这个扩展阶段专注于发展 DarkBet 社区和生态系统。我们引入高级功能，改善用户体验，并建立战略合作伙伴关系，同时保持使 DarkBet 独特的核心暗池隐私原则。"
+      }
+    },
+    "phase_3": {
+      "title": "第三阶段：生态系统发展",
+      "description": "构建可持续的、实用驱动的代币经济。",
+      "milestones": {
+        "title": "里程碑",
+        "staking": {
+          "title": "引入质押系统",
+          "description": "启动质押系统，为长期持有者提供 DarkBet 代币的收益奖励。"
+        },
+        "creator_program": {
+          "title": "启动 DarkBet 创作者计划",
+          "description": "引入验证市场创作者计划，提供高质量的预测市场。"
+        },
+        "ai_analysis": {
+          "title": "基于 AI 的预测分析",
+          "description": "启动基于 AI 的事件结果和市场洞察预测分析。"
+        },
+        "mobile_app": {
+          "title": "发布 DarkBet 移动应用",
+          "description": "启动 iOS 和 Android 平台的原生移动应用程序。"
+        },
+        "cex_listing": {
+          "title": "CEX 上市和跨链集成",
+          "description": "确保 DarkBet 代币的 CEX 上市，并开发跨链桥集成。"
+        }
+      },
+      "focus": {
+        "title": "第三阶段重点",
+        "description": "这个生态系统发展阶段专注于围绕 DarkBet 构建可持续的代币经济。我们引入质押奖励、创作者激励，并扩大平台可访问性，同时保持定义我们暗池方法的隐私和安全功能。"
+      }
+    },
+    "phase_4": {
+      "title": "第四阶段：治理与全球采用",
+      "description": "向社区治理和全球认可的平台过渡。",
+      "milestones": {
+        "title": "里程碑",
+        "dao": {
+          "title": "启动 DarkBet DAO",
+          "description": "实施完全去中心化治理，通过 DarkBet DAO 进行社区驱动的平台决策。"
+        },
+        "data_providers": {
+          "title": "与主要数据提供商集成",
+          "description": "与主要数据提供商和分析工具集成，提高预测准确性。"
+        },
+        "media_partnerships": {
+          "title": "与媒体和 Web3 平台合作",
+          "description": "与媒体和 Web3 平台建立合作伙伴关系，提供验证的预测源。"
+        },
+        "global_marketing": {
+          "title": "全球营销和赞助活动",
+          "description": "启动全面的全球营销和赞助活动，实现全球采用。"
+        },
+        "ecosystem_upgrades": {
+          "title": "持续生态系统升级",
+          "description": "实施持续的生态系统升级和可扩展性改进，实现全球规模。"
+        }
+      },
+      "focus": {
+        "title": "第四阶段重点",
+        "description": "这个最终阶段将 DarkBet 转变为全球认可的、社区治理的平台。我们通过 DAO 治理实现完全去中心化，同时建立战略合作伙伴关系和全球影响力，所有这些都保持我们的核心暗池隐私和安全原则。"
+      }
+    },
+    "tokenomics": {
+      "title": "代币经济学",
+      "description": "DarkBet 的代币经济学和分配模型。",
+      "overview": {
+        "title": "概述",
+        "token_name": "代币名称",
+        "symbol": "符号",
+        "network": "网络",
+        "total_supply": "总供应量"
+      },
+      "distribution": {
+        "title": "代币分配",
+        "category": "类别",
+        "allocation": "分配",
+        "description": "描述",
+        "marketing": {
+          "title": "营销与合作",
+          "description": "专门用于品牌增长、合作伙伴关系和促销活动，加强 DarkBet 的全球影响力。"
+        },
+        "future_dev": {
+          "title": "未来开发",
+          "description": "为未来功能、跨链集成和长期生态系统扩展而预留。"
+        }
+      },
+      "buyback_note": {
+        "title": "回购和销毁计划",
+        "description": "在 DarkBet 市值保持在 100 万以下期间收集的所有费用将完全分配给回购和销毁计划，支持长期代币稳定性和价值增长。"
+      },
+      "utility": {
+        "title": "代币用途",
+        "staking": {
+          "title": "质押奖励",
+          "description": "质押 DarkBet 代币以赚取收益奖励并参与平台治理。"
+        },
+        "betting": {
+          "title": "直接投注",
+          "description": "使用 DarkBet 代币直接在预测市场中投注。"
+        },
+        "governance": {
+          "title": "治理权利",
+          "description": "参与 DAO 治理，投票决定平台功能和生态系统决策。"
+        },
+        "rewards": {
+          "title": "创作者奖励",
+          "description": "通过创建成功的预测市场和为生态系统做出贡献来赚取 DarkBet 代币。"
+        }
+      }
+    },
+    "polybets": {
+      "title": "介绍 Polybets",
+      "description": "DarkBet 变得更智能了。我们很高兴推出 Polybets，这是一个新功能，可以自动镜像 Polymarket 的趋势预测市场，将实时洞察和验证结果直接带到 DarkBet 生态系统。",
+      "overview": {
+        "title": "概述",
+        "description": "DarkBet 变得更智能了。我们很高兴推出 Polybets，这是一个新功能，可以自动镜像 Polymarket 的趋势预测市场，将实时洞察和验证结果直接带到 DarkBet 生态系统。"
+      },
+      "how_it_works": {
+        "title": "工作原理",
+        "description": "Polybets 从 Polymarket 提取前 100 个趋势市场，并在 DarkBet 上保持活跃，具有自动同步和解析功能。无需手动创建或验证市场，一切都会自动更新。"
+      },
+      "accumulating_library": {
+        "title": "积累库",
+        "description": "Polybets 现在就像一个不断增长的、自动更新的库：",
+        "point1": "每次同步都会检查 Polymarket 的前 100 个趋势市场。",
+        "point2": "新市场会自动添加到 DarkBet 集合中。",
+        "point3": "旧市场保持存储——即使它们从前 100 名中掉出。",
+        "point4": "随着时间的推移，DarkBet 建立了不断增长的链上预测市场档案。"
+      },
+      "sync_interval": {
+        "title": "30 秒同步间隔",
+        "description": "我们让 PolyBets 比以往更快：",
+        "point1": "系统每 30 秒同步一次，快速捕获新的趋势市场。",
+        "point2": "来自 Polymarket 的解析也会近乎实时同步。",
+        "point3": "验证日志确认同步操作每 30 秒持续运行——确保流畅、最新的市场数据。"
+      },
+      "note": {
+        "title": "重要说明",
+        "description": "投注与标准 DarkBet 市场以相同方式运行，不取消或退款。所有加入的资金都安全存储在 DarkBet 的托管中，适用标准 1.5% 平台费用。"
+      },
+      "benefits": {
+        "title": "Polybets 的优势",
+        "automation": {
+          "title": "自动化市场创建",
+          "description": "无需手动创建市场 - 趋势预测会自动同步并可用。"
+        },
+        "verified": {
+          "title": "验证结果",
+          "description": "所有结果都通过 Polymarket 的既定解析机制进行验证。"
+        },
+        "privacy": {
+          "title": "暗池隐私",
+          "description": "您的投注策略在市场解析前保持私密，即使在镜像市场中也是如此。"
+        },
+        "growing": {
+          "title": "不断增长的档案",
+          "description": "访问过去和现在不断增长的预测市场库。"
+        }
+      }
+    },
+    "claiming_winnings": {
+      "title": "领取您的奖金",
+      "description": "如何在赢得预测市场后领取您的奖励。",
+      "payouts": {
+        "title": "奖金如何运作",
+        "winners_split": "获胜者按比例分配总池",
+        "formula": "奖金 = (您的份额 ÷ 总获胜份额) × 总池",
+        "platform_fee": "自动扣除 1.5% 平台费用",
+        "receive": "您收到 98.5% 的 BNB 总奖金"
+      },
+      "security": {
+        "title": "安全功能",
+        "vault_wallet": "安全金库钱包持有所有资金",
+        "verification": "链上交易验证",
+        "cooldown": "30 秒领取冷却期防止重复",
+        "bscscan": "领取后在 BSCScan 上查看交易"
+      },
+      "process": {
+        "title": "如何领取您的奖金",
+        "step1": {
+          "title": "等待市场解析",
+          "description": "一旦预测市场到期，我们的 AI 系统会自动确定结果。"
+        },
+        "step2": {
+          "title": "检查您的获胜投注",
+          "description": "导航到\"我的投注\"查看您的哪些预测是正确的。"
+        },
+        "step3": {
+          "title": "点击\"领取奖金\"",
+          "description": "点击您获胜预测旁边的领取按钮以启动支付。"
+        },
+        "step4": {
+          "title": "确认交易",
+          "description": "在您的钱包中确认交易以接收 BNB 奖金。"
+        }
+      },
+      "notes": {
+        "title": "重要说明",
+        "gas_fees": "您需要为领取交易支付 gas 费用",
+        "cooldown_period": "领取之间有 30 秒冷却期以防止重复交易",
+        "platform_fee": "所有奖金自动扣除 1.5% 平台费用",
+        "transaction_history": "所有交易都记录在链上，可在 BSCScan 上查看"
+      },
+      "example": {
+        "title": "计算示例",
+        "scenario": "如果您用 10 份额投注\"是\"并且\"是\"获胜：",
+        "total_pool": "总池：1,000 BNB",
+        "your_shares": "您的份额：10",
+        "total_winning": "总获胜份额：500",
+        "gross_winnings": "总奖金：(10 ÷ 500) × 1,000 = 20 BNB",
+        "platform_fee": "平台费用 (1.5%)：0.3 BNB",
+        "net_winnings": "净奖金：19.7 BNB"
+      }
+    },
+    "ai_resolution": {
+      "title": "AI 驱动解析",
+      "description": "我们的 AI 系统如何自动解析预测市场结果。",
+      "overview": {
+        "title": "多层验证系统",
+        "description": "当投注到期时，我们的多层验证系统使用先进的 AI 分析和真实世界数据源自动确定结果。"
+      },
+      "layer1": {
+        "title": "第一层：确定性检查",
+        "description": "价格预言机和链上数据为加密/代币投注提供即时、可验证的结果。",
+        "crypto_prices": "来自多个交易所的实时加密货币价格数据",
+        "on_chain_data": "链上交易和区块数据验证",
+        "instant_resolution": "基于价格的预测即时解析"
+      },
+      "layer2": {
+        "title": "第二层：证据收集",
+        "description": "类别特定的 API 获取真实数据：天气投注的天气数据、体育投注的体育比分、政治事件的新闻。",
+        "weather": {
+          "title": "天气数据",
+          "description": "来自气象服务的准确天气数据，用于天气相关预测。"
+        },
+        "sports": {
+          "title": "体育比分",
+          "description": "来自官方联盟和体育数据提供商的实时体育数据。"
+        },
+        "news": {
+          "title": "新闻与事件",
+          "description": "用于政治和当前事件的验证新闻源和官方公告。"
+        },
+        "markets": {
+          "title": "市场数据",
+          "description": "来自多个交易所和数据提供商的金融市场数据。"
+        }
+      },
+      "layer3": {
+        "title": "第三层：AI 分析",
+        "description": "先进的 AI 分析收集的证据并提供详细推理的最终决定。",
+        "data_analysis": "对所有收集证据的全面分析",
+        "reasoning": "为每个解析决策提供详细推理",
+        "consensus": "来自多个数据源的共识构建",
+        "verification": "与独立源的交叉验证"
+      },
+      "data_sources": {
+        "title": "数据源和 API",
+        "description": "我们的 AI 系统集成了 25+ API 和数据源，确保准确和全面的解析。",
+        "financial": {
+          "title": "金融数据"
+        },
+        "sports": {
+          "title": "体育数据"
+        },
+        "news": {
+          "title": "新闻与事件"
+        }
+      },
+      "process": {
+        "title": "解析过程时间线",
+        "step1": {
+          "title": "市场到期",
+          "description": "预测市场达到到期时间并停止接受新投注。"
+        },
+        "step2": {
+          "title": "数据收集（1-2 分钟）",
+          "description": "系统从所有配置的 API 和源收集相关数据。"
+        },
+        "step3": {
+          "title": "AI 分析（2-3 分钟）",
+          "description": "AI 处理数据并确定结果，提供详细推理。"
+        },
+        "step4": {
+          "title": "解析和支付",
+          "description": "结果记录在链上，获胜者可以领取他们的奖金。"
+        }
+      },
+      "transparency": {
+        "title": "透明度和验证",
+        "description": "所有解析决策都记录在链上，并附有详细推理。用户可以验证使用的数据源和 AI 的决策过程，实现完全透明度。"
+      }
+    },
+    "dynamic_pricing": {
+      "title": "动态市场定价（AMM）",
+      "description": "了解我们的自动化做市商定价系统如何运作。",
+      "how_prices": {
+        "title": "价格如何运作",
+        "description": "DarkBet 使用固定乘积做市商（FPMM）进行公平、动态定价。",
+        "ratios": "价格由池余额比率决定",
+        "sum": "是价格 + 否价格 = 始终 0.01 BNB",
+        "market_shift": "一侧更多投注 = 该结果的更高价格",
+        "slight_shift": "每次投注都会轻微移动市场"
+      },
+      "betting_options": {
+        "title": "投注选项",
+        "default": {
+          "title": "默认：市场价格",
+          "description": "以当前市场价格购买 1 份额 - 快速简单的投注。"
+        },
+        "custom": {
+          "title": "自定义：基于金额",
+          "description": "输入任何 BNB 金额，根据当前市场价格获得计算的份额。"
+        },
+        "real_time": "30 秒有效期的实时报价",
+        "shares_formula": "份额 = 支付金额 ÷ 当前价格"
+      },
+      "example": {
+        "title": "计算示例",
+        "scenario": "示例场景",
+        "description": "如果是以 0.006 BNB 交易，您投注 0.01 BNB：",
+        "yes_price": "是价格：0.006 BNB",
+        "bet_amount": "您的投注：0.01 BNB",
+        "shares_received": "收到份额：0.01 ÷ 0.006 = ~1.67 份额",
+        "if_wins": "如果是获胜：1.67 × 0.01 = 0.0167 BNB 支付"
+      },
+      "amm_mechanics": {
+        "title": "AMM 机制",
+        "price_impact": {
+          "title": "价格影响",
+          "description": "更大的投注具有更大的价格影响，创造自然的市场动态并防止操纵。"
+        },
+        "liquidity": {
+          "title": "流动性提供",
+          "description": "所有参与者都为市场流动性做出贡献，确保持续的交易可用性。"
+        },
+        "fairness": {
+          "title": "公平定价",
+          "description": "算法定价确保基于供需的公平市场价值。"
+        },
+        "arbitrage": {
+          "title": "套利机会",
+          "description": "价格不平衡为市场效率和公平价值发现创造机会。"
+        }
+      },
+      "market_dynamics": {
+        "title": "市场动态",
+        "bullish": {
+          "title": "看涨市场（更多是投注）",
+          "description": "是价格上涨，否价格下跌 - 反映市场情绪。"
+        },
+        "bearish": {
+          "title": "看跌市场（更多否投注）",
+          "description": "否价格上涨，是价格下跌 - 表明负面情绪。"
+        },
+        "balanced": {
+          "title": "平衡市场",
+          "description": "双方平等投注导致平衡定价，每个约 0.005 BNB。"
+        }
+      },
+      "advantages": {
+        "title": "AMM 定价的优势",
+        "fairness": "基于市场供需的公平、算法定价",
+        "liquidity": "所有参与者的持续流动性提供",
+        "manipulation": "由于算法定价而抵抗操纵",
+        "transparency": "对所有用户可见的透明定价机制",
+        "efficiency": "通过市场动态进行高效的价格发现"
+      }
+    },
+    "creating_predictions": {
+      "title": "创建预测",
+      "description": "在 DarkBet 上创建预测市场的分步指南。",
+      "overview": {
+        "title": "概述",
+        "description": "将您的想法转化为预测市场从未如此简单。按照这些步骤使用 DarkBet 创建透明、链上的预测。"
+      },
+      "step1": {
+        "title": "步骤 1 - 描述您的预测",
+        "description": "简单描述您想要投注的内容 - AI 会处理其余部分。",
+        "example": {
+          "title": "示例描述",
+          "bitcoin": "\"比特币会在 2024 年底达到 10 万美元吗？\"",
+          "weather": "\"纽约市明天会下雨吗？\"",
+          "sports": "\"湖人队本赛季会赢得 NBA 冠军吗？\""
+        }
+      },
+      "step2": {
+        "title": "步骤 2 - AI 生成智能标题",
+        "description": "我们的 AI 分析您的描述并创建一个清晰、可搜索的标题，为平台优化。",
+        "input": {
+          "title": "您的输入"
+        },
+        "output": {
+          "title": "AI 生成的标题"
+        }
+      },
+      "step3": {
+        "title": "步骤 3 - 自动截止日期和类别",
+        "description": "AI 建议智能截止日期（体育的比赛时间、加密的市场收盘时间）并分配正确的类别。",
+        "deadline": {
+          "title": "智能截止日期",
+          "sports": "体育：比赛结束时间或赛季结论",
+          "crypto": "加密：日终、周终或指定日期",
+          "weather": "天气：第二天或指定时间范围",
+          "events": "事件：事件结论或公告日期"
+        },
+        "category": {
+          "title": "自动分配类别",
+          "crypto": "加密",
+          "sports": "体育",
+          "weather": "天气",
+          "news": "新闻"
+        }
+      },
+      "additional": {
+        "title": "附加功能",
+        "privacy": {
+          "title": "暗池隐私",
+          "description": "您的预测在解析前保持私密，防止跟单交易和操纵。"
+        },
+        "ai_resolution": {
+          "title": "AI 驱动解析",
+          "description": "使用来自 25+ API 的真实世界数据和 AI 分析进行自动解析。"
+        },
+        "dynamic_pricing": {
+          "title": "动态定价",
+          "description": "使用自动化做市商（AMM）技术进行公平的市场定价。"
+        },
+        "global": {
+          "title": "全球访问",
+          "description": "使用多语言支持在全球事件上创建预测。"
+        }
+      },
+      "best_practices": {
+        "title": "创建预测的最佳实践",
+        "clear": "在描述中要清晰具体",
+        "verifiable": "确保结果可以客观验证",
+        "timeframe": "在相关时包含明确的时间范围",
+        "interesting": "创建其他人会发现有趣投注的预测"
+      },
+      "ready": {
+        "title": "准备创建您的第一个预测？",
+        "description": "既然您了解如何创建预测，您就可以开始在 DarkBet 上构建自己的预测市场。",
+        "cta": "开始创建预测"
+      }
+    }
+  },
+  "final_words": {
+    "title": "结语",
+    "intro": "DarkBet 位于创新、透明度和社区驱动金融的交汇点。",
+    "mission": "作为基于 BNB 链构建的第一个暗池预测市场，我们的使命超越了简单的预测，我们旨在重塑人们在去中心化世界中与信息、市场和彼此互动的方式。",
+    "transformation": "通过赋予用户创建和参与透明、可验证预测市场的能力，DarkBet 将洞察转化为机会。每个预测、每笔交易和每个结果都为更智能、更公平和更连接的生态系统做出贡献。",
+    "journey": "DarkBet 的旅程才刚刚开始。通过持续发展、战略合作伙伴关系和不断增长的社区，我们致力于构建一个代表预测未来的平台——在这里，远见成为价值，每个声音都塑造市场。",
+    "cta": "认为你知道？来下注吧！",
+    "signature": "DarkBet 团队 ♡"
+  },
+  "nav": {
+    "docs": {
+      "overview": "概述",
+      "vision": "愿景",
+      "getting_started": "开始使用",
+      "why_choose_darkbet": "为什么选择 DarkBet",
+      "how_it_works": "工作原理",
+      "connect_wallet": "连接钱包",
+      "creating_predictions": "创建预测",
+      "dynamic_pricing": "动态市场定价（AMM）",
+      "ai_resolution": "AI 驱动解析",
+      "claiming_winnings": "领取奖金",
+      "security": "安全与透明度",
+      "polybets": "POLYBETS",
+      "introducing_polybets": "介绍 Polybets",
+      "tokenomics": "代币经济学",
+      "tokenomics_page": "代币经济学",
+      "roadmap": "路线图",
+      "phase_1": "第一阶段：基础启动",
+      "phase_2": "第二阶段：扩展与增长",
+      "phase_3": "第三阶段：生态系统发展",
+      "phase_4": "第四阶段：治理与全球采用",
+      "official_links": "官方链接",
+      "twitter": "推特",
+      "final_words": "结语"
+    }
+  }
+}

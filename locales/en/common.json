@@ -1,0 +1,1163 @@
+{
+  "nav_home": "Home",
+  "nav_my_bets": "My Bets",
+  "nav_how": "How it Works",
+  "nav_docs": "Docs",
+  "nav_leaderboard": "Leaderboard",
+  "connect_wallet": "Connect Wallet",
+  "disconnect": "Disconnect",
+  "connecting": "Connecting...",
+  "connected": "Connected",
+  "hero_title": "Darkbet",
+  "hero_subtitle": "Darkpool Betting Platform",
+  "hero_description": "Trade outcomes privately. No frontruns. No copycats. Only pure conviction. Built on BNB Smart Chain.",
+  "hero_headline_lead": "Don't Just Bet,",
+  "hero_bet_word": "Bet",
+  "badge_live": "Live",
+  "badge_introducing": "Introducing",
+  "darkpool_betting": "Darkpool Markets",
+  "what_is_darkpool": "What is DarkPool Betting?",
+  "darkpool_explanation": "Darkpool Markets let you place bets privately inside hidden liquidity pools.\nEvery trade stays invisible, but outcomes settle transparently on BNB Smart Chain.\nYou see the truth only when it matters, when the market closes",
+  "features": {
+    "privacy": "Private",
+    "fully_onchain": "On-Chain",
+    "ai_driven": "Predictive",
+    "realtime_markets": "Real-Time Markets"
+  },
+  "cta": {
+    "start_darkpool_betting": "Create +",
+    "crypto_darkpool": "Crypto",
+    "news_events": "News",
+    "events": "Events"
+  },
+  "stats": {
+    "total_volume": "Total Volume",
+    "active_markets": "Active Markets",
+    "participants": "Participants"
+  },
+  "markets": {
+    "all_markets": "All Markets",
+    "markets_count": "markets",
+    "no_predictions_found": "No predictions found",
+    "try_adjusting_filters": "Try adjusting your filters or create the first prediction!",
+    "create_first_prediction": "Create First Prediction",
+    "completed_predictions": "Completed"
+  },
+  "prediction_card": {
+    "pool": "Pool",
+    "yes": "YES",
+    "no": "NO",
+    "your_bet": "Your Bet",
+    "shares": "shares",
+    "view_detailed_analysis": "View Detailed Analysis",
+    "hide_analysis": "Hide Analysis",
+    "unbiased_market_analysis": "Unbiased Market Analysis",
+    "resolved": "Resolved",
+    "expired": "Expired",
+    "hot": "HOT",
+    "view_history": "View History",
+    "expires_in": "Expires in"
+  },
+  "create_prediction": {
+    "title": "Create Prediction Market",
+    "description": "Create a prediction market with automated or manual resolution",
+    "wallet_required": "Wallet Required",
+    "connect_wallet_to_create": "Connect your wallet to create predictions",
+    "bet_type": "Bet Type",
+    "custom_bet": "Custom Bet",
+    "manual_resolution": "Manual resolution",
+    "auto_verified_outcome": "Auto-verified outcome",
+    "price_oracle": "Price Oracle",
+    "bet_description": "Bet Description",
+    "describe_prediction": "Describe your prediction. AI will auto-generate the bet title.",
+    "category": "Category",
+    "select_category": "Select a category",
+    "ai_resolution_instructions": "AI Resolution Instructions",
+    "analyze": "Analyze",
+    "analyzing": "Analyzing...",
+    "ai_generated": "AI Generated",
+    "title_label": "Title",
+    "resolution_instructions": "Resolution Instructions",
+    "options": "Options",
+    "add_option": "Add Option",
+    "place_initial_bet": "Place Your Initial Bet (Required)",
+    "prevent_spam": "To prevent spam, creators must participate in their own prediction",
+    "your_prediction": "Your Prediction",
+    "bnb_amount": "BNB Amount",
+    "click_create_will_prompt": "Clicking \"Create Bet\" will prompt your wallet to send {amount} to the vault",
+    "cancel": "Cancel",
+    "creating": "Creating...",
+    "create_bet": "Create Bet",
+    "bet_expiration_date": "Bet Expiration Date",
+    "set_expiration_help": "Set when this prediction market will close and be resolved (minimum 15 minutes)",
+    "generate_analysis_checkbox": "Generate detailed analysis (unbiased summary for card)"
+  },
+  "categories": {
+    "sports": "Sports",
+    "crypto": "Crypto",
+    "politics": "Politics",
+    "entertainment": "Entertainment",
+    "weather": "Weather",
+    "finance": "Finance",
+    "technology": "Technology",
+    "custom": "Custom"
+  },
+  "bet_modal": {
+    "place_bet": "Place Bet",
+    "bet_amount": "Bet Amount",
+    "minimum_bet": "Minimum bet",
+    "maximum_bet": "Maximum bet",
+    "confirm_bet": "Confirm Bet",
+    "betting_on": "Betting on",
+    "outcome": "Outcome",
+    "price": "Price",
+    "potential_payout": "Profit",
+    "transaction_fee": "Transaction Fee",
+    "total_cost": "Total Cost"
+  },
+  "crypto_prediction": {
+    "title": "Crypto Prediction",
+    "select_crypto": "Select Cryptocurrency",
+    "choose_crypto_placeholder": "Choose a cryptocurrency to predict about",
+    "loading_cryptocurrencies": "Loading cryptocurrencies...",
+    "price_target": "Price Target",
+    "current_price": "Current Price",
+    "deadline": "Deadline",
+    "create_crypto_prediction": "Create Crypto Prediction"
+  },
+  "event_prediction": {
+    "title": "Create Event Prediction",
+    "description": "Predict real-world events in politics, technology, sports, and more. We monitor global news sources and automatically resolve when events are confirmed.",
+    "event_title": "Event Title",
+    "event_title_placeholder": "e.g., Will SpaceX successfully launch Starship to orbit in 2025?",
+    "description_label": "Description",
+    "description_placeholder": "Provide details about the event and what would constitute a YES or NO outcome...",
+    "category": "Category",
+    "expiration_date": "Expiration Date",
+    "news_keywords": "News Keywords",
+    "news_keywords_help": "(Used to monitor news sources)",
+    "keyword_placeholder": "Enter keyword (e.g., SpaceX, Starship, launch)",
+    "add_keyword": "Add",
+    "keywords_count": "keywords added",
+    "bet_amount": "Bet Amount (BNB)",
+    "your_prediction": "Your Prediction",
+    "select_prediction": "Select prediction",
+    "yes": "YES",
+    "no": "NO",
+    "how_it_works": "How it works:",
+    "how_it_works_desc": "Your event will be monitored using trusted and reliable APIs. When reputable news sources confirm the event outcome with high confidence, the market will be automatically resolved and payouts distributed.",
+    "cancel": "Cancel",
+    "creating": "Creating...",
+    "create_event_prediction": "Create Event Prediction",
+    "categories": {
+      "politics": "Politics",
+      "technology": "Technology",
+      "economy": "Economy",
+      "sports": "Sports",
+      "entertainment": "Entertainment",
+      "world_news": "World News",
+      "science": "Science",
+      "health": "Health"
+    }
+  },
+  "filters": {
+    "all_categories": "All Categories",
+    "all_status": "All Status",
+    "hot_only": "Hot Only",
+    "time_range": "Time Range",
+    "last_24h": "Last 24h",
+    "last_7d": "Last 7d",
+    "last_30d": "Last 30d",
+    "clear_filters": "Clear Filters",
+    "new": "New",
+    "trending": "Trending",
+    "all": "All"
+  },
+  "my_bets": {
+    "title": "My Bets",
+    "subtitle": "Track your prediction market investments and winnings",
+    "total_invested": "Total Invested",
+    "total_payout": "Total Payout",
+    "active_bets": "Active Bets",
+    "resolved_bets": "Resolved Bets",
+    "all_bets": "All Bets",
+    "no_bets_found": "No bets found",
+    "no_active_bets": "You don't have any active bets.",
+    "no_resolved_bets": "You don't have any resolved bets.",
+    "no_bets_yet": "You haven't placed any bets yet. Start by exploring the prediction markets!",
+    "explore_markets": "Explore Markets",
+    "expires_in": "Expires in",
+    "resolved_on": "Resolved on",
+    "shares": "Shares",
+    "amount": "Amount",
+    "price": "Price",
+    "resolution": "Resolution",
+    "claim": "Claim",
+    "claimed": "Claimed",
+    "won": "Won",
+    "lost": "Lost",
+    "active": "Active"
+  },
+  "how_it_works": {
+    "title": "How Darkbet Works",
+    "subheader": "Darkbet turns every prediction market into a private, on-chain darkpool where bets stay hidden until resolution",
+    "platform_overview": "Platform Overview",
+    "platform_description": "The infrastructure powering private predictions, intelligent oracles, and trustless market resolution",
+    "darkpool_markets": "Darkpool Markets",
+    "darkpool_description": "Private liquidity pools where all positions remain hidden, eliminating frontrunning and manipulation",
+    "ai_powered_oracles": "AI-Powered Oracles",
+    "ai_oracles_description": "Aggregates real-world data using AI to verify outcomes accurately and autonomously",
+    "on_chain_settlements": "On-Chain Settlements",
+    "on_chain_settlements_description": "Markets resolve transparently on-chain, with trustless payouts based on verified results",
+    "real_time_description": "Live activity feed and instant updates when bets are created, joined, or resolved",
+    "how_darkbet_works": "How Darkbet Works",
+    "dark_pools_title": "Darkpool Markets",
+    "dark_pools_description": "Private liquidity pools where all positions remain hidden until resolution, eliminating frontrunning and manipulation.",
+    "zk-encrypted_privacy": "zk-Encrypted Privacy",
+    "zk-encrypted_privacy_description": "All bets are secured using zero-knowledge encryption, keeping amounts and identities private while still proving correctness on-chain",
+    "signal_integrity": "Signal Integrity",
+    "signal_integrity_description": "Hidden liquidity preserves genuine market signals, preventing frontrunning, sentiment bias, and strategy imitation",
+    "trutless_resolution": "Trutless Resolution",
+    "trutless_resolution_description": "Once the oracle verifies results, smart contracts settle markets automatically with verifiable, on-chain proofs",
+    "dark_pools_comparison_title": "Dark Pools vs Traditional Markets",
+    "traditional_markets_title": "Traditional Markets",
+    "traditional_markets_points": "Public bets and liquidity|Susceptible to manipulation|Copy trading and whale influence|Manual or biased resolution",
+    "darkbet_dark_pools_title": "Darkbet Dark Pools",
+    "darkbet_dark_pools_points": "zk-encrypted private positions|Preserved market integrity|Automated, verifiable settlement|Fair, bias-free outcomes",
+    "creating_predictions": "Creating Predictions",
+    "creating_predictions_description": "Simply describe what you want to bet on, AI will handle the rest",
+    "step1_title": "Describe Your Prediction",
+    "step1_description": "just describe, and AI does the rest",
+    "step2_title": "AI Generates Smart Title",
+    "step2_description": "Darkbet's AI analyzes your description and generates a concise, searchable market title optimized for clarity, accuracy, and discoverability",
+    "step3_title": "Auto Deadline & Category",
+    "step3_description": "AI automatically sets intelligent deadlines and assigns the most relevant category, ensuring your market is structured and ready to launch instantly",
+    "supported_categories": "Supported Categories",
+    "dynamic_market_pricing": "Dynamic Market Pricing (AMM)",
+    "dynamic_pricing_description": "Darkbet uses a Fixed Product Market Maker (FPMM) for fair, dynamic pricing",
+    "how_prices_work": "How Prices Work",
+    "price_mechanism_1": "Prices determined by pool balance ratios",
+    "price_mechanism_2": "YES price + NO price = 0.01 BNB always",
+    "price_mechanism_3": "More bets on one side = higher price for that outcome",
+    "price_mechanism_4": "Each bet shifts the market slightly",
+    "betting_options": "Betting Options",
+    "betting_default": "Default: Buy 1 share at current market price",
+    "betting_custom": "Custom: Enter any BNB amount, get calculated shares",
+    "betting_realtime": "Real-time quotes with 30-second validity",
+    "betting_formula": "Shares = Amount Paid ÷ Current Price",
+    "pricing_example": "If YES is trading at 0.006 BNB and you bet 0.01 BNB, you'll receive ~1.67 shares. If YES wins, each share pays 0.01 BNB (total: 0.0167 BNB payout).",
+    "ai_powered_resolution": "AI-Powered Resolution",
+    "ai_resolution_description": "When bets expire, our multi-layer verification system automatically determines the outcome",
+    "layer1_title": "Layer 1: Deterministic Checks",
+    "layer1_description": "Price oracles and on-chain data provide instant, verifiable results for crypto/token bets",
+    "layer2_title": "Layer 2: Evidence Gathering",
+    "layer2_description": "Category-specific APIs fetch real data: weather data for weather bets, sports scores for sports bets, news for political events",
+    "layer3_title": "Layer 3: AI Analysis",
+    "layer3_description": "Advanced AI analyzes gathered evidence and makes final determination with reasoning",
+    "verification_sources": "Verification Sources (Masked)",
+    "verification_description": "We use industry-leading APIs for verification (sources masked for security):",
+    "claiming_winnings": "Claiming Your Winnings",
+    "claiming_description": "Winners split the total pool proportionally with automatic fee deduction",
+    "how_payouts_work": "How Payouts Work",
+    "payout_mechanism_1": "Winners split the total pool proportionally",
+    "payout_mechanism_2": "Payout = (Your Shares ÷ Total Winning Shares) × Total Pool",
+    "payout_mechanism_3": "1.5% platform fee automatically deducted",
+    "payout_mechanism_4": "You receive 98.5% of gross winnings in BNB",
+    "security_features": "Security Features",
+    "security_vault": "Secure vault wallet holds all funds",
+    "security_verification": "On-chain transaction verification",
+    "security_cooldown": "30-second claim cooldown prevents duplicates",
+    "security_bscscan": "View transaction on BSCScan after claiming",
+    "platform_fee_structure": "Platform Fee Structure",
+    "fee_description": "1.5% platform fee applies to both prize claims AND bet cancellations",
+    "gross_winnings": "Gross Winnings:",
+    "platform_fee": "Platform Fee (1.5%):",
+    "net_payout": "Net Payout:",
+    "creator_participation": "Creator Participation & Cancellation",
+    "creator_description": "To ensure quality predictions and prevent spam, creators must actively participate",
+    "mandatory_creator_stake": "Mandatory Creator Stake",
+    "mandatory_stake_description": "Creators must bet on their own prediction when creating a market. This prevents spam and ensures creators have confidence in their predictions.",
+    "bet_cancellation_policy": "Bet Cancellation Policy",
+    "cancellation_description": "If you're the only participant in your bet, you can cancel it and receive a refund:",
+    "cancellation_1": "Only available when creator is sole participant",
+    "cancellation_2": "1.5% platform fee applies to cancellations",
+    "cancellation_3": "Instant refund sent to your wallet",
+    "cancellation_4": "Cancel button disappears once another user joins",
+    "fully_automated_resolution": "Fully Automated Resolution",
+    "automated_description": "All bets resolve automatically - no manual intervention required",
+    "automated_1": "AI analyzes evidence from 25+ verification APIs",
+    "automated_2": "Price oracles provide instant crypto/token results",
+    "automated_3": "Multi-layer validation ensures accuracy",
+    "automated_4": "Winners claim prizes manually (1.5% fee applies)",
+    "security_transparency": "Security & Transparency",
+    "blockchain_security": "Blockchain Security",
+    "blockchain_1": "All transactions on BNB Smart Chain",
+    "blockchain_2": "Verifiable on BSCScan",
+    "blockchain_3": "Multi-wallet support via Privy",
+    "blockchain_4": "Automatic network switching",
+    "smart_protections": "Smart Protections",
+    "smart_1": "Server-side price calculations",
+    "smart_2": "Zero client trust model",
+    "smart_3": "Rate limiting on claims",
+    "smart_4": "Database rollback support",
+    "api_keys_masked": "All API keys and sensitive data are masked",
+    "api_keys_description": "We never expose internal credentials, vault wallet addresses, or verification source endpoints to protect platform integrity.",
+    "ready_to_start": "Ready to Start Predicting?",
+    "ready_description": "Connect your wallet and create your first prediction market today",
+    "explore_markets": "Explore Markets"
+  },
+  "leaderboard": {
+    "title": "Leaderboard",
+    "subtitle": "Top performers on DarkBet prediction markets",
+    "total_players": "Total Players",
+    "total_winnings": "Total Winnings",
+    "avg_win_rate": "Avg Win Rate",
+    "timeframe": "Timeframe",
+    "all_time": "All Time",
+    "days_7": "7 Days",
+    "days_30": "30 Days",
+    "days_90": "90 Days",
+    "category": "Category",
+    "all_categories": "All Categories",
+    "sort_by": "Sort By",
+    "total_winnings_sort": "Total Winnings",
+    "win_rate_sort": "Win Rate",
+    "total_volume_sort": "Total Volume",
+    "total_bets_sort": "Total Bets",
+    "winnings": "Winnings",
+    "win_rate": "Win Rate",
+    "bets": "Bets",
+    "volume": "Volume",
+    "view": "View",
+    "more_features_coming": "More Features Coming Soon",
+    "working_on_features": "We're working on adding more detailed analytics, historical data, and advanced filtering options.",
+    "historical_charts": "Historical Charts",
+    "advanced_filters": "Advanced Filters",
+    "portfolio_tracking": "Portfolio Tracking",
+    "achievement_system": "Achievement System"
+  },
+  "transaction_history": {
+    "title": "Transaction History",
+    "no_transactions": "No transactions found",
+    "transaction_id": "Transaction ID",
+    "type": "Type",
+    "amount": "Amount",
+    "status": "Status",
+    "timestamp": "Timestamp",
+    "pending": "Pending",
+    "confirmed": "Confirmed",
+    "failed": "Failed"
+  },
+  "wallet_prompt": {
+    "title": "Connect Your Wallet",
+    "description": "You need to connect your wallet to create or place predictions",
+    "message": "To participate in DarkBet predictions, you need to connect a Web3 wallet. We support MetaMask, WalletConnect, and more."
+  },
+  "create": "Create",
+  "cancel": "Cancel",
+  "errors": {
+    "wallet_required": "Please connect your wallet to place a bet",
+    "transaction_failed": "Transaction failed",
+    "insufficient_funds": "Insufficient funds",
+    "network_error": "Network error",
+    "unknown_error": "Unknown error",
+    "retry": "Retry"
+  },
+  "success": {
+    "bet_placed": "Bet placed successfully! Remember to reveal after market expiration.",
+    "prediction_created": "Prediction created successfully!",
+    "crypto_prediction_created": "Crypto prediction created successfully!"
+  },
+  "footer": {
+    "all_rights_reserved": "All Rights Reserved."
+  },
+  "common": {
+    "example": "Example"
+  },
+  "docs": {
+    "overview": {
+      "title": "DarkBet Documentation",
+      "description": "DarkBet is an on-chain prediction market built on BNB Chain, designed to allow users to forecast real-world events, market trends, and community-driven outcomes using blockchain technology. Every prediction, transaction, and resolution is executed on-chain, ensuring verifiable transparency and fairness.",
+      "subdescription": "Currently focused on crypto price movements for v1, DarkBet turns market sentiment and data analysis into actionable, tradeable predictions, creating a decentralized marketplace for crypto knowledge and foresight with the revolutionary Dark Pool betting system.",
+      "features": {
+        "title": "Key Features",
+        "privacy": "Dark Pool Privacy - Bets remain hidden until resolution",
+        "ai": "AI-Powered Resolution - Automated outcome determination",
+        "blockchain": "Fully On-Chain - Built on BNB Smart Chain",
+        "amm": "Dynamic AMM Pricing - Fair market-based pricing"
+      },
+      "getting_started": {
+        "title": "Getting Started",
+        "step1": "Connect your wallet",
+        "step1_desc": "Connect using MetaMask, WalletConnect, or other supported wallets",
+        "step2": "Create or join predictions",
+        "step2_desc": "Describe your prediction or browse existing markets",
+        "step3": "Claim your winnings",
+        "step3_desc": "Automated resolution and manual claiming process"
+      },
+      "dark_pool": {
+        "title": "What is Dark Pool Betting?",
+        "description": "Dark Pool betting combines the privacy and efficiency of traditional dark pools with prediction markets. Your bets remain completely hidden until the market resolves, preventing market manipulation and ensuring a fair, competitive environment for all participants.",
+        "benefits": {
+          "privacy": "Privacy Protection",
+          "privacy_desc": "Your betting strategy remains completely hidden from other participants",
+          "fairness": "Fair Competition",
+          "fairness_desc": "No first-mover advantage or copy trading"
+        }
+      },
+      "ready": {
+        "title": "Ready to Start?",
+        "description": "Explore our documentation to learn more about DarkBet and start your prediction market journey.",
+        "connect_wallet": "Connect Wallet",
+        "create_prediction": "Create Prediction"
+      }
+    },
+    "vision": {
+      "title": "DarkBet Vision",
+      "description": "DarkBet imagines a tomorrow where confidential forecasting platforms transform our engagement with cryptocurrency markets. An ecosystem prioritizing secrecy where DarkPool innovation creates honest, interference-resistant digital asset predictions possessing genuine worth.",
+      "subdescription": "Being the inaugural DarkPool forecasting system constructed on BNB Chain, DarkBet transforms digital currency market prediction by maintaining all forecasts entirely confidential until settlement. Participants can exchange cryptocurrency knowledge, forecast price changes, and engage in market occurrences that influence the destiny of digital currencies, all via blockchain openness and verifiable smart contracts.",
+      "conclusion": "We dream of building a system that combines confidentiality, creativity, and confidence, where each cryptocurrency forecast is not merely a bet, but an expression of shared market wisdom. DarkBet aims to enable people to make evidence-based digital asset choices, unite groups through common convictions about virtual currency prospects, and cultivate a fresh economy founded on honesty, responsibility, and distributed involvement in the cryptocurrency realm.",
+      "mission": {
+        "title": "Our Mission",
+        "description": "To revolutionize prediction markets by introducing the first truly private, fair, and decentralized betting platform. We believe that prediction markets should be accessible to everyone while maintaining complete privacy and preventing manipulation."
+      },
+      "values": {
+        "title": "Core Values",
+        "privacy": {
+          "title": "Privacy First",
+          "description": "Your betting strategy remains completely hidden until market resolution."
+        },
+        "fairness": {
+          "title": "Fair Competition",
+          "description": "No first-mover advantage, no copy trading, no manipulation."
+        },
+        "transparency": {
+          "title": "Transparency",
+          "description": "All transactions are on-chain and verifiable."
+        },
+        "innovation": {
+          "title": "Innovation",
+          "description": "AI-powered resolution and dynamic AMM pricing."
+        }
+      },
+      "future": {
+        "title": "The Future We're Building",
+        "step1": {
+          "title": "Global Prediction Markets",
+          "description": "Access to prediction markets for events worldwide, from sports to politics to weather."
+        },
+        "step2": {
+          "title": "AI-Powered Insights",
+          "description": "Advanced AI analysis providing unbiased market insights and automated resolution."
+        },
+        "step3": {
+          "title": "Decentralized Governance",
+          "description": "Community-driven decisions on platform features and market categories."
+        },
+        "step4": {
+          "title": "Cross-Chain Integration",
+          "description": "Multi-chain support for broader accessibility and reduced transaction costs."
+        }
+      },
+      "join": {
+        "title": "Join Our Vision",
+        "description": "Be part of the future of prediction markets. Connect your wallet and start participating in the DarkPool revolution.",
+        "cta": "Get Started"
+      }
+    },
+    "why_choose_darkbet": {
+      "title": "Why Choose DarkBet",
+      "description": "In a universe where confidence and information are paramount, DarkBet unites both on the blockchain. The system enables participants to transform their viewpoints into quantifiable forecasts with complete openness and confidentiality via our groundbreaking Dark Pool mechanism.",
+      "built_on_bnb": "Constructed on BNB Chain",
+      "built_on_bnb_desc": "Utilizing the expandability and minimal transaction costs of BNB Chain, DarkBet guarantees rapid, economical, and protected market engagement for participants globally.",
+      "dark_pool_privacy": "Dark Pool Confidentiality",
+      "dark_pool_privacy_desc": "Your wagering approach stays entirely concealed until market settlement, stopping interference and guaranteeing equitable competition for all members.",
+      "transparent": "Open and Verifiable",
+      "transparent_desc": "Every forecast, result, and payment is documented on-chain, ensuring confidence and clarity throughout each transaction while preserving wagering confidentiality.",
+      "community_driven": "Community-Led Markets",
+      "community_driven_desc": "DarkBet enables participants to establish and participate in forecasting markets that mirror worldwide occurrences, patterns, and blockchain information with total privacy safeguards.",
+      "rewarding_accuracy": "Rewarding Precision",
+      "rewarding_accuracy_desc": "Participants who forecast accurately are compensated directly from market funds, encouraging evidence-based, knowledgeable decision-making in an equitable setting.",
+      "ai_powered": "AI-Enabled Resolution",
+      "ai_powered_desc": "Sophisticated AI automatically settles forecasting markets utilizing real-world information from 25+ APIs, guaranteeing rapid and precise results.",
+      "conclusion": {
+        "title": "The DarkBet Benefit",
+        "description": "DarkBet provides you with the resources to engage confidently, understanding every forecast is equitable, protected, and confirmed on BNB Chain. Our Dark Pool mechanism ensures your tactics stay confidential while preserving complete openness in results and payments."
+      },
+      "security": {
+        "title": "Protection & Confidentiality",
+        "description": "DarkBet incorporates Privy, a reliable third-party authentication service, to guarantee the protection and confidentiality of all participants. Privy facilitates secure wallet links, encrypted session handling, and identity confirmation, assisting in safeguarding the community from deceptive behavior while preserving a smooth on-chain experience.",
+        "encrypted": "Encrypted session handling and protected wallet connections",
+        "identity": "Identity confirmation and deception protection",
+        "privacy": "Complete wagering confidentiality with Dark Pool innovation"
+      },
+      "ready": {
+        "title": "Prepared to Begin?",
+        "description": "Become part of DarkBet today and encounter the tomorrow of forecasting markets with complete confidentiality and openness.",
+        "connect_wallet": "Link Wallet",
+        "create_prediction": "Generate Forecast"
+      }
+    },
+    "connect_wallet": {
+      "title": "Link Digital Wallet",
+      "description": "Prior to commencing crypto forecasting, you must establish your account. Here's how to register and link your digital wallet to DarkBet securely.",
+      "supported_wallets": {
+        "title": "Compatible Wallets",
+        "description": "DarkBet accommodates an extensive selection of popular digital currency wallets through our integration with Privy."
+      },
+      "steps": {
+        "title": "How to Link",
+        "step1": {
+          "title": "Click Link Wallet",
+          "description": "Click the \"Link Wallet\" button in the top navigation bar of the DarkBet platform."
+        },
+        "step2": {
+          "title": "Choose Your Wallet",
+          "description": "Select your preferred wallet from the list of compatible options. If you're using MetaMask, it will automatically link. For mobile wallets, scan the QR code with WalletConnect."
+        },
+        "step3": {
+          "title": "Authorize Connection",
+          "description": "Authorize the connection request in your wallet. This enables DarkBet to interact with your wallet for transactions and balance verification."
+        },
+        "step4": {
+          "title": "Begin Forecasting",
+          "description": "Once linked, you can start generating crypto predictions, placing wagers, and participating in DarkBet markets!"
+        }
+      },
+      "important": {
+        "title": "Critical Notes",
+        "note1": "Ensure you're linked to the BNB Smart Chain network in your wallet.",
+        "note2": "Maintain some BNB in your wallet for transaction fees.",
+        "note3": "Never disclose your private keys or seed phrases to anyone.",
+        "note4": "DarkBet will never request your private keys or seed phrases."
+      },
+      "troubleshooting": {
+        "title": "Problem Resolution",
+        "network": {
+          "title": "Incorrect Network",
+          "description": "If you encounter a network error, ensure your wallet is linked to BNB Smart Chain (BSC). You can add BSC to your wallet using Chain ID: 56."
+        },
+        "transaction": {
+          "title": "Transaction Failed",
+          "description": "Ensure you have sufficient BNB for gas fees. Try increasing the gas limit if transactions are failing."
+        },
+        "connection": {
+          "title": "Linking Issues",
+          "description": "Try refreshing the page and re-linking your wallet. Clear your browser cache if problems persist."
+        }
+      },
+      "security": {
+        "title": "Protection & Confidentiality",
+        "description": "DarkBet incorporates Privy, a reliable third-party authentication service, to guarantee the protection and confidentiality of all participants. Privy facilitates secure wallet links, encrypted session handling, and identity confirmation, assisting in safeguarding the community from deceptive behavior while preserving a smooth on-chain experience.",
+        "encrypted": {
+          "title": "Encrypted Sessions",
+          "description": "All wallet connections are encrypted and secure, protecting your private keys and session data."
+        },
+        "verification": {
+          "title": "Identity Verification",
+          "description": "Advanced verification systems help protect against fraudulent activity and ensure community safety."
+        }
+      }
+    },
+    "security": {
+      "title": "Security & Transparency",
+      "description": "Security measures and transparency features of the DarkBet platform.",
+      "blockchain": {
+        "title": "Blockchain Security",
+        "all_transactions": "All transactions on BNB Smart Chain",
+        "verifiable": "Verifiable on BSCScan",
+        "multi_wallet": "Multi-wallet support via Privy",
+        "network_switching": "Automatic network switching"
+      },
+      "smart_protections": {
+        "title": "Smart Protections",
+        "server_calculations": "Server-side price calculations",
+        "zero_trust": "Zero client trust model",
+        "rate_limiting": "Rate limiting on claims",
+        "rollback": "Database rollback support"
+      },
+      "dark_pool": {
+        "title": "Dark Pool Privacy",
+        "hidden_bets": "Your betting strategy remains completely hidden until market resolution",
+        "no_manipulation": "Prevents market manipulation and copy trading",
+        "fair_competition": "Ensures fair competition for all participants",
+        "encrypted_data": "All betting data is encrypted and stored securely"
+      },
+      "note": {
+        "title": "Security Note",
+        "description": "All API keys and sensitive data are masked - We never expose internal credentials, vault wallet addresses, or verification source endpoints to protect platform integrity."
+      },
+      "transparency": {
+        "title": "Transparency Features",
+        "on_chain": {
+          "title": "On-Chain Verification",
+          "description": "All transactions and outcomes are recorded on BNB Smart Chain and can be verified on BSCScan."
+        },
+        "open_source": {
+          "title": "Open Source Components",
+          "description": "Key components of the platform are open source, allowing for community verification and auditing."
+        },
+        "audit_reports": {
+          "title": "Regular Audits",
+          "description": "Smart contracts undergo regular security audits by third-party firms."
+        },
+        "community": {
+          "title": "Community Oversight",
+          "description": "Community members can report security issues and participate in platform governance."
+        }
+      }
+    },
+    "phase_1": {
+      "title": "Phase 1: Foundation Launch",
+      "description": "Establish the core platform and ecosystem fundamentals.",
+      "milestones": {
+        "title": "Milestones",
+        "launch": {
+          "title": "Official Launch of DarkBet on BNB Chain",
+          "description": "Launch the core DarkBet platform with Dark Pool betting capabilities on BNB Chain."
+        },
+        "contracts": {
+          "title": "Smart Contract Deployment",
+          "description": "Deploy smart contracts for on-chain prediction markets with Dark Pool privacy features."
+        },
+        "privacy": {
+          "title": "Integration with Privy for Secure Authentication",
+          "description": "Integrate Privy for secure wallet connection and identity verification with privacy protection."
+        },
+        "prediction_types": {
+          "title": "Launch of Custom Bet and Price Oracle Prediction Types",
+          "description": "Enable custom prediction creation and automated price oracle integration for various market types."
+        },
+        "liquidity": {
+          "title": "Initial Liquidity Setup and DEX Listing",
+          "description": "Set up initial liquidity pools and prepare for DEX listing of DarkBet tokens."
+        },
+        "community": {
+          "title": "Community Onboarding and Early Reward Campaigns",
+          "description": "Launch community onboarding programs and early adopter reward campaigns to build initial user base."
+        }
+      },
+      "focus": {
+        "title": "Phase 1 Focus",
+        "description": "This foundation phase establishes DarkBet as the first Dark Pool prediction market platform, focusing on core functionality, security, and initial community building. The emphasis is on creating a robust, privacy-focused betting experience that sets the stage for future growth."
+      }
+    },
+    "phase_2": {
+      "title": "Phase 2: Expansion & Growth",
+      "description": "Strengthen community participation and introduce advanced features.",
+      "milestones": {
+        "title": "Milestones",
+        "buyback": {
+          "title": "Implementation of Buyback & Burn Program",
+          "description": "Launch token buyback and burn mechanisms to support long-term token stability and value growth."
+        },
+        "leaderboard": {
+          "title": "Launch of Leaderboard System and Referral Rewards",
+          "description": "Introduce competitive leaderboards and referral reward systems to incentivize community participation."
+        },
+        "mobile": {
+          "title": "Rollout of Mobile-Friendly Interface",
+          "description": "Launch mobile-optimized interface and performance improvements for better user experience."
+        },
+        "oracles": {
+          "title": "Integration with Additional Oracles",
+          "description": "Expand oracle integrations for sports, stocks, and real-world data sources."
+        },
+        "marketing": {
+          "title": "Strategic Marketing Partnerships",
+          "description": "Establish strategic marketing partnerships and community collaborations for platform growth."
+        },
+        "token_integration": {
+          "title": "Token Integration for Direct Betting",
+          "description": "Develop integration of DarkBet tokens for direct betting within the platform."
+        }
+      },
+      "focus": {
+        "title": "Phase 2 Focus",
+        "description": "This expansion phase focuses on growing the DarkBet community and ecosystem. We introduce advanced features, improve user experience, and establish strategic partnerships while maintaining the core Dark Pool privacy principles that make DarkBet unique."
+      }
+    },
+    "phase_3": {
+      "title": "Phase 3: Ecosystem Development",
+      "description": "Build a sustainable, utility-driven token economy.",
+      "milestones": {
+        "title": "Milestones",
+        "staking": {
+          "title": "Introduction of Staking System",
+          "description": "Launch staking system with yield rewards in DarkBet tokens for long-term holders."
+        },
+        "creator_program": {
+          "title": "Launch of DarkBet Creator Program",
+          "description": "Introduce verified market creator program for high-quality prediction markets."
+        },
+        "ai_analysis": {
+          "title": "AI-Based Prediction Analysis",
+          "description": "Launch AI-based prediction analysis for event outcomes and market insights."
+        },
+        "mobile_app": {
+          "title": "Release of DarkBet Mobile App",
+          "description": "Launch native mobile applications for iOS and Android platforms."
+        },
+        "cex_listing": {
+          "title": "CEX Listing and Cross-Chain Integration",
+          "description": "Secure CEX listing for DarkBet tokens and develop cross-chain bridge integration."
+        }
+      },
+      "focus": {
+        "title": "Phase 3 Focus",
+        "description": "This ecosystem development phase focuses on building a sustainable token economy around DarkBet. We introduce staking rewards, creator incentives, and expand platform accessibility while maintaining the privacy and security features that define our Dark Pool approach."
+      }
+    },
+    "phase_4": {
+      "title": "Phase 4: Governance & Global Adoption",
+      "description": "Transition toward a community-governed and globally recognized platform.",
+      "milestones": {
+        "title": "Milestones",
+        "dao": {
+          "title": "Launch of DarkBet DAO",
+          "description": "Implement full decentralized governance through DarkBet DAO for community-driven platform decisions."
+        },
+        "data_providers": {
+          "title": "Integration with Major Data Providers",
+          "description": "Integrate with major data providers and analytics tools for enhanced prediction accuracy."
+        },
+        "media_partnerships": {
+          "title": "Partnership with Media and Web3 Platforms",
+          "description": "Establish partnerships with media and Web3 platforms for verified prediction feeds."
+        },
+        "global_marketing": {
+          "title": "Global Marketing and Sponsorship Campaigns",
+          "description": "Launch comprehensive global marketing and sponsorship campaigns for worldwide adoption."
+        },
+        "ecosystem_upgrades": {
+          "title": "Continuous Ecosystem Upgrades",
+          "description": "Implement continuous ecosystem upgrades and scalability improvements for global scale."
+        }
+      },
+      "focus": {
+        "title": "Phase 4 Focus",
+        "description": "This final phase transforms DarkBet into a globally recognized, community-governed platform. We achieve full decentralization through DAO governance while establishing strategic partnerships and global presence, all while maintaining our core Dark Pool privacy and security principles."
+      }
+    },
+    "tokenomics": {
+      "title": "Tokenomics",
+      "description": "Token economics and distribution model for DarkBet.",
+      "overview": {
+        "title": "Overview",
+        "token_name": "Token Name",
+        "symbol": "Symbol",
+        "network": "Network",
+        "total_supply": "Total Supply"
+      },
+      "distribution": {
+        "title": "Token Distribution",
+        "category": "Category",
+        "allocation": "Allocation",
+        "description": "Description",
+        "marketing": {
+          "title": "Marketing & Collaboration",
+          "description": "Dedicated to brand growth, partnerships, and promotional activities that strengthen DarkBet's global presence."
+        },
+        "future_dev": {
+          "title": "Future Development",
+          "description": "Set aside for future features, cross-chain integrations, and long-term ecosystem expansion."
+        }
+      },
+      "buyback_note": {
+        "title": "Buyback & Burn Program",
+        "description": "All fees collected while DarkBet's market cap remains below 1M will be fully allocated to buyback and burn programs, supporting long-term token stability and value growth."
+      },
+      "utility": {
+        "title": "Token Utility",
+        "staking": {
+          "title": "Staking Rewards",
+          "description": "Stake DarkBet tokens to earn yield rewards and participate in platform governance."
+        },
+        "betting": {
+          "title": "Direct Betting",
+          "description": "Use DarkBet tokens directly for placing bets in prediction markets."
+        },
+        "governance": {
+          "title": "Governance Rights",
+          "description": "Participate in DAO governance to vote on platform features and ecosystem decisions."
+        },
+        "rewards": {
+          "title": "Creator Rewards",
+          "description": "Earn DarkBet tokens for creating successful prediction markets and contributing to the ecosystem."
+        }
+      }
+    },
+    "polybets": {
+      "title": "Introducing Polybets",
+      "description": "DarkBet just got smarter. We're excited to launch Polybets, a new feature that automatically mirrors trending prediction markets from Polymarket, bringing real-time insights and verified outcomes directly to the DarkBet ecosystem.",
+      "overview": {
+        "title": "Overview",
+        "description": "DarkBet just got smarter. We're excited to launch Polybets, a new feature that automatically mirrors trending prediction markets from Polymarket, bringing real-time insights and verified outcomes directly to the DarkBet ecosystem."
+      },
+      "how_it_works": {
+        "title": "How It Works",
+        "description": "Polybets pulls the top 100 trending markets from Polymarket and keeps them live on DarkBet, with automatic syncing and resolution. No need to manually create or verify markets, everything updates automatically."
+      },
+      "accumulating_library": {
+        "title": "Accumulating Library",
+        "description": "Polybets now works like a growing, self-updating library:",
+        "point1": "Every sync checks the top 100 trending markets from Polymarket.",
+        "point2": "New markets are added automatically to the DarkBet collection.",
+        "point3": "Old markets remain stored — even after they drop from the top 100.",
+        "point4": "Over time, DarkBet builds an ever-growing archive of on-chain prediction markets."
+      },
+      "sync_interval": {
+        "title": "30-Second Sync Interval",
+        "description": "We've made PolyBets faster than ever:",
+        "point1": "The system syncs every 30 seconds to capture new trending markets quickly.",
+        "point2": "Resolutions from Polymarket are also synced in near real-time.",
+        "point3": "Verified logs confirm that sync operations are consistently running every 30 seconds — ensuring smooth, up-to-date market data."
+      },
+      "note": {
+        "title": "Important Note",
+        "description": "Bets operate the same way as standard DarkBet markets, with no cancellations or refunds. All joined funds are secured in DarkBet's escrow, and the standard 1.5% platform fee applies."
+      },
+      "benefits": {
+        "title": "Benefits of Polybets",
+        "automation": {
+          "title": "Automated Market Creation",
+          "description": "No need to manually create markets - trending predictions are automatically synced and available."
+        },
+        "verified": {
+          "title": "Verified Outcomes",
+          "description": "All outcomes are verified through Polymarket's established resolution mechanisms."
+        },
+        "privacy": {
+          "title": "Dark Pool Privacy",
+          "description": "Your betting strategies remain private until market resolution, even in mirrored markets."
+        },
+        "growing": {
+          "title": "Growing Archive",
+          "description": "Access to an ever-growing library of prediction markets from the past and present."
+        }
+      }
+    },
+    "claiming_winnings": {
+      "title": "Claiming Your Winnings",
+      "description": "How to claim your rewards after winning prediction markets.",
+      "payouts": {
+        "title": "How Payouts Work",
+        "winners_split": "Winners split the total pool proportionally",
+        "formula": "Payout = (Your Shares ÷ Total Winning Shares) × Total Pool",
+        "platform_fee": "1.5% platform fee automatically deducted",
+        "receive": "You receive 98.5% of gross winnings in BNB"
+      },
+      "security": {
+        "title": "Security Features",
+        "vault_wallet": "Secure vault wallet holds all funds",
+        "verification": "On-chain transaction verification",
+        "cooldown": "30-second claim cooldown prevents duplicates",
+        "bscscan": "View transaction on BSCScan after claiming"
+      },
+      "process": {
+        "title": "How to Claim Your Winnings",
+        "step1": {
+          "title": "Wait for Market Resolution",
+          "description": "Once the prediction market expires, our AI system automatically determines the outcome."
+        },
+        "step2": {
+          "title": "Check Your Winning Bets",
+          "description": "Navigate to \"My Bets\" to see which of your predictions were correct."
+        },
+        "step3": {
+          "title": "Click \"Claim Winnings\"",
+          "description": "Click the claim button next to your winning prediction to initiate the payout."
+        },
+        "step4": {
+          "title": "Confirm Transaction",
+          "description": "Confirm the transaction in your wallet to receive your winnings in BNB."
+        }
+      },
+      "notes": {
+        "title": "Important Notes",
+        "gas_fees": "You will need to pay gas fees for the claim transaction",
+        "cooldown_period": "There is a 30-second cooldown between claims to prevent duplicate transactions",
+        "platform_fee": "A 1.5% platform fee is automatically deducted from all winnings",
+        "transaction_history": "All transactions are recorded on-chain and can be viewed on BSCScan"
+      },
+      "example": {
+        "title": "Example Calculation",
+        "scenario": "If you bet on \"YES\" with 10 shares and \"YES\" wins:",
+        "total_pool": "Total Pool: 1,000 BNB",
+        "your_shares": "Your Shares: 10",
+        "total_winning": "Total Winning Shares: 500",
+        "gross_winnings": "Gross Winnings: (10 ÷ 500) × 1,000 = 20 BNB",
+        "platform_fee": "Platform Fee (1.5%): 0.3 BNB",
+        "net_winnings": "Net Winnings: 19.7 BNB"
+      }
+    },
+    "ai_resolution": {
+      "title": "AI-Enabled Resolution",
+      "description": "How our AI system automatically resolves crypto prediction market outcomes.",
+      "overview": {
+        "title": "Crypto-Focused Verification System",
+        "description": "When crypto bets expire, our multi-layer verification system automatically determines the outcome using advanced AI analysis and crypto-specific data sources."
+      },
+      "layer1": {
+        "title": "Layer 1: Crypto Price Verification",
+        "description": "Real-time cryptocurrency price data from multiple exchanges provides instant, verifiable results for crypto predictions.",
+        "crypto_prices": "Real-time cryptocurrency price data from multiple exchanges",
+        "on_chain_data": "On-chain transaction and block data verification",
+        "instant_resolution": "Instant resolution for crypto price-based predictions"
+      },
+      "layer2": {
+        "title": "Layer 2: Crypto Data Gathering",
+        "description": "Crypto-specific APIs fetch real data: price feeds, market data, and blockchain information for cryptocurrency predictions.",
+        "price_feeds": {
+          "title": "Price Feeds",
+          "description": "Multiple cryptocurrency price feeds from major exchanges for accurate price verification."
+        },
+        "market_data": {
+          "title": "Market Data",
+          "description": "Real-time crypto market data including volume, market cap, and trading activity."
+        },
+        "blockchain_data": {
+          "title": "Blockchain Data",
+          "description": "On-chain data verification from multiple blockchain networks for crypto-related predictions."
+        },
+        "crypto_news": {
+          "title": "Crypto News",
+          "description": "Cryptocurrency-specific news and announcements for market-moving events."
+        }
+      },
+      "layer3": {
+        "title": "Layer 3: AI Analysis",
+        "description": "Advanced AI analyzes gathered crypto evidence and makes final determination with reasoning.",
+        "data_analysis": "Comprehensive analysis of all gathered crypto evidence",
+        "reasoning": "Detailed reasoning provided for each crypto resolution decision",
+        "consensus": "Consensus building from multiple crypto data sources",
+        "verification": "Cross-verification with independent crypto sources"
+      },
+      "data_sources": {
+        "title": "Crypto Data Sources & APIs",
+        "description": "Our AI system integrates with 25+ crypto APIs and data sources to ensure accurate and comprehensive resolution.",
+        "exchanges": {
+          "title": "Exchange APIs"
+        },
+        "price_feeds": {
+          "title": "Price Feed APIs"
+        },
+        "blockchain": {
+          "title": "Blockchain APIs"
+        }
+      },
+      "process": {
+        "title": "Crypto Resolution Process Timeline",
+        "step1": {
+          "title": "Crypto Market Expiration",
+          "description": "Crypto prediction market reaches its expiration time and closes for new bets."
+        },
+        "step2": {
+          "title": "Crypto Data Collection (1-2 minutes)",
+          "description": "System gathers relevant crypto data from all configured APIs and sources."
+        },
+        "step3": {
+          "title": "AI Analysis (2-3 minutes)",
+          "description": "AI processes the crypto data and determines the outcome with detailed reasoning."
+        },
+        "step4": {
+          "title": "Resolution & Payouts",
+          "description": "Outcome is recorded on-chain and winners can claim their crypto payouts."
+        }
+      },
+      "transparency": {
+        "title": "Transparency & Verification",
+        "description": "All crypto resolution decisions are recorded on-chain with detailed reasoning. Users can verify the crypto data sources used and the AI's decision-making process for complete transparency."
+      }
+    },
+    "dynamic_pricing": {
+      "title": "Dynamic Market Pricing (AMM)",
+      "description": "Understanding how our Automated Market Maker pricing system works.",
+      "how_prices": {
+        "title": "How Prices Work",
+        "description": "DarkBet uses a Fixed Product Market Maker (FPMM) for fair, dynamic pricing.",
+        "ratios": "Prices determined by pool balance ratios",
+        "sum": "YES price + NO price = 0.01 BNB always",
+        "market_shift": "More bets on one side = higher price for that outcome",
+        "slight_shift": "Each bet shifts the market slightly"
+      },
+      "betting_options": {
+        "title": "Betting Options",
+        "default": {
+          "title": "Default: Market Price",
+          "description": "Buy 1 share at current market price - quick and simple betting."
+        },
+        "custom": {
+          "title": "Custom: Amount-Based",
+          "description": "Enter any BNB amount, get calculated shares based on current market price."
+        },
+        "real_time": "Real-time quotes with 30-second validity",
+        "shares_formula": "Shares = Amount Paid ÷ Current Price"
+      },
+      "example": {
+        "title": "Example Calculation",
+        "scenario": "Example Scenario",
+        "description": "If YES is trading at 0.006 BNB and you bet 0.01 BNB:",
+        "yes_price": "YES Price: 0.006 BNB",
+        "bet_amount": "Your Bet: 0.01 BNB",
+        "shares_received": "Shares Received: 0.01 ÷ 0.006 = ~1.67 shares",
+        "if_wins": "If YES wins: 1.67 × 0.01 = 0.0167 BNB payout"
+      },
+      "amm_mechanics": {
+        "title": "AMM Mechanics",
+        "price_impact": {
+          "title": "Price Impact",
+          "description": "Larger bets have more price impact, creating natural market dynamics and preventing manipulation."
+        },
+        "liquidity": {
+          "title": "Liquidity Provision",
+          "description": "All participants contribute to market liquidity, ensuring continuous trading availability."
+        },
+        "fairness": {
+          "title": "Fair Pricing",
+          "description": "Algorithmic pricing ensures fair market value based on supply and demand."
+        },
+        "arbitrage": {
+          "title": "Arbitrage Opportunities",
+          "description": "Price imbalances create opportunities for market efficiency and fair value discovery."
+        }
+      },
+      "market_dynamics": {
+        "title": "Market Dynamics",
+        "bullish": {
+          "title": "Bullish Market (More YES bets)",
+          "description": "YES price increases, NO price decreases - reflecting market sentiment."
+        },
+        "bearish": {
+          "title": "Bearish Market (More NO bets)",
+          "description": "NO price increases, YES price decreases - indicating negative sentiment."
+        },
+        "balanced": {
+          "title": "Balanced Market",
+          "description": "Equal betting on both sides results in balanced pricing around 0.005 BNB each."
+        }
+      },
+      "advantages": {
+        "title": "Advantages of AMM Pricing",
+        "fairness": "Fair, algorithmic pricing based on market supply and demand",
+        "liquidity": "Continuous liquidity provision from all participants",
+        "manipulation": "Resistant to manipulation due to algorithmic pricing",
+        "transparency": "Transparent pricing mechanism visible to all users",
+        "efficiency": "Efficient price discovery through market dynamics"
+      }
+    },
+    "creating_predictions": {
+      "title": "Generating Crypto Forecasts",
+      "description": "Step-by-step guide to generating crypto prediction markets on DarkBet.",
+      "overview": {
+        "title": "Overview",
+        "description": "Transforming your crypto market insight into a prediction market has never been simpler. Follow these steps to generate a transparent, on-chain crypto forecast using DarkBet's DarkPool technology."
+      },
+      "step1": {
+        "title": "STEP 1 - Describe Your Crypto Forecast",
+        "description": "Simply describe what crypto price movement you want to predict - AI will handle the rest.",
+        "example": {
+          "title": "Example Descriptions",
+          "bitcoin": "\"Will Bitcoin reach $100,000 by the end of 2024?\"",
+          "ethereum": "\"Will Ethereum exceed $5,000 by Q2 2024?\"",
+          "altcoin": "\"Will Solana reach $200 by December 2024?\""
+        }
+      },
+      "step2": {
+        "title": "STEP 2 - AI Generates Smart Title",
+        "description": "Our AI analyzes your crypto description and creates a clear, searchable title optimized for the platform.",
+        "input": {
+          "title": "Your Crypto Input"
+        },
+        "output": {
+          "title": "AI Generated Title"
+        }
+      },
+      "step3": {
+        "title": "STEP 3 - Automatic Deadline & Category",
+        "description": "AI suggests intelligent deadlines (market close times for crypto) and assigns the cryptocurrency category.",
+        "deadline": {
+          "title": "Smart Deadlines",
+          "crypto": "Crypto: End of day, week, or specified date",
+          "daily": "Daily: Market close or specific time",
+          "weekly": "Weekly: End of trading week",
+          "monthly": "Monthly: End of calendar month"
+        },
+        "category": {
+          "title": "Auto-Assigned Categories",
+          "crypto": "Cryptocurrency",
+          "bitcoin": "Bitcoin",
+          "ethereum": "Ethereum",
+          "altcoins": "Altcoins"
+        }
+      },
+      "additional": {
+        "title": "Additional Features",
+        "privacy": {
+          "title": "DarkPool Confidentiality",
+          "description": "Your crypto prediction remains private until resolution, preventing copy trading and manipulation."
+        },
+        "ai_resolution": {
+          "title": "AI-Enabled Resolution",
+          "description": "Automatic resolution using real-world crypto data from 25+ APIs and AI analysis."
+        },
+        "dynamic_pricing": {
+          "title": "Dynamic Pricing",
+          "description": "Fair market-based pricing using Automated Market Maker (AMM) technology for crypto predictions."
+        },
+        "global": {
+          "title": "Global Access",
+          "description": "Create crypto predictions on digital asset events worldwide with multi-language support."
+        }
+      },
+      "best_practices": {
+        "title": "Best Practices for Creating Crypto Predictions",
+        "clear": "Be clear and specific in your crypto description",
+        "verifiable": "Ensure the crypto outcome can be objectively verified",
+        "timeframe": "Include clear timeframes when relevant for crypto markets",
+        "interesting": "Create crypto predictions that others will find interesting to bet on"
+      },
+      "ready": {
+        "title": "Ready to Generate Your First Crypto Forecast?",
+        "description": "Now that you understand how to generate crypto predictions, you're ready to start building your own crypto prediction markets on DarkBet.",
+        "cta": "Start Generating Crypto Forecasts"
+      }
+    }
+  },
+  "final_words": {
+    "title": "Final Words",
+    "intro": "DarkBet stands at the intersection of innovation, transparency, and community-driven finance.",
+    "mission": "As the first dark pool prediction market built on BNB Chain, our mission goes beyond simple forecasting, we aim to reshape how people interact with information, markets, and each other in the decentralized world.",
+    "transformation": "By empowering users to create and participate in transparent, verifiable prediction markets, DarkBet transforms insight into opportunity. Every prediction, every trade, and every outcome contributes to a smarter, fairer, and more connected ecosystem.",
+    "journey": "The journey of DarkBet is only beginning. With continuous development, strategic partnerships, and a growing community, we are committed to building a platform that represents the future of prediction — where foresight becomes value, and every voice shapes the market.",
+    "cta": "Think You Know? Bet It!",
+    "signature": "DarkBet Team ♡"
+  },
+  "nav": {
+    "docs": {
+      "overview": "Overview",
+      "vision": "Vision",
+      "getting_started": "GETTING STARTED",
+      "why_choose_darkbet": "Why Choose DarkBet",
+      "how_it_works": "HOW IT WORKS",
+      "connect_wallet": "Connect Wallet",
+      "creating_predictions": "Creating Predictions",
+      "dynamic_pricing": "Dynamic Market Pricing (AMM)",
+      "ai_resolution": "AI-Powered Resolution",
+      "claiming_winnings": "Claiming Your Winnings",
+      "security": "Security & Transparency",
+      "polybets": "POLYBETS",
+      "introducing_polybets": "Introducing Polybets",
+      "tokenomics": "TOKENOMICS",
+      "tokenomics_page": "Tokenomics",
+      "roadmap": "ROADMAP",
+      "phase_1": "Phase 1: Foundation Launch",
+      "phase_2": "Phase 2: Expansion & Growth",
+      "phase_3": "Phase 3: Ecosystem Development",
+      "phase_4": "Phase 4: Governance & Global Adoption",
+      "official_links": "OFFICIAL LINKS",
+      "twitter": "Twitter",
+      "final_words": "Final Words"
+    }
+  }
+}

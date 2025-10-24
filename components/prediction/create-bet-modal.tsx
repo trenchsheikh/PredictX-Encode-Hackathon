@@ -1,0 +1,801 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+
+import { zodResolver } from '@hookform/resolvers/zod';
+import {
+  Bot,
+  Plus,
+  X,
+  Calendar,
+  DollarSign,
+  Target,
+  Sparkles,
+} from 'lucide-react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+
+import { useI18n } from '@/components/providers/i18n-provider';
+import { AnimatedButton } from '@/components/ui/animated-button';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import type { CryptoOption } from '@/components/ui/crypto-selector';
+import { CryptoSelector } from '@/components/ui/crypto-selector';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import TetrisLoading from '@/components/ui/tetris-loader';
+import { Textarea } from '@/components/ui/textarea';
+import {
+  getAIService,
+  getDefaultAIConfig,
+  initializeAI,
+} from '@/lib/ai-service';
+import { formatDateTimeLocal } from '@/lib/blockchain-utils';
+import { formatBNB } from '@/lib/utils';
+import { cn } from '@/lib/utils';
+import type {
+  CreatePredictionData,
+  PredictionCategory,
+} from '@/types/prediction';
+
+const createPredictionSchema = z.object({
+  description: z.string().min(10, 'Description must be at least 10 characters'),
+  category: z.enum([
+    'sports',
+    'crypto',
+    'politics',
+    'entertainment',
+    'weather',
+    'finance',
+    'technology',
+    'custom',
+  ]),
+  betType: z.enum(['custom', 'auto-verified']),
+  resolutionInstructions: z.string().optional(),
+  userPrediction: z.enum(['yes', 'no']),
+  bnbAmount: z
+    .number()
+    .min(0.001, 'Minimum bet is 0.001 BNB')
+    .max(10, 'Maximum bet is 10 BNB'),
+  expiresAt: z
+    .number()
+    .min(Date.now() + 300000, 'Expiration must be at least 5 minutes from now'),
+});
+
+interface CreateBetModalProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  onSubmit: (data: CreatePredictionData) => void;
+}
+
+const getCategories = (
+  t: (key: string) => string
+): { value: PredictionCategory; label: string; icon: string }[] => [
+  { value: 'sports', label: t('categories.sports'), icon: '⚽' },
+  { value: 'crypto', label: t('categories.crypto'), icon: '₿' },
+  { value: 'politics', label: t('categories.politics'), icon: '🏛️' },
+  { value: 'entertainment', label: t('categories.entertainment'), icon: '🎬' },
+  { value: 'weather', label: t('categories.weather'), icon: '🌤️' },
+  { value: 'finance', label: t('categories.finance'), icon: '💰' },
+  { value: 'technology', label: t('categories.technology'), icon: '💻' },
+  { value: 'custom', label: t('categories.custom'), icon: '🎯' },
+];
+
+// Crypto options will be fetched from API
+
+export function CreateBetModal({
+  open,
+  onOpenChange,
+  onSubmit,
+}: CreateBetModalProps) {
+  const { t } = useI18n();
+  const categories = getCategories(t);
+  const [aiGenerated, setAiGenerated] = useState<{
+    title: string;
+    description: string;
+    summary: string;
+    category: PredictionCategory;
+    expiresAt: number;
+    resolutionInstructions: string;
+  } | null>(null);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [options, setOptions] = useState<string[]>(['YES', 'NO']);
+  const [generateAnalysis, setGenerateAnalysis] = useState(true);
+  const [selectedCrypto, setSelectedCrypto] = useState<string>('');
+  const [cryptoOptions, setCryptoOptions] = useState<CryptoOption[]>([]);
+  const [cryptoLoading, setCryptoLoading] = useState(false);
+
+  /**
+   * Fetch crypto data from CoinGecko API
+   */
+  const fetchCryptoData = async () => {
+    setCryptoLoading(true);
+    try {
+      const response = await fetch(
+        'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=20&page=1&sparkline=false'
+      );
+      const data = await response.json();
+
+      const cryptoData: CryptoOption[] = data.map(
+        (coin: {
+          id: string;
+          name: string;
+          symbol: string;
+          current_price: number;
+          price_change_percentage_24h: number;
+        }) => ({
+          id: coin.id,
+          name: coin.name,
+          symbol: coin.symbol.toUpperCase(),
+          icon: coin.symbol.charAt(0).toUpperCase(),
+          price: coin.current_price,
+          change: coin.price_change_percentage_24h,
+        })
+      );
+
+      setCryptoOptions(cryptoData);
+    } catch (error) {
+      console.error('Failed to fetch crypto data:', error);
+      // Fallback to basic crypto options
+      setCryptoOptions(getFallbackCryptoOptions());
+    } finally {
+      setCryptoLoading(false);
+    }
+  };
+
+  function getFallbackCryptoOptions(): CryptoOption[] {
+    return [
+      {
+        id: 'bitcoin',
+        name: 'Bitcoin',
+        symbol: 'BTC',
+        icon: '₿',
+        price: 111461,
+        change: -0.41,
+      },
+      {
+        id: 'ethereum',
+        name: 'Ethereum',
+        symbol: 'ETH',
+        icon: 'Ξ',
+        price: 3200,
+        change: 2.5,
+      },
+      {
+        id: 'binancecoin',
+        name: 'BNB',
+        symbol: 'BNB',
+        icon: 'B',
+        price: 1178.46,
+        change: -0.56,
+      },
+      {
+        id: 'cardano',
+        name: 'Cardano',
+        symbol: 'ADA',
+        icon: 'A',
+        price: 0.45,
+        change: 3.1,
+      },
+      {
+        id: 'solana',
+        name: 'Solana',
+        symbol: 'SOL',
+        icon: 'S',
+        price: 95,
+        change: -2.3,
+      },
+      {
+        id: 'matic-network',
+        name: 'Polygon',
+        symbol: 'MATIC',
+        icon: 'M',
+        price: 0.85,
+        change: 1.7,
+      },
+      {
+        id: 'ripple',
+        name: 'XRP',
+        symbol: 'XRP',
+        icon: 'X',
+        price: 0.52,
+        change: 1.2,
+      },
+      {
+        id: 'polkadot',
+        name: 'Polkadot',
+        symbol: 'DOT',
+        icon: 'D',
+        price: 6.8,
+        change: -1.5,
+      },
+      {
+        id: 'dogecoin',
+        name: 'Dogecoin',
+        symbol: 'DOGE',
+        icon: 'D',
+        price: 0.08,
+        change: 5.2,
+      },
+      {
+        id: 'avalanche-2',
+        name: 'Avalanche',
+        symbol: 'AVAX',
+        icon: 'A',
+        price: 25.5,
+        change: -0.8,
+      },
+    ];
+  }
+
+  // Fetch crypto data when component mounts
+  useEffect(() => {
+    fetchCryptoData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    setValue,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm<CreatePredictionData>({
+    resolver: zodResolver(createPredictionSchema),
+    defaultValues: {
+      description: '',
+      category: 'custom',
+      betType: 'custom',
+      userPrediction: 'yes',
+      bnbAmount: 0.01,
+      expiresAt: Date.now() + 300000, // 5 minutes from now
+    },
+  });
+
+  const watchedDescription = watch('description');
+  const watchedCategory = watch('category');
+  const watchedBetType = watch('betType');
+
+  const analyzeWithAI = async () => {
+    if (!watchedDescription.trim()) return;
+
+    setIsAnalyzing(true);
+    try {
+      // Initialize AI service if not already done
+      try {
+        getAIService();
+      } catch {
+        // Initialize with default config from environment variables
+        const config = getDefaultAIConfig();
+        initializeAI(config);
+      }
+
+      const aiService = getAIService();
+      const analysis = await aiService.analyzePrediction(
+        watchedDescription,
+        watchedCategory
+      );
+
+      const aiGeneratedData = {
+        title: analysis.title,
+        description: analysis.description,
+        summary: analysis.summary,
+        category: analysis.category as PredictionCategory,
+        expiresAt: analysis.expiresAt,
+        resolutionInstructions: analysis.resolutionInstructions,
+      };
+
+      setAiGenerated(aiGeneratedData);
+      setValue('description', analysis.description);
+      setValue('expiresAt', analysis.expiresAt);
+      setValue('resolutionInstructions', analysis.resolutionInstructions);
+      setValue('category', analysis.category as PredictionCategory);
+
+      // Update options if AI suggests different ones
+      if (analysis.suggestedOptions && analysis.suggestedOptions.length >= 2) {
+        setOptions(analysis.suggestedOptions);
+      }
+    } catch (error) {
+      console.error('AI analysis failed:', error);
+      // Fallback to mock analysis if AI fails
+      const fallbackAnalysis = {
+        title: watchedDescription.trim(),
+        description: watchedDescription.slice(0, 150),
+        summary: `This prediction market allows participants to bet on whether ${watchedDescription}. If YES wins, the stated outcome will have occurred. If NO wins, the stated outcome will not have occurred.`,
+        category: watchedCategory,
+        expiresAt: Date.now() + 300000, // 5 minutes from now
+        resolutionInstructions: `Determine if ${watchedDescription} based on verifiable data sources and official records.`,
+      };
+
+      setAiGenerated(fallbackAnalysis);
+      setValue('description', fallbackAnalysis.description);
+      setValue('expiresAt', fallbackAnalysis.expiresAt);
+      setValue(
+        'resolutionInstructions',
+        fallbackAnalysis.resolutionInstructions
+      );
+    } finally {
+      setIsAnalyzing(false);
+    }
+  };
+
+  const addOption = () => {
+    const newOption = prompt('Enter option text:');
+    if (newOption && !options.includes(newOption.toUpperCase())) {
+      setOptions([...options, newOption.toUpperCase()]);
+    }
+  };
+
+  const removeOption = (index: number) => {
+    if (options.length > 2) {
+      setOptions(options.filter((_, i) => i !== index));
+    }
+  };
+
+  const onFormSubmit = (data: CreatePredictionData) => {
+    const predictionData: CreatePredictionData = {
+      ...data,
+      title: aiGenerated?.title || data.description.trim(),
+      summary: generateAnalysis ? aiGenerated?.summary : undefined,
+      options,
+    };
+    onSubmit(predictionData);
+    reset();
+    setAiGenerated(null);
+    setOptions(['YES', 'NO']);
+    setGenerateAnalysis(true);
+  };
+
+  const handleClose = () => {
+    onOpenChange(false);
+    reset();
+    setAiGenerated(null);
+    setOptions(['YES', 'NO']);
+    setGenerateAnalysis(true);
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={handleClose}>
+      <DialogContent className="max-h-[90vh] max-w-2xl overflow-y-auto border border-white/20 bg-card">
+        <DialogHeader>
+          <DialogTitle className="font-heading flex items-center gap-2 text-foreground">
+            <Target className="h-5 w-5 text-white" />
+            {t('create_prediction.title')}
+          </DialogTitle>
+          <DialogDescription className="text-muted-foreground">
+            {t('create_prediction.description')}
+          </DialogDescription>
+        </DialogHeader>
+
+        <form onSubmit={handleSubmit(onFormSubmit)} className="space-y-4">
+          {/* Wallet Requirement Notice */}
+          <Card className="border-white/20 bg-card">
+            <CardContent className="p-3">
+              <div className="flex items-center gap-2 text-xs">
+                <DollarSign className="h-3 w-3 text-white" />
+                <span className="font-medium text-foreground">
+                  {t('create_prediction.wallet_required')}
+                </span>
+              </div>
+              <p className="mt-1 text-xs text-muted-foreground">
+                {t('create_prediction.connect_wallet_to_create')}
+              </p>
+            </CardContent>
+          </Card>
+
+          {/* Bet Type Selection */}
+          <div className="space-y-1">
+            <label className="text-xs font-medium text-foreground">
+              {t('create_prediction.bet_type')} *
+            </label>
+            <div className="grid grid-cols-2 gap-3">
+              <Card
+                className={cn(
+                  'cursor-pointer border-white/20 bg-card',
+                  watchedBetType === 'custom'
+                    ? 'bg-white/20 ring-2 ring-white/50'
+                    : ''
+                )}
+                onClick={() => setValue('betType', 'custom')}
+              >
+                <CardContent className="p-3">
+                  <div className="text-xs font-medium text-foreground">
+                    {t('create_prediction.custom_bet')}
+                  </div>
+                  <div className="text-xs text-muted-foreground">
+                    {t('create_prediction.manual_resolution')}
+                  </div>
+                </CardContent>
+              </Card>
+              <Card
+                className={cn(
+                  'cursor-pointer border-white/20 bg-card',
+                  watchedBetType === 'auto-verified'
+                    ? 'bg-white/20 ring-2 ring-white/50'
+                    : ''
+                )}
+                onClick={() => setValue('betType', 'auto-verified')}
+              >
+                <CardContent className="p-3">
+                  <div className="text-xs font-medium text-foreground">
+                    {t('create_prediction.auto_verified_outcome')}
+                  </div>
+                  <div className="text-xs text-muted-foreground">
+                    {t('create_prediction.price_oracle')}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+
+          {/* Bet Description */}
+          <div className="space-y-1">
+            <label className="text-xs font-medium text-foreground">
+              {t('create_prediction.bet_description')} *
+            </label>
+            <Textarea
+              {...register('description')}
+              placeholder={t('create_prediction.describe_prediction')}
+              className="min-h-[80px] border-white/20 bg-card text-foreground placeholder:text-muted-foreground focus:border-white/20 focus:ring-0"
+            />
+            {errors.description && (
+              <p className="text-xs font-medium text-red-400">
+                {errors.description.message}
+              </p>
+            )}
+          </div>
+
+          {/* Category Selection */}
+          <div className="space-y-1">
+            <label className="text-xs font-medium text-foreground">
+              {t('create_prediction.category')} *
+            </label>
+            <Select
+              value={watch('category')}
+              onValueChange={(value: PredictionCategory) =>
+                setValue('category', value)
+              }
+            >
+              <SelectTrigger className="border-white/20 bg-card text-foreground focus:border-white/20 focus:ring-0">
+                <SelectValue
+                  placeholder={t('create_prediction.select_category')}
+                />
+              </SelectTrigger>
+              <SelectContent className="border-white/20 bg-card">
+                {categories.map(category => (
+                  <SelectItem
+                    key={category.value}
+                    value={category.value}
+                    className="text-foreground"
+                  >
+                    <div className="flex items-center gap-2">
+                      <span>{category.icon}</span>
+                      <span>{category.label}</span>
+                    </div>
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            {errors.category && (
+              <p className="text-xs font-medium text-red-400">
+                {errors.category.message}
+              </p>
+            )}
+          </div>
+
+          {/* Crypto Selection (only show for crypto category) */}
+          {watch('category') === 'crypto' && (
+            <div className="space-y-1">
+              <label className="text-xs font-medium text-foreground">
+                {t('crypto_prediction.select_crypto')}
+              </label>
+              {cryptoLoading ? (
+                <div className="flex items-center justify-center p-4">
+                  <TetrisLoading
+                    size="sm"
+                    speed="normal"
+                    showLoadingText={false}
+                  />
+                  <span className="ml-2 text-xs text-muted-foreground">
+                    {t('crypto_prediction.loading_cryptocurrencies')}
+                  </span>
+                </div>
+              ) : (
+                <CryptoSelector
+                  options={cryptoOptions}
+                  value={selectedCrypto}
+                  onValueChange={setSelectedCrypto}
+                  placeholder={t('crypto_prediction.choose_crypto_placeholder')}
+                />
+              )}
+            </div>
+          )}
+
+          {/* AI Analysis */}
+          {watchedDescription.length > 10 && (
+            <div className="space-y-1">
+              <div className="flex items-center justify-between">
+                <label className="text-xs font-medium text-foreground">
+                  {t('create_prediction.ai_resolution_instructions')}
+                </label>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={analyzeWithAI}
+                  disabled={isAnalyzing}
+                  className="flex items-center gap-2 border-white/20 bg-card text-foreground"
+                >
+                  <Bot className="h-4 w-4" />
+                  {isAnalyzing
+                    ? t('create_prediction.analyzing')
+                    : t('create_prediction.analyze')}
+                </Button>
+              </div>
+
+              {/* Generate Analysis Checkbox */}
+              <div className="flex items-center gap-2 rounded-lg border border-white/20 bg-card p-2">
+                <input
+                  type="checkbox"
+                  id="generateAnalysis"
+                  checked={generateAnalysis}
+                  onChange={e => setGenerateAnalysis(e.target.checked)}
+                  className="h-3 w-3 rounded border-white/20 bg-card text-white focus:ring-white/20"
+                />
+                <label
+                  htmlFor="generateAnalysis"
+                  className="flex-1 cursor-pointer text-xs text-foreground"
+                >
+                  {t('create_prediction.generate_analysis_checkbox')}
+                </label>
+              </div>
+
+              {aiGenerated && (
+                <Card className="border-white/20 bg-card">
+                  <CardHeader className="pb-1">
+                    <CardTitle className="flex items-center gap-2 text-xs text-white">
+                      <Sparkles className="h-3 w-3 text-white" />
+                      {t('create_prediction.ai_generated')}
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-2">
+                    <div>
+                      <div className="text-xs text-muted-foreground">
+                        {t('create_prediction.title_label')}
+                      </div>
+                      <div className="text-xs font-medium text-foreground">
+                        {aiGenerated.title}
+                      </div>
+                    </div>
+                    <div>
+                      <div className="text-xs text-muted-foreground">
+                        Description
+                      </div>
+                      <div className="text-xs text-foreground">
+                        {aiGenerated.description}
+                      </div>
+                    </div>
+                    {generateAnalysis && aiGenerated.summary && (
+                      <div>
+                        <div className="text-xs text-muted-foreground">
+                          Detailed Analysis
+                        </div>
+                        <div className="max-h-32 overflow-y-auto whitespace-pre-wrap text-xs text-foreground">
+                          {aiGenerated.summary}
+                        </div>
+                      </div>
+                    )}
+                    <div>
+                      <div className="text-xs text-muted-foreground">
+                        {t('create_prediction.resolution_instructions')}
+                      </div>
+                      <div className="text-xs text-foreground">
+                        {aiGenerated.resolutionInstructions}
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Badge
+                        variant="outline"
+                        className="border-white/30 text-foreground"
+                      >
+                        {aiGenerated.category}
+                      </Badge>
+                      <span className="text-xs text-muted-foreground">
+                        Expires:{' '}
+                        {new Date(aiGenerated.expiresAt).toLocaleDateString()}
+                      </span>
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
+
+              <Textarea
+                {...register('resolutionInstructions')}
+                placeholder="AI will generate resolution instructions automatically based on your bet"
+                className="min-h-[60px] border-white/20 bg-card text-foreground placeholder:text-muted-foreground focus:border-white/20 focus:ring-0"
+              />
+            </div>
+          )}
+
+          {/* Options */}
+          <div className="space-y-1">
+            <label className="text-xs font-medium text-foreground">
+              {t('create_prediction.options')} * (min 2)
+            </label>
+            <div className="space-y-1">
+              {options.map((option, index) => (
+                <div key={index} className="flex items-center gap-2">
+                  <Input
+                    value={option}
+                    onChange={e => {
+                      const newOptions = [...options];
+                      newOptions[index] = e.target.value;
+                      setOptions(newOptions);
+                    }}
+                    className="flex-1 border-white/20 bg-card text-foreground placeholder:text-muted-foreground focus:border-white/20 focus:ring-0"
+                  />
+                  {options.length > 2 && (
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => removeOption(index)}
+                      className="border-white/20 bg-card text-foreground"
+                    >
+                      <X className="h-4 w-4" />
+                    </Button>
+                  )}
+                </div>
+              ))}
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={addOption}
+                className="w-full border-white/20 bg-card text-foreground"
+              >
+                <Plus className="mr-2 h-4 w-4" />
+                {t('create_prediction.add_option')}
+              </Button>
+            </div>
+          </div>
+
+          {/* Expiration Date */}
+          <div className="space-y-1">
+            <label className="flex items-center gap-2 text-xs font-medium text-foreground">
+              <Calendar className="h-3 w-3 text-white" />
+              {t('create_prediction.bet_expiration_date')} *
+            </label>
+            <Input
+              type="datetime-local"
+              {...register('expiresAt', {
+                valueAsNumber: false,
+                setValueAs: value => new Date(value).getTime(),
+              })}
+              min={formatDateTimeLocal(Date.now() + 300000)}
+              defaultValue={formatDateTimeLocal(Date.now() + 300000)}
+              className="border-white/20 bg-card text-foreground focus:border-white/20 focus:ring-0"
+            />
+            {errors.expiresAt && (
+              <p className="text-xs font-medium text-red-400">
+                {errors.expiresAt.message}
+              </p>
+            )}
+            <p className="text-xs text-muted-foreground">
+              {t('create_prediction.set_expiration_help')}
+            </p>
+          </div>
+
+          {/* Place Initial Bet */}
+          <Card className="border-white/20 bg-card">
+            <CardHeader className="pb-1">
+              <CardTitle className="flex items-center gap-2 text-xs text-white">
+                <Target className="h-3 w-3 text-white" />
+                {t('create_prediction.place_initial_bet')}
+              </CardTitle>
+              <p className="text-xs text-muted-foreground">
+                {t('create_prediction.prevent_spam')}
+              </p>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-1">
+                  <label className="text-xs font-medium text-foreground">
+                    {t('create_prediction.your_prediction')} *
+                  </label>
+                  <Select
+                    value={watch('userPrediction')}
+                    onValueChange={(value: 'yes' | 'no') =>
+                      setValue('userPrediction', value)
+                    }
+                  >
+                    <SelectTrigger className="border-white/20 bg-card text-foreground focus:border-white/20 focus:ring-0">
+                      <SelectValue placeholder="Select prediction" />
+                    </SelectTrigger>
+                    <SelectContent className="z-50 border-white/20 bg-card">
+                      <SelectItem
+                        value="yes"
+                        className="text-base font-semibold text-green-400 hover:bg-green-500/20"
+                      >
+                        ✓ {t('prediction_card.yes')}
+                      </SelectItem>
+                      <SelectItem
+                        value="no"
+                        className="text-base font-semibold text-red-400 hover:bg-red-500/20"
+                      >
+                        ✗ {t('prediction_card.no')}
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-1">
+                  <label className="text-xs font-medium text-foreground">
+                    {t('create_prediction.bnb_amount')} *
+                  </label>
+                  <Input
+                    type="number"
+                    step="0.001"
+                    min="0.001"
+                    max="10"
+                    {...register('bnbAmount', { valueAsNumber: true })}
+                    className="border-white/20 bg-card text-foreground placeholder:text-muted-foreground focus:border-white/20 focus:ring-0"
+                  />
+                  {errors.bnbAmount && (
+                    <p className="text-xs font-medium text-red-400">
+                      {errors.bnbAmount.message}
+                    </p>
+                  )}
+                </div>
+              </div>
+              <div className="text-center text-xs text-muted-foreground">
+                {t('create_prediction.click_create_will_prompt').replace(
+                  '{amount}',
+                  formatBNB(watch('bnbAmount'))
+                )}
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Dialog Footer */}
+          <div className="flex justify-end gap-3 pt-3">
+            <AnimatedButton
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={handleClose}
+              className="rounded-none border-white/20 bg-card px-3 py-1.5 text-sm text-foreground"
+            >
+              {t('create_prediction.cancel')}
+            </AnimatedButton>
+            <AnimatedButton
+              type="submit"
+              disabled={isSubmitting}
+              loading={isSubmitting}
+              size="sm"
+              className="rounded-none bg-white px-3 py-1.5 text-sm text-black"
+            >
+              {isSubmitting
+                ? t('create_prediction.creating')
+                : t('create_prediction.create_bet')}
+            </AnimatedButton>
+          </div>
+        </form>
+      </DialogContent>
+    </Dialog>
+  );
+}

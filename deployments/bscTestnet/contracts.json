@@ -1,0 +1,16 @@
+{
+  "network": "bscTestnet",
+  "chainId": 97,
+  "deployer": "0x46f5305784cfc77AEEa92Be4E8461E7051743bbe",
+  "timestamp": "2025-10-15T18:03:01.123Z",
+  "contracts": {
+    "Vault": {
+      "address": "0xbB37B8A3fB2691AB44e561df427C6D63F684535E",
+      "abi": "Vault.json"
+    },
+    "PredictionMarket": {
+      "address": "0x7282D4d20e072d1e0Ab344916BA7DF2B66162e8E",
+      "abi": "PredictionMarket.json"
+    }
+  }
+}
