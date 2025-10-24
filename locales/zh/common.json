@@ -25,9 +25,10 @@
     "realtime_markets": "实时市场"
   },
   "cta": {
-    "start_darkpool_betting": "开始暗池投注",
-    "crypto_darkpool": "加密货币暗池",
-    "news_events": "新闻事件"
+    "start_darkpool_betting": "创建 +",
+    "crypto_darkpool": "加密",
+    "news_events": "新闻",
+    "events": "事件"
   },
   "stats": {
     "total_volume": "总交易量",
@@ -40,7 +41,7 @@
     "no_predictions_found": "未找到预测",
     "try_adjusting_filters": "尝试调整筛选条件或创建第一个预测！",
     "create_first_prediction": "创建第一个预测",
-    "completed_predictions": "已完成的预测"
+    "completed_predictions": "已完成"
   },
   "prediction_card": {
     "pool": "奖池",
@@ -167,7 +168,10 @@
     "last_24h": "最近24小时",
     "last_7d": "最近7天",
     "last_30d": "最近30天",
-    "clear_filters": "清除筛选"
+    "clear_filters": "清除筛选",
+    "new": "最新",
+    "trending": "热门",
+    "all": "全部"
   },
   "my_bets": {
     "title": "我的投注",

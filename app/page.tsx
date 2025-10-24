@@ -11,6 +11,7 @@ import {
   AlertCircle,
   CheckCircle,
   Wallet,
+  ChevronDown,
 } from 'lucide-react';
 
 import { BetModal } from '@/components/prediction/bet-modal';
@@ -31,6 +32,12 @@ import {
   DialogTitle,
   DialogDescription,
 } from '@/components/ui/dialog';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import TetrisLoading from '@/components/ui/tetris-loader';
 import { TransactionStatus } from '@/components/ui/transaction-status';
@@ -253,7 +260,7 @@ export default function HomePage() {
   };
 
   /**
-   * Handle create prediction - Currently disabled, redirect to Crypto DarkPool
+   * Handle create prediction - Currently disabled, redirect to Crypto
    */
   const handleCreatePrediction = async (_data: CreatePredictionData) => {
     if (!authenticated || !user?.wallet?.address) {
@@ -630,78 +637,97 @@ export default function HomePage() {
         className="relative z-10 mx-auto max-w-7xl px-4 pb-16 sm:px-6 lg:px-8"
       >
         <div className="space-y-6">
-          {/* Filtering Tabs and Create Buttons */}
-          <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <Tabs
-              value={`${activeFilter}-${activeCategory}`}
-              onValueChange={value => {
-                const [filter, category] = value.split('-');
-                setActiveFilter(filter);
-                setActiveCategory(category);
-              }}
-              className="w-full sm:flex-1"
-            >
-              <TabsList className="scrollbar-hide inline-flex w-full justify-start gap-1 overflow-x-auto sm:w-auto">
-                <TabsTrigger
-                  value="new-all"
-                  className="flex-shrink-0 text-center"
-                >
-                  New
-                </TabsTrigger>
-                <TabsTrigger
-                  value="trending-all"
-                  className="flex-shrink-0 text-center"
-                >
-                  Trending
-                </TabsTrigger>
-                <TabsTrigger
-                  value="all-all"
-                  className="flex-shrink-0 text-center"
-                >
-                  All
-                </TabsTrigger>
-                {getCategories().map(category => (
+          {/* Filtering Tabs and Create Buttons - Hide during loading */}
+          {!loading && (
+            <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+              <Tabs
+                value={`${activeFilter}-${activeCategory}`}
+                onValueChange={value => {
+                  const [filter, category] = value.split('-');
+                  setActiveFilter(filter);
+                  setActiveCategory(category);
+                }}
+                className="w-full sm:flex-1"
+              >
+                <TabsList className="scrollbar-hide inline-flex w-full justify-start gap-1 overflow-x-auto sm:w-auto">
                   <TabsTrigger
-                    key={category}
-                    value={`all-${category}`}
-                    className="flex-shrink-0 whitespace-nowrap text-center"
+                    value="new-all"
+                    className="flex-shrink-0 text-center"
                   >
-                    {category.charAt(0).toUpperCase() + category.slice(1)}
+                    {mounted && isInitialized ? t('filters.new') : 'New'}
                   </TabsTrigger>
-                ))}
-              </TabsList>
-            </Tabs>
+                  <TabsTrigger
+                    value="trending-all"
+                    className="flex-shrink-0 text-center"
+                  >
+                    {mounted && isInitialized
+                      ? t('filters.trending')
+                      : 'Trending'}
+                  </TabsTrigger>
+                  <TabsTrigger
+                    value="all-all"
+                    className="flex-shrink-0 text-center"
+                  >
+                    {mounted && isInitialized ? t('filters.all') : 'All'}
+                  </TabsTrigger>
+                  {getCategories().map(category => (
+                    <TabsTrigger
+                      key={category}
+                      value={`all-${category}`}
+                      className="flex-shrink-0 whitespace-nowrap text-center"
+                    >
+                      {mounted && isInitialized
+                        ? t(`categories.${category}`)
+                        : category.charAt(0).toUpperCase() + category.slice(1)}
+                    </TabsTrigger>
+                  ))}
+                </TabsList>
+              </Tabs>
 
-            {/* Three Create Buttons - Stack on mobile */}
-            <div className="flex flex-col gap-2 sm:flex-row">
-              <Button
-                onClick={() => setShowCreateModal(true)}
-                size="sm"
-                className="bg-white text-black"
-              >
-                Start DarkPool Betting
-              </Button>
-              <Button
-                onClick={handleCryptoClick}
-                variant="outline"
-                size="sm"
-                className="border-2 border-white text-white"
-              >
-                Crypto DarkPool
-              </Button>
-              <Button
-                onClick={handleNewsClick}
-                size="sm"
-                className="bg-white text-black"
-              >
-                News Events
-              </Button>
+              {/* Create + Dropdown Button */}
+              <div className="flex flex-col gap-2 sm:flex-row">
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      size="default"
+                      className="bg-white px-3 py-1 text-black"
+                    >
+                      {mounted && isInitialized
+                        ? t('cta.start_darkpool_betting')
+                        : 'Create +'}
+                      <ChevronDown className="ml-2 h-4 w-4" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-48">
+                    <DropdownMenuItem
+                      onClick={() => setShowCreateModal(true)}
+                      className="cursor-pointer"
+                    >
+                      {mounted && isInitialized ? t('cta.events') : 'Events'}
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={handleCryptoClick}
+                      className="cursor-pointer"
+                    >
+                      {mounted && isInitialized
+                        ? t('cta.crypto_darkpool')
+                        : 'Crypto'}
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={handleNewsClick}
+                      className="cursor-pointer"
+                    >
+                      {mounted && isInitialized ? t('cta.news_events') : 'News'}
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Markets Grid */}
           {loading ? (
-            <div className="flex items-center justify-center py-12">
+            <div className="flex items-center justify-center py-12 pt-48">
               <TetrisLoading
                 size="md"
                 speed="normal"
@@ -762,9 +788,6 @@ export default function HomePage() {
         ).length > 0 && (
           <div className="mt-12">
             <div className="mb-6 flex items-center">
-              <div className="rounded-lg p-2">
-                <CheckCircle className="h-6 w-6 text-white" />
-              </div>
               <h2 className="font-heading text-2xl text-foreground">
                 {mounted && isInitialized
                   ? t('markets.completed_predictions')
@@ -880,7 +903,7 @@ export default function HomePage() {
 
             <div className="space-y-3">
               <h4 className="font-medium text-foreground">
-                Try Crypto DarkPool instead:
+                Try Crypto instead:
               </h4>
               <ul className="space-y-2 text-sm text-muted-foreground">
                 <li className="flex items-center gap-2">
@@ -915,7 +938,7 @@ export default function HomePage() {
               variant="outline"
               className="flex-1 border-white/20 bg-white text-black"
             >
-              Open Crypto DarkPool
+              Open Crypto
             </Button>
           </div>
         </DialogContent>

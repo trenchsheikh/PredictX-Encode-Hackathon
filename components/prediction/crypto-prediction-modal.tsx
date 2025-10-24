@@ -580,13 +580,13 @@ export function CryptoPredictionModal({
                       <SelectContent className="z-[9999] border-white/20 bg-card">
                         <SelectItem
                           value="yes"
-                          className="cursor-pointer text-white"
+                          className="cursor-pointer text-base font-semibold text-green-400 hover:bg-green-500/20"
                         >
                           ✓ YES
                         </SelectItem>
                         <SelectItem
                           value="no"
-                          className="cursor-pointer text-white"
+                          className="cursor-pointer text-base font-semibold text-red-400 hover:bg-red-500/20"
                         >
                           ✗ NO
                         </SelectItem>

@@ -372,10 +372,16 @@ export function CreateEventPredictionModal({
                   />
                 </SelectTrigger>
                 <SelectContent className="z-[9999] border-white/20 bg-card">
-                  <SelectItem value="yes" className="cursor-pointer text-white">
+                  <SelectItem
+                    value="yes"
+                    className="cursor-pointer text-base font-semibold text-green-400 hover:bg-green-500/20"
+                  >
                     ✓ {t('event_prediction.yes')}
                   </SelectItem>
-                  <SelectItem value="no" className="cursor-pointer text-white">
+                  <SelectItem
+                    value="no"
+                    className="cursor-pointer text-base font-semibold text-red-400 hover:bg-red-500/20"
+                  >
                     ✗ {t('event_prediction.no')}
                   </SelectItem>
                 </SelectContent>

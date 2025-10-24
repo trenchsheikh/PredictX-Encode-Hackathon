@@ -5,8 +5,6 @@ import { Press_Start_2P } from 'next/font/google';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-import { NotepadTextDashed } from 'lucide-react';
-
 import { useI18n } from '@/components/providers/i18n-provider';
 import { cn } from '@/lib/utils';
 
@@ -45,8 +43,8 @@ export const Footer = ({
   navLinks = [],
   creatorName: _creatorName,
   creatorUrl: _creatorUrl,
-  brandIcon,
-  brandLinkHref,
+  brandIcon: _brandIcon,
+  brandLinkHref: _brandLinkHref,
   className,
   showTopInfo = false,
   showBackgroundBrandText = true,
@@ -150,25 +148,6 @@ export const Footer = ({
             }}
           >
             {brandName.toUpperCase()}
-          </div>
-        )}
-
-        {brandLinkHref ? (
-          <Link
-            href={brandLinkHref}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="duration-400 absolute bottom-24 left-1/2 z-10 flex -translate-x-1/2 items-center justify-center rounded-3xl border-2 border-white/60 bg-black/30 p-3 shadow-[0_0_24px_0_rgba(255,255,255,0.22)] backdrop-blur-sm hover:border-white/80 md:bottom-20"
-          >
-            {brandIcon || (
-              <NotepadTextDashed className="h-10 w-10 text-white drop-shadow-lg sm:h-12 sm:w-12 md:h-16 md:w-16" />
-            )}
-          </Link>
-        ) : (
-          <div className="duration-400 absolute bottom-24 left-1/2 z-10 flex -translate-x-1/2 items-center justify-center rounded-3xl border-2 border-white/60 bg-black/30 p-3 shadow-[0_0_24px_0_rgba(255,255,255,0.22)] backdrop-blur-sm hover:border-white/80 md:bottom-20">
-            {brandIcon || (
-              <NotepadTextDashed className="h-10 w-10 text-white drop-shadow-lg sm:h-12 sm:w-12 md:h-16 md:w-16" />
-            )}
           </div>
         )}
 

@@ -102,24 +102,24 @@ export function PredictionCard({
           <div className="mb-3 mt-auto flex flex-col gap-2">
             {/* Yes Button */}
             <button
-              className="rounded-lg border border-white/20 bg-white/10 p-3"
+              className="rounded-lg border-2 border-green-500 bg-transparent p-3 hover:bg-green-500/10"
               onClick={() => handleBet('yes')}
               disabled={isLoading}
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center">
-                  <ArrowUp className="mr-2 h-4 w-4 text-white" />
-                  <span className="text-sm font-semibold text-white">
+                  <ArrowUp className="mr-2 h-4 w-4 text-green-400" />
+                  <span className="text-lg font-bold text-green-400">
                     {mounted && isInitialized
                       ? t('prediction_card.yes')
                       : 'Yes'}
                   </span>
                 </div>
                 <div className="text-right">
-                  <div className="text-lg font-bold text-white">
+                  <div className="text-lg font-bold text-green-400">
                     {prediction.yesPrice.toFixed(3)}
                   </div>
-                  <div className="text-xs text-white/80">
+                  <div className="text-xs text-green-400/80">
                     {formatBNB(prediction.yesPool)}
                   </div>
                 </div>
@@ -128,22 +128,22 @@ export function PredictionCard({
 
             {/* No Button */}
             <button
-              className="rounded-lg border border-white/20 bg-white/10 p-3"
+              className="rounded-lg border-2 border-red-500 bg-transparent p-3 hover:bg-red-500/10"
               onClick={() => handleBet('no')}
               disabled={isLoading}
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center">
-                  <ArrowDown className="mr-2 h-4 w-4 text-white" />
-                  <span className="text-sm font-semibold text-white">
+                  <ArrowDown className="mr-2 h-4 w-4 text-red-400" />
+                  <span className="text-lg font-bold text-red-400">
                     {mounted && isInitialized ? t('prediction_card.no') : 'No'}
                   </span>
                 </div>
                 <div className="text-right">
-                  <div className="text-lg font-bold text-white">
+                  <div className="text-lg font-bold text-red-400">
                     {prediction.noPrice.toFixed(3)}
                   </div>
-                  <div className="text-xs text-white/80">
+                  <div className="text-xs text-red-400/80">
                     {formatBNB(prediction.noPool)}
                   </div>
                 </div>

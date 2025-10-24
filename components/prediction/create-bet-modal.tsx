@@ -728,11 +728,17 @@ export function CreateBetModal({
                       <SelectValue placeholder="Select prediction" />
                     </SelectTrigger>
                     <SelectContent className="z-50 border-white/20 bg-card">
-                      <SelectItem value="yes" className="text-foreground">
-                        {t('prediction_card.yes')}
+                      <SelectItem
+                        value="yes"
+                        className="text-base font-semibold text-green-400 hover:bg-green-500/20"
+                      >
+                        ✓ {t('prediction_card.yes')}
                       </SelectItem>
-                      <SelectItem value="no" className="text-foreground">
-                        {t('prediction_card.no')}
+                      <SelectItem
+                        value="no"
+                        className="text-base font-semibold text-red-400 hover:bg-red-500/20"
+                      >
+                        ✗ {t('prediction_card.no')}
                       </SelectItem>
                     </SelectContent>
                   </Select>

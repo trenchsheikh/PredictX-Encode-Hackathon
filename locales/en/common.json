@@ -25,9 +25,10 @@
     "realtime_markets": "Real-Time Markets"
   },
   "cta": {
-    "start_darkpool_betting": "Start DarkPool Betting",
-    "crypto_darkpool": "Crypto DarkPool",
-    "news_events": "News Events"
+    "start_darkpool_betting": "Create +",
+    "crypto_darkpool": "Crypto",
+    "news_events": "News",
+    "events": "Events"
   },
   "stats": {
     "total_volume": "Total Volume",
@@ -40,7 +41,7 @@
     "no_predictions_found": "No predictions found",
     "try_adjusting_filters": "Try adjusting your filters or create the first prediction!",
     "create_first_prediction": "Create First Prediction",
-    "completed_predictions": "Completed Predictions"
+    "completed_predictions": "Completed"
   },
   "prediction_card": {
     "pool": "Pool",
@@ -167,7 +168,10 @@
     "last_24h": "Last 24h",
     "last_7d": "Last 7d",
     "last_30d": "Last 30d",
-    "clear_filters": "Clear Filters"
+    "clear_filters": "Clear Filters",
+    "new": "New",
+    "trending": "Trending",
+    "all": "All"
   },
   "my_bets": {
     "title": "My Bets",

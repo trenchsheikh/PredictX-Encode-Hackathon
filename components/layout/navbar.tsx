@@ -148,7 +148,7 @@ export function AnimatedHeader() {
                   onClick={logout}
                   className="border border-white/20 bg-white/10 px-3 py-1 font-semibold text-white"
                 >
-                  Disconnect
+                  {mounted ? t('disconnect') : 'Disconnect'}
                 </button>
               </div>
             ) : (
@@ -253,7 +253,7 @@ export function AnimatedHeader() {
                       onClick={logout}
                       className="w-full border border-white/20 bg-white/10 px-3 py-1 font-semibold text-white"
                     >
-                      Disconnect
+                      {mounted ? t('disconnect') : 'Disconnect'}
                     </button>
                   </div>
                 ) : (
