@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 
-import { DollarSign, AlertCircle, Bot, Loader2 } from 'lucide-react';
+import { DollarSign, AlertCircle, Bot } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
@@ -15,6 +15,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import TetrisLoading from '@/components/ui/tetris-loader';
 import {
   getAIService,
   getDefaultAIConfig,
@@ -402,7 +403,11 @@ export function CryptoPredictionModal({
                         className="flex items-center gap-2 border-white/20 bg-white/10 text-white"
                       >
                         {isAnalyzing ? (
-                          <Loader2 className="h-4 w-4 animate-spin" />
+                          <TetrisLoading
+                            size="sm"
+                            speed="fast"
+                            showLoadingText={false}
+                          />
                         ) : (
                           <Bot className="h-4 w-4" />
                         )}

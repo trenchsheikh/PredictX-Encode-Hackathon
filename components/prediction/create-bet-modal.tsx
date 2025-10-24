@@ -11,7 +11,6 @@ import {
   DollarSign,
   Target,
   Sparkles,
-  Loader2,
 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -38,6 +37,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import TetrisLoading from '@/components/ui/tetris-loader';
 import { Textarea } from '@/components/ui/textarea';
 import {
   getAIService,
@@ -506,8 +506,12 @@ export function CreateBetModal({
               </label>
               {cryptoLoading ? (
                 <div className="flex items-center justify-center p-4">
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin text-white" />
-                  <span className="text-xs text-muted-foreground">
+                  <TetrisLoading
+                    size="sm"
+                    speed="normal"
+                    showLoadingText={false}
+                  />
+                  <span className="ml-2 text-xs text-muted-foreground">
                     {t('crypto_prediction.loading_cryptocurrencies')}
                   </span>
                 </div>

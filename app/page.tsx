@@ -7,7 +7,6 @@ import { ethers } from 'ethers';
 import {
   Plus,
   TrendingUp,
-  Loader2,
   RefreshCw,
   AlertCircle,
   CheckCircle,
@@ -33,6 +32,7 @@ import {
   DialogDescription,
 } from '@/components/ui/dialog';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import TetrisLoading from '@/components/ui/tetris-loader';
 import { TransactionStatus } from '@/components/ui/transaction-status';
 import { api, getErrorMessage } from '@/lib/api-client';
 import { mapCategory, mapStatus, calculatePrice } from '@/lib/blockchain-utils';
@@ -702,7 +702,11 @@ export default function HomePage() {
           {/* Markets Grid */}
           {loading ? (
             <div className="flex items-center justify-center py-12">
-              <Loader2 className="h-12 w-12 animate-spin text-white" />
+              <TetrisLoading
+                size="md"
+                speed="normal"
+                loadingText="Loading predictions..."
+              />
             </div>
           ) : filteredPredictions.length === 0 ? (
             <Card className="border-white/20 bg-card py-12 text-center backdrop-blur-sm">
@@ -735,15 +739,19 @@ export default function HomePage() {
             </Card>
           ) : (
             <div className="grid auto-rows-fr grid-cols-1 gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {filteredPredictions.map(prediction => (
-                <PredictionCard
-                  key={prediction.id}
-                  prediction={prediction}
-                  onBet={handleBetClick}
-                  onViewHistory={handleViewHistory}
-                  userBets={userBets}
-                />
-              ))}
+              {filteredPredictions
+                .filter(
+                  p => p.status !== 'resolved' && p.status !== 'cancelled'
+                )
+                .map(prediction => (
+                  <PredictionCard
+                    key={prediction.id}
+                    prediction={prediction}
+                    onBet={handleBetClick}
+                    onViewHistory={handleViewHistory}
+                    userBets={userBets}
+                  />
+                ))}
             </div>
           )}
         </div>

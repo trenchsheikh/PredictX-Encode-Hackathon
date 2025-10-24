@@ -13,7 +13,6 @@ import {
   Star,
   Zap,
   ExternalLink,
-  Loader2,
   AlertCircle,
 } from 'lucide-react';
 
@@ -21,6 +20,7 @@ import { useI18n } from '@/components/providers/i18n-provider';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import TetrisLoading from '@/components/ui/tetris-loader';
 import { api } from '@/lib/api-client';
 import { formatBNB, formatAddress } from '@/lib/utils';
 import { cn } from '@/lib/utils';
@@ -145,8 +145,11 @@ export default function LeaderboardPage() {
     return (
       <div className="flex min-h-screen items-center justify-center">
         <div className="text-center">
-          <Loader2 className="mx-auto mb-4 h-12 w-12 animate-spin text-yellow-400" />
-          <p className="text-lg text-white">Loading leaderboard...</p>
+          <TetrisLoading
+            size="lg"
+            speed="normal"
+            loadingText="Loading leaderboard..."
+          />
         </div>
       </div>
     );

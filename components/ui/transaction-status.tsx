@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react';
 
 import {
-  Loader2,
   CheckCircle2,
   XCircle,
   ExternalLink,
@@ -20,6 +19,8 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { getBSCScanTxUrl, formatTxHash } from '@/lib/blockchain-utils';
+
+import TetrisLoading from './tetris-loader';
 
 export type TransactionStatus = 'idle' | 'pending' | 'success' | 'error';
 
@@ -75,7 +76,9 @@ export function TransactionStatus({
     switch (status) {
       case 'pending':
         return {
-          icon: <Loader2 className="h-12 w-12 animate-spin text-blue-500" />,
+          icon: (
+            <TetrisLoading size="sm" speed="normal" showLoadingText={false} />
+          ),
           title: title || 'Transaction Pending',
           description: description || 'Waiting for blockchain confirmation...',
           bgColor: 'bg-blue-500/10',
@@ -115,7 +118,7 @@ export function TransactionStatus({
   if (!showDialog) {
     return (
       <div
-        className={`rounded-lg border p-4 ${config.bgColor} ${config.borderColor}`}
+        className={`rounded-md border p-4 ${config.bgColor} ${config.borderColor}`}
       >
         <div className="flex items-start gap-3">
           <div className="flex-shrink-0">{config.icon}</div>
@@ -234,7 +237,7 @@ export function TransactionStatus({
           )}
 
           {status === 'error' && error && (
-            <div className="flex items-start gap-2 rounded-lg border border-red-500/20 bg-red-500/10 p-3">
+            <div className="flex items-start gap-2 rounded-md border border-red-500/20 bg-red-500/10 p-3">
               <AlertTriangle className="mt-0.5 h-4 w-4 flex-shrink-0 text-red-400" />
               <div className="text-sm text-red-400">
                 <p className="mb-1 font-semibold">Error Details:</p>
@@ -246,7 +249,7 @@ export function TransactionStatus({
           )}
 
           {status === 'pending' && (
-            <div className="rounded-lg border border-blue-500/20 bg-blue-500/10 p-3 text-sm text-gray-300">
+            <div className="rounded-md border border-blue-500/20 bg-blue-500/10 p-3 text-sm text-gray-300">
               <p>
                 ⏳ This may take a few moments. Please don't close this window.
               </p>
@@ -294,7 +297,9 @@ export function TransactionStatusBadge({
     switch (status) {
       case 'pending':
         return {
-          icon: <Loader2 className="h-3 w-3 animate-spin" />,
+          icon: (
+            <TetrisLoading size="sm" speed="fast" showLoadingText={false} />
+          ),
           text: 'Pending',
           className: 'bg-blue-500/10 text-blue-500 border-blue-500/20',
         };

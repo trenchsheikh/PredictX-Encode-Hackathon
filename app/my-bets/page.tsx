@@ -13,7 +13,6 @@ import {
   Clock,
   DollarSign,
   Eye,
-  Loader2,
   AlertCircle,
 } from 'lucide-react';
 
@@ -24,6 +23,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { PerformanceChart } from '@/components/ui/performance-chart';
 import { StatsDashboard } from '@/components/ui/stats-dashboard';
+import TetrisLoading from '@/components/ui/tetris-loader';
 import { TransactionStatus } from '@/components/ui/transaction-status';
 import { api, getErrorMessage } from '@/lib/api-client';
 import { mapCategory, mapStatus, calculatePrice } from '@/lib/blockchain-utils';
@@ -1207,7 +1207,11 @@ export default function MyBetsPage() {
                             disabled={contract.loading}
                           >
                             {contract.loading ? (
-                              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                              <TetrisLoading
+                                size="sm"
+                                speed="fast"
+                                showLoadingText={false}
+                              />
                             ) : (
                               <DollarSign className="mr-2 h-4 w-4" />
                             )}
@@ -1345,7 +1349,11 @@ export default function MyBetsPage() {
                   disabled={contract.loading}
                 >
                   {contract.loading ? (
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    <TetrisLoading
+                      size="sm"
+                      speed="fast"
+                      showLoadingText={false}
+                    />
                   ) : (
                     <DollarSign className="mr-2 h-4 w-4" />
                   )}

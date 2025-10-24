@@ -2,10 +2,9 @@
 
 import { useState, useEffect } from 'react';
 
-import { Loader2 } from 'lucide-react';
-
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
+import TetrisLoading from '@/components/ui/tetris-loader';
 import { logger } from '@/lib/logger';
 import { cn } from '@/lib/utils';
 
@@ -222,7 +221,11 @@ export function CryptoSelector({
   if (loading) {
     return (
       <div className="flex items-center justify-center p-8">
-        <Loader2 className="h-8 w-8 animate-spin text-white" />
+        <TetrisLoading
+          size="md"
+          speed="normal"
+          loadingText="Loading cryptocurrencies..."
+        />
       </div>
     );
   }
