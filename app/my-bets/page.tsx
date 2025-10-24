@@ -653,7 +653,7 @@ export default function MyBetsPage() {
       await fetchUserBets();
 
       // eslint-disable-next-line no-console
-      console.info(`Winnings claimed! Amount: ${result.amount} BNB`);
+      console.info(`Winnings claimed! Amount: ${result.amount} SOL`);
     } catch (err: unknown) {
       // eslint-disable-next-line no-console
       console.error('Claim failed:', err);
@@ -690,7 +690,7 @@ export default function MyBetsPage() {
       await fetchUserBets();
 
       // eslint-disable-next-line no-console
-      console.info(`Refund claimed! Amount: ${result.amount} BNB`);
+      console.info(`Refund claimed! Amount: ${result.amount} SOL`);
     } catch (err: unknown) {
       // eslint-disable-next-line no-console
       console.error('Refund failed:', err);
@@ -1217,7 +1217,7 @@ export default function MyBetsPage() {
                             )}
                             Claim{' '}
                             {claimType === 'winnings' ? 'Winnings' : 'Refund'} (
-                            {formatBNB(claimAmount)} BNB)
+                            {formatBNB(claimAmount)} SOL)
                           </Button>
                         ) : bet.claimed ? (
                           <Badge
@@ -1305,7 +1305,7 @@ export default function MyBetsPage() {
             <CardContent className="space-y-4">
               <div className="text-center">
                 <div className="mb-2 text-2xl font-bold text-white">
-                  {formatBNB(claimBet.amount)} BNB
+                  {formatBNB(claimBet.amount)} SOL
                 </div>
                 <p className="text-sm text-gray-300">
                   {claimBet.type === 'winnings'

@@ -5,7 +5,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-// Format BNB amount for display
+// Format SOL amount for display
 export function formatBNB(amount: number | string): string {
   const numAmount = typeof amount === 'string' ? parseFloat(amount) : amount;
   if (isNaN(numAmount) || numAmount === 0) return '0.000';

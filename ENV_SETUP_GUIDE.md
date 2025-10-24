@@ -198,6 +198,7 @@ TEST_MODE=false
 ## 🚀 Quick Start (3 Steps)
 
 ### Step 1: Copy the Template Above
+
 ```bash
 # Create your .env.local file from the template above
 # Copy the entire template and paste it into: .env.local
@@ -231,6 +232,7 @@ TEST_MODE=false
    ```
 
 ### Step 3: Restart Your Server
+
 ```bash
 # Stop the server (Ctrl+C)
 # Then restart
@@ -245,19 +247,19 @@ npm run dev
 
 ### Required Variables
 
-| Variable | Where to Get | Purpose |
-|----------|-------------|---------|
-| `NEXT_PUBLIC_PRIVY_APP_ID` | [dashboard.privy.io](https://dashboard.privy.io) | User authentication |
-| `MONGODB_URI` | [cloud.mongodb.com](https://cloud.mongodb.com) | Database connection |
-| `NEXT_PUBLIC_SOLANA_RPC_URL` | Public or [helius.dev](https://helius.dev) | Solana blockchain |
+| Variable                     | Where to Get                                     | Purpose             |
+| ---------------------------- | ------------------------------------------------ | ------------------- |
+| `NEXT_PUBLIC_PRIVY_APP_ID`   | [dashboard.privy.io](https://dashboard.privy.io) | User authentication |
+| `MONGODB_URI`                | [cloud.mongodb.com](https://cloud.mongodb.com)   | Database connection |
+| `NEXT_PUBLIC_SOLANA_RPC_URL` | Public or [helius.dev](https://helius.dev)       | Solana blockchain   |
 
 ### Optional but Recommended
 
-| Variable | Where to Get | Purpose |
-|----------|-------------|---------|
-| `NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID` | [cloud.walletconnect.com](https://cloud.walletconnect.com) | Better wallet connection |
-| `CONCORDIUM_NODE_URL` | [Concordium Docs](https://docs.concordium.com) | Identity & RG features |
-| `NEXT_PUBLIC_GEMINI_API_KEY` | [makersuite.google.com](https://makersuite.google.com/app/apikey) | AI descriptions |
+| Variable                               | Where to Get                                                      | Purpose                  |
+| -------------------------------------- | ----------------------------------------------------------------- | ------------------------ |
+| `NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID` | [cloud.walletconnect.com](https://cloud.walletconnect.com)        | Better wallet connection |
+| `CONCORDIUM_NODE_URL`                  | [Concordium Docs](https://docs.concordium.com)                    | Identity & RG features   |
+| `NEXT_PUBLIC_GEMINI_API_KEY`           | [makersuite.google.com](https://makersuite.google.com/app/apikey) | AI descriptions          |
 
 ### Production Variables
 
@@ -284,6 +286,7 @@ ORACLE_ADMIN_KEY=your_oracle_key
 ## 🔒 Security Best Practices
 
 ### DO:
+
 - ✅ Keep `.env.local` in `.gitignore`
 - ✅ Use different keys for dev/staging/prod
 - ✅ Generate strong random values for secrets
@@ -291,6 +294,7 @@ ORACLE_ADMIN_KEY=your_oracle_key
 - ✅ Use environment variables in hosting platforms
 
 ### DON'T:
+
 - ❌ Commit `.env.local` to git
 - ❌ Share your keys publicly
 - ❌ Use the same keys across environments
@@ -303,12 +307,14 @@ ORACLE_ADMIN_KEY=your_oracle_key
 ### Local MongoDB Installation
 
 **Windows:**
+
 1. Download: [https://www.mongodb.com/try/download/community](https://www.mongodb.com/try/download/community)
 2. Install MongoDB Community Server
 3. MongoDB runs on `mongodb://localhost:27017` by default
 4. Use in `.env.local`: `MONGODB_URI=mongodb://localhost:27017/darkbet`
 
 **Mac (Homebrew):**
+
 ```bash
 brew tap mongodb/brew
 brew install mongodb-community
@@ -316,6 +322,7 @@ brew services start mongodb-community
 ```
 
 **Linux (Ubuntu):**
+
 ```bash
 sudo apt-get install mongodb
 sudo systemctl start mongodb
@@ -324,7 +331,7 @@ sudo systemctl start mongodb
 ### MongoDB Atlas (Cloud) Setup
 
 1. **Create Account**: [https://cloud.mongodb.com](https://cloud.mongodb.com)
-2. **Create Cluster**: 
+2. **Create Cluster**:
    - Click "Build a Database"
    - Choose "Free" (M0)
    - Select region closest to you
@@ -349,33 +356,65 @@ sudo systemctl start mongodb
 
 ## 🔗 Concordium Setup (For Identity & RG Features)
 
+**Now using official @concordium/id-app-sdk!**
+
+📚 **Complete Setup Guide:** See `docs/CONCORDIUM_ID_APP_SETUP.md` for detailed instructions
+
 ### Testnet (Development)
+
 ```env
+CONCORDIUM_NETWORK=testnet
 CONCORDIUM_NODE_URL=https://grpc.testnet.concordium.com
 CONCORDIUM_NODE_PORT=20000
 USE_MOCK_CONCORDIUM=true
+
+# Age and Jurisdiction Requirements
+MINIMUM_AGE=18
+ALLOWED_JURISDICTIONS=US,UK,CA,AU
 ```
 
 ### Mainnet (Production)
+
 ```env
+CONCORDIUM_NETWORK=mainnet
 CONCORDIUM_NODE_URL=https://grpc.mainnet.concordium.software
 CONCORDIUM_NODE_PORT=20000
 CONCORDIUM_RG_CONTRACT_ADDRESS=<deployed_contract_address>
 USE_MOCK_CONCORDIUM=false
+
+# Age and Jurisdiction Requirements
+MINIMUM_AGE=18
+ALLOWED_JURISDICTIONS=US,UK,CA,AU,NZ,SG,JP,KR,CH,SE,NO,DK,FI,DE,FR,ES,IT,NL,BE,AT,IE
 ```
 
-**Deploy Contract:**
+### Prerequisites
+
+1. **Install Concordium Wallet**: [https://concordium.com/wallet](https://concordium.com/wallet)
+2. **Create identity** in the wallet app
+3. **For testnet**: Get test CCDs from faucet
+
+### Deploy Contract
+
 ```bash
 cd concordium-contracts/rg-registry
 cargo concordium build --out rg_registry.wasm.v1
 concordium-client module deploy rg_registry.wasm.v1 --sender YOUR_ACCOUNT
 ```
 
+### Integration Notes
+
+- Uses official `@concordium/id-app-sdk` for identity verification
+- Privacy-preserving: Only age and jurisdiction are verified
+- Zero-knowledge proofs ensure no PII is exposed on-chain
+- Deep linking to Concordium ID App for mobile support
+- See `lib/concordium-id-service.ts` for implementation details
+
 ---
 
 ## 🧪 Testing Configuration
 
 For testing without external services:
+
 ```env
 USE_MOCK_CONCORDIUM=true
 USE_MOCK_SOLANA=false
@@ -390,6 +429,7 @@ TEST_MODE=true
 See `env.example` for the complete list of all available environment variables with descriptions.
 
 **Categories:**
+
 - Authentication (Privy)
 - Database (MongoDB)
 - Blockchain (Solana, Concordium)
@@ -406,16 +446,19 @@ See `env.example` for the complete list of all available environment variables w
 ## ❓ Troubleshooting
 
 ### "Invalid Privy App ID"
+
 - Check your App ID is correct (no spaces, quotes)
 - Verify `http://localhost:3000` is in allowed origins
 - Try restarting the dev server
 
 ### "MongoDB Connection Failed"
+
 - For local: Ensure MongoDB is running
 - For Atlas: Check username, password, and IP whitelist
 - Verify connection string format
 
 ### "Solana RPC Error"
+
 - Public RPCs can be slow/rate-limited
 - Try a private RPC from Helius or QuickNode
 - Check network (devnet vs mainnet)
@@ -450,4 +493,3 @@ Before deploying to production:
 **Your environment is now configured! 🎉**
 
 Run `npm run dev` and visit `http://localhost:3000`
-

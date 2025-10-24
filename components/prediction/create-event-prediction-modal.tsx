@@ -120,11 +120,11 @@ export function CreateEventPredictionModal({
       return false;
     }
     if (numAmount < minBet) {
-      setError({ message: `Minimum bet is ${minBet} BNB` });
+      setError({ message: `Minimum bet is ${minBet} SOL` });
       return false;
     }
     if (numAmount > maxBet) {
-      setError({ message: `Maximum bet is ${maxBet} BNB` });
+      setError({ message: `Maximum bet is ${maxBet} SOL` });
       return false;
     }
     setError(null);

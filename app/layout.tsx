@@ -9,6 +9,7 @@ import '@/lib/console-filter';
 import { FooterGate } from '@/components/layout/footer-gate';
 import { AnimatedHeader } from '@/components/layout/navbar';
 import { IntroProvider } from '@/components/providers/intro-provider';
+import { OnboardingProvider } from '@/components/providers/onboarding-provider';
 import { PrivyProviderWrapper } from '@/components/providers/privy-provider';
 import { ErrorBoundary } from '@/components/ui/error-boundary';
 
@@ -73,31 +74,33 @@ export default function RootLayout({
       <head></head>
       <body className={beVietnamPro.className}>
         <PrivyProviderWrapper>
-          <IntroProvider>
-            <div className="relative flex min-h-screen flex-col bg-background">
-              <AnimatedHeader />
-              <main className="relative z-10 flex-1">
-                <ErrorBoundary>{children}</ErrorBoundary>
-              </main>
-              <FooterGate
-                brandName="DarkBet"
-                showTopInfo={false}
-                showBackgroundBrandText={true}
-                showCopyright={false}
-                brandLinkHref="https://x.com/DarkbetSOL"
-                brandIcon={
-                  <Image
-                    src="/binanceeye.jpg"
-                    alt="DarkBet"
-                    width={56}
-                    height={56}
-                    className="rounded-xl object-cover"
-                    priority
-                  />
-                }
-              />
-            </div>
-          </IntroProvider>
+          <OnboardingProvider>
+            <IntroProvider>
+              <div className="relative flex min-h-screen flex-col bg-background">
+                <AnimatedHeader />
+                <main className="relative z-10 flex-1">
+                  <ErrorBoundary>{children}</ErrorBoundary>
+                </main>
+                <FooterGate
+                  brandName="DarkBet"
+                  showTopInfo={false}
+                  showBackgroundBrandText={true}
+                  showCopyright={false}
+                  brandLinkHref="https://x.com/DarkbetSOL"
+                  brandIcon={
+                    <Image
+                      src="/binanceeye.jpg"
+                      alt="DarkBet"
+                      width={56}
+                      height={56}
+                      className="rounded-xl object-cover"
+                      priority
+                    />
+                  }
+                />
+              </div>
+            </IntroProvider>
+          </OnboardingProvider>
         </PrivyProviderWrapper>
         <Analytics />
       </body>

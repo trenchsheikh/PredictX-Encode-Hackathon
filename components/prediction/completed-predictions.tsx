@@ -135,7 +135,7 @@ export function CompletedPrediction({
           <div className="rounded-lg bg-gray-50 p-3 text-center dark:bg-gray-800/50">
             <DollarSign className="mx-auto mb-1 h-4 w-4 text-gray-500" />
             <div className="text-sm font-medium">
-              {formatBNB(prediction.totalPool)} BNB
+              {formatBNB(prediction.totalPool)} SOL
             </div>
             <div className="text-xs text-gray-500">Total Pool</div>
           </div>
@@ -149,7 +149,7 @@ export function CompletedPrediction({
           <div className="rounded-lg bg-gray-50 p-3 text-center dark:bg-gray-800/50">
             <TrendingUp className="mx-auto mb-1 h-4 w-4 text-green-500" />
             <div className="text-sm font-medium">
-              {formatBNB(prediction.yesPool)} BNB
+              {formatBNB(prediction.yesPool)} SOL
             </div>
             <div className="text-xs text-gray-500">YES Pool</div>
           </div>
@@ -157,7 +157,7 @@ export function CompletedPrediction({
           <div className="rounded-lg bg-gray-50 p-3 text-center dark:bg-gray-800/50">
             <TrendingDown className="mx-auto mb-1 h-4 w-4 text-red-500" />
             <div className="text-sm font-medium">
-              {formatBNB(prediction.noPool)} BNB
+              {formatBNB(prediction.noPool)} SOL
             </div>
             <div className="text-xs text-gray-500">NO Pool</div>
           </div>
@@ -192,7 +192,7 @@ export function CompletedPrediction({
               <div>
                 <div className="text-gray-500">Total Volume</div>
                 <div className="font-medium">
-                  {formatBNB(transactionHistory.summary.totalVolume)} BNB
+                  {formatBNB(transactionHistory.summary.totalVolume)} SOL
                 </div>
               </div>
               <div>

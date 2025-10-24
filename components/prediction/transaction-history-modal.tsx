@@ -173,7 +173,7 @@ export function TransactionHistoryModal({
                     {formatBNB(history.summary?.totalVolume || '0')}
                   </div>
                   <div className="text-xs text-muted-foreground sm:text-sm">
-                    Total Volume (BNB)
+                    Total Volume (SOL)
                   </div>
                 </CardContent>
               </Card>
@@ -249,7 +249,7 @@ export function TransactionHistoryModal({
                         <div className="mt-2 flex flex-wrap items-center justify-end gap-3 sm:mt-0 sm:text-right">
                           {tx.amount && (
                             <div className="text-sm font-medium text-foreground">
-                              {formatBNB(tx.amount)} BNB
+                              {formatBNB(tx.amount)} SOL
                             </div>
                           )}
                         </div>

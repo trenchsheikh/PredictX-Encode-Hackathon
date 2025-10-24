@@ -158,7 +158,7 @@ export function PayoutDisplay({
                   <span className="text-gray-600 dark:text-gray-400">
                     Total Pool:
                   </span>
-                  <span>{formatBNB(totalPool)} BNB</span>
+                  <span>{formatBNB(totalPool)} SOL</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600 dark:text-gray-400">
@@ -181,14 +181,14 @@ export function PayoutDisplay({
                     {formatBNB(
                       ((parseFloat(userPayout) * platformFee) / 100).toString()
                     )}{' '}
-                    BNB
+                    SOL
                   </span>
                 </div>
                 <div className="border-t pt-1">
                   <div className="flex justify-between font-semibold">
                     <span>Your Payout:</span>
                     <span className="text-green-600 dark:text-green-400">
-                      {formatBNB(userPayout)} BNB
+                      {formatBNB(userPayout)} SOL
                     </span>
                   </div>
                 </div>
@@ -216,7 +216,7 @@ export function PayoutDisplay({
                   ) : (
                     <>
                       <DollarSign className="mr-2 h-4 w-4" />
-                      Claim {formatBNB(userPayout)} BNB
+                      Claim {formatBNB(userPayout)} SOL
                     </>
                   )}
                 </Button>
@@ -254,7 +254,7 @@ export function PayoutDisplay({
                   variant="ghost"
                   onClick={() =>
                     window.open(
-                      `https://testnet.bscscan.com/tx/${txHash}`,
+                      `https://explorer.solana.com/tx/${txHash}?cluster=devnet`,
                       '_blank'
                     )
                   }

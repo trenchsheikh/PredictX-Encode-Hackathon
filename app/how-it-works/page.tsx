@@ -154,9 +154,9 @@ export default function HowItWorksPage() {
         },
       ],
       feeExample: {
-        gross: '0.01 BNB',
-        fee: '0.001 BNB',
-        net: '0.009 BNB',
+        gross: '0.01 SOL',
+        fee: '0.001 SOL',
+        net: '0.009 SOL',
       },
     },
     {

@@ -69,8 +69,8 @@ const createPredictionSchema = z.object({
   userPrediction: z.enum(['yes', 'no']),
   bnbAmount: z
     .number()
-    .min(0.001, 'Minimum bet is 0.001 BNB')
-    .max(10, 'Maximum bet is 10 BNB'),
+    .min(0.001, 'Minimum bet is 0.001 SOL')
+    .max(10, 'Maximum bet is 10 SOL'),
   expiresAt: z
     .number()
     .min(Date.now() + 300000, 'Expiration must be at least 5 minutes from now'),

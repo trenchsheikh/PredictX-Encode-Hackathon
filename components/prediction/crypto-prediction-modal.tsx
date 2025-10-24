@@ -43,7 +43,7 @@ export interface CryptoPredictionData {
   description: string;
   category: number;
   outcome: 'yes' | 'no'; // Creator's initial bet prediction
-  amount: number; // Creator's initial bet amount in BNB
+  amount: number; // Creator's initial bet amount in SOL
 }
 
 export function CryptoPredictionModal({
@@ -538,7 +538,7 @@ export function CryptoPredictionModal({
                       htmlFor="betAmount"
                       className="font-medium text-foreground"
                     >
-                      Bet Amount (BNB)
+                      Bet Amount (SOL)
                     </Label>
                     <div className="relative">
                       <DollarSign className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
@@ -555,7 +555,7 @@ export function CryptoPredictionModal({
                       />
                     </div>
                     <div className="text-xs text-muted-foreground">
-                      Min: 0.001 BNB • Max: 100 BNB
+                      Min: 0.001 SOL • Max: 100 SOL
                     </div>
                   </div>
 

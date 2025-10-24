@@ -1,0 +1,33 @@
+{
+  "name": "darkbet-backend",
+  "version": "1.0.0",
+  "description": "DarkBet Prediction Market Backend API",
+  "main": "src/server.js",
+  "scripts": {
+    "dev": "nodemon src/server.js",
+    "start": "node src/server.js",
+    "build": "echo 'No build step required'",
+    "test": "echo 'Tests not yet implemented'"
+  },
+  "keywords": [
+    "prediction-market",
+    "solana",
+    "concordium",
+    "betting"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "mongoose": "^8.19.1",
+    "@concordium/node-sdk": "^9.5.3",
+    "@concordium/web-sdk": "^11.0.0",
+    "@solana/web3.js": "^1.98.4",
+    "ethers": "^6.15.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}

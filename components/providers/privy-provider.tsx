@@ -1,11 +1,12 @@
 'use client';
 
 import { PrivyProvider } from '@privy-io/react-auth';
-import { solana } from '@privy-io/react-auth/solana';
+import { toSolanaWalletConnectors } from '@privy-io/react-auth/solana';
 
 import {
   PRIVY_APP_ID,
   isValidPrivyAppId,
+  getSolanaRpcUrl,
 } from '@/lib/privy-config';
 
 import { I18nProvider } from './i18n-provider';
@@ -31,15 +32,16 @@ export function PrivyProviderWrapper({
           accentColor: '#14F195', // Solana green
           logo: '/binanceeye.jpg',
         },
-        loginMethods: ['email', 'google', 'twitter', 'discord', 'wallet'],
+        loginMethods: ['wallet', 'email', 'google', 'twitter', 'discord'],
         embeddedWallets: {
           createOnLogin: 'users-without-wallets',
         },
-        // Configure for Solana only
-        supportedChains: [solana],
-        defaultChain: solana,
-        // Wallet configuration - only Solana wallets
-        walletConnectCloudProjectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID,
+        // Solana wallet configuration
+        externalWallets: {
+          solana: {
+            connectors: toSolanaWalletConnectors(),
+          },
+        },
       }}
     >
       <I18nProvider>{children}</I18nProvider>
