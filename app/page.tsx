@@ -596,7 +596,16 @@ export default function HomePage() {
 
   return (
     <div className="relative overflow-hidden">
-      {/* Removed page-specific animated background */}
+      {/* Demo Platform Banner */}
+      <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 px-4 text-center">
+        <div className="container mx-auto">
+          <p className="text-sm md:text-base font-medium">
+            📊 <strong>Demo Gambling Platform</strong> - This prediction market demonstrates PredictX RG Registry integration. 
+            <span className="hidden sm:inline"> All gambling platforms can integrate the same way.</span>
+            {' '}<a href="https://github.com/trenchsheikh/PredictX-Encode-Hackathon" target="_blank" rel="noopener noreferrer" className="underline hover:text-blue-200">Learn More →</a>
+          </p>
+        </div>
+      </div>
 
       <style jsx>{`
         /* Flat design - no animations or transitions */
