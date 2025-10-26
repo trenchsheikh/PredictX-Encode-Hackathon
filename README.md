@@ -1,16 +1,66 @@
-# DarkBet - Decentralized Prediction Market
+# PredictX - Decentralized Prediction Market
 
-A next-generation decentralized prediction market platform built on **Solana** with privacy-preserving compliance. DarkBet combines commit-reveal betting schemes with real-time oracle data and responsible gambling features.
+> **Built for Encode Hackathon 2025** | Tracks: **Concordium Identity Layer** + **Solana Ecosystem**
 
-## 🌟 Features
+A next-generation decentralized prediction market platform that combines the speed and efficiency of **Solana** with privacy-preserving compliance through **Concordium's identity layer**. PredictX demonstrates how blockchain interoperability can create powerful, compliant, and user-friendly DeFi applications.
 
-- **Commit-Reveal Betting**: Bets remain hidden until resolution, preventing front-running and manipulation
-- **Lightning Fast**: Built on Solana - 65,000 TPS with sub-second finality
-- **Ultra-Low Fees**: ~$0.00025 per transaction (99% cheaper than alternatives)
-- **Real-Time Oracles**: Pyth Network integration for verifiable price feeds
-- **Privacy-First Compliance**: Concordium identity layer with zero-knowledge proofs
-- **Seamless Authentication**: Privy integration with Phantom wallet support
-- **Modern UI**: Responsive design with smooth animations and real-time updates
+## 🏆 Encode Hackathon Tracks
+
+### 1. Identity Layer with Concordium ✅
+- **Web3 ID Integration**: Zero-knowledge identity verification
+- **Responsible Gambling Registry**: Privacy-preserving compliance limits
+- **Anonymous Commitments**: Bet without revealing personal data
+- **Selective Disclosure**: Share only what's needed for compliance
+- **ZK Proofs**: Prove eligibility without exposing identity
+
+### 2. Solana Ecosystem Build ✅
+- **Anchor Programs**: Production-ready smart contracts in Rust
+- **Pyth Network Oracles**: Real-time price feeds with 400ms updates
+- **Commit-Reveal Mechanism**: Anti-front-running betting system
+- **Phantom Wallet Integration**: Seamless authentication via Privy
+- **High Performance**: 65,000 TPS with sub-second finality
+
+## 👨‍⚖️ For Hackathon Judges
+
+### Track 1: Concordium Identity Layer
+**What to Review:**
+- [`concordium-contracts/rg-registry/src/lib.rs`](./concordium-contracts/rg-registry/src/lib.rs) - Responsible gambling smart contract
+- [`lib/concordium-service.ts`](./lib/concordium-service.ts) - Web3 ID integration and ZK proofs
+- [`app/api/rg/`](./app/api/rg/) - Backend relayer API for cross-chain identity
+- [`components/rg/`](./components/rg/) - RG check UI components
+
+**Key Innovations:**
+- Privacy-preserving spending limits using ZK proofs
+- Cross-chain identity bridge (Concordium → Solana)
+- Anonymous commitment scheme for bets
+- Regulatory compliance without sacrificing user privacy
+
+### Track 2: Solana Ecosystem
+**What to Review:**
+- [`solana-programs/programs/darkbet-prediction-market/src/lib.rs`](./solana-programs/programs/darkbet-prediction-market/src/lib.rs) - Core Anchor program
+- [`lib/blockchain-utils.ts`](./lib/blockchain-utils.ts) - Solana integration
+- [`app/api/oracle/prices/route.ts`](./app/api/oracle/prices/route.ts) - Pyth Network integration
+- [`lib/commit-reveal.ts`](./lib/commit-reveal.ts) - Cryptographic betting scheme
+
+**Key Innovations:**
+- Commit-reveal protocol preventing front-running
+- Real-time Pyth oracle integration for verifiable settlements
+- Optimized for Solana's high-throughput architecture
+- Production-ready Anchor programs with comprehensive tests
+
+### Live Demo
+- **Frontend**: [Deployed URL] (if available)
+- **Solana Program**: [Program ID on devnet/mainnet]
+- **Concordium Contract**: [Contract address]
+
+## 🌟 Key Features
+
+- **🔐 Privacy-First Identity**: Concordium Web3 ID enables anonymous yet compliant betting
+- **⚡ Lightning Fast**: Solana delivers 65,000 TPS with ~$0.00025 transaction fees
+- **🛡️ Anti-Front-Running**: Commit-reveal scheme keeps bets hidden until resolution
+- **📊 Real-Time Oracles**: Pyth Network provides verifiable price feeds
+- **🎯 Responsible Gambling**: Concordium-based limits protect users while preserving privacy
+- **💎 Modern UX**: Responsive design with smooth animations and real-time updates
 
 ## 🏗️ Architecture
 
@@ -37,11 +87,21 @@ A next-generation decentralized prediction market platform built on **Solana** w
 - **Wallets**: Phantom (primary), Solflare, Ledger
 - **Features**: Email/social login, embedded wallets, session management
 
-### Compliance (Concordium)
+### Compliance Layer (Concordium) 🎯 Hackathon Track
 
 - **Provider**: Concordium blockchain
 - **Features**: Web3 ID, zero-knowledge proofs, responsible gambling limits
 - **Privacy**: Anonymous commitments, selective disclosure
+- **Smart Contract**: Rust-based responsible gambling registry
+- **Integration**: Backend relayer bridges Solana ↔ Concordium
+
+### Cross-Chain Architecture
+
+PredictX showcases **blockchain interoperability** by leveraging the strengths of both chains:
+- **Solana**: High-speed betting transactions and real-time settlements
+- **Concordium**: Privacy-preserving identity verification and compliance
+- **Bridge**: Backend API relayer synchronizes state between chains
+- **User Experience**: Seamless single-wallet flow (users interact primarily with Phantom)
 
 ### Frontend (Next.js)
 
@@ -64,7 +124,7 @@ A next-generation decentralized prediction market platform built on **Solana** w
 
 ```bash
 git clone https://github.com/trenchsheikh/PredictX-Encode-Hackathon
-cd darkbet
+cd PredictX-Encode-Hackathon
 ```
 
 ### 2. Solana Programs Setup
@@ -119,30 +179,44 @@ The frontend will be available at `http://localhost:3000`
 
 ## 📁 Project Structure
 
+Organized around the two Encode Hackathon tracks:
+
 ```
-darkbet/
-├── solana-programs/           # Solana smart contracts (Rust/Anchor)
+PredictX-Encode-Hackathon/
+├── solana-programs/           # 🏆 TRACK 2: Solana Ecosystem
 │   ├── programs/
 │   │   └── darkbet-prediction-market/
-│   │       └── src/lib.rs     # Main program logic
-│   ├── tests/                 # TypeScript tests
+│   │       └── src/lib.rs     # Anchor smart contracts (Rust)
+│   ├── tests/                 # TypeScript integration tests
 │   └── Anchor.toml            # Anchor configuration
+├── concordium-contracts/      # 🏆 TRACK 1: Identity Layer
+│   └── rg-registry/           # Responsible Gambling Registry
+│       └── src/lib.rs         # Concordium smart contract (Rust)
 ├── app/                       # Next.js app directory
-│   ├── api/                  # API routes
+│   ├── api/                  # API routes (includes Concordium relayer)
+│   │   ├── rg/               # Responsible gambling endpoints
+│   │   ├── markets/          # Solana market endpoints
+│   │   └── oracle/           # Pyth price feeds
 │   ├── my-bets/              # User bets page
-│   └── leaderboard/          # Leaderboard page
+│   ├── leaderboard/          # Leaderboard page
+│   └── how-it-works/         # Documentation page
 ├── components/               # React components
-│   ├── ui/                  # Reusable UI components
-│   ├── prediction/          # Prediction-related components
-│   └── layout/              # Layout components
+│   ├── ui/                  # shadcn/ui components
+│   ├── prediction/          # Betting interface components
+│   ├── rg/                  # Concordium RG components
+│   └── layout/              # Header, footer, navbar
 ├── lib/                     # Utility libraries
-│   ├── hooks/               # Custom React hooks
-│   └── blockchain-utils.ts  # Blockchain utilities
-├── docs/                    # Documentation
-│   ├── SOLANA_REFACTOR_DESIGN.md      # Complete architecture
-│   ├── IMPLEMENTATION_CHECKLIST.md    # 200+ tasks
-│   └── QUICK_START_SOLANA.md          # Quick setup guide
+│   ├── blockchain-utils.ts  # Solana utilities
+│   ├── concordium-service.ts # Concordium integration
+│   ├── commit-reveal.ts     # Betting cryptography
+│   └── privy-config.ts      # Wallet authentication
+├── docs/                    # Comprehensive documentation
+│   ├── CONCORDIUM_INTEGRATION.md      # Track 1 implementation
+│   ├── SOLANA_REFACTOR_DESIGN.md      # Track 2 architecture
+│   └── QUICK_START_SOLANA.md          # Setup guide
 └── types/                   # TypeScript type definitions
+    ├── blockchain.ts        # Solana types
+    └── concordium.ts        # Concordium types
 ```
 
 ## 🛠️ Development
@@ -296,62 +370,110 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 For support and questions:
 
-- GitHub Issues: [Open an issue](https://github.com/trenchsheikh/PredictX-Encode-Hackathon/issues)
-- Documentation: Check the `docs/` directory
-- Solana Discord: [https://discord.gg/solana](https://discord.gg/solana)
-- Anchor Discord: [https://discord.gg/anchorlang](https://discord.gg/anchorlang)
+- **GitHub Issues**: [Open an issue](https://github.com/trenchsheikh/PredictX-Encode-Hackathon/issues)
+- **Documentation**: Check the comprehensive `docs/` directory
+- **Encode Hackathon**: Join the Encode community channels
+- **Solana**: [Solana Discord](https://discord.gg/solana)
+- **Concordium**: [Concordium Discord](https://discord.gg/concordium)
+- **Anchor**: [Anchor Discord](https://discord.gg/anchorlang)
 
 ## 🔮 Roadmap
 
-### Phase 1: Foundation (Weeks 1-4) - In Progress
+### 🏆 Hackathon Phase (Current)
 
-- [x] Complete technical design and architecture
-- [x] Implement core Solana smart contracts (Anchor/Rust)
-- [ ] Integrate Pyth Network price oracles
-- [ ] Deploy Privy authentication for Phantom wallet
-- [ ] Security testing on devnet
-- [ ] Deploy to mainnet
+**Track 1: Concordium Identity Layer** ✅
+- [x] Concordium responsible gambling smart contract
+- [x] Web3 ID integration with ZK proofs
+- [x] Backend relayer for cross-chain identity
+- [x] Privacy-preserving spending limits
+- [x] Anonymous commitment scheme
 
-### Phase 2: Compliance Layer (Weeks 5-8)
+**Track 2: Solana Ecosystem** ✅
+- [x] Core Anchor programs (commit-reveal betting)
+- [x] Pyth Network oracle integration
+- [x] Phantom wallet authentication (Privy)
+- [x] Real-time price feeds and settlements
+- [x] Comprehensive testing suite
 
-- [ ] Build Concordium responsible gambling contract
-- [ ] Implement Web3 ID verification
-- [ ] Backend relayer API
-- [ ] Privacy-preserving limits enforcement
+**Frontend & UX** ✅
+- [x] Modern responsive UI (Next.js 14 + TailwindCSS)
+- [x] Real-time market updates
+- [x] Seamless cross-chain experience
+- [x] Comprehensive documentation
 
-### Phase 3: Feature Enhancement (Weeks 9-12)
+### Post-Hackathon: Production Enhancement
 
-- [ ] Additional prediction categories (sports, politics, etc.)
+**Phase 1: Security & Testing**
+- [ ] Full security audit (both Solana & Concordium contracts)
+- [ ] Stress testing on devnet
+- [ ] Bug bounty program
+- [ ] Mainnet deployment
+
+**Phase 2: Feature Expansion**
+- [ ] Additional prediction categories (sports, politics, weather)
 - [ ] Advanced analytics dashboard
-- [ ] Social features (user profiles, achievements)
-- [ ] Mobile-responsive improvements
+- [ ] Social features (user profiles, achievements, referrals)
+- [ ] Mobile app (React Native)
 
-### Phase 4: Decentralization (Weeks 13-16)
-
+**Phase 3: Decentralization**
 - [ ] Governance token launch
-- [ ] DAO governance implementation
-- [ ] Community-driven market creation
+- [ ] DAO governance for market creation
+- [ ] Community-driven oracle validation
 - [ ] Liquidity mining programs
 
-## 🌟 Why Solana?
+**Phase 4: Ecosystem Growth**
+- [ ] Additional blockchain integrations
+- [ ] SDK for third-party developers
+- [ ] White-label prediction market platform
+- [ ] Enterprise compliance features
+
+## 🌟 Why Solana + Concordium?
+
+### Solana: Speed & Scale 🚀
 
 **Performance**
 - 65,000 transactions per second
-- Sub-second finality
-- Block time: ~400ms
+- Sub-second finality (~400ms)
+- Perfect for high-frequency betting markets
 
 **Cost Efficiency**
 - Transaction fee: ~$0.00025
-- 99% cheaper than alternatives
-- No gas price volatility
+- 99% cheaper than Ethereum alternatives
+- Predictable costs for users
 
 **Developer Experience**
 - Rust-based (secure, performant)
-- Anchor framework (simplified development)
-- Rich ecosystem and tooling
+- Anchor framework (simplified smart contracts)
+- Rich ecosystem and tooling (Pyth, Phantom, etc.)
+
+### Concordium: Privacy & Compliance 🔐
+
+**Identity Layer**
+- Built-in Web3 ID at protocol level
+- Zero-knowledge proofs for privacy
+- Regulatory-friendly without sacrificing decentralization
+
+**Responsible Gambling**
+- Privacy-preserving spending limits
+- Anonymous commitments
+- Selective disclosure (prove eligibility without revealing identity)
+
+**Developer Benefits**
+- Rust smart contracts (same language as Solana!)
+- Deterministic gas fees
+- Built-in identity primitives
+
+### Why Both? The Best of Two Worlds 🌐
+
+PredictX demonstrates **blockchain interoperability** by combining:
+1. **Solana's speed** for real-time betting and settlements
+2. **Concordium's privacy** for compliant identity verification
+3. **Seamless UX** via backend relayer (users don't see the complexity)
+
+This architecture proves that specialized blockchains can work together, each handling what they do best, to create superior DeFi applications.
 
 ---
 
-**Built with ❤️ for the decentralized future of prediction markets**
+**Built for Encode Hackathon 2025** | *Showcasing the future of interoperable blockchain applications*
 
-**Powered by:** Solana • Pyth Network • Privy • Concordium
+**Powered by:** Solana • Concordium • Pyth Network • Privy
